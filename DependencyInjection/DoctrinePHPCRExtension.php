@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Bundle\DoctrinePHPCRBundle\DependencyInjection;
+namespace Doctrine\Bundle\PHPCRBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;

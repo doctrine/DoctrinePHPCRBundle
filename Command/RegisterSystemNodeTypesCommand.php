@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Bundle\DoctrinePHPCRBundle\Command;
+namespace Doctrine\Bundle\PHPCRBundle\Command;
 
 use Doctrine\ODM\PHPCR\Tools\Console\Command\RegisterSystemNodeTypesCommand as BaseRegisterSystemNodeTypesCommand;
 

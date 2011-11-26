@@ -1,28 +1,13 @@
 # Doctrine PHPCR Bundle
 
-This bundle integrates Doctrine PHPCR ODM and PHPCR backends like Jackalope or
-Midgard2 CR into Symfony2.
-
-It is part of the [symfony-cmf](https://github.com/symfony-cmf/symfony-cmf)
-repository and additionally exposed standalone repository in case you do not
-want the rest of the symfony-cmf bundles.
-
-**Never commit to the standalone repository.** All commits and pull requests go
-to the main repository https://github.com/symfony-cmf/symfony-cmf
-Maintainers: See docs/StandaloneBundles.md for how to update the standalone
-repository.
-
+This bundle integrates Doctrine PHPCR ODM and PHPCR backends into Symfony2 like:
+* Jackalope
+* Midgard2 CR
 
 # Installation
 
-### With symfony-cmf
-
-Please see the main README at https://github.com/symfony-cmf/symfony-cmf
-
-### Standalone
-
 * Grab this repository and [Doctrine PHPCR ODM](http://github.com/doctrine/phpcr-odm) into your Symfony project
-* Add `Symfony\Bundle\DoctrinePHPCRBundle\DoctrinePHPCRBundle` to your Kernel's registerBundles() method
+* Add `Doctrine\Bundle\PHPCRBundle\DoctrinePHPCRBundle` to your Kernel's registerBundles() method
 * Add autoloader for Doctrine\PHPCR, Doctrine\ODM\PHPCR and Doctrine\Bundle namespaces
 
 

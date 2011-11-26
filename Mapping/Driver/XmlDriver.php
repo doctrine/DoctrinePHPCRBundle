@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Bundle\DoctrinePHPCRBundle\Mapping\Driver;
+namespace Doctrine\Bundle\PHPCRBundle\Mapping\Driver;
 
 use Doctrine\ODM\PHPCR\Mapping\MappingException;
 use Doctrine\ODM\PHPCR\Mapping\Driver\XmlDriver as BaseXmlDriver;

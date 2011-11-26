@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Bundle\DoctrinePHPCRBundle\DependencyInjection;
+namespace Doctrine\Bundle\PHPCRBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;

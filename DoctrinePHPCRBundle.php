@@ -1,11 +1,12 @@
 <?php
 
-namespace Symfony\Bundle\DoctrinePHPCRBundle;
+namespace Doctrine\Bundle\PHPCRBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Bundle\DoctrinePHPCRBundle\DependencyInjection\Compiler\RegisterEventListenersAndSubscribersPass;
+
+use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\RegisterEventListenersAndSubscribersPass;
 
 class DoctrinePHPCRBundle extends Bundle
 {

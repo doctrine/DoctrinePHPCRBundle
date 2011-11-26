@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Bundle\DoctrinePHPCRBundle\Helper\Fixtures;
+namespace Doctrine\Bundle\PHPCRBundle\Helper\Fixtures;
 
 use PHPCR\Util\NodeHelper;
 

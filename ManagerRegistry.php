@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Bundle\DoctrinePHPCRBundle;
+namespace Doctrine\Bundle\PHPCRBundle;
 
 use Symfony\Bridge\Doctrine\ManagerRegistry as BaseManagerRegistry;
 use Doctrine\ODM\PHPCR\PHPCRException;

@@ -1,10 +1,10 @@
 <?php
 
-namespace Symfony\Bundle\DoctrinePHPCRBundle\Tests\Helper;
+namespace Doctrine\Bundle\PHPCRBundle\Tests\Helper;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
-use Symfony\Bundle\DoctrinePHPCRBundle\Helper\JackrabbitHelper;
+use Doctrine\Bundle\PHPCRBundle\Helper\JackrabbitHelper;
 
 /**
  * Test jackrabbit helper

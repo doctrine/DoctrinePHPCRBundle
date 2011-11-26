@@ -7,7 +7,7 @@
     <parameters>
 
         <parameter key="doctrine_phpcr.credentials.class">PHPCR\SimpleCredentials</parameter>
-        <parameter key="doctrine_phpcr.odm.class">Symfony\Bundle\DoctrinePHPCRBundle\ManagerRegistry</parameter>
+        <parameter key="doctrine_phpcr.odm.class">Doctrine\Bundle\PHPCRBundle\ManagerRegistry</parameter>
         <parameter key="doctrine_phpcr.sessions" type="collection" />
         <parameter key="doctrine_phpcr.odm.document_managers" type="collection" />
         <parameter key="doctrine_phpcr.default_session"></parameter>

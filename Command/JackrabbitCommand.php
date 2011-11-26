@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Bundle\DoctrinePHPCRBundle\Command;
+namespace Doctrine\Bundle\PHPCRBundle\Command;
 
 use Jackalope\Tools\Console\Command\JackrabbitCommand as BaseJackrabbitCommand;
 

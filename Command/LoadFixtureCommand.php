@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Bundle\DoctrinePHPCRBundle\Command;
+namespace Doctrine\Bundle\PHPCRBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -11,8 +11,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 use Symfony\Bundle\DoctrineFixturesBundle\Common\DataFixtures\Loader;
 
-use Symfony\Bundle\DoctrinePHPCRBundle\Helper\Fixtures\PHPCRExecutor;
-use Symfony\Bundle\DoctrinePHPCRBundle\Helper\Fixtures\PHPCRPurger;
+use Doctrine\Bundle\PHPCRBundle\Helper\Fixtures\PHPCRExecutor;
+use Doctrine\Bundle\PHPCRBundle\Helper\Fixtures\PHPCRPurger;
 use PHPCR\Util\Console\Helper\ConsoleParametersParser;
 
 /**

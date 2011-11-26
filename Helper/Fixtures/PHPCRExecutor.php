@@ -1,10 +1,10 @@
 <?php
 
-namespace Symfony\Bundle\DoctrinePHPCRBundle\Helper\Fixtures;
+namespace Doctrine\Bundle\PHPCRBundle\Helper\Fixtures;
 
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Doctrine\Common\DataFixtures\Executor\AbstractExecutor;
-use Symfony\Bundle\DoctrinePHPCRBundle\Helper\Fixtures\PHPCRPurger;
+use Doctrine\Bundle\PHPCRBundle\Helper\Fixtures\PHPCRPurger;
 
 /**
  * Class responsible for executing data fixtures.
