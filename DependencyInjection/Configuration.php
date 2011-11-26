@@ -14,18 +14,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
-    private $debug;
-
-    /**
-     * Constructor
-     *
-     * @param Boolean $debug Whether to use the debug mode
-     */
-    public function  __construct($debug)
-    {
-        $this->debug = (Boolean) $debug;
-    }
-
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
