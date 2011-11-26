@@ -3,6 +3,7 @@
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
 use Symfony\Component\Console\Application;
+
 use Doctrine\ODM\PHPCR\Tools\Console\Helper\DocumentManagerHelper;
 
 /**

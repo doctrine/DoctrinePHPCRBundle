@@ -3,6 +3,7 @@
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
@@ -13,6 +14,7 @@ use Symfony\Bundle\DoctrineFixturesBundle\Common\DataFixtures\Loader;
 
 use Doctrine\Bundle\PHPCRBundle\Helper\Fixtures\PHPCRExecutor;
 use Doctrine\Bundle\PHPCRBundle\Helper\Fixtures\PHPCRPurger;
+
 use PHPCR\Util\Console\Helper\ConsoleParametersParser;
 
 /**
