@@ -4,7 +4,7 @@ namespace Doctrine\Bundle\PHPCRBundle\Tests\Helper;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
-use Doctrine\Bundle\PHPCRBundle\Helper\JackrabbitHelper;
+use Jackalope\Tools\Console\Helper\JackrabbitHelper;
 
 /**
  * Test jackrabbit helper
