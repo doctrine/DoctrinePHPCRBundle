@@ -6,6 +6,10 @@ use Symfony\Component\Console\Application;
 
 use Doctrine\ODM\PHPCR\Tools\Console\Helper\DocumentManagerHelper;
 
+use Jackalope\Tools\Console\Helper\DoctrineDbalHelper;
+use Jackalope\Tools\Console\Helper\JackrabbitHelper;
+use Jackalope;
+
 /**
  * Provides some helper and convenience methods to configure doctrine commands in the context of bundles
  * and multiple sessions/document managers.
@@ -20,6 +24,14 @@ abstract class DoctrineCommandHelper
         $session = $application->getKernel()->getContainer()->get($service);
         $helperSet = $application->getHelperSet();
         $helperSet->set(new DocumentManagerHelper($session));
+
+        if ($session instanceof Jackalope\Session) {
+            switch (get_class($session->getTransport())) {
+                case 'Jackalope\Transport\DoctrineDBAL\Client':
+                    $helperSet->set(new DoctrineDBALHelper($session->getTransport()->getConnection()));
+                    break;
+            }
+        }
     }
 
     static public function setApplicationDocumentManager(Application $application, $dmName)
