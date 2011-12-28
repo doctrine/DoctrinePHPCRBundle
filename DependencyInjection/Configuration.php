@@ -104,8 +104,8 @@ class Configuration implements ConfigurationInterface
                             $v = (array) $v;
                             $documentManagers = array();
                             foreach (array(
-                                 'metadata_cache_driver', 'metadata-cache-driver',
-                                 'auto_mapping', 'auto-mapping',
+                                'metadata_cache_driver', 'metadata-cache-driver',
+                                'auto_mapping', 'auto-mapping',
                                 'mappings', 'mapping',
                                 'session',
                             ) as $key) {
