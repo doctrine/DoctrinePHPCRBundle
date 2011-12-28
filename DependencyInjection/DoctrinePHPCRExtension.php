@@ -191,6 +191,11 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
         $container->setParameter('doctrine_phpcr.odm.default_document_manager', $config['default_document_manager']);
         $container->setAlias('doctrine_phpcr.odm.document_manager', $documentManagers[$config['default_document_manager']]);
+
+        $options = array('auto_generate_proxy_classes', 'proxy_dir', 'proxy_namespace');
+        foreach ($options as $key) {
+            $container->setParameter('doctrine_phpcr.odm.' . $key, $config[$key]);
+        }
     }
 
     private function loadOdmDocumentManager(array $documentManager, ContainerBuilder $container)
@@ -199,7 +204,16 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
         $this->loadOdmDocumentManagerMappingInformation($documentManager, $odmConfigDef, $container);
 
-        $odmConfigDef->addMethodCall('setMetadataDriverImpl', array(new Reference('doctrine_phpcr.odm.'.$documentManager['name'].'_metadata_driver')));
+        $methods = array(
+            #'setMetadataCacheImpl' => new Reference(sprintf('doctrine_phpcr.odm.%s_metadata_cache', $documentManager['name'])),
+            'setMetadataDriverImpl' => new Reference('doctrine_phpcr.odm.' . $documentManager['name'] . '_metadata_driver'),
+            'setProxyDir' => '%doctrine_phpcr.odm.proxy_dir%',
+            'setProxyNamespace' => '%doctrine_phpcr.odm.proxy_namespace%',
+            'setAutoGenerateProxyClasses' => '%doctrine_phpcr.odm.auto_generate_proxy_classes%',
+        );
+        foreach ($methods as $method => $arg) {
+            $odmConfigDef->addMethodCall($method, array($arg));
+        }
 
         if (!isset($documentManager['session'])) {
             $documentManager['session'] = $this->defaultSession;
