@@ -15,7 +15,7 @@
         <parameter key="doctrine_phpcr.odm.metadata.xml.class">Doctrine\Bundle\PHPCRBundle\Mapping\Driver\XmlDriver</parameter>
         <parameter key="doctrine_phpcr.odm.metadata.yml.class">Doctrine\Bundle\PHPCRBundle\Mapping\Driver\YamlDriver</parameter>
         <parameter key="doctrine_phpcr.odm.metadata.php.class">Doctrine\ODM\PHPCR\Mapping\Driver\PHPDriver</parameter>
-        <parameter key="doctrine_phpcr.odm.proxy_cache_warmer.class">Doctrine\Bundle\PHPCRBundle\CacheWarmer\ProxyCacheWarmer</parameter>
+        <parameter key="doctrine_phpcr.odm.proxy_cache_warmer.class">Symfony\Bridge\Doctrine\CacheWarmer\ProxyCacheWarmer</parameter>
 
     </parameters>
 
@@ -24,7 +24,7 @@
         <service id="doctrine_phpcr.odm.proxy_cache_warmer" class="%doctrine_phpcr.odm.proxy_cache_warmer.class%"
                  public="false">
             <tag name="kernel.cache_warmer"/>
-            <argument type="service" id="service_container"/>
+            <argument type="service" id="doctrine_phpcr.odm"/>
         </service>
 
         <service id="doctrine_phpcr.odm.metadata.annotation_reader" alias="annotation_reader" public="false" />
