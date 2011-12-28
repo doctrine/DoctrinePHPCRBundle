@@ -10,6 +10,15 @@
         <parameter key="doctrine_phpcr.odm.document_manager.class">Doctrine\ODM\PHPCR\DocumentManager</parameter>
         <parameter key="doctrine_phpcr.odm.document_manager.event_manager.class">Doctrine\Common\EventManager</parameter>
 
+        <!-- cache -->
+        <parameter key="doctrine_phpcr.odm.cache.array.class">Doctrine\Common\Cache\ArrayCache</parameter>
+        <parameter key="doctrine_phpcr.odm.cache.apc.class">Doctrine\Common\Cache\ApcCache</parameter>
+        <parameter key="doctrine_phpcr.odm.cache.memcache.class">Doctrine\Common\Cache\MemcacheCache</parameter>
+        <parameter key="doctrine_phpcr.odm.cache.memcache_host">localhost</parameter>
+        <parameter key="doctrine_phpcr.odm.cache.memcache_port">11211</parameter>
+        <parameter key="doctrine_phpcr.odm.cache.memcache_instance.class">Memcache</parameter>
+        <parameter key="doctrine_phpcr.odm.cache.xcache.class">Doctrine\Common\Cache\XcacheCache</parameter>
+
         <parameter key="doctrine_phpcr.odm.metadata.driver_chain.class">Doctrine\ODM\PHPCR\Mapping\Driver\DriverChain</parameter>
         <parameter key="doctrine_phpcr.odm.metadata.annotation.class">Doctrine\ODM\PHPCR\Mapping\Driver\AnnotationDriver</parameter>
         <parameter key="doctrine_phpcr.odm.metadata.xml.class">Doctrine\Bundle\PHPCRBundle\Mapping\Driver\XmlDriver</parameter>

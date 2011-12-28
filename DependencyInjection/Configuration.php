@@ -104,7 +104,8 @@ class Configuration implements ConfigurationInterface
                             $v = (array) $v;
                             $documentManagers = array();
                             foreach (array(
-                                'auto_mapping', 'auto-mapping',
+                                 'metadata_cache_driver', 'metadata-cache-driver',
+                                 'auto_mapping', 'auto-mapping',
                                 'mappings', 'mapping',
                                 'session',
                             ) as $key) {
@@ -142,6 +143,7 @@ class Configuration implements ConfigurationInterface
             ->useAttributeAsKey('name')
             ->prototype('array')
                 ->addDefaultsIfNotSet()
+                ->append($this->getOdmCacheDriverNode('metadata_cache_driver'))
                 ->children()
                     ->scalarNode('session')->end()
                     ->scalarNode('auto_mapping')->defaultFalse()->end()
@@ -172,6 +174,31 @@ class Configuration implements ConfigurationInterface
                 ->end()
             ->end()
         ;
+
+        return $node;
+    }
+
+    private function getOdmCacheDriverNode($name)
+    {
+        $treeBuilder = new TreeBuilder();
+        $node = $treeBuilder->root($name);
+
+        $node
+            ->addDefaultsIfNotSet()
+            ->beforeNormalization()
+            ->ifString()
+            ->then(function($v)
+        {
+            return array('type' => $v);
+        })
+            ->end()
+            ->children()
+            ->scalarNode('type')->defaultValue('array')->isRequired()->end()
+            ->scalarNode('host')->end()
+            ->scalarNode('port')->end()
+            ->scalarNode('instance_class')->end()
+            ->scalarNode('class')->end()
+            ->end();
 
         return $node;
     }
