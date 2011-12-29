@@ -206,14 +206,14 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         $this->loadOdmCacheDrivers($documentManager, $container);
 
         $methods = array(
-            'setMetadataCacheImpl' => new Reference(sprintf('doctrine_phpcr.odm.%s_metadata_cache', $documentManager['name'])),
-            'setMetadataDriverImpl' => new Reference('doctrine_phpcr.odm.' . $documentManager['name'] . '_metadata_driver'),
-            'setProxyDir' => '%doctrine_phpcr.odm.proxy_dir%',
-            'setProxyNamespace' => '%doctrine_phpcr.odm.proxy_namespace%',
-            'setAutoGenerateProxyClasses' => '%doctrine_phpcr.odm.auto_generate_proxy_classes%',
+            'setMetadataCacheImpl' => array(new Reference(sprintf('doctrine_phpcr.odm.%s_metadata_cache', $documentManager['name']))),
+            'setMetadataDriverImpl' => array(new Reference('doctrine_phpcr.odm.' . $documentManager['name'] . '_metadata_driver'), false),
+            'setProxyDir' => array('%doctrine_phpcr.odm.proxy_dir%'),
+            'setProxyNamespace' => array('%doctrine_phpcr.odm.proxy_namespace%'),
+            'setAutoGenerateProxyClasses' => array('%doctrine_phpcr.odm.auto_generate_proxy_classes%'),
         );
-        foreach ($methods as $method => $arg) {
-            $odmConfigDef->addMethodCall($method, array($arg));
+        foreach ($methods as $method => $args) {
+            $odmConfigDef->addMethodCall($method, $args);
         }
 
         if (!isset($documentManager['session'])) {
@@ -250,6 +250,15 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         $this->aliasMap = array();
         $this->bundleDirs = array();
 
+        $class = new \ReflectionClass('Doctrine\ODM\PHPCR\Document\Generic');
+
+        $documentManager['mappings']['__PHPCRODM__'] = array(
+            'dir' => dirname($class->getFileName()),
+            'type' => 'annotation',
+            'prefix' => 'Doctrine\ODM\PHPCR\Document',
+            'is_bundle' => false,
+            'mapping' => true,
+        );
         $this->loadMappingInformation($documentManager, $container);
         $this->registerMappingDrivers($documentManager, $container);
 
