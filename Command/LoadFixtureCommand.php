@@ -10,10 +10,10 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Symfony\Bundle\DoctrineFixturesBundle\Common\DataFixtures\Loader;
+use Doctrine\Bundle\FixturesBundle\Common\DataFixtures\Loader;
 
-use Doctrine\Bundle\PHPCRBundle\Helper\Fixtures\PHPCRExecutor;
-use Doctrine\Bundle\PHPCRBundle\Helper\Fixtures\PHPCRPurger;
+use Doctrine\Common\DataFixtures\Executor\PHPCRExecutor;
+use Doctrine\Common\DataFixtures\Purger\PHPCRPurger;
 
 use PHPCR\Util\Console\Helper\ConsoleParametersParser;
 
