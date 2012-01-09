@@ -68,8 +68,9 @@ EOF
 
         $purger = new PHPCRPurger();
         $executor = new PHPCRExecutor($dm, $purger);
+        $executor->setLogger(function($message) use ($output) {
+            $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', $message));
+        });
         $executor->execute($loader->getFixtures(), ! $purge);
-
-        return 0;
     }
 }
