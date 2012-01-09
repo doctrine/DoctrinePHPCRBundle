@@ -27,6 +27,15 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
     public function load(array $configs, ContainerBuilder $container)
     {
+        // TODO move this default to the Configuration class if somebody can figure out how to do it
+        array_unshift($configs,
+            array('odm' => array(
+                'locales' => array(
+                    'en' => array('en'),
+                ),
+            ),
+        ));
+
         $processor = new Processor();
         $configuration = new Configuration($container->getParameter('kernel.debug'));
         $config = $processor->processConfiguration($configuration, $configs);
@@ -196,6 +205,8 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         foreach ($options as $key) {
             $container->setParameter('doctrine_phpcr.odm.' . $key, $config[$key]);
         }
+
+        $container->setParameter('doctrine_phpcr.odm.locales', $config['locales']);
     }
 
     private function loadOdmDocumentManager(array $documentManager, ContainerBuilder $container)

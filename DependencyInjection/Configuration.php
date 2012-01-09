@@ -128,9 +128,27 @@ class Configuration implements ConfigurationInterface
                     ->end()
                     ->fixXmlConfig('document_manager')
                     ->append($this->getOdmDocumentManagersNode())
+                    ->append($this->getOdmLocaleNode())
                 ->end()
             ->end()
         ;
+    }
+
+    private function getOdmLocaleNode()
+    {
+        $treeBuilder = new TreeBuilder();
+        $node = $treeBuilder->root('locales');
+
+        $node
+            ->useAttributeAsKey('name')
+            ->prototype('array')
+                ->addDefaultsIfNotSet()
+                ->prototype('scalar')
+            ->end()
+        ->end()
+        ;
+
+        return $node;
     }
 
     private function getOdmDocumentManagersNode()

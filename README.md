@@ -47,6 +47,26 @@ on the AbstractDoctrineBundle aswell:
         # enable the ODM layer
         odm:
             auto_mapping: true
+            # whether to automatically create proxy classes or create them manually
+            auto_generate_proxy_classes: %kernel.debug%
+            # overwrite the default location for generated proxies
+            proxy_dir: ...
+            # overwrite the default php namespace for proxies
+            proxy_namespace: ...
+            # set the language fallback order (for translatable documents)
+            locales:
+                en:
+                    - en
+                    - de
+                    - fr
+                de:
+                    - de
+                    - en
+                    - fr
+                fr:
+                    - fr
+                    - en
+                    - de
 
 ## Services
 
