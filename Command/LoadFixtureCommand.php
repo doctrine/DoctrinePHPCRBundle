@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Doctrine\Bundle\FixturesBundle\Common\DataFixtures\Loader;
+use Symfony\Bundle\DoctrineFixturesBundle\Common\DataFixtures\Loader;
 
 use Doctrine\Common\DataFixtures\Executor\PHPCRExecutor;
 use Doctrine\Common\DataFixtures\Purger\PHPCRPurger;
