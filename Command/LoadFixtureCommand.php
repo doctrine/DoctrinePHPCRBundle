@@ -16,6 +16,7 @@ use Doctrine\Common\DataFixtures\Executor\PHPCRExecutor;
 use Doctrine\Common\DataFixtures\Purger\PHPCRPurger;
 
 use PHPCR\Util\Console\Helper\ConsoleParametersParser;
+use InvalidArgumentException;
 
 /**
  * @author Daniel Barsotti <daniel.barsotti@liip.ch>
@@ -52,8 +53,13 @@ EOF
         DoctrineCommandHelper::setApplicationDocumentManager($this->getApplication(), $input->getOption('dm'));
 
         $path = $input->getOption('path');
-        if (! is_dir($path)) {
-            throw new \Exception("Invalid path '$path'");
+        if (is_dir($path)) {
+            $paths = array($path);
+        } else {
+            $paths = array();
+            foreach ($this->getContainer()->get('kernel')->getBundles() as $bundle) {
+                $paths[] = $bundle->getPath().'/DataFixtures/PHPCR';
+            }
         }
 
         $purge = false;
@@ -64,11 +70,22 @@ EOF
         $dm = $this->getHelper('phpcr')->getDocumentManager();
 
         $loader = new Loader($this->getContainer());
-        $loader->loadFromDirectory($path);
+        foreach ($paths as $path) {
+            if (is_dir($path)) {
+                $loader->loadFromDirectory($path);
+            }
+        }
+        
+        $fixtures = $loader->getFixtures();
+        if (!$fixtures) {
+            throw new InvalidArgumentException(
+                sprintf('Could not find any fixtures to load in: %s', "\n\n- ".implode("\n- ", $paths))
+            );
+        }
 
         $purger = new PHPCRPurger();
         $executor = new PHPCRExecutor($dm, $purger);
-        $executor->execute($loader->getFixtures(), ! $purge);
+        $executor->execute($fixtures, ! $purge);
 
         return 0;
     }
