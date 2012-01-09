@@ -33,7 +33,7 @@
         <service id="doctrine_phpcr.odm.proxy_cache_warmer" class="%doctrine_phpcr.odm.proxy_cache_warmer.class%"
                  public="false">
             <tag name="kernel.cache_warmer"/>
-            <argument type="service" id="doctrine_phpcr.odm"/>
+            <argument type="service" id="doctrine_phpcr"/>
         </service>
 
         <service id="doctrine_phpcr.odm.metadata.annotation_reader" alias="annotation_reader" public="false" />
