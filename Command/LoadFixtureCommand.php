@@ -10,67 +10,79 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Doctrine\Bundle\FixturesBundle\Common\DataFixtures\Loader;
+use Doctrine\Bundle\FixturesBundle\Common\DataFixtures\Loader as DataFixturesLoader;
 
 use Doctrine\Common\DataFixtures\Executor\PHPCRExecutor;
 use Doctrine\Common\DataFixtures\Purger\PHPCRPurger;
 
-use PHPCR\Util\Console\Helper\ConsoleParametersParser;
+use InvalidArgumentException;
 
 /**
  * @author Daniel Barsotti <daniel.barsotti@liip.ch>
+ * @author Fabien Potencier <fabien@symfony.com>
+ * @author Jonathan H. Wage <jonwage@gmail.com>
  */
 class LoadFixtureCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
-        parent::configure();
-
         $this
             ->setName('doctrine:phpcr:fixtures:load')
-            ->setDescription('Load fixtures PHPCR files')
-            ->addOption('dm', null, InputOption::VALUE_OPTIONAL, 'The document manager to use for this command')
-            ->addOption('path', null, InputOption::VALUE_REQUIRED, 'The path to the fixtures')
-            ->addOption('purge', null, InputOption::VALUE_OPTIONAL, 'Set to true if the database must be purged')
-            ->setHelp(<<<EOF
-The <info>fixtures:load</info> command loads PHPCR fixtures
-EOF
-            )
-        ;
+            ->setDescription('Load data fixtures to your PHPCR database.')
+            ->addOption('fixtures', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'The directory or file to load data fixtures from.')
+            ->addOption('append', null, InputOption::VALUE_NONE, 'Append the data fixtures instead of deleting all data from the database first.')
+            ->addOption('name', null, InputOption::VALUE_OPTIONAL, 'The document manager to use for this command.', null)
+            ->setHelp(<<<EOT
+The <info>doctrine:phpcr:fixtures:load</info> command loads data fixtures from your bundles:
+
+  <info>./app/console doctrine:phpcr:fixtures:load</info>
+
+You can also optionally specify the path to fixtures with the <info>--fixtures</info> option:
+
+  <info>./app/console doctrine:phpcr:fixtures:load --fixtures=/path/to/fixtures1 --fixtures=/path/to/fixtures2</info>
+
+If you want to append the fixtures instead of flushing the database first you can use the <info>--append</info> option:
+
+  <info>./app/console doctrine:phpcr:fixtures:load --append</info>
+EOT
+        );
     }
 
-    /**
-     * Executes the current command.
-     *
-     * @param InputInterface  $input  An InputInterface instance
-     * @param OutputInterface $output An OutputInterface instance
-     *
-     * @return integer 0 if everything went fine, or an error code
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        DoctrineCommandHelper::setApplicationDocumentManager($this->getApplication(), $input->getOption('dm'));
+        $registry = $this->getContainer()->get('doctrine_phpcr');
+        $dm = $registry->getManager($input->getOption('name'));
 
-        $path = $input->getOption('path');
-        if (! is_dir($path)) {
-            throw new \Exception("Invalid path '$path'");
+        $dirOrFile = $input->getOption('fixtures');
+        if ($dirOrFile) {
+            $paths = is_array($dirOrFile) ? $dirOrFile : array($dirOrFile);
+        } else {
+            $paths = array();
+            foreach ($this->getApplication()->getKernel()->getBundles() as $bundle) {
+                $paths[] = $bundle->getPath() . '/DataFixtures/PHPCR';
+            }
         }
 
-        $purge = false;
-        if ($purgeOption = $input->getOption('purge')) {
-            $purge = ($purgeOption == '1' || ConsoleParametersParser::isTrueString($purgeOption));
+        $loader = new DataFixturesLoader($this->getContainer());
+        foreach ($paths as $path) {
+            if (is_dir($path)) {
+                $loader->loadFromDirectory($path);
+            }
         }
 
-        $dm = $this->getHelper('phpcr')->getDocumentManager();
+        $fixtures = $loader->getFixtures();
+        if (!$fixtures) {
+            throw new InvalidArgumentException(
+                sprintf('Could not find any fixtures to load in: %s', "\n\n- " . implode("\n- ", $paths))
+            );
+        }
 
-        $loader = new Loader($this->getContainer());
-        $loader->loadFromDirectory($path);
-
-        $purger = new PHPCRPurger();
+        $purger = new PHPCRPurger($dm);
         $executor = new PHPCRExecutor($dm, $purger);
-        $executor->setLogger(function($message) use ($output) {
+        $executor->setLogger(function($message) use ($output)
+        {
             $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', $message));
         });
-        $executor->execute($loader->getFixtures(), ! $purge);
+        $executor->execute($fixtures, $input->getOption('append'));
     }
 }
