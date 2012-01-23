@@ -361,6 +361,6 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
     protected function getMappingResourceExtension()
     {
-        return 'doctrine_phpcr';
+        return 'phpcr';
     }
 }
