@@ -28,6 +28,7 @@
 
         <!-- translation -->
         <parameter key="doctrine_phpcr.odm.locale_choooser.class">Doctrine\ODM\PHPCR\Translation\LocaleChooser\LocaleChooser</parameter>
+        <parameter key="doctrine_phpcr.odm.locale_listener.class">Doctrine\Bundle\PHPCRBundle\Listener\LocaleListener</parameter>
 
     </parameters>
 
@@ -65,6 +66,11 @@
         <service id="doctrine_phpcr.odm.locale_chooser" class="%doctrine_phpcr.odm.locale_choooser.class%">
             <argument>%doctrine_phpcr.odm.locales%</argument>
             <argument>%locale%</argument>
+        </service>
+
+        <service id="doctrine_phpcr.odm.locale_listener" class="%doctrine_phpcr.odm.locale_listener.class%">
+            <tag name="kernel.event_subscriber"/>
+            <argument type="service" id="doctrine_phpcr.odm.locale_chooser"/>
         </service>
 
     </services>

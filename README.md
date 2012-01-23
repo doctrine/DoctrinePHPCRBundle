@@ -113,7 +113,7 @@ The fixtures classes must implement Doctrine\\Common\\DataFixtures\\FixtureInter
 
 Here is an example of fixture:
 
-    namespace MyBundle\Data\Fixtures;
+    namespace MyBundle\DataFixtures\PHPCR;
 
     use Doctrine\Common\DataFixtures\FixtureInterface;
 
