@@ -1,5 +1,6 @@
 <?php
-namespace Doctrine\Bundle\PHPCRBundle\Listener;
+
+namespace Doctrine\Bundle\PHPCRBundle\EventListener;
 
 use Doctrine\ODM\PHPCR\Translation\LocaleChooser\LocaleChooser;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

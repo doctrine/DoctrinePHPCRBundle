@@ -28,7 +28,7 @@
 
         <!-- translation -->
         <parameter key="doctrine_phpcr.odm.locale_choooser.class">Doctrine\ODM\PHPCR\Translation\LocaleChooser\LocaleChooser</parameter>
-        <parameter key="doctrine_phpcr.odm.locale_listener.class">Doctrine\Bundle\PHPCRBundle\Listener\LocaleListener</parameter>
+        <parameter key="doctrine_phpcr.odm.locale_listener.class">Doctrine\Bundle\PHPCRBundle\EventListener\LocaleListener</parameter>
 
     </parameters>
 
