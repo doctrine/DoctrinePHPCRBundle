@@ -6,9 +6,16 @@ This bundle integrates Doctrine PHPCR ODM and PHPCR backends into Symfony2 like:
 
 # Installation
 
-* Grab this repository and [Doctrine PHPCR ODM](http://github.com/doctrine/phpcr-odm) into your Symfony project
+* Install [Doctrine PHPCR ODM](http://github.com/doctrine/phpcr-odm) into your Symfony project
+* Then get this bundle. With the standard directory layout:
+
+    cd vendors/
+    mkdir -p bundles/Doctrine/Bundle
+    cd bundles/Doctrine/Bundle
+    git clone git://github.com/doctrine/DoctrinePHPCRBundle.git PHPCRBundle
+
+* Add autoloader entry for the Doctrine\Bundle namespace
 * Add `Doctrine\Bundle\PHPCRBundle\DoctrinePHPCRBundle` to your Kernel's registerBundles() method
-* Add autoloader for Doctrine\PHPCR, Doctrine\ODM\PHPCR and Doctrine\Bundle namespaces
 
 
 ## Configuration
