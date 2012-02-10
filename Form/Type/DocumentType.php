@@ -1,7 +1,9 @@
 <?php
 
 /*
- * Doctrine CouchDB Bundle
+ * Doctrine PHPCR-ODM Bundle
+ *
+ * (Ported from Doctrine CouchDB Bundle)
  *
  * LICENSE
  *
