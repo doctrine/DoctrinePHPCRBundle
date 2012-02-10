@@ -14,7 +14,7 @@
  * to kontakt@beberlei.de so I can send you a copy immediately.
  */
 
-namespace Doctrine\Bundle\CouchDBBundle\Form\Type;
+namespace Doctrine\Bundle\PHPCRBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bridge\Doctrine\Form\Type\DoctrineType;
