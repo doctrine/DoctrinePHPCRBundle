@@ -31,11 +31,12 @@ class DocumentType extends DoctrineType
      */
     protected function getLoader(ObjectManager $manager, array $options)
     {
-        throw new FormException('The query builder option is not supported by CouchDB.');
+        // TODO: check if phpcr-odm query builder can work with the form component and return it
+        throw new FormException('The query builder option is not supported by PHPCR.');
     }
 
     public function getName()
     {
-        return 'couchdb_document';
+        return 'phpcr_document';
     }
 }
