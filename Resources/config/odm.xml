@@ -19,6 +19,9 @@
         <parameter key="doctrine_phpcr.odm.cache.memcache_instance.class">Memcache</parameter>
         <parameter key="doctrine_phpcr.odm.cache.xcache.class">Doctrine\Common\Cache\XcacheCache</parameter>
 
+        <!-- form field factory guesser -->
+        <parameter key="form.type_guesser.doctrine_phpcr.class">Doctrine\Bundle\PHPCRBundle\Form\PHPCRTypeGuesser</parameter>
+
         <parameter key="doctrine_phpcr.odm.metadata.driver_chain.class">Doctrine\ODM\PHPCR\Mapping\Driver\DriverChain</parameter>
         <parameter key="doctrine_phpcr.odm.metadata.annotation.class">Doctrine\ODM\PHPCR\Mapping\Driver\AnnotationDriver</parameter>
         <parameter key="doctrine_phpcr.odm.metadata.xml.class">Doctrine\Bundle\PHPCRBundle\Mapping\Driver\XmlDriver</parameter>
@@ -71,6 +74,16 @@
         <service id="doctrine_phpcr.odm.locale_listener" class="%doctrine_phpcr.odm.locale_listener.class%">
             <tag name="kernel.event_subscriber"/>
             <argument type="service" id="doctrine_phpcr.odm.locale_chooser"/>
+        </service>
+
+        <service id="form.type.phpcr.document" class="Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType">
+            <tag name="form.type" alias="phpcr_document"/>
+            <argument type="service" id="doctrine_phpcr"/>
+        </service>
+
+        <service id="form.type_guesser.doctrine_phpcr" class="%form.type_guesser.doctrine_phpcr.class%">
+            <tag name="form.type_guesser"/>
+            <argument type="service" id="doctrine_phpcr"/>
         </service>
 
     </services>
