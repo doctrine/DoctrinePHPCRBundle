@@ -1,6 +1,7 @@
 # Doctrine PHPCR Bundle
 
 This bundle integrates Doctrine PHPCR ODM and PHPCR backends into Symfony2 like:
+
 * Jackalope
 * Midgard2 CR
 
@@ -9,92 +10,98 @@ This bundle integrates Doctrine PHPCR ODM and PHPCR backends into Symfony2 like:
 * Install [Doctrine PHPCR ODM](http://github.com/doctrine/phpcr-odm) into your Symfony project
 * Then get this bundle. With the standard directory layout:
 
-    cd vendors/
-    mkdir -p bundles/Doctrine/Bundle
-    cd bundles/Doctrine/Bundle
-    git clone git://github.com/doctrine/DoctrinePHPCRBundle.git PHPCRBundle
+```
+cd vendors/
+mkdir -p bundles/Doctrine/Bundle
+cd bundles/Doctrine/Bundle
+git clone git://github.com/doctrine/DoctrinePHPCRBundle.git PHPCRBundle
+```
 
-* Add autoloader entry for the Doctrine\Bundle namespace
-* Add `Doctrine\Bundle\PHPCRBundle\DoctrinePHPCRBundle` to your Kernel's registerBundles() method
+* Add autoloader entry for the `Doctrine\Bundle` namespace
+* Add `Doctrine\Bundle\PHPCRBundle\DoctrinePHPCRBundle` to your Kernel's `registerBundles()` method
 
 
 ## Configuration
 
 The configuration is similar to Doctrine ORM and MongoDB configuration for Symfony2 as its based
-on the AbstractDoctrineBundle aswell:
+on the `AbstractDoctrineBundle` aswell:
 
-    doctrine_phpcr:
-        # configure the PHPCR session
-        session:
-            backend:
-                ## backend type: jackrabbit, doctrinedbal or midgard
-                type: jackrabbit
+``` yaml
+doctrine_phpcr:
+    # configure the PHPCR session
+    session:
+        backend:
+            ## backend type: jackrabbit, doctrinedbal or midgard
+            type: jackrabbit
 
-                ## doctrinedbal only, required
-                connection: <service name of the doctrine dbal connection>
+            ## doctrinedbal only, required
+            connection: <service name of the doctrine dbal connection>
 
-                ## jackrabbit only, required
-                url: http://localhost:8080/server/
-                ## jackrabbit only, optional. see https://github.com/jackalope/jackalope/blob/master/src/Jackalope/RepositoryFactoryJackrabbit.php
-                default_header: ...
-                expect: 'Expect: 100-continue'
+            ## jackrabbit only, required
+            url: http://localhost:8080/server/
+            ## jackrabbit only, optional. see https://github.com/jackalope/jackalope/blob/master/src/Jackalope/RepositoryFactoryJackrabbit.php
+            default_header: ...
+            expect: 'Expect: 100-continue'
 
-                ## tweak options for jackrabbit and doctrinedbal (all jackalope versions)
-                # optional, below set to the default
-                # enable if you want to have an exception right away if backend login fails
-                check_login_on_server: false
-                # enable if you experience segmentation faults while working with binary data in documents
-                disable_stream_wrapper: false
-                # enable if you do not want to use transactions and you neither want the odm to automatically use transactions
-                # its highly recommended NOT to disable transactions
-                disable_transactions: false
-            workspace: default
-            username: admin
-            password: admin
-        # enable the ODM layer
-        odm:
-            auto_mapping: true
-            # whether to automatically create proxy classes or create them manually
-            auto_generate_proxy_classes: %kernel.debug%
-            # overwrite the default location for generated proxies
-            proxy_dir: ...
-            # overwrite the default php namespace for proxies
-            proxy_namespace: ...
-            # set the language fallback order (for translatable documents)
-            locales:
-                en:
-                    - en
-                    - de
-                    - fr
-                de:
-                    - de
-                    - en
-                    - fr
-                fr:
-                    - fr
-                    - en
-                    - de
+            ## tweak options for jackrabbit and doctrinedbal (all jackalope versions)
+            # optional, below set to the default
+            # enable if you want to have an exception right away if backend login fails
+            check_login_on_server: false
+            # enable if you experience segmentation faults while working with binary data in documents
+            disable_stream_wrapper: false
+            # enable if you do not want to use transactions and you neither want the odm to automatically use transactions
+            # its highly recommended NOT to disable transactions
+            disable_transactions: false
+        workspace: default
+        username: admin
+        password: admin
+    # enable the ODM layer
+    odm:
+        auto_mapping: true
+        # whether to automatically create proxy classes or create them manually
+        auto_generate_proxy_classes: %kernel.debug%
+        # overwrite the default location for generated proxies
+        proxy_dir: ...
+        # overwrite the default php namespace for proxies
+        proxy_namespace: ...
+        # set the language fallback order (for translatable documents)
+        locales:
+            en:
+                - en
+                - de
+                - fr
+            de:
+                - de
+                - en
+                - fr
+            fr:
+                - fr
+                - en
+                - de
+```
 
 ## Services
 
 You can access the PHPCR services like this:
 
-    <?php
+``` php
+<?php
 
-    namespace Acme\DemoBundle\Controller;
+namespace Acme\DemoBundle\Controller;
 
-    use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-    class DefaultController extends Controller
+class DefaultController extends Controller
+{
+    public function indexAction()
     {
-        public function indexAction()
-        {
-            // PHPCR session instance
-            $session = $this->container->get('doctrine_phpcr.default_session');
-            // PHPCR ODM document manager instance
-            $documentManager = $this->container->get('doctrine_phpcr.odm.default_document_manager');
-        }
+        // PHPCR session instance
+        $session = $this->container->get('doctrine_phpcr.default_session');
+        // PHPCR ODM document manager instance
+        $documentManager = $this->container->get('doctrine_phpcr.odm.default_document_manager');
     }
+}
+```
 
 # Additional requirements for the doctrine:phpcr:fixtures:load command
 
@@ -111,23 +118,27 @@ main project folder run
 
     app/console.php <command> [options] [arguments]
 
-Look for the commands that start with doctrine:phpcr
+Look for the commands that start with `doctrine:phpcr`.
 
 
 # Fixtures
 
-The fixtures classes must implement Doctrine\\Common\\DataFixtures\\FixtureInterface.
+The fixtures classes must implement `Doctrine\Common\DataFixtures\FixtureInterface`.
 
 Here is an example of fixture:
 
-    namespace MyBundle\DataFixtures\PHPCR;
+``` php
+<?php
 
-    use Doctrine\Common\DataFixtures\FixtureInterface;
+namespace MyBundle\DataFixtures\PHPCR;
 
-    class LoadMyData implements FixtureInterface
+use Doctrine\Common\DataFixtures\FixtureInterface;
+
+class LoadMyData implements FixtureInterface
+{
+    public function load($manager)
     {
-        public function load($manager)
-        {
-            // Create and persist your data here...
-        }
+        // Create and persist your data here...
     }
+}
+```
