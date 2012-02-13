@@ -132,11 +132,12 @@ Here is an example of fixture:
 
 namespace MyBundle\DataFixtures\PHPCR;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 
 class LoadMyData implements FixtureInterface
 {
-    public function load($manager)
+    public function load(ObjectManager $manager)
     {
         // Create and persist your data here...
     }
