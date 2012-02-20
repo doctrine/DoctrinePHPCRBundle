@@ -18,7 +18,7 @@
  * <http://www.doctrine-project.org>.
  */
 
-namespace Doctrine\Bundle\PHPCRBundle\Command;
+namespace Doctrine\Bundle\PHPCRBundle\OptionalCommand;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

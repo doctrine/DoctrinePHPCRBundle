@@ -18,7 +18,7 @@
  * <http://www.doctrine-project.org>.
  */
 
-namespace Doctrine\Bundle\PHPCRBundle\Command;
+namespace Doctrine\Bundle\PHPCRBundle\OptionalCommand;
 
 use Jackalope\Tools\Console\Command\JackrabbitCommand as BaseJackrabbitCommand;
 
@@ -27,36 +27,13 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 /**
  * @author Daniel Barsotti <daniel.barsotti@liip.ch>
  */
-class JackrabbitCommand extends BaseJackrabbitCommand implements ContainerAwareInterface
+class JackrabbitCommand extends ContainerAwareCommand
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    protected function getContainer()
-    {
-        if (null === $this->container) {
-            $this->container = $this->getApplication()->getKernel()->getContainer();
-        }
-
-        return $this->container;
-    }
-
-    /**
-     * @see ContainerAwareInterface::setContainer()
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
-
     /**
      * Configures the current command.
      */

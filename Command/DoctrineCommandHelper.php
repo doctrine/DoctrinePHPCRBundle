@@ -26,7 +26,7 @@ use Doctrine\ODM\PHPCR\Tools\Console\Helper\DocumentManagerHelper;
 
 use Jackalope\Tools\Console\Helper\DoctrineDbalHelper;
 use Jackalope\Tools\Console\Helper\JackrabbitHelper;
-use Jackalope;
+use Jackalope\Session;
 
 /**
  * Provides some helper and convenience methods to configure doctrine commands in the context of bundles
@@ -43,7 +43,7 @@ abstract class DoctrineCommandHelper
         $helperSet = $application->getHelperSet();
         $helperSet->set(new DocumentManagerHelper($session));
 
-        if ($session instanceof Jackalope\Session) {
+        if ($session instanceof Session) {
             switch (get_class($session->getTransport())) {
                 case 'Jackalope\Transport\DoctrineDBAL\Client':
                     $helperSet->set(new DoctrineDBALHelper($session->getTransport()->getConnection()));
