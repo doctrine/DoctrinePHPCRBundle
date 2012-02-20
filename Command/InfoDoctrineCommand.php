@@ -21,9 +21,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 use Doctrine\ODM\PHPCR\Tools\Console\Command\InfoDoctrineCommand as BaseInfoDoctrineCommand;
 
-use Doctrine\Bundle\PHPCRBundle\OptionalCommand\InitDoctrineDbalCommand;
-use Doctrine\Bundle\PHPCRBundle\OptionalCommand\JackrabbitCommand;
-
 /**
  * Show information about mapped entities
  *
@@ -49,18 +46,6 @@ If you are using multiple document managers you can pick your choice with the
 <info>php app/console doctrine:phpcr:mapping:info --name=default</info>
 EOT
         );
-    }
-
-    public function setApplication(\Symfony\Component\Console\Application $application = null)
-    {
-        parent::setApplication($application);
-
-        if (class_exists('\Jackalope\Tools\Console\Command\JackrabbitCommand')) {
-            $application->add(new JackrabbitCommand());
-        }
-        if (class_exists('\Jackalope\Tools\Console\Command\InitDoctrineDbalCommand')) {
-            $application->add(new InitDoctrineDbalCommand());
-        }
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

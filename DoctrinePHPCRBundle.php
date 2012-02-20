@@ -23,8 +23,12 @@ namespace Doctrine\Bundle\PHPCRBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Console\Application;
 
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\RegisterEventListenersAndSubscribersPass;
+
+use Doctrine\Bundle\PHPCRBundle\OptionalCommand\InitDoctrineDbalCommand;
+use Doctrine\Bundle\PHPCRBundle\OptionalCommand\JackrabbitCommand;
 
 class DoctrinePHPCRBundle extends Bundle
 {
@@ -33,5 +37,20 @@ class DoctrinePHPCRBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new RegisterEventListenersAndSubscribersPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function registerCommands(Application $application)
+    {
+        parent::registerCommands($application);
+
+        if (class_exists('\Jackalope\Tools\Console\Command\JackrabbitCommand')) {
+            $application->add(new JackrabbitCommand());
+        }
+        if (class_exists('\Jackalope\Tools\Console\Command\InitDoctrineDbalCommand')) {
+            $application->add(new InitDoctrineDbalCommand());
+        }
     }
 }
