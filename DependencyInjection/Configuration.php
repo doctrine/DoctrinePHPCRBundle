@@ -160,7 +160,6 @@ class Configuration implements ConfigurationInterface
         $node
             ->useAttributeAsKey('name')
             ->prototype('array')
-                ->addDefaultsIfNotSet()
                 ->prototype('scalar')
             ->end()
         ->end()
