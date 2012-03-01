@@ -25,7 +25,7 @@ use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Console\Application;
 
-use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\RegisterEventListenersAndSubscribersPass;
+use Symfony\Bridge\Doctrine\DependencyInjection\CompilerPass\RegisterEventListenersAndSubscribersPass;
 
 use Doctrine\Bundle\PHPCRBundle\OptionalCommand\InitDoctrineDbalCommand;
 use Doctrine\Bundle\PHPCRBundle\OptionalCommand\JackrabbitCommand;
@@ -36,7 +36,7 @@ class DoctrinePHPCRBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new RegisterEventListenersAndSubscribersPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION);
+        $container->addCompilerPass(new RegisterEventListenersAndSubscribersPass('doctrine.odm.phpcr.sessions', 'doctrine.odm.phpcr.%s_session.event_manager', 'doctrine.odm.phpcr'), PassConfig::TYPE_BEFORE_OPTIMIZATION);
     }
 
     /**

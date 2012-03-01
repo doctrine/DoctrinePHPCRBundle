@@ -60,7 +60,7 @@
             <call method="setLocaleChooserStrategy"><argument type="service" id="doctrine_phpcr.odm.locale_chooser"/></call>
         </service>
 
-        <service id="doctrine.odm.phpcr.session.event_manager" class="%doctrine.odm.phpcr.event_manager.class%" public="false" abstract="true">
+        <service id="doctrine_phpcr.odm.document_manager.event_manager" class="%doctrine_phpcr.odm.document_manager.event_manager.class%" public="false" abstract="true">
             <argument type="service" id="service_container"/>
         </service>
 
