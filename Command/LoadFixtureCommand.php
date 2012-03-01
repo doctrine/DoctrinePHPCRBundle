@@ -28,7 +28,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Doctrine\Bundle\FixturesBundle\Common\DataFixtures\Loader as DataFixturesLoader;
+use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
 
 use Doctrine\Common\DataFixtures\Executor\PHPCRExecutor;
 use Doctrine\Common\DataFixtures\Purger\PHPCRPurger;
@@ -81,7 +81,7 @@ EOT
             }
         }
 
-        $loader = new DataFixturesLoader($this->getContainer());
+        $loader = new ContainerAwareLoader($this->getContainer());
         foreach ($paths as $path) {
             if (is_dir($path)) {
                 $loader->loadFromDirectory($path);
