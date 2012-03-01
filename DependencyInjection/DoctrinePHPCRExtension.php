@@ -253,7 +253,13 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             throw new \InvalidArgumentException(sprintf("You have configured a non existent session '%s' for the document manager '%s'", $documentManager['session'], $documentManager['name']));
         }
 
-        $container->setDefinition(sprintf('doctrine_phpcr.odm.%s_session.event_manager', $documentManager['name']), new DefinitionDecorator('doctrine_phpcr.odm.document_manager.event_manager'));
+        $container->setDefinition(
+            sprintf(
+                'doctrine_phpcr.odm.%s_session.event_manager',
+                $documentManager['name']
+            ),
+            new DefinitionDecorator('doctrine_phpcr.odm.document_manager.event_manager')
+        );
 
         $container
             ->setDefinition($documentManager['service_name'], new DefinitionDecorator('doctrine_phpcr.odm.document_manager.abstract'))
