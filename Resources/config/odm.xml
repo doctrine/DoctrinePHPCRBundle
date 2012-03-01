@@ -8,7 +8,7 @@
 
         <parameter key="doctrine_phpcr.odm.configuration.class">Doctrine\ODM\PHPCR\Configuration</parameter>
         <parameter key="doctrine_phpcr.odm.document_manager.class">Doctrine\ODM\PHPCR\DocumentManager</parameter>
-        <parameter key="doctrine_phpcr.odm.document_manager.event_manager.class">Doctrine\Common\EventManager</parameter>
+        <parameter key="doctrine_phpcr.odm.document_manager.event_manager.class">Symfony\Bridge\Doctrine\ContainerAwareEventManager</parameter>
 
         <!-- cache -->
         <parameter key="doctrine_phpcr.odm.cache.array.class">Doctrine\Common\Cache\ArrayCache</parameter>
@@ -60,11 +60,9 @@
             <call method="setLocaleChooserStrategy"><argument type="service" id="doctrine_phpcr.odm.locale_chooser"/></call>
         </service>
 
-        <service
-            id="doctrine_phpcr.odm.document_manager.event_manager"
-            abstract="true"
-            class="%doctrine_phpcr.odm.document_manager.event_manager.class%"
-        />
+        <service id="doctrine.odm.phpcr.session.event_manager" class="%doctrine.odm.phpcr.event_manager.class%" public="false" abstract="true">
+            <argument type="service" id="service_container"/>
+        </service>
 
         <service id="doctrine_phpcr.odm.locale_chooser" class="%doctrine_phpcr.odm.locale_choooser.class%">
             <argument>%doctrine_phpcr.odm.locales%</argument>
