@@ -20,8 +20,6 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\OptionalCommand;
 
-use Jackalope\Tools\Console\Command\JackrabbitCommand as BaseJackrabbitCommand;
-
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
