@@ -1,0 +1,30 @@
+{
+    "name": "doctrine/phpcr-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony DoctrinePHPCRBundle",
+    "keywords": ["PHPCR", "ODM", "Database", "Persistence"],
+    "homepage": "http://www.doctrine-project.org",
+    "license": "MIT",
+    "authors": [
+        {
+            "name":"Lukas Kahwe Smith",
+            "email":"smith@pooteeweet.org"
+        },
+        {
+            "name": "Benjamin Eberlei",
+            "email": "kontakt@beberlei.de"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "symfony/symfony": "2.1.*",
+        "phpcr/phpcr-implementation": "2.1.0-beta3"
+    },
+    "suggest": {
+        "doctrine/phpcr-odm": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "Doctrine\\Bundle\\PHPCRBundle": "" }
+    },
+    "target-dir": "Doctrine/Bundle/PHPCRBundle"
+}
