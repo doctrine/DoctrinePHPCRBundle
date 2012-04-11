@@ -29,7 +29,7 @@ class DocumentType extends DoctrineType
      * @param array $options
      * @return EntityLoaderInterface
      */
-    protected function getLoader(ObjectManager $manager, array $options)
+    public function getLoader(ObjectManager $manager, $queryBuilder, $class)
     {
         // TODO: check if phpcr-odm query builder can work with the form component and return it
         throw new FormException('The query builder option is not supported by PHPCR.');
