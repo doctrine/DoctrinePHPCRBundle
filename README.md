@@ -44,7 +44,7 @@ doctrine_phpcr:
         workspace: default
         username: admin
         password: admin
-    # enable the ODM layer
+    # enable the ODM layer. omit the odm section if you only want a phpcr session but no odm
     odm:
         auto_mapping: true
         # whether to automatically create proxy classes or create them manually
@@ -91,6 +91,24 @@ class DefaultController extends Controller
     }
 }
 ```
+
+## Events
+
+You can tag services to listen to Doctrine phpcr events. It works the same way
+as for Doctrine ORM. The only differences are
+
+* use the tag name ``doctrine_phpcr.event_listener`` resp. ``doctrine_phpcr.event_subscriber`` instead of ``doctrine.event_listener``.
+* expect the argument to be of class Doctrine\ODM\PHPCR\Event\LifecycleEventArgs rather than in the ORM namespace.
+
+You can register for the events as described in [the PHPCR-ODM documentation](https://github.com/doctrine/phpcr-odm/).
+
+    services:
+        my.listener:
+            class: Acme\SearchBundle\Listener\SearchIndexer
+                tags:
+                    - { name: doctrine_phpcr.event_listener, event: postPersist }
+
+More information on the doctrine event system integration is in this [symfony cookbook entry](http://symfony.com/doc/current/cookbook/doctrine/event_listeners_subscribers.html).
 
 # Additional requirements for the doctrine:phpcr:fixtures:load command
 

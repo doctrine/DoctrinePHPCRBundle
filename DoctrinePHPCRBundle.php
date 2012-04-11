@@ -36,7 +36,7 @@ class DoctrinePHPCRBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new RegisterEventListenersAndSubscribersPass('doctrine.odm.phpcr.sessions', 'doctrine.odm.phpcr.%s_session.event_manager', 'doctrine.odm.phpcr'), PassConfig::TYPE_BEFORE_OPTIMIZATION);
+        $container->addCompilerPass(new RegisterEventListenersAndSubscribersPass('doctrine_phpcr.sessions', 'doctrine_phpcr.odm.%s_session.event_manager', 'doctrine_phpcr'), PassConfig::TYPE_BEFORE_OPTIMIZATION);
     }
 
     /**
