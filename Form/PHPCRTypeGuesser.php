@@ -45,6 +45,9 @@ class PHPCRTypeGuesser implements FormTypeGuesserInterface
         $this->registry = $registry;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function guessType($class, $property)
     {
         if (!$ret = $this->getMetadata($class)) {
@@ -85,19 +88,25 @@ class PHPCRTypeGuesser implements FormTypeGuesserInterface
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function guessMaxLength($class, $property)
     {
-
     }
 
-    public function guessMinLength($class, $property)
-    {
-
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     public function guessRequired($class, $property)
     {
+    }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function guessPattern($class, $property)
+    {
     }
 
     protected function getMetadata($class)
