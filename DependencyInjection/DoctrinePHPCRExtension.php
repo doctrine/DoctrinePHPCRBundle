@@ -166,12 +166,18 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             ->replaceArgument(1, $session['password'])
         ;
 
-        $container
+        $definition = $container
             ->setDefinition($session['service_name'], new DefinitionDecorator('doctrine_phpcr.jackalope.session'))
             ->setFactoryService(sprintf('doctrine_phpcr.jackalope.repository.%s', $session['name']))
             ->replaceArgument(0, new Reference(sprintf('doctrine_phpcr.%s_credentials', $session['name'])))
             ->replaceArgument(1, $session['workspace'])
         ;
+
+        if (isset($session['options']) && is_array($session['options'])) {
+            foreach ($session['options'] as $key => $value) {
+                $definition->addMethodCall('setSessionOption', array($key, $value));
+            }
+        }
     }
 
     private function loadMidgardSession(array $session, ContainerBuilder $container)

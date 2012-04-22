@@ -66,6 +66,7 @@ class Configuration implements ConfigurationInterface
                             'username',
                             'password',
                             'backend',
+                            'options'
                         ) as $key) {
                             if (array_key_exists($key, $v)) {
                                 $session[$key] = $v[$key];
@@ -101,6 +102,10 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('username')->defaultNull()->end()
                     ->scalarNode('password')->defaultNull()->end()
                     ->arrayNode('backend')
+                        ->useAttributeAsKey('name')
+                        ->prototype('scalar')->end()
+                    ->end()
+                    ->arrayNode('options')
                         ->useAttributeAsKey('name')
                         ->prototype('scalar')->end()
                     ->end()

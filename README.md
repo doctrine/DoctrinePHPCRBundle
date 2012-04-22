@@ -44,6 +44,9 @@ doctrine_phpcr:
         workspace: default
         username: admin
         password: admin
+        # not all backends support options
+        options:
+            'jackalope.fetch_depth': 1
     # enable the ODM layer. omit the odm section if you only want a phpcr session but no odm
     odm:
         auto_mapping: true
