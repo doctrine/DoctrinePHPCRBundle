@@ -20,7 +20,7 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
-use PHPCR\Util\Console\Command\Sql2Command as BaseSql2Command;
+use PHPCR\Util\Console\Command\QueryCommand as BaseQueryCommand;
 
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
@@ -30,7 +30,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Daniel Barsotti <daniel.barsotti@liip.ch>
  */
-class Sql2Command extends BaseSql2Command
+class QueryCommand extends BaseQueryCommand
 {
     /**
      * Configures the current command.
@@ -40,7 +40,7 @@ class Sql2Command extends BaseSql2Command
         parent::configure();
 
         $this
-            ->setName('doctrine:phpcr:sql2')
+            ->setName('doctrine:phpcr:query')
             ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
         ;
     }
