@@ -329,8 +329,14 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         $cacheDriverService = sprintf('doctrine_phpcr.odm.%s_%s', $documentManager['name'], $cacheName);
 
         $driver = $cacheName . "_driver";
-        $cacheDef = $this->getDocumentManagerCacheDefinition($documentManager, $documentManager[$driver], $container);
-        $container->setDefinition($cacheDriverService, $cacheDef);
+        $cacheDriver = $documentManager[$driver];
+
+        if ('service' === $cacheDriver['type']) {
+            $container->setAlias($cacheDriverService, new Alias($cacheDriver['id'], false));
+        } else {
+            $cacheDef = $this->getDocumentManagerCacheDefinition($documentManager, $cacheDriver, $container);
+            $container->setDefinition($cacheDriverService, $cacheDef);
+        }
     }
 
     /**

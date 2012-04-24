@@ -238,6 +238,7 @@ class Configuration implements ConfigurationInterface
             ->scalarNode('port')->end()
             ->scalarNode('instance_class')->end()
             ->scalarNode('class')->end()
+            ->scalarNode('id')->end()
             ->end();
 
         return $node;
