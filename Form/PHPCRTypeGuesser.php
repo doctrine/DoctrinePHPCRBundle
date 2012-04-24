@@ -98,6 +98,14 @@ class PHPCRTypeGuesser implements FormTypeGuesserInterface
     /**
      * {@inheritDoc}
      */
+    public function guessMinLength($class, $property)
+    {
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function guessRequired($class, $property)
     {
     }
