@@ -235,7 +235,8 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
     private function loadOdmDocumentManager(array $documentManager, ContainerBuilder $container)
     {
-        $odmConfigDef = $container->setDefinition(sprintf('doctrine_phpcr.odm.%s_configuration', $documentManager['name']), new DefinitionDecorator('doctrine_phpcr.odm.configuration'));
+        $odmConfigDefTemplate = empty($documentManager['configuration_id']) ? 'doctrine_phpcr.odm.configuration' : $documentManager['configuration_id'];
+        $odmConfigDef = $container->setDefinition(sprintf('doctrine_phpcr.odm.%s_configuration', $documentManager['name']), new DefinitionDecorator($odmConfigDefTemplate));
 
         $this->loadOdmDocumentManagerMappingInformation($documentManager, $odmConfigDef, $container);
         $this->loadOdmCacheDrivers($documentManager, $container);

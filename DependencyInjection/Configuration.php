@@ -131,6 +131,7 @@ class Configuration implements ConfigurationInterface
                                 'auto_mapping', 'auto-mapping',
                                 'mappings', 'mapping',
                                 'session',
+                                'configuration_id',
                             ) as $key) {
                                 if (array_key_exists($key, $v)) {
                                     $documentManagers[$key] = $v[$key];
@@ -186,6 +187,7 @@ class Configuration implements ConfigurationInterface
                 ->append($this->getOdmCacheDriverNode('metadata_cache_driver'))
                 ->children()
                     ->scalarNode('session')->end()
+                    ->scalarNode('configuration_id')->end()
                     ->scalarNode('auto_mapping')->defaultFalse()->end()
                 ->end()
                 ->fixXmlConfig('mapping')
