@@ -189,7 +189,6 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('auto_mapping')->defaultFalse()->end()
                 ->end()
                 ->fixXmlConfig('mapping')
-                ->fixXmlConfig('design_document')
                 ->children()
                     ->arrayNode('mappings')
                         ->useAttributeAsKey('name')
