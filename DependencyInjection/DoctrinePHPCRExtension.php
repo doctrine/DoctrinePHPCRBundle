@@ -315,70 +315,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
      */
     protected function loadOdmCacheDrivers(array $documentManager, ContainerBuilder $container)
     {
-        $this->loadOdmDocumentManagerCacheDriver($documentManager, $container, 'metadata_cache');
-    }
-
-    /**
-     * Loads a configured document managers metadata, query or result cache driver.
-     *
-     * @param array            $documentManager A configured ORM document manager.
-     * @param ContainerBuilder $container A ContainerBuilder instance
-     * @param string           $cacheName
-     */
-    protected function loadOdmDocumentManagerCacheDriver(array $documentManager, ContainerBuilder $container, $cacheName)
-    {
-        $cacheDriverService = sprintf('doctrine_phpcr.odm.%s_%s', $documentManager['name'], $cacheName);
-
-        $driver = $cacheName . "_driver";
-        $cacheDriver = $documentManager[$driver];
-
-        if ('service' === $cacheDriver['type']) {
-            $container->setAlias($cacheDriverService, new Alias($cacheDriver['id'], false));
-        } else {
-            $cacheDef = $this->getDocumentManagerCacheDefinition($documentManager, $cacheDriver, $container);
-            $container->setDefinition($cacheDriverService, $cacheDef);
-        }
-    }
-
-    /**
-     * Gets an document manager cache driver definition for caches.
-     *
-     * @param array            $documentManager The array configuring an document manager.
-     * @param array            $cacheDriver The cache driver configuration.
-     * @param ContainerBuilder $container
-     * @return Definition $cacheDef
-     */
-    protected function getDocumentManagerCacheDefinition(array $documentManager, $cacheDriver, ContainerBuilder $container)
-    {
-        switch ($cacheDriver['type']) {
-            case 'memcache':
-                $memcacheClass = !empty($cacheDriver['class']) ? $cacheDriver['class'] : '%doctrine_phpcr.odm.cache.memcache.class%';
-                $memcacheInstanceClass = !empty($cacheDriver['instance_class']) ? $cacheDriver['instance_class'] : '%doctrine_phpcr.odm.cache.memcache_instance.class%';
-                $memcacheHost = !empty($cacheDriver['host']) ? $cacheDriver['host'] : '%doctrine_phpcr.odm.cache.memcache_host%';
-                $memcachePort = !empty($cacheDriver['port']) ? $cacheDriver['port'] : '%doctrine_phpcr.odm.cache.memcache_port%';
-                $cacheDef = new Definition($memcacheClass);
-                $memcacheInstance = new Definition($memcacheInstanceClass);
-                $memcacheInstance->addMethodCall('connect', array(
-                    $memcacheHost, $memcachePort
-                ));
-                $container->setDefinition(sprintf('doctrine_phpcr.odm.%s_memcache_instance', $documentManager['name']), $memcacheInstance);
-                $cacheDef->addMethodCall('setMemcache', array(new Reference(sprintf('doctrine_phpcr.odm.%s_memcache_instance', $documentManager['name']))));
-                break;
-            case 'apc':
-            case 'array':
-            case 'xcache':
-                $cacheDef = new Definition('%' . sprintf('doctrine_phpcr.odm.cache.%s.class', $cacheDriver['type']) . '%');
-                break;
-            default:
-                throw new \InvalidArgumentException(sprintf('"%s" is an unrecognized Doctrine cache driver.', $cacheDriver['type']));
-        }
-
-        $cacheDef->setPublic(false);
-        // generate a unique namespace for the given application
-        $namespace = 'sf2phpcr_' . $documentManager['name'] . '_' . md5($container->getParameter('kernel.root_dir'));
-        $cacheDef->addMethodCall('setNamespace', array($namespace));
-
-        return $cacheDef;
+        $this->loadObjectManagerCacheDriver($documentManager, $container, 'metadata_cache');
     }
 
     protected function getObjectManagerElementName($name)
