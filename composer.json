@@ -18,11 +18,11 @@
     "require": {
         "php": ">=5.3.2",
         "symfony/symfony": "2.1.*",
-        "doctrine/data-fixtures": "dev-master",
         "phpcr/phpcr-implementation": "2.1.*"
     },
     "suggest": {
         "doctrine/phpcr-odm": "dev-master",
+        "doctrine/data-fixtures": "if you want to use the fixture loading",
         "doctrine/doctrine-bundle": "when using jackalope-doctrine-dbal"
     },
     "autoload": {
