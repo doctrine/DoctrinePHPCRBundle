@@ -22,7 +22,8 @@
         "phpcr/phpcr-implementation": "2.1.*"
     },
     "suggest": {
-        "doctrine/phpcr-odm": "dev-master"
+        "doctrine/phpcr-odm": "dev-master",
+        "doctrine/doctrine-bundle": "when using jackalope-doctrine-dbal"
     },
     "autoload": {
         "psr-0": { "Doctrine\\Bundle\\PHPCRBundle": "" }
