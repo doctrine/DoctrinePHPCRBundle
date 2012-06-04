@@ -6,8 +6,8 @@
 
     <parameters>
 
-        <parameter key="doctrine_phpcr.midgard.factory.class">Midgard2CR\RepositoryFactory</parameter>
-        <parameter key="doctrine_phpcr.midgard.repository.class">Midgard2CR\Repository</parameter>
+        <parameter key="doctrine_phpcr.midgard.factory.class">Midgard\PHPCR\RepositoryFactory</parameter>
+        <parameter key="doctrine_phpcr.midgard.repository.class">Midgard\PHPCR\Repository</parameter>
 
     </parameters>
 
