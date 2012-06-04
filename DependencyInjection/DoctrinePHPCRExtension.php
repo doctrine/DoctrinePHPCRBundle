@@ -202,6 +202,11 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             throw new \InvalidArgumentException("You set an invalid Midgard2 PHPCR configuration for session '{$session['name']}'. Please provide a 'config' or 'db' key");
         }
 
+        $factory = $container
+            ->setDefinition('doctrine_phpcr.midgard2.repository', new DefinitionDecorator('doctrine_phpcr.midgard2.repository.factory'))
+        ;
+        $factory->replaceArgument(0, $parameters);
+
         $container
             ->setDefinition(sprintf('doctrine_phpcr.%s_credentials', $session['name']), new DefinitionDecorator('doctrine_phpcr.credentials'))
             ->replaceArgument(0, $session['username'])
