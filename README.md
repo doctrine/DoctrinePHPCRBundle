@@ -82,10 +82,10 @@ doctrine_phpcr:
     session:
         backend:
             type: midgard2
-            dbtype: SQLite
-            dbname: cmf
-            dbdir: /tmp
-            dbinit: true
+            db_type: SQLite
+            db_name: cmf
+            db_dir: /tmp
+            db_init: true
             blobdir: /tmp/cmf-blobs
 ```
 
