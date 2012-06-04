@@ -2,8 +2,8 @@
 
 This bundle integrates Doctrine PHPCR ODM and PHPCR backends into Symfony2 like:
 
-* Jackalope
-* Midgard2 CR
+* [Jackalope](http://jackalope.github.com/)
+* [Midgard2](http://midgard-project.org/phpcr/)
 
 # Installation
 
@@ -71,6 +71,25 @@ doctrine_phpcr:
                 - en
                 - de
 ```
+
+### Configuration for Midgard2 PHPCR provider
+
+To use DoctrinePHPCRBundle with the Midgard2 PHPCR provider, you must have both the [midgard2 PHP extension](http://midgard-project.org/midgard2/#download) and [the midgard/phpcr package](http://packagist.org/packages/midgard/phpcr) installed. The configuration is similar, except for the session backend, which should be something like:
+
+``` yaml
+doctrine_phpcr:
+    # configure the PHPCR session
+    session:
+        backend:
+            type: midgard2
+            dbtype: SQLite
+            dbname: cmf
+            dbdir: /tmp
+            dbinit: true
+            blobdir: /tmp/cmf-blobs
+```
+
+The settings here correspond to Midgard2 repository parameters as explained in [the getting started document](http://midgard-project.org/phpcr/#getting_started).
 
 ## Services
 
