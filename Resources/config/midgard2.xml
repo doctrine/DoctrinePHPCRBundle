@@ -13,7 +13,7 @@
 
     <services>
 
-        <service id="doctrine_phpcr.midgard2.factory" class="%doctrine_phpcr.midgard.factory.class%" />
+        <service id="doctrine_phpcr.midgard2.factory" class="%doctrine_phpcr.midgard2.factory.class%" />
 
         <service id="doctrine_phpcr.midgard2.repository"
                  class="%doctrine_phpcr.midgard2.repository.class%"
