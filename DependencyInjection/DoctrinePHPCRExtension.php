@@ -182,10 +182,14 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         if (isset($session['backend']['config'])) {
             // Starting repository with a Midgard2 INI file
             $parameters['midgard2.configuration.file'] = $session['backend']['config'];
-        } else if (isset($session['backend']['db'])) {
+        } else if (isset($session['backend']['dbname'])) {
             // Manually configured Midgard2 session
-            foreach ($session['backend']['db'] as $key => $value) {
-                $parameters["midgard2.configuration.db.{$key}"] = $value;
+            foreach ($session['backend'] as $key => $value) {
+                if (substr($key, 0, 2) !== 'db') {
+                    continue;
+                }
+                $dbkey = substr($key, 2);
+                $parameters["midgard2.configuration.db.{$dbkey}"] = $value;
             }
 
             if (isset($session['backend']['blobdir'])) {
