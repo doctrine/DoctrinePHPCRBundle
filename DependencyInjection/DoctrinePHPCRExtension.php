@@ -182,13 +182,13 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         if (isset($session['backend']['config'])) {
             // Starting repository with a Midgard2 INI file
             $parameters['midgard2.configuration.file'] = $session['backend']['config'];
-        } else if (isset($session['backend']['dbname'])) {
+        } else if (isset($session['backend']['db_name'])) {
             // Manually configured Midgard2 session
             foreach ($session['backend'] as $key => $value) {
-                if (substr($key, 0, 2) !== 'db') {
+                if (substr($key, 0, 3) !== 'db_') {
                     continue;
                 }
-                $dbkey = substr($key, 2);
+                $dbkey = substr($key, 3);
                 $parameters["midgard2.configuration.db.{$dbkey}"] = $value;
             }
 
@@ -199,7 +199,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                 $parameters['midgard2.configuration.loglevel'] = $session['backend']['loglevel'];
             }
         } else {
-            throw new \InvalidArgumentException("You set an invalid Midgard2 PHPCR configuration for session '{$session['name']}'. Please provide a 'config' or 'db' key");
+            throw new \InvalidArgumentException("You set an invalid Midgard2 PHPCR configuration for session '{$session['name']}'. Please provide a 'config' or 'db_name' key");
         }
 
         $factory = $container
