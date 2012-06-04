@@ -17,7 +17,9 @@
                  class="%doctrine_phpcr.midgard2.repository.class%"
                  factory-class="%doctrine_phpcr.midgard2.repository.factory.class%"
                  factory-method="getRepository"
-        />
+        >
+            <argument type="collection" /><!-- parameters (0) -->
+        </service>
 
         <service id="doctrine_phpcr.midgard2.session"
                  class="%doctrine_phpcr.midgard2.session.class%"
