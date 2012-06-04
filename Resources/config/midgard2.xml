@@ -6,23 +6,21 @@
 
     <parameters>
 
-        <parameter key="doctrine_phpcr.midgard2.factory.class">Midgard\PHPCR\RepositoryFactory</parameter>
+        <parameter key="doctrine_phpcr.midgard2.repository.factory.class">Midgard\PHPCR\RepositoryFactory</parameter>
         <parameter key="doctrine_phpcr.midgard2.repository.class">Midgard\PHPCR\Repository</parameter>
+        <parameter key="doctrine_phpcr.midgard2.session.class">Midgard\PHPCR\Session</parameter>
 
     </parameters>
 
     <services>
-
-        <service id="doctrine_phpcr.midgard2.factory" class="%doctrine_phpcr.midgard2.factory.class%" />
-
-        <service id="doctrine_phpcr.midgard2.repository"
+        <service id="doctrine_phpcr.midgard2.repository.factory"
                  class="%doctrine_phpcr.midgard2.repository.class%"
-                 factory-service="doctrine_phpcr.midgard2.factory"
+                 factory-class="%doctrine_phpcr.midgard2.repository.factory.class%"
                  factory-method="getRepository"
         />
 
         <service id="doctrine_phpcr.midgard2.session"
-                 class="%doctrine_phpcr.midgard2.repository.class%"
+                 class="%doctrine_phpcr.midgard2.session.class%"
                  factory-service="doctrine_phpcr.midgard2.repository"
                  factory-method="login"
                  abstract="true"

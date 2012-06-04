@@ -203,7 +203,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         }
 
         $factory = $container
-            ->setDefinition('doctrine_phpcr.midgard2.repository', new DefinitionDecorator('doctrine_phpcr.midgard2.factory'))
+            ->setDefinition('doctrine_phpcr.midgard2.repository', new DefinitionDecorator('doctrine_phpcr.midgard2.repository.factory'))
         ;
         $factory->replaceArgument(0, $parameters);
 
