@@ -2,8 +2,8 @@
 
 This bundle integrates Doctrine PHPCR ODM and PHPCR backends into Symfony2 like:
 
-* Jackalope
-* Midgard2 CR
+* [Jackalope](http://jackalope.github.com/)
+* [Midgard2](http://midgard-project.org/phpcr/)
 
 # Installation
 
