@@ -94,16 +94,12 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                     }
                     $this->loadJackalopeSession($session, $container, $type);
                     break;
-                case 'midgard':
-                    if (empty($loaded['midgard'])) {
-                        $loader->load('midgard.xml');
-                        $loaded['midgard'] = true;
-
-                        if (isset($session['config'])) {
-                            ini_set('midgard.configuration_file', $session['config']);
-                        }
+                case 'midgard2':
+                    if (empty($loaded['midgard2'])) {
+                        $loader->load('midgard2.xml');
+                        $loaded['midgard2'] = true;
                     }
-                    $this->loadMidgardSession($session, $container);
+                    $this->loadMidgard2Session($session, $container);
                     break;
                 default:
                     throw new \InvalidArgumentException("You set an unsupported transport type '$type' for session '$name'");
@@ -180,8 +176,28 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         }
     }
 
-    private function loadMidgardSession(array $session, ContainerBuilder $container)
+    private function loadMidgard2Session(array $session, ContainerBuilder $container)
     {
+        $parameters = array();
+        if (isset($session['backend']['config'])) {
+            // Starting repository with a Midgard2 INI file
+            $parameters['midgard2.configuration.file'] = $session['backend']['config'];
+        } else if (isset($session['backend']['db'])) {
+            // Manually configured Midgard2 session
+            foreach ($session['backend']['db'] as $key => $value) {
+                $parameters["midgard2.configuration.db.{$key}"] = $value;
+            }
+
+            if (isset($session['backend']['blobdir'])) {
+                $parameters['midgard2.configuration.blobdir'] = $session['backend']['blobdir'];
+            }
+            if (isset($session['backend']['loglevel'])) {
+                $parameters['midgard2.configuration.loglevel'] = $session['backend']['loglevel'];
+            }
+        } else {
+            throw new \InvalidArgumentException("You set an invalid Midgard2 PHPCR configuration for session '{$session['name']}'. Please provide a 'config' or 'db' key");
+        }
+
         $container
             ->setDefinition(sprintf('doctrine_phpcr.%s_credentials', $session['name']), new DefinitionDecorator('doctrine_phpcr.credentials'))
             ->replaceArgument(0, $session['username'])
@@ -189,7 +205,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         ;
 
         $container
-            ->setDefinition($session['service_name'], new DefinitionDecorator('doctrine_phpcr.midgard.session'))
+            ->setDefinition($session['service_name'], new DefinitionDecorator('doctrine_phpcr.midgard2.session'))
             ->replaceArgument(0, new Reference(sprintf('doctrine_phpcr.%s_credentials', $session['name'])))
             ->replaceArgument(1, $session['workspace'])
         ;
