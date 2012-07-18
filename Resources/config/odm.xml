@@ -26,7 +26,7 @@
         <parameter key="doctrine_phpcr.odm.metadata.annotation.class">Doctrine\ODM\PHPCR\Mapping\Driver\AnnotationDriver</parameter>
         <parameter key="doctrine_phpcr.odm.metadata.xml.class">Doctrine\Bundle\PHPCRBundle\Mapping\Driver\XmlDriver</parameter>
         <parameter key="doctrine_phpcr.odm.metadata.yml.class">Doctrine\Bundle\PHPCRBundle\Mapping\Driver\YamlDriver</parameter>
-        <parameter key="doctrine_phpcr.odm.metadata.php.class">Doctrine\ODM\PHPCR\Mapping\Driver\PHPDriver</parameter>
+        <parameter key="doctrine_phpcr.odm.metadata.php.class">Doctrine\Common\Persistence\Mapping\Driver\PHPDriver</parameter>
         <parameter key="doctrine_phpcr.odm.proxy_cache_warmer.class">Symfony\Bridge\Doctrine\CacheWarmer\ProxyCacheWarmer</parameter>
 
         <!-- translation -->
