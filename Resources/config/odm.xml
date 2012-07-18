@@ -22,7 +22,7 @@
         <!-- form field factory guesser -->
         <parameter key="form.type_guesser.doctrine_phpcr.class">Doctrine\Bundle\PHPCRBundle\Form\PHPCRTypeGuesser</parameter>
 
-        <parameter key="doctrine_phpcr.odm.metadata.driver_chain.class">Doctrine\ODM\PHPCR\Mapping\Driver\DriverChain</parameter>
+        <parameter key="doctrine_phpcr.odm.metadata.driver_chain.class">Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain</parameter>
         <parameter key="doctrine_phpcr.odm.metadata.annotation.class">Doctrine\ODM\PHPCR\Mapping\Driver\AnnotationDriver</parameter>
         <parameter key="doctrine_phpcr.odm.metadata.xml.class">Doctrine\Bundle\PHPCRBundle\Mapping\Driver\XmlDriver</parameter>
         <parameter key="doctrine_phpcr.odm.metadata.yml.class">Doctrine\Bundle\PHPCRBundle\Mapping\Driver\YamlDriver</parameter>
