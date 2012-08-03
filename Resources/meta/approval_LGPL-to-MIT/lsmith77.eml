@@ -1,0 +1,93 @@
+Delivered-To: david.buchmann@liip.ch
+Received: by 10.229.12.79 with SMTP id w15csp22406qcw;
+        Wed, 11 Jul 2012 05:53:04 -0700 (PDT)
+Received: by 10.14.188.139 with SMTP id a11mr11916432een.139.1342011183795;
+        Wed, 11 Jul 2012 05:53:03 -0700 (PDT)
+Return-Path: <smith@pooteeweet.org>
+Received: from psmtp.com (eu1sys200amx103.postini.com. [207.126.144.52])
+        by mx.google.com with SMTP id y51si984925eea.31.2012.07.11.05.53.02
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Wed, 11 Jul 2012 05:53:03 -0700 (PDT)
+Received-SPF: neutral (google.com: 176.9.111.84 is neither permitted nor denied by best guess record for domain of smith@pooteeweet.org) client-ip=176.9.111.84;
+Authentication-Results: mx.google.com; spf=neutral (google.com: 176.9.111.84 is neither permitted nor denied by best guess record for domain of smith@pooteeweet.org) smtp.mail=smith@pooteeweet.org
+Received: from ssl.backendmedia.com ([176.9.111.84]) (using TLSv1) by eu1sys200amx103.postini.com ([207.126.147.10]) with SMTP;
+	Wed, 11 Jul 2012 12:53:03 GMT
+Received: from localhost (unknown [127.0.0.1])
+	by ssl.backendmedia.com (Postfix) with ESMTP id 0EE6D5EFE32A;
+	Wed, 11 Jul 2012 12:53:04 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at backendmedia.com
+Received: from ssl.backendmedia.com ([127.0.0.1])
+	by localhost (hq2.backendmedia.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id MiEBTcQZJhv9; Wed, 11 Jul 2012 14:53:03 +0200 (CEST)
+Received: from glass.compensate.volia.net (glass.compensate.volia.net [93.72.133.30])
+	(using TLSv1 with cipher ECDHE-RSA-AES128-SHA (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: smith@pooteeweet.org)
+	by ssl.backendmedia.com (Postfix) with ESMTPSA id DCD185EFE324;
+	Wed, 11 Jul 2012 14:53:01 +0200 (CEST)
+Subject: Re: please confirm doctrine phpcr bundle license change to MIT
+Mime-Version: 1.0 (Apple Message framework v1278)
+Content-Type: text/plain; charset=us-ascii
+From: Lukas Kahwe Smith <smith@pooteeweet.org>
+In-Reply-To: <4FFD76C2.3040806@liip.ch>
+Date: Wed, 11 Jul 2012 15:53:09 +0300
+Cc: Christophe Coevoet <stof@notk.org>,
+ Florent Cailhol <florent@oocube.com>,
+ Henri Bergius <henri.bergius@iki.fi>,
+ Julien 'ruian' Galenski <galenski.julien@gmail.com>,
+ Simon Holywell <simon@emosaic.co.uk>,
+ =?iso-8859-1?Q?Uwe_J=E4ger?= <uwej711@googlemail.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <8322EEC1-231F-423D-BB31-F0313435D149@pooteeweet.org>
+References: <4FFD76C2.3040806@liip.ch>
+To: David Buchmann <david.buchmann@liip.ch>
+X-Mailer: Apple Mail (2.1278)
+X-pstn-dkim: 0 skipped:not-enabled
+X-pstn-nxpr: disp=neutral, envrcpt=david.buchmann@liip.ch
+X-pstn-nxp: bodyHash=91e40e7921e30bbcd6e612ea43d3c8871e49c7c0,
+ headerHash=28170e9385e0e98b18848898bd8af11ded26df8b, keyName=4,
+ rcptHash=f64fd3aad49032f902032049efab1b9761a3df63, sourceip=176.9.111.84, version=1
+
+all good with me :)
+
+On Jul 11, 2012, at 3:51 PM, David Buchmann wrote:
+
+> -----BEGIN PGP SIGNED MESSAGE-----
+> Hash: SHA1
+> 
+> hi,
+> 
+> as the doctrine phpcr bundle was not covered in the switch of doctrine
+> to MIT [1] i wanted to ask all of you as the contributers to the
+> bundle if you are ok with switching the bundle license to MIT as well.
+> 
+> please just reply to this email if it is ok.
+> 
+> you can see your contributions on the github page
+> https://github.com/doctrine/DoctrinePHPCRBundle/graphs/contributors
+> 
+> @stof: github does not show you because the only commit you have was a
+> merge commit. i still include you for completeness and because i am
+> not a lawyer :-)
+> 
+> cheers,david
+> 
+> [1] http://dlm.beberlei.de/licenses/projects
+> - -- 
+> Liip AG // Agile Web Development // T +41 26 422 25 11
+> CH-1700 Fribourg // PGP 0xA581808B // www.liip.ch
+> 
+> -----BEGIN PGP SIGNATURE-----
+> Version: GnuPG v1.4.11 (GNU/Linux)
+> Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
+> 
+> iEYEARECAAYFAk/9dr0ACgkQqBnXnqWBgIuNoQCfVOaJ1KAV+9uBM1OCo3Dh/LwD
+> ILQAn0IZ8C++sO40auTEZfGOUTa5stxV
+> =h+Mh
+> -----END PGP SIGNATURE-----
+
+Lukas Kahwe Smith
+smith@pooteeweet.org
+
+
+

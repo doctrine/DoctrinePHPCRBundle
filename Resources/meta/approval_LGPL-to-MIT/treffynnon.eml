@@ -1,0 +1,88 @@
+Delivered-To: david.buchmann@liip.ch
+Received: by 10.229.12.79 with SMTP id w15csp23697qcw;
+        Wed, 11 Jul 2012 06:22:38 -0700 (PDT)
+Received: by 10.14.119.15 with SMTP id m15mr11409524eeh.171.1342012957813;
+        Wed, 11 Jul 2012 06:22:37 -0700 (PDT)
+Return-Path: <Simon@emosaic.co.uk>
+Received: from psmtp.com (eu1sys200amx125.postini.com. [207.126.144.194])
+        by mx.google.com with SMTP id w11si1027507eef.30.2012.07.11.06.22.36
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Wed, 11 Jul 2012 06:22:37 -0700 (PDT)
+Received-SPF: neutral (google.com: 217.155.179.134 is neither permitted nor denied by best guess record for domain of Simon@emosaic.co.uk) client-ip=217.155.179.134;
+Authentication-Results: mx.google.com; spf=neutral (google.com: 217.155.179.134 is neither permitted nor denied by best guess record for domain of Simon@emosaic.co.uk) smtp.mail=Simon@emosaic.co.uk
+Received: from email.mosaic-digital.co.uk ([217.155.179.134]) (using TLSv1) by eu1sys200amx125.postini.com ([207.126.147.10]) with SMTP;
+	Wed, 11 Jul 2012 06:22:37 PDT
+Received: from [192.168.0.190] (192.168.0.190) by JEEVES.emosaic.local
+ (192.168.0.231) with Microsoft SMTP Server (TLS) id 14.0.722.0; Wed, 11 Jul
+ 2012 14:20:48 +0100
+Message-ID: <4FFD7DE9.5070505@emosaic.co.uk>
+Date: Wed, 11 Jul 2012 14:21:45 +0100
+From: Simon Holywell <simon@emosaic.co.uk>
+Organization: Mosaic
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:13.0) Gecko/20120615 Thunderbird/13.0.1
+MIME-Version: 1.0
+To: David Buchmann <david.buchmann@liip.ch>
+CC: Christophe Coevoet <stof@notk.org>, Florent Cailhol <florent@oocube.com>,
+	Henri Bergius <henri.bergius@iki.fi>, Julien 'ruian' Galenski
+	<galenski.julien@gmail.com>, Lukas Kahwe Smith <smith@pooteeweet.org>,
+	=?ISO-8859-15?Q?Uwe_J=E4ger?= <uwej711@googlemail.com>
+Subject: Re: please confirm doctrine phpcr bundle license change to MIT
+References: <4FFD76C2.3040806@liip.ch>
+In-Reply-To: <4FFD76C2.3040806@liip.ch>
+Content-Type: text/plain; charset="ISO-8859-15"; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: simon@emosaic.co.uk
+X-pstn-dkim: 0 skipped:not-enabled
+X-pstn-nxpr: disp=neutral, envrcpt=david.buchmann@liip.ch
+X-pstn-nxp: bodyHash=469f17d98984719864317513bfdec7212d5a9160,
+ headerHash=60f79f2dae020383432b74471ecab040fc63ed12, keyName=4,
+ rcptHash=f64fd3aad49032f902032049efab1b9761a3df63, sourceip=217.155.179.134, version=1
+
+Yes, go for it.
+
+Thanks,
+Simon (Treffynnon)
+
+Simon Holywell
+Lead Developer | Mosaic
+
++44.1273 811 091
+simon@emosaic.co.uk
+http://www.emosaic.co.uk
+
+On 11/07/12 13:51, David Buchmann wrote:
+> -----BEGIN PGP SIGNED MESSAGE-----
+> Hash: SHA1
+>
+> hi,
+>
+> as the doctrine phpcr bundle was not covered in the switch of doctrine
+> to MIT [1] i wanted to ask all of you as the contributers to the
+> bundle if you are ok with switching the bundle license to MIT as well.
+>
+> please just reply to this email if it is ok.
+>
+> you can see your contributions on the github page
+> https://github.com/doctrine/DoctrinePHPCRBundle/graphs/contributors
+>
+> @stof: github does not show you because the only commit you have was a
+> merge commit. i still include you for completeness and because i am
+> not a lawyer :-)
+>
+> cheers,david
+>
+> [1] http://dlm.beberlei.de/licenses/projects
+> - -- 
+> Liip AG // Agile Web Development // T +41 26 422 25 11
+> CH-1700 Fribourg // PGP 0xA581808B // www.liip.ch
+>
+> -----BEGIN PGP SIGNATURE-----
+> Version: GnuPG v1.4.11 (GNU/Linux)
+> Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
+>
+> iEYEARECAAYFAk/9dr0ACgkQqBnXnqWBgIuNoQCfVOaJ1KAV+9uBM1OCo3Dh/LwD
+> ILQAn0IZ8C++sO40auTEZfGOUTa5stxV
+> =h+Mh
+> -----END PGP SIGNATURE-----
+
+

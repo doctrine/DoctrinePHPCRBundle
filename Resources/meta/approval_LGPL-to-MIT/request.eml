@@ -1,0 +1,50 @@
+Message-ID: <4FFD76C2.3040806@liip.ch>
+Date: Wed, 11 Jul 2012 14:51:14 +0200
+From: David Buchmann <david.buchmann@liip.ch>
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:13.0) Gecko/20120615 Thunderbird/13.0.1
+MIME-Version: 1.0
+To: Christophe Coevoet <stof@notk.org>, 
+ Florent Cailhol <florent@oocube.com>,
+ Henri Bergius <henri.bergius@iki.fi>, 
+ Julien 'ruian' Galenski <galenski.julien@gmail.com>,
+ Lukas Kahwe Smith <smith@pooteeweet.org>, 
+ Simon Holywell <simon@emosaic.co.uk>,
+ =?ISO-8859-15?Q?Uwe_J=E4ger?= <uwej711@googlemail.com>
+Subject: please confirm doctrine phpcr bundle license change to MIT
+X-Enigmail-Version: 1.4.2
+Content-Type: text/plain; charset=ISO-8859-15
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+hi,
+
+as the doctrine phpcr bundle was not covered in the switch of doctrine
+to MIT [1] i wanted to ask all of you as the contributers to the
+bundle if you are ok with switching the bundle license to MIT as well.
+
+please just reply to this email if it is ok.
+
+you can see your contributions on the github page
+https://github.com/doctrine/DoctrinePHPCRBundle/graphs/contributors
+
+@stof: github does not show you because the only commit you have was a
+merge commit. i still include you for completeness and because i am
+not a lawyer :-)
+
+cheers,david
+
+[1] http://dlm.beberlei.de/licenses/projects
+- -- 
+Liip AG // Agile Web Development // T +41 26 422 25 11
+CH-1700 Fribourg // PGP 0xA581808B // www.liip.ch
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
+
+iEYEARECAAYFAk/9dr0ACgkQqBnXnqWBgIuNoQCfVOaJ1KAV+9uBM1OCo3Dh/LwD
+ILQAn0IZ8C++sO40auTEZfGOUTa5stxV
+=h+Mh
+-----END PGP SIGNATURE-----

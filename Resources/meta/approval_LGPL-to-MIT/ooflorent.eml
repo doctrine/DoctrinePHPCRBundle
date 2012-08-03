@@ -1,0 +1,198 @@
+Delivered-To: david.buchmann@liip.ch
+Received: by 10.216.138.155 with SMTP id a27csp9118wej;
+        Tue, 24 Jul 2012 01:09:35 -0700 (PDT)
+Received: by 10.216.242.204 with SMTP id i54mr2270000wer.112.1343117375401;
+        Tue, 24 Jul 2012 01:09:35 -0700 (PDT)
+Return-Path: <florent.cailhol@gmail.com>
+Received: from psmtp.com (eu1sys200amx133.postini.com. [207.126.144.222])
+        by mx.google.com with SMTP id gq10si3980119wib.3.2012.07.24.01.09.28
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Tue, 24 Jul 2012 01:09:35 -0700 (PDT)
+Received-SPF: pass (google.com: domain of florent.cailhol@gmail.com designates 209.85.213.49 as permitted sender) client-ip=209.85.213.49;
+Authentication-Results: mx.google.com; spf=pass (google.com: domain of florent.cailhol@gmail.com designates 209.85.213.49 as permitted sender) smtp.mail=florent.cailhol@gmail.com; dkim=pass header.i=@gmail.com
+Received: from mail-yw0-f49.google.com ([209.85.213.49]) (using TLSv1) by eu1sys200amx133.postini.com ([207.126.147.10]) with SMTP;
+	Tue, 24 Jul 2012 08:09:28 GMT
+Received: by yhjj52 with SMTP id j52so7952613yhj.22
+        for <david.buchmann@liip.ch>; Tue, 24 Jul 2012 01:09:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:reply-to:in-reply-to:references:from:date:message-id
+         :subject:to:content-type;
+        bh=EE1elZKE5QyH4ZhprwwPVRMTHn7TnEChsR0hyya5w2o=;
+        b=S7fEqPM9Ita4mb75ovZi2kYusRm8W3YiVTuNTan9N1itWMYwpTywrEOyN450wDNur6
+         Gmi3Enew0qe2b7VoKkUDwzgwXhUr9mKykeMI+7UOVwwSvJPYsI7o+W3SaNdQfkQzlGuL
+         Gi6r3yV0lwWS6wITF9bFOeyDcgEX1I2rJtsMwqJhUAayho3eiskSwPDoMyFVxrhDKV75
+         OaMFq/s7bgw5d82VXEPFm43hJi5/WN3wqds5YJ1ndASookuArtDEvQ92omDtOyaxWQjS
+         TqPkf4V0jkg3N5oUL4Oj6XADL0u8iTBxl1oPXyOIpQo9eHTtlYgLP4TnaI7VIfIy8Ro6
+         Gzxg==
+Received: by 10.42.146.6 with SMTP id h6mr13242616icv.53.1343117366901; Tue,
+ 24 Jul 2012 01:09:26 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.231.80.15 with HTTP; Tue, 24 Jul 2012 01:09:06 -0700 (PDT)
+Reply-To: florent@oocube.com
+In-Reply-To: <500E4A99.7010101@liip.ch>
+References: <4FFD76C2.3040806@liip.ch> <500E4A99.7010101@liip.ch>
+From: Florent Cailhol <florent.cailhol@gmail.com>
+Date: Tue, 24 Jul 2012 10:09:06 +0200
+Message-ID: <CABepazxSe=YYEmDKCj1mH1CY6bUdszd45UjLdQXHN+tHi2BUSQ@mail.gmail.com>
+Subject: Re: Please confirm your commits to DoctrinePHPCRBundle may change
+ license to MIT?
+To: David Buchmann <david.buchmann@liip.ch>
+Content-Type: multipart/alternative; boundary=90e6ba6e87168bbb4f04c58ee193
+X-pstn-dkim: 1 skipped:not-enabled
+X-pstn-nxpr: disp=neutral, envrcpt=david.buchmann@liip.ch
+X-pstn-nxp: bodyHash=b1904f7dec7b9060745081fa7ce25717437f2d71, headerHash=45cb486911bd3b0b07950d504536bf4e6c580496, keyName=4, rcptHash=f64fd3aad49032f902032049efab1b9761a3df63, sourceip=209.85.213.49, version=1
+
+--90e6ba6e87168bbb4f04c58ee193
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+Hi,
+
+I think you missed my message.
+I'm ok to switch to MIT license !
+
+Cheers,
+
+2012/7/24 David Buchmann <david.buchmann@liip.ch>
+
+> -----BEGIN PGP SIGNED MESSAGE-----
+> Hash: SHA1
+>
+> hi florent,
+>
+> we are only missing your ok to switch the DoctrinePHPCRBundle to MIT
+> license. can you please give me a quick ok? (unless you are against
+> it, of course)
+>
+> thanks,david
+>
+>
+> - -------- Original-Nachricht --------
+> Betreff: please confirm doctrine phpcr bundle license change to MIT
+> Datum: Wed, 11 Jul 2012 14:51:14 +0200
+> Von: David Buchmann <david.buchmann@liip.ch>
+> An: Christophe Coevoet <stof@notk.org>,  Florent Cailhol
+> <florent@oocube.com>, Henri Bergius <henri.bergius@iki.fi>,  Julien
+> 'ruian' Galenski <galenski.julien@gmail.com>, Lukas Kahwe Smith
+> <smith@pooteeweet.org>,  Simon Holywell <simon@emosaic.co.uk>, Uwe J=E4ge=
+r
+> <uwej711@googlemail.com>
+>
+> hi,
+>
+> as the doctrine phpcr bundle was not covered in the switch of doctrine
+> to MIT [1] i wanted to ask all of you as the contributers to the
+> bundle if you are ok with switching the bundle license to MIT as well.
+>
+> please just reply to this email if it is ok.
+>
+> you can see your contributions on the github page
+> https://github.com/doctrine/DoctrinePHPCRBundle/graphs/contributors
+>
+> @stof: github does not show you because the only commit you have was a
+> merge commit. i still include you for completeness and because i am
+> not a lawyer :-)
+>
+> cheers,david
+>
+> [1] http://dlm.beberlei.de/licenses/projects
+>
+> - --
+> Liip AG // Agile Web Development // T +41 26 422 25 11
+> CH-1700 Fribourg // PGP 0xA581808B // www.liip.ch
+>
+>
+>
+> -----BEGIN PGP SIGNATURE-----
+> Version: GnuPG v1.4.11 (GNU/Linux)
+> Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
+>
+> iEYEARECAAYFAlAOSpkACgkQqBnXnqWBgItBsQCfbnujPwUutw/7jcg5Pzuguwbx
+> xY4AoJwv1eNKjIRt9h+nVIdNCK8mN/k+
+> =3DULOz
+> -----END PGP SIGNATURE-----
+>
+
+--90e6ba6e87168bbb4f04c58ee193
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+Hi,<br><br>I think you missed my message.<br>I&#39;m ok to switch to MIT li=
+cense !<br><br>Cheers,<br><br><div class=3D"gmail_quote">2012/7/24 David Bu=
+chmann <span dir=3D"ltr">&lt;<a href=3D"mailto:david.buchmann@liip.ch" targ=
+et=3D"_blank">david.buchmann@liip.ch</a>&gt;</span><br>
+
+<blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1p=
+x #ccc solid;padding-left:1ex">-----BEGIN PGP SIGNED MESSAGE-----<br>
+Hash: SHA1<br>
+<br>
+hi florent,<br>
+<br>
+we are only missing your ok to switch the DoctrinePHPCRBundle to MIT<br>
+license. can you please give me a quick ok? (unless you are against<br>
+it, of course)<br>
+<br>
+thanks,david<br>
+<br>
+<br>
+- -------- Original-Nachricht --------<br>
+Betreff: please confirm doctrine phpcr bundle license change to MIT<br>
+Datum: Wed, 11 Jul 2012 14:51:14 +0200<br>
+Von: David Buchmann &lt;<a href=3D"mailto:david.buchmann@liip.ch">david.buc=
+hmann@liip.ch</a>&gt;<br>
+An: Christophe Coevoet &lt;<a href=3D"mailto:stof@notk.org">stof@notk.org</=
+a>&gt;, =A0Florent Cailhol<br>
+&lt;<a href=3D"mailto:florent@oocube.com">florent@oocube.com</a>&gt;, Henri=
+ Bergius &lt;<a href=3D"mailto:henri.bergius@iki.fi">henri.bergius@iki.fi</=
+a>&gt;, =A0Julien<br>
+&#39;ruian&#39; Galenski &lt;<a href=3D"mailto:galenski.julien@gmail.com">g=
+alenski.julien@gmail.com</a>&gt;, Lukas Kahwe Smith<br>
+&lt;<a href=3D"mailto:smith@pooteeweet.org">smith@pooteeweet.org</a>&gt;, =
+=A0Simon Holywell &lt;<a href=3D"mailto:simon@emosaic.co.uk">simon@emosaic.=
+co.uk</a>&gt;, Uwe J=E4ger<br>
+&lt;<a href=3D"mailto:uwej711@googlemail.com">uwej711@googlemail.com</a>&gt=
+;<br>
+<br>
+hi,<br>
+<br>
+as the doctrine phpcr bundle was not covered in the switch of doctrine<br>
+to MIT [1] i wanted to ask all of you as the contributers to the<br>
+bundle if you are ok with switching the bundle license to MIT as well.<br>
+<br>
+please just reply to this email if it is ok.<br>
+<br>
+you can see your contributions on the github page<br>
+<a href=3D"https://github.com/doctrine/DoctrinePHPCRBundle/graphs/contribut=
+ors" target=3D"_blank">https://github.com/doctrine/DoctrinePHPCRBundle/grap=
+hs/contributors</a><br>
+<br>
+@stof: github does not show you because the only commit you have was a<br>
+merge commit. i still include you for completeness and because i am<br>
+not a lawyer :-)<br>
+<br>
+cheers,david<br>
+<br>
+[1] <a href=3D"http://dlm.beberlei.de/licenses/projects" target=3D"_blank">=
+http://dlm.beberlei.de/licenses/projects</a><br>
+<br>
+- --<br>
+Liip AG // Agile Web Development // T <a href=3D"tel:%2B41%2026%20422%2025%=
+2011" value=3D"+41264222511">+41 26 422 25 11</a><br>
+CH-1700 Fribourg // PGP 0xA581808B // <a href=3D"http://www.liip.ch" target=
+=3D"_blank">www.liip.ch</a><br>
+<br>
+<br>
+<br>
+-----BEGIN PGP SIGNATURE-----<br>
+Version: GnuPG v1.4.11 (GNU/Linux)<br>
+Comment: Using GnuPG with Mozilla - <a href=3D"http://enigmail.mozdev.org/"=
+ target=3D"_blank">http://enigmail.mozdev.org/</a><br>
+<br>
+iEYEARECAAYFAlAOSpkACgkQqBnXnqWBgItBsQCfbnujPwUutw/7jcg5Pzuguwbx<br>
+xY4AoJwv1eNKjIRt9h+nVIdNCK8mN/k+<br>
+=3DULOz<br>
+-----END PGP SIGNATURE-----<br>
+</blockquote></div><br>
+
+--90e6ba6e87168bbb4f04c58ee193--

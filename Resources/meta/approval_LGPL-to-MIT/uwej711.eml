@@ -1,0 +1,108 @@
+Delivered-To: david.buchmann@liip.ch
+Received: by 10.229.12.79 with SMTP id w15csp41735qcw;
+        Wed, 11 Jul 2012 13:16:08 -0700 (PDT)
+Received: by 10.14.98.77 with SMTP id u53mr12285393eef.185.1342037768301;
+        Wed, 11 Jul 2012 13:16:08 -0700 (PDT)
+Return-Path: <uwej711@gmail.com>
+Received: from psmtp.com (eu1sys200amx114.postini.com. [207.126.144.183])
+        by mx.google.com with SMTP id e4si1659785eea.94.2012.07.11.13.16.07
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Wed, 11 Jul 2012 13:16:08 -0700 (PDT)
+Received-SPF: pass (google.com: domain of uwej711@gmail.com designates 209.85.220.177 as permitted sender) client-ip=209.85.220.177;
+Authentication-Results: mx.google.com; spf=pass (google.com: domain of uwej711@gmail.com designates 209.85.220.177 as permitted sender) smtp.mail=uwej711@gmail.com; dkim=pass header.i=@gmail.com
+Received: from mail-vc0-f177.google.com ([209.85.220.177]) (using TLSv1) by eu1sys200amx114.postini.com ([207.126.147.10]) with SMTP;
+	Wed, 11 Jul 2012 20:16:08 GMT
+Received: by vcbf13 with SMTP id f13so1336515vcb.22
+        for <david.buchmann@liip.ch>; Wed, 11 Jul 2012 13:16:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=+ADMQQGrqFURMBrvdA4+Mdggnabeg11Sxh4Qxhwl33Q=;
+        b=osRqaCqP2tYaDm8I45Dhi2TqsPQdSVtN4iGPwWLd1o21WXa7+dCZn4FsNucq3F8/GZ
+         PE5ILi7F1mgE4xB3+iRT0fjFRg9YdSmgJqoqTHZM+Yx+uEihaUHT4RC7CS1zekgQSxA9
+         cfCeytVDaMiOLnmv1N2JP08V9NkFRuhYUfLjMIsLYwJA1iXiso8p1UelTTSjBVJf4+BW
+         OTBhl7GHyz2+a179+hSnsnVA9HiCpxjzxvLp3bh6U0OMTc7ooZK/yyf/c99xuhBlVUkb
+         F8Yc67Rr2on7+SfMFgPrn/F9OUkD23/gLiYaueIVfCZJ+NEV3/dnZd8uEmFIUQAjf1Vh
+         EFbA==
+MIME-Version: 1.0
+Received: by 10.220.16.8 with SMTP id m8mr23692845vca.10.1342037766028; Wed,
+ 11 Jul 2012 13:16:06 -0700 (PDT)
+Received: by 10.220.18.140 with HTTP; Wed, 11 Jul 2012 13:16:05 -0700 (PDT)
+In-Reply-To: <4FFD7DE9.5070505@emosaic.co.uk>
+References: <4FFD76C2.3040806@liip.ch>
+	<4FFD7DE9.5070505@emosaic.co.uk>
+Date: Wed, 11 Jul 2012 22:16:05 +0200
+Message-ID: <CACQgmQanJwL+3S1QxdNfp8mvqAHKvakRaNm2i3CDpm06rpcDtQ@mail.gmail.com>
+Subject: Re: please confirm doctrine phpcr bundle license change to MIT
+From: =?ISO-8859-1?Q?Uwe_J=E4ger?= <uwej711@gmail.com>
+To: Simon Holywell <simon@emosaic.co.uk>
+Cc: David Buchmann <david.buchmann@liip.ch>, Christophe Coevoet <stof@notk.org>, 
+	Florent Cailhol <florent@oocube.com>, Henri Bergius <henri.bergius@iki.fi>, 
+	"Julien 'ruian' Galenski" <galenski.julien@gmail.com>, Lukas Kahwe Smith <smith@pooteeweet.org>, 
+	=?ISO-8859-1?Q?Uwe_J=E4ger?= <uwej711@googlemail.com>
+Content-Type: text/plain; charset=ISO-8859-1
+X-pstn-dkim: 1 skipped:not-enabled
+X-pstn-nxpr: disp=neutral, envrcpt=david.buchmann@liip.ch
+X-pstn-nxp: bodyHash=667cca79c4e44a2aaa325d1cf58bf08b3be0e9e7,
+ headerHash=1fa647ea9ac7e51ec4441614cd914be776af0eb6, keyName=4,
+ rcptHash=f64fd3aad49032f902032049efab1b9761a3df63, sourceip=209.85.220.177, version=1
+
+Hi,
+
+fine with me, too.
+
+Cheers
+Uwe
+
+2012/7/11 Simon Holywell <simon@emosaic.co.uk>:
+> Yes, go for it.
+>
+> Thanks,
+> Simon (Treffynnon)
+>
+> Simon Holywell
+> Lead Developer | Mosaic
+>
+> +44.1273 811 091
+> simon@emosaic.co.uk
+> http://www.emosaic.co.uk
+>
+>
+> On 11/07/12 13:51, David Buchmann wrote:
+>>
+>> -----BEGIN PGP SIGNED MESSAGE-----
+>> Hash: SHA1
+>>
+>> hi,
+>>
+>> as the doctrine phpcr bundle was not covered in the switch of doctrine
+>> to MIT [1] i wanted to ask all of you as the contributers to the
+>> bundle if you are ok with switching the bundle license to MIT as well.
+>>
+>> please just reply to this email if it is ok.
+>>
+>> you can see your contributions on the github page
+>> https://github.com/doctrine/DoctrinePHPCRBundle/graphs/contributors
+>>
+>> @stof: github does not show you because the only commit you have was a
+>> merge commit. i still include you for completeness and because i am
+>> not a lawyer :-)
+>>
+>> cheers,david
+>>
+>> [1] http://dlm.beberlei.de/licenses/projects
+>> - -- Liip AG // Agile Web Development // T +41 26 422 25 11
+>> CH-1700 Fribourg // PGP 0xA581808B // www.liip.ch
+>>
+>> -----BEGIN PGP SIGNATURE-----
+>> Version: GnuPG v1.4.11 (GNU/Linux)
+>> Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
+>>
+>> iEYEARECAAYFAk/9dr0ACgkQqBnXnqWBgIuNoQCfVOaJ1KAV+9uBM1OCo3Dh/LwD
+>> ILQAn0IZ8C++sO40auTEZfGOUTa5stxV
+>> =h+Mh
+>> -----END PGP SIGNATURE-----
+>
+>
+>

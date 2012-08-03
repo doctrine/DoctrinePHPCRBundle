@@ -1,0 +1,59 @@
+Delivered-To: david.buchmann@liip.ch
+Received: by 10.229.12.79 with SMTP id w15csp22480qcw;
+        Wed, 11 Jul 2012 05:54:37 -0700 (PDT)
+Received: by 10.14.96.205 with SMTP id r53mr11554202eef.20.1342011277528;
+        Wed, 11 Jul 2012 05:54:37 -0700 (PDT)
+Return-Path: <stof@notk.org>
+Received: from psmtp.com (eu1sys200amx102.postini.com. [207.126.144.51])
+        by mx.google.com with SMTP id v48si979107eef.68.2012.07.11.05.54.36;
+        Wed, 11 Jul 2012 05:54:37 -0700 (PDT)
+Received-SPF: pass (google.com: domain of stof@notk.org designates 91.121.71.147 as permitted sender) client-ip=91.121.71.147;
+Authentication-Results: mx.google.com; spf=pass (google.com: domain of stof@notk.org designates 91.121.71.147 as permitted sender) smtp.mail=stof@notk.org
+Received: from nautica.notk.org ([91.121.71.147]) by eu1sys200amx102.postini.com ([207.126.147.10]) with SMTP;
+	Wed, 11 Jul 2012 12:54:37 GMT
+Received: from [192.168.0.32] (bne75-1-81-57-11-180.fbx.proxad.net [81.57.11.180])
+	by nautica.notk.org (Postfix) with ESMTPSA id A2F9AC009
+	for <david.buchmann@liip.ch>; Wed, 11 Jul 2012 14:54:36 +0200 (CEST)
+Message-ID: <4FFD7795.4060208@notk.org>
+Date: Wed, 11 Jul 2012 14:54:45 +0200
+From: Christophe COEVOET <stof@notk.org>
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:13.0) Gecko/20120614 Thunderbird/13.0.1
+MIME-Version: 1.0
+To: David Buchmann <david.buchmann@liip.ch>
+Subject: Re: please confirm doctrine phpcr bundle license change to MIT
+References: <4FFD76C2.3040806@liip.ch>
+In-Reply-To: <4FFD76C2.3040806@liip.ch>
+Content-Type: text/plain; charset=ISO-8859-15; format=flowed
+Content-Transfer-Encoding: 8bit
+X-pstn-dkim: 0 skipped:not-enabled
+X-pstn-nxpr: disp=neutral, envrcpt=david.buchmann@liip.ch
+X-pstn-nxp: bodyHash=3b7d97c49ffcdd645bf042bd2693f01e3869704c,
+ headerHash=f381d7c5e8bed0adc47bccb07c394ae23f8f51fb, keyName=4,
+ rcptHash=f64fd3aad49032f902032049efab1b9761a3df63, sourceip=91.121.71.147, version=1
+
+Le 11/07/2012 14:51, David Buchmann a écrit :
+> -----BEGIN PGP SIGNED MESSAGE-----
+> Hash: SHA1
+>
+> hi,
+>
+> as the doctrine phpcr bundle was not covered in the switch of doctrine
+> to MIT [1] i wanted to ask all of you as the contributers to the
+> bundle if you are ok with switching the bundle license to MIT as well.
+>
+> please just reply to this email if it is ok.
+>
+> you can see your contributions on the github page
+> https://github.com/doctrine/DoctrinePHPCRBundle/graphs/contributors
+>
+> @stof: github does not show you because the only commit you have was a
+> merge commit. i still include you for completeness and because i am
+> not a lawyer :-)
+>
+> cheers,david
+Well, I agree to switch the code I wrote in the bundle (i.e. nothing) to 
+MIT :)
+
+-- 
+Christophe | Stof
+

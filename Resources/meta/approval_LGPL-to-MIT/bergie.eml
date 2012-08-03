@@ -1,0 +1,68 @@
+Delivered-To: david.buchmann@liip.ch
+Received: by 10.229.12.79 with SMTP id w15csp23699qcw;
+        Wed, 11 Jul 2012 06:22:39 -0700 (PDT)
+Received: by 10.14.189.10 with SMTP id b10mr11965009een.9.1342012958956;
+        Wed, 11 Jul 2012 06:22:38 -0700 (PDT)
+Return-Path: <henri.bergius@gmail.com>
+Received: from psmtp.com (eu1sys200amx133.postini.com. [207.126.144.222])
+        by mx.google.com with SMTP id x56si1010072eea.113.2012.07.11.06.22.38
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Wed, 11 Jul 2012 06:22:38 -0700 (PDT)
+Received-SPF: pass (google.com: domain of henri.bergius@gmail.com designates 209.85.161.177 as permitted sender) client-ip=209.85.161.177;
+Authentication-Results: mx.google.com; spf=pass (google.com: domain of henri.bergius@gmail.com designates 209.85.161.177 as permitted sender) smtp.mail=henri.bergius@gmail.com; dkim=pass header.i=@gmail.com
+Received: from mail-gg0-f177.google.com ([209.85.161.177]) (using TLSv1) by eu1sys200amx133.postini.com ([207.126.147.10]) with SMTP;
+	Wed, 11 Jul 2012 13:22:38 GMT
+Received: by ggcs5 with SMTP id s5so1437469ggc.22
+        for <david.buchmann@liip.ch>; Wed, 11 Jul 2012 06:22:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type;
+        bh=Pa3twSK+m65SymagBm3/8oZvnArB0LgEyUca/se2pe8=;
+        b=esOISpHGG19OxZRmOW1T0C0AeI8OV6FPNhoRHov12S0eklQf54UvlSdAW+9Kcd5+ew
+         TaxqrHmwLEsXN/iDgMAq+Abzihriinog/i28JmJkKh/ZxsAaFmsO5aGux5fry4Ju+x3e
+         SHsA0aX7DfbdYyf0sb/vkgFsVPnGpsPFJlgO+XfxSbUnwlaJe+4Ep+H1Jrgk+XCIJ/Pr
+         6m7pQA1E7u9kkBteAZ+esC7p7W9VC/JuDWvOYENkc6pWMMszPqgYVZ+oU5ICz3DnEGoq
+         IL6Wy6iSBoqgSnlz42YQx8mZpoIL14Tn6a4xqzXwctPxJacuIYx7eMoWuOyqgb7vnRNV
+         ws9A==
+MIME-Version: 1.0
+Received: by 10.50.140.4 with SMTP id rc4mr14514296igb.68.1342012956979; Wed,
+ 11 Jul 2012 06:22:36 -0700 (PDT)
+Sender: henri.bergius@gmail.com
+Received: by 10.50.207.9 with HTTP; Wed, 11 Jul 2012 06:22:36 -0700 (PDT)
+In-Reply-To: <4FFD76C2.3040806@liip.ch>
+References: <4FFD76C2.3040806@liip.ch>
+Date: Wed, 11 Jul 2012 15:22:36 +0200
+X-Google-Sender-Auth: 6a3YQvOjueDOebannDknjfx8WpE
+Message-ID: <CAN8j9YYv6Khg=sK_if_ZNbdqAv1=N8+K4koXgKWx7F2PzzbOLQ@mail.gmail.com>
+Subject: Re: please confirm doctrine phpcr bundle license change to MIT
+From: Henri Bergius <henri.bergius@iki.fi>
+To: David Buchmann <david.buchmann@liip.ch>
+Cc: Christophe Coevoet <stof@notk.org>, Florent Cailhol <florent@oocube.com>, 
+	"Julien 'ruian' Galenski" <galenski.julien@gmail.com>, Lukas Kahwe Smith <smith@pooteeweet.org>, 
+	Simon Holywell <simon@emosaic.co.uk>, =?ISO-8859-1?Q?Uwe_J=E4ger?= <uwej711@googlemail.com>
+Content-Type: text/plain; charset=ISO-8859-1
+X-pstn-dkim: 1 skipped:not-enabled
+X-pstn-nxpr: disp=neutral, envrcpt=david.buchmann@liip.ch
+X-pstn-nxp: bodyHash=9b549671f4afb9eeaff2ad8e6a4c2f2e0ae0d961,
+ headerHash=3af464feaa44cba7bfc2d6836f92e9bd2e6337a8, keyName=4,
+ rcptHash=f64fd3aad49032f902032049efab1b9761a3df63, sourceip=209.85.161.177, version=1
+
+Hi,
+
+On Wed, Jul 11, 2012 at 2:51 PM, David Buchmann <david.buchmann@liip.ch> wrote:
+> as the doctrine phpcr bundle was not covered in the switch of doctrine
+> to MIT [1] i wanted to ask all of you as the contributers to the
+> bundle if you are ok with switching the bundle license to MIT as well.
+>
+> please just reply to this email if it is ok.
+
++1
+
+-- 
+Henri Bergius
+Motorcycle Adventures and Free Software
+http://bergie.iki.fi/
+
+Jabber: henri.bergius@gmail.com
+Microblogs: @bergie
