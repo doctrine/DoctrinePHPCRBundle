@@ -126,6 +126,11 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                 if (isset($session['backend']['connection'])) {
                     $parameters['jackalope.doctrine_dbal_connection'] = new Reference($session['backend']['connection']);
                 }
+                if (isset($session['backend']['caches'])) {
+                    foreach ($session['backend']['caches'] as $key => $cache) {
+                        $parameters['jackalope.data_caches'][$key] = new Reference($cache);
+                    }
+                }
                 break;
             case 'jackrabbit':
                 if (isset($session['backend']['url'])) {

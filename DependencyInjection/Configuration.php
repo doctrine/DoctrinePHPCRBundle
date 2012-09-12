@@ -103,7 +103,7 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('password')->defaultNull()->end()
                     ->arrayNode('backend')
                         ->useAttributeAsKey('name')
-                        ->prototype('scalar')->end()
+                        ->prototype('variable')->end()
                     ->end()
                     ->arrayNode('options')
                         ->useAttributeAsKey('name')
