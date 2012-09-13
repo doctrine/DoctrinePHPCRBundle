@@ -26,6 +26,7 @@ use Doctrine\ODM\PHPCR\Tools\Console\Helper\DocumentManagerHelper;
 
 use Jackalope\Tools\Console\Helper\DoctrineDbalHelper;
 use Jackalope\Tools\Console\Helper\JackrabbitHelper;
+use Jackalope\Transport\DoctrineDBAL\Client;
 use Jackalope\Session;
 
 /**
@@ -43,12 +44,8 @@ abstract class DoctrineCommandHelper
         $helperSet = $application->getHelperSet();
         $helperSet->set(new DocumentManagerHelper($session));
 
-        if ($session instanceof Session) {
-            switch (get_class($session->getTransport())) {
-                case 'Jackalope\Transport\DoctrineDBAL\Client':
-                    $helperSet->set(new DoctrineDBALHelper($session->getTransport()->getConnection()));
-                    break;
-            }
+        if ($session instanceof Session && $session->getTransport() instanceof Client) {
+            $helperSet->set(new DoctrineDBALHelper($session->getTransport()->getConnection()));
         }
     }
 
