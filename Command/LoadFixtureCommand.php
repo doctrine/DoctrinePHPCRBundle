@@ -71,6 +71,13 @@ EOT
         $registry = $this->getContainer()->get('doctrine_phpcr');
         $dm = $registry->getManager($input->getOption('name'));
 
+        if ($input->isInteractive() && !$input->getOption('append')) {
+            $dialog = $this->getHelperSet()->get('dialog');
+            if (!$dialog->askConfirmation($output, '<question>Careful, database will be purged. Do you want to continue Y/N ?</question>', false)) {
+                return;
+            }
+        }
+
         $dirOrFile = $input->getOption('fixtures');
         if ($dirOrFile) {
             $paths = is_array($dirOrFile) ? $dirOrFile : array($dirOrFile);
