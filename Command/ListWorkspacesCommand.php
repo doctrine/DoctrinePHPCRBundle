@@ -39,7 +39,12 @@ class ListWorkspacesCommand extends BaseListWorkspacesCommand
 
         $this
             ->setName('doctrine:phpcr:workspace:list')
-            ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command');
+            ->setDescription('List all available workspaces in the configured repository')
+            ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
+            ->setHelp(<<<EOT
+The <info>workspace:list</info> command lists all avaialable workspaces.
+EOT
+        );
     }
 
     /**
@@ -49,6 +54,6 @@ class ListWorkspacesCommand extends BaseListWorkspacesCommand
     {
         DoctrineCommandHelper::setApplicationPHPCRSession($this->getApplication(), $input->getOption('session'));
 
-        parent::execute($input, $output);
+        return parent::execute($input, $output);
     }
 }

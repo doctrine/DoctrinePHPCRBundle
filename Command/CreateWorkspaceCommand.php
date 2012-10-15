@@ -50,6 +50,6 @@ class CreateWorkspaceCommand extends BaseCreateWorkspaceCommand
     {
         DoctrineCommandHelper::setApplicationPHPCRSession($this->getApplication(), $input->getOption('session'));
 
-        parent::execute($input, $output);
+        return parent::execute($input, $output);
     }
 }

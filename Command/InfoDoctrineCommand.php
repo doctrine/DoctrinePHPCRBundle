@@ -30,9 +30,11 @@ class InfoDoctrineCommand extends BaseInfoDoctrineCommand
 {
     protected function configure()
     {
+        parent::configure();
+
         $this
             ->setName('doctrine:phpcr:mapping:info')
-            ->addOption('name', null, InputOption::VALUE_OPTIONAL, 'The document manager to use for this command.', null)
+            ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The document manager to use for this command.', null)
             ->setHelp(<<<EOT
 The <info>doctrine:phpcr:mapping:info</info> shows basic information about which
 entities exist and possibly if their mapping information contains errors or
@@ -43,15 +45,15 @@ not.
 If you are using multiple document managers you can pick your choice with the
 <info>--name</info> option:
 
-<info>php app/console doctrine:phpcr:mapping:info --name=default</info>
+<info>php app/console doctrine:phpcr:mapping:info --session=default</info>
 EOT
         );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        DoctrineCommandHelper::setApplicationDocumentManager($this->getApplication(), $input->getOption('name'));
+        DoctrineCommandHelper::setApplicationDocumentManager($this->getApplication(), $input->getOption('session'));
 
-        parent::execute($input, $output);
+        return parent::execute($input, $output);
     }
 }

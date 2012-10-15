@@ -51,7 +51,7 @@ class LoadFixtureCommand extends ContainerAwareCommand
             ->addOption('append', null, InputOption::VALUE_NONE, 'Append the data fixtures instead of deleting all data from the database first.')
             ->addOption('name', null, InputOption::VALUE_OPTIONAL, 'The document manager to use for this command.', null)
             ->setHelp(<<<EOT
-The <info>doctrine:phpcr:fixtures:load</info> command loads data fixtures from your bundles:
+The <info>doctrine:phpcr:fixtures:load</info> command loads data fixtures from your bundles DataFixtures/PHPCR directory:
 
   <info>./app/console doctrine:phpcr:fixtures:load</info>
 
@@ -109,5 +109,7 @@ EOT
             $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', $message));
         });
         $executor->execute($fixtures, $input->getOption('append'));
+
+        return 0;
     }
 }

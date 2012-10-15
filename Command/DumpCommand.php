@@ -85,6 +85,6 @@ class DumpCommand extends BaseDumpCommand implements ContainerAwareInterface
             $this->setDumpMaxLineLength($this->getContainer()->getParameter('doctrine_phpcr.dump_max_line_length'));
         }
 
-        parent::execute($input, $output);
+        return parent::execute($input, $output);
     }
 }
