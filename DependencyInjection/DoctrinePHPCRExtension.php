@@ -58,6 +58,10 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         $configuration = new Configuration($container->getParameter('kernel.debug'));
         $config = $processor->processConfiguration($configuration, $configs);
 
+        if (isset($config['jackrabbit_jar'])) {
+            $container->setParameter('doctrine_phpcr.jackrabbit_jar', $config['jackrabbit_jar']);
+        }
+
         if (!empty($config['session'])) {
             $this->sessionLoad($config['session'], $container);
         }
