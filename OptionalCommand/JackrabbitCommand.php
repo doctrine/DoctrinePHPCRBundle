@@ -95,6 +95,10 @@ EOF
             $this->setJackrabbitPath($this->getContainer()->getParameter('doctrine_phpcr.jackrabbit_jar'));
         }
 
+        if ($this->getContainer()->hasParameter('doctrine_phpcr.workspace_dir')) {
+            $this->setWorkspaceDir($this->getContainer()->getParameter('doctrine_phpcr.workspace_dir'));
+        }
+
         return parent::execute($input, $output);
     }
 }

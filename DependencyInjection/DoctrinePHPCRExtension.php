@@ -58,6 +58,10 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         $configuration = new Configuration($container->getParameter('kernel.debug'));
         $config = $processor->processConfiguration($configuration, $configs);
 
+        if (isset($config['workspace_dir'])) {
+            $container->setParameter('doctrine_phpcr.workspace_dir', $config['workspace_dir']);
+        }
+
         if (isset($config['jackrabbit_jar'])) {
             $container->setParameter('doctrine_phpcr.jackrabbit_jar', $config['jackrabbit_jar']);
         }
