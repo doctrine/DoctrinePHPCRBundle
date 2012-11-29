@@ -77,8 +77,6 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             }
             $this->odmLoad($config['odm'], $container);
         }
-
-        $this->loader->load('migrator.xml');
     }
 
     private function sessionLoad($config, ContainerBuilder $container)
