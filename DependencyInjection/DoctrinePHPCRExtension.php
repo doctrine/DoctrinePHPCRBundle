@@ -40,8 +40,8 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 {
     private $defaultSession;
     private $sessions = array();
-
     private $bundleDirs = array();
+    private $loader;
 
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -57,6 +57,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         $processor = new Processor();
         $configuration = new Configuration($container->getParameter('kernel.debug'));
         $config = $processor->processConfiguration($configuration, $configs);
+        $this->loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         if (isset($config['workspace_dir'])) {
             $container->setParameter('doctrine_phpcr.workspace_dir', $config['workspace_dir']);
@@ -76,12 +77,13 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             }
             $this->odmLoad($config['odm'], $container);
         }
+
+        $this->loader->load('migrator.xml');
     }
 
     private function sessionLoad($config, ContainerBuilder $container)
     {
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('phpcr.xml');
+        $this->loader->load('phpcr.xml');
 
         $sessions = $loaded = array();
         foreach ($config['sessions'] as $name => $session) {
@@ -97,14 +99,14 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                 case 'doctrinedbal':
                 case 'jackrabbit':
                     if (empty($loaded['jackalope'])) {
-                        $loader->load('jackalope.xml');
+                        $this->loader->load('jackalope.xml');
                         $loaded['jackalope'] = true;
                     }
                     $this->loadJackalopeSession($session, $container, $type);
                     break;
                 case 'midgard2':
                     if (empty($loaded['midgard2'])) {
-                        $loader->load('midgard2.xml');
+                        $this->loader->load('midgard2.xml');
                         $loaded['midgard2'] = true;
                     }
                     $this->loadMidgard2Session($session, $container);
@@ -235,8 +237,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
     private function odmLoad(array $config, ContainerBuilder $container)
     {
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('odm.xml');
+        $this->loader->load('odm.xml');
 
         $documentManagers = array();
         foreach ($config['document_managers'] as $name => $documentManager) {
