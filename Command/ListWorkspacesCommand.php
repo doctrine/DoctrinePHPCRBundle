@@ -42,7 +42,7 @@ class ListWorkspacesCommand extends BaseListWorkspacesCommand
             ->setDescription('List all available workspaces in the configured repository')
             ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
             ->setHelp(<<<EOT
-The <info>workspace:list</info> command lists all avaialable workspaces.
+The <info>workspace:list</info> command lists all available workspaces.
 EOT
         );
     }
