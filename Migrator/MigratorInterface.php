@@ -33,9 +33,9 @@ interface MigratorInterface
     public function init(SessionInterface $session, OutputInterface $output);
 
     /**
-     * @param string $identifer
+     * @param string $identifier
      * @param int $depth
      * @return int exit code
      */
-    public function migrate($identifer = '/', $depth = -1);
+    public function migrate($identifier = '/', $depth = -1);
 }

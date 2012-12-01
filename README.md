@@ -13,7 +13,7 @@ Follow the [installation tutorial](https://github.com/symfony-cmf/symfony-cmf-do
 ## Configuration
 
 The configuration is similar to Doctrine ORM and MongoDB configuration for Symfony2 as its based
-on the `AbstractDoctrineBundle` aswell:
+on the `AbstractDoctrineBundle` as well:
 
 ``` yaml
 doctrine_phpcr:
