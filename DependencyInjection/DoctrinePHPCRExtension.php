@@ -150,6 +150,18 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                 if (isset($session['backend']['expect'])) {
                     $parameters['jackalope.jackalope.jackrabbit_expect'] = $session['backend']['expect'];
                 }
+                // Factory
+                if (isset($session['backend']['factory'])) {
+                    /**
+                     * If it is a class, pass the name as is, else assume it is 
+                     * a service id and get a reference to it
+                     */
+                    if (class_exists($session['backend']['factory'])) {
+                        $parameters['jackalope.factory'] = $session['backend']['factory'];    
+                    } else {
+                        $parameters['jackalope.factory'] = new Reference($session['backend']['factory']);
+                    }            
+                }
                 break;
         }
 
