@@ -33,6 +33,8 @@
         <parameter key="doctrine_phpcr.odm.locale_choooser.class">Doctrine\ODM\PHPCR\Translation\LocaleChooser\LocaleChooser</parameter>
         <parameter key="doctrine_phpcr.odm.locale_listener.class">Doctrine\Bundle\PHPCRBundle\EventListener\LocaleListener</parameter>
 
+        <!-- validator -->
+        <parameter key="doctrine_phpcr.odm.validator.valid_phpcr_odm.class">Doctrine\Bundle\PHPCRBundle\Validator\Constraints\ValidPhpcrOdmValidator</parameter>
     </parameters>
 
     <services>
@@ -82,6 +84,11 @@
         <service id="form.type_guesser.doctrine_phpcr" class="%form.type_guesser.doctrine_phpcr.class%">
             <tag name="form.type_guesser"/>
             <argument type="service" id="doctrine_phpcr"/>
+        </service>
+
+        <service id="doctrine_phpcr.odm.validator.valid_phpcr_odm" class="%doctrine_phpcr.odm.validator.valid_phpcr_odm.class%">
+            <tag name="validator.constraint_validator" alias="doctrine_phpcr.odm.validator.valid_phpcr_odm"/>
+            <argument type="service" id="doctrine_phpcr" />
         </service>
 
     </services>
