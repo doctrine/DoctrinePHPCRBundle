@@ -56,13 +56,13 @@ class ValidPhpcrOdmValidator extends ConstraintValidator
         $parent = $class->getFieldValue($document, $class->parentMapping);
 
         if (false === $parent || (empty($parent) && '0' != $parent)) {
-            $this->context->addViolationAtSubPath($class->parentMapping, 'This value should not be blank.');
+            $this->context->addViolationAtSubPath($class->parentMapping, $constraint->message);
         }
 
         $name = $class->getFieldValue($document, $class->nodename);
 
         if (false === $name || (empty($name) && '0' != $name)) {
-            $this->context->addViolationAtSubPath($class->nodename, 'This value should not be blank.');
+            $this->context->addViolationAtSubPath($class->nodename, $constraint->message);
         }
 
     }
