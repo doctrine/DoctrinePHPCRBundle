@@ -24,6 +24,7 @@ use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 
 /**
  * Valid PHPCR ODM Validator checks if a document has an identifier or a parent and a name
@@ -46,8 +47,13 @@ class ValidPhpcrOdmValidator extends ConstraintValidator
     public function validate($document, Constraint $constraint)
     {
         $className = get_class($document);
-        $dm        = $this->registry->getManagerForClass($className);
-        $class     = $dm->getClassMetadata($className);
+        $dm = $this->registry->getManagerForClass($className);
+
+        if (null === $dm) {
+            throw new ConstraintDefinitionException('This document is not managed by the PHPCR ODM.');
+        }
+
+        $class = $dm->getClassMetadata($className);
 
         if ($class->getFieldValue($document, $class->identifier)) {
             return;
