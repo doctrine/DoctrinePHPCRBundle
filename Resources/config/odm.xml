@@ -87,8 +87,8 @@
         </service>
 
         <service id="doctrine_phpcr.odm.validator.valid_phpcr_odm" class="%doctrine_phpcr.odm.validator.valid_phpcr_odm.class%">
-            <tag name="validator.constraint_validator" alias="doctrine_phpcr.odm.validator.valid_phpcr_odm"/>
             <argument type="service" id="doctrine_phpcr" />
+            <tag name="validator.constraint_validator" alias="doctrine_phpcr.odm.validator.valid_phpcr_odm"/>
         </service>
 
     </services>
