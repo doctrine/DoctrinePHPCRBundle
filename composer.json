@@ -20,7 +20,7 @@
         "symfony/framework-bundle": ">=2.1,<2.3-dev",
         "symfony/doctrine-bridge": ">=2.1,<2.3-dev",
         "phpcr/phpcr-implementation": "2.1.*",
-        "phpcr/phpcr-utils": ">=1.0-beta3"
+        "phpcr/phpcr-utils": ">=1.0-beta4"
     },
     "suggest": {
         "doctrine/phpcr-odm": "if you want to use the odm as well. require version 1.0.*",
