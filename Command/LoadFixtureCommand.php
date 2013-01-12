@@ -50,6 +50,7 @@ class LoadFixtureCommand extends ContainerAwareCommand
             ->addOption('fixtures', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'The directory or file to load data fixtures from.')
             ->addOption('append', null, InputOption::VALUE_NONE, 'Append the data fixtures instead of deleting all data from the database first.')
             ->addOption('name', null, InputOption::VALUE_OPTIONAL, 'The document manager to use for this command.', null)
+            ->addOption('yes', 'y', InputOption::VALUE_NONE, 'Assume yes to all questions.', null)
             ->setHelp(<<<EOT
 The <info>doctrine:phpcr:fixtures:load</info> command loads data fixtures from your bundles DataFixtures/PHPCR directory:
 
@@ -71,7 +72,7 @@ EOT
         $registry = $this->getContainer()->get('doctrine_phpcr');
         $dm = $registry->getManager($input->getOption('name'));
 
-        if ($input->isInteractive() && !$input->getOption('append')) {
+        if ($input->isInteractive() && !$input->getOption('append') && !$input->getOption('yes')) {
             $dialog = $this->getHelperSet()->get('dialog');
             if (!$dialog->askConfirmation($output, '<question>Careful, database will be purged. Do you want to continue Y/N ?</question>', false)) {
                 return;
