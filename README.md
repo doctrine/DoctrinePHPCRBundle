@@ -132,6 +132,10 @@ You can register for the events as described in [the PHPCR-ODM documentation](ht
 
 More information on the doctrine event system integration is in this [symfony cookbook entry](http://symfony.com/doc/current/cookbook/doctrine/event_listeners_subscribers.html).
 
+# Constraint validator
+
+The bundle provides a ``ValidPhpcrOdm`` constraint validator you can use to check if your document ``Id`` or ``Nodename`` and ``Parent`` fields are correct.
+
 # Additional requirements for the doctrine:phpcr:fixtures:load command
 
 To use the doctrine:phpcr:fixtures:load command, you additionally need the Doctrine
