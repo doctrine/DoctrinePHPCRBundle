@@ -45,15 +45,6 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
     public function load(array $configs, ContainerBuilder $container)
     {
-        // TODO move this default to the Configuration class if somebody can figure out how to do it. needs to depend on the current locale
-        array_unshift($configs,
-            array('odm' => array(
-                'locales' => array(
-                    $container->getParameter('locale') => array($container->getParameter('locale')),
-                ),
-            ),
-        ));
-
         $processor = new Processor();
         $configuration = new Configuration($container->getParameter('kernel.debug'));
         $config = $processor->processConfiguration($configuration, $configs);
