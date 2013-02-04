@@ -30,7 +30,7 @@
         <parameter key="doctrine_phpcr.odm.proxy_cache_warmer.class">Symfony\Bridge\Doctrine\CacheWarmer\ProxyCacheWarmer</parameter>
 
         <!-- translation -->
-        <parameter key="doctrine_phpcr.odm.locale_choooser.class">Doctrine\ODM\PHPCR\Translation\LocaleChooser\LocaleChooser</parameter>
+        <parameter key="doctrine_phpcr.odm.locale_chooser.class">Doctrine\ODM\PHPCR\Translation\LocaleChooser\LocaleChooser</parameter>
         <parameter key="doctrine_phpcr.odm.locale_listener.class">Doctrine\Bundle\PHPCRBundle\EventListener\LocaleListener</parameter>
 
         <!-- validator -->
@@ -66,7 +66,7 @@
             <argument type="service" id="service_container"/>
         </service>
 
-        <service id="doctrine_phpcr.odm.locale_chooser" class="%doctrine_phpcr.odm.locale_choooser.class%">
+        <service id="doctrine_phpcr.odm.locale_chooser" class="%doctrine_phpcr.odm.locale_chooser.class%">
             <argument>%doctrine_phpcr.odm.locales%</argument>
             <argument>%locale%</argument>
         </service>
