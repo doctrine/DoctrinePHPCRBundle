@@ -280,6 +280,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         }
 
         $container->setParameter('doctrine_phpcr.odm.locales', $config['locales']);
+        $container->setParameter('doctrine_phpcr.odm.default_locale', key($config['locales']));
     }
 
     private function loadOdmDocumentManager(array $documentManager, ContainerBuilder $container)

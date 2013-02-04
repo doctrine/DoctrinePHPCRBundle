@@ -68,7 +68,7 @@
 
         <service id="doctrine_phpcr.odm.locale_chooser" class="%doctrine_phpcr.odm.locale_chooser.class%">
             <argument>%doctrine_phpcr.odm.locales%</argument>
-            <argument>%locale%</argument>
+            <argument>%doctrine_phpcr.odm.default_locale%</argument>
         </service>
 
         <service id="doctrine_phpcr.odm.locale_listener" class="%doctrine_phpcr.odm.locale_listener.class%">
