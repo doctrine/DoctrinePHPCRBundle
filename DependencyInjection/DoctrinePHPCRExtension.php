@@ -240,6 +240,16 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
     {
         $this->loader->load('odm.xml');
 
+        if (!empty($config['locales'])) {
+            $this->loader->load('odm_multilang.xml');
+
+            $container->setParameter('doctrine_phpcr.odm.locales', $config['locales']);
+            $container->setParameter('doctrine_phpcr.odm.default_locale', key($config['locales']));
+
+            $dm = $container->getDefinition('doctrine_phpcr.odm.document_manager.abstract');
+            $dm->addMethodCall('setLocaleChooserStrategy', array(new Reference('doctrine_phpcr.odm.locale_chooser')));
+        }
+
         $documentManagers = array();
         foreach ($config['document_managers'] as $name => $documentManager) {
             if (empty($config['default_document_manager'])) {
@@ -269,9 +279,6 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         foreach ($options as $key) {
             $container->setParameter('doctrine_phpcr.odm.' . $key, $config[$key]);
         }
-
-        $container->setParameter('doctrine_phpcr.odm.locales', $config['locales']);
-        $container->setParameter('doctrine_phpcr.odm.default_locale', key($config['locales']));
     }
 
     private function loadOdmDocumentManager(array $documentManager, ContainerBuilder $container)

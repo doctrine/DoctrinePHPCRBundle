@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="doctrine_phpcr.odm.locale_chooser.class">Doctrine\ODM\PHPCR\Translation\LocaleChooser\LocaleChooser</parameter>
+        <parameter key="doctrine_phpcr.odm.locale_listener.class">Doctrine\Bundle\PHPCRBundle\EventListener\LocaleListener</parameter>
+    </parameters>
+
+    <services>
+
+        <service id="doctrine_phpcr.odm.locale_chooser" class="%doctrine_phpcr.odm.locale_chooser.class%">
+            <argument>%doctrine_phpcr.odm.locales%</argument>
+            <argument>%doctrine_phpcr.odm.default_locale%</argument>
+        </service>
+
+        <service id="doctrine_phpcr.odm.locale_listener" class="%doctrine_phpcr.odm.locale_listener.class%">
+            <tag name="kernel.event_subscriber"/>
+            <argument type="service" id="doctrine_phpcr.odm.locale_chooser"/>
+        </service>
+
+    </services>
+</container>
