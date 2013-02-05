@@ -20,15 +20,16 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Bridge\Doctrine\DependencyInjection\AbstractDoctrineExtension;
+
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Definition\Processor;
+
+use Symfony\Bridge\Doctrine\DependencyInjection\AbstractDoctrineExtension;
 
 /**
  * PHPCR Extension
