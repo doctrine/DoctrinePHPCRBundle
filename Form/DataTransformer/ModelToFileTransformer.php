@@ -6,7 +6,7 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Doctrine\ODM\PHPCR\Document\File as PHPCRFile;
 use Doctrine\Common\Util\Debug;
-use Doctrine\Bundle\PHPCRBundle\Document\Image;
+use Doctrine\ODM\PHPCR\Document\Image;
 
 class ModelToFileTransformer implements DataTransformerInterface
 {
