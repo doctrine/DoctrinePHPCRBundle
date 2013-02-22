@@ -3,6 +3,7 @@
 namespace Doctrine\Bundle\PHPCRBundle\Document;
 
 use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCRODM;
+use Doctrine\ODM\PHPCR\Document\File;
 
 /**
  * @PHPCRODM\Document(referenceable=true)
@@ -23,31 +24,49 @@ class Image
     protected $file;
 
 
-    public function setFile($file)
+    /**
+     * @param $file File
+     */
+    public function setFile(File $file)
     {
         $this->file = $file;
     }
 
+    /**
+     * @return File
+     */
     public function getFile()
     {
         return $this->file;
     }
 
+    /**
+     * @param $mimeType string
+     */
     public function setMimeType($mimeType)
     {
         $this->file->getContent()->setMimeType($mimeType);
     }
 
+    /**
+     * @return string
+     */
     public function getMimeType()
     {
         return $this->file->getContent()->getMimeType();
     }
 
+    /**
+     * @return stream
+     */
     public function getContent()
     {
         return $this->file->getFileContentAsStream();
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->path;
