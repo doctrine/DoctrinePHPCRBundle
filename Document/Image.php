@@ -22,11 +22,6 @@ class Image
      */
     protected $file;
 
-    /**
-     * @PHPCRODM\String
-     */
-    protected $mimeType;
-
 
     public function setFile($file)
     {
@@ -40,12 +35,12 @@ class Image
 
     public function setMimeType($mimeType)
     {
-        $this->mimeType = $mimeType;
+        $this->file->getContent()->setMimeType($mimeType);
     }
 
     public function getMimeType()
     {
-        return $this->mimeType;
+        return $this->file->getContent()->getMimeType();
     }
 
     public function getContent()
