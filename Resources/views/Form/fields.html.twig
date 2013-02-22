@@ -1,0 +1,4 @@
+{% block phpcr_image_widget %}
+    {{ form_widget(form) }}
+    <img src="{{ form.vars.data | imagine_filter('phpcr_test') }}" alt="" />
+{% endblock %}
