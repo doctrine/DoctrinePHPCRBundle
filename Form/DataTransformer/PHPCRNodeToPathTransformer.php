@@ -44,7 +44,7 @@ class PHPCRNodeToPathTransformer implements DataTransformerInterface
      */
     public function reverseTransform($id)
     {
-        if (null === $id) {
+        if (!$id) {
             return null;
         }
 

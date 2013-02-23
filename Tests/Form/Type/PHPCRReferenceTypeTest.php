@@ -30,7 +30,7 @@ class PHPCRReferenceTypeTest extends \PHPUnit_Framework_Testcase
     /**
      * @dataProvider provideTypes
      */
-    public function testBuidForm($transformerType, $transformerFqn)
+    public function testBuildForm($transformerType, $transformerFqn)
     {
         $type = null;
         $this->builder->expects($this->once())

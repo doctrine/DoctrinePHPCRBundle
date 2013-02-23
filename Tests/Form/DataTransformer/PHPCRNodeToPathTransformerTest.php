@@ -44,6 +44,15 @@ class PHPCRNodeToPathTransformerTest extends \PHPUnit_Framework_Testcase
         $this->assertSame($this->node, $res);
     }
 
+    public function testReverseTransformEmpty()
+    {
+        $this->session->expects($this->never())
+            ->method('getNodeByIdentifier');
+        $res = $this->transformer->reverseTransform('');
+        $this->assertNull($res);
+
+    }
+
     public function testReverseTransformNotFound()
     {
         // nothing to test, the PHPCR session will throw an 
