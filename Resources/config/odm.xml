@@ -65,11 +65,6 @@
             <argument type="service" id="doctrine_phpcr"/>
         </service>
 
-        <service id="form.type.phpcr.reference" class="Doctrine\Bundle\PHPCRBundle\Form\Type\PHPCRReferenceType">
-            <tag name="form.type" alias="phpcr_reference"/>
-            <argument type="service" id="doctrine_phpcr.session"/>
-        </service>
-
         <service id="form.type_guesser.doctrine_phpcr" class="%form.type_guesser.doctrine_phpcr.class%">
             <tag name="form.type_guesser"/>
             <argument type="service" id="doctrine_phpcr"/>

@@ -19,9 +19,37 @@ class PHPCRReferenceTypeTest extends \PHPUnit_Framework_Testcase
         $this->type = new PHPCRReferenceType($this->session);
     }
 
-    public function testBuidForm()
+    public function provideTypes()
     {
-        $this->type->buildForm($this->builder, array());
+        return array(
+            array('uuid', 'Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\PHPCRNodeToUuidTransformer'),
+            array('path', 'Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\PHPCRNodeToPathTransformer'),
+        );
+    }
+
+    /**
+     * @dataProvider provideTypes
+     */
+    public function testBuidForm($transformerType, $transformerFqn)
+    {
+        $type = null;
+        $this->builder->expects($this->once())
+            ->method('addModelTransformer')
+            ->will($this->returnCallback(function ($transformer) use (&$type) {
+                $type = get_class($transformer);
+                return null;
+            }));
+        $this->type->buildForm($this->builder, array('transformer_type' => $transformerType));
+
+        $this->assertEquals($transformerFqn, $type);
+    }
+
+    /**
+     * @expectedException Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     */
+    public function testInvalidType()
+    {
+        $this->type->buildForm($this->builder, array('transformer_type' => 'asdasd'));
     }
 }
 

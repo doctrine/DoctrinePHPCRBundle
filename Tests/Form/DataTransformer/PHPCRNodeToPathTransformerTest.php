@@ -19,7 +19,7 @@ class PHPCRNodeToPathTransformerTest extends \PHPUnit_Framework_Testcase
     public function testTransform()
     {
         $this->node->expects($this->once())
-            ->method('getIdentifier')
+            ->method('getPath')
             ->will($this->returnValue('/asd'));
         $res = $this->transformer->transform($this->node);
         $this->assertEquals('/asd', $res);

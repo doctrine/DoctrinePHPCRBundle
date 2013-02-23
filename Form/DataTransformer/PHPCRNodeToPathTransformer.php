@@ -21,26 +21,34 @@ class PHPCRNodeToPathTransformer implements DataTransformerInterface
      *
      * @param PHPCR\NodeInterface
      * @throws UnexpectedTypeException if given value is not a PHPCR\NodeInterface
-     * @return string
+     * @return string|null
      */
     public function transform($node)
     {
+        if (null === $node) {
+            return null;
+        }
+
         if (!$node instanceof NodeInterface) {
             throw new UnexpectedTypeException($node, 'PHPCR\NodeInterface');
         }
-        return $node->getIdentifier();
+        return $node->getPath();
     }
 
     /**
-     * Transform a path to its corresponding PHPCR node
+     * Transform a path/uuid to its corresponding PHPCR node
      *
-     * @param string $path 
+     * @param string $path/uuid 
      * @throws PHPCR\ItemNotFoundException if node not found
-     * @return PHPCR\NodeInterface
+     * @return PHPCR\NodeInterface|null
      */
-    public function reverseTransform($path)
+    public function reverseTransform($id)
     {
-        $node = $this->session->getNodeByIdentifier($path);
+        if (null === $id) {
+            return null;
+        }
+
+        $node = $this->session->getNodeByIdentifier($id);
 
         return $node;
     }
