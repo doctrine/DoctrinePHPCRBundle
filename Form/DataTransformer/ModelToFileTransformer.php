@@ -10,13 +10,12 @@ use Doctrine\ODM\PHPCR\Document\Image;
 
 class ModelToFileTransformer implements DataTransformerInterface
 {
-
     /**
      * {@inheritdoc}
      */
     public function reverseTransform($uploadedFile)
     {
-        if (! $uploadedFile instanceof UploadedFile) {
+        if (!$uploadedFile instanceof UploadedFile) {
             return $uploadedFile;
         }
 

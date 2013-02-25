@@ -8,7 +8,6 @@ use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\ModelToFileTransformer;
 
 class ImageType extends AbstractType
 {
-
     public function getParent()
     {
         return 'file';
@@ -24,5 +23,4 @@ class ImageType extends AbstractType
         $transformer = new ModelToFileTransformer();
         $builder->addModelTransformer($transformer);
     }
-
 }
