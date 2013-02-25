@@ -1,4 +1,4 @@
-{% block phpcr_image_widget %}
+{% block phpcr_odm_image_widget %}
     {{ form_widget(form) }}
     <img src="{{ form.vars.data | imagine_filter('image_upload_thumbnail') }}" alt="" />
 {% endblock %}

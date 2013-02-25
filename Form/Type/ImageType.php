@@ -15,7 +15,7 @@ class ImageType extends AbstractType
 
     public function getName()
     {
-        return 'phpcr_image';
+        return 'phpcr_odm_image';
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)

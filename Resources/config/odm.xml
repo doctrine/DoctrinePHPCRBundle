@@ -60,8 +60,8 @@
             <argument type="service" id="service_container"/>
         </service>
 
-        <service id="form.type.phpcr.image" class="Doctrine\Bundle\PHPCRBundle\Form\Type\ImageType">
-            <tag name="form.type" alias="phpcr_image"/>
+        <service id="form.type.phpcr_odm.image" class="Doctrine\Bundle\PHPCRBundle\Form\Type\ImageType">
+            <tag name="form.type" alias="phpcr_odm_image"/>
         </service>
 
         <service id="form.type.phpcr.document" class="Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType">
