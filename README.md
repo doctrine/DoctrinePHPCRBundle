@@ -136,6 +136,16 @@ More information on the doctrine event system integration is in this [symfony co
 
 The bundle provides a ``ValidPhpcrOdm`` constraint validator you can use to check if your document ``Id`` or ``Nodename`` and ``Parent`` fields are correct.
 
+# Form types
+
+The bundle will provide various form types for PHPCR and PHPCR-ODM specific cases.
+
+## PHPCRReferenceType
+
+Represent a PHPCR reference within a form. The input will be rendered as a text field
+containing either the PATH or the UUID as per the configuration. The form will resolve
+to a PHPCR node.
+
 # Additional requirements for the doctrine:phpcr:fixtures:load command
 
 To use the doctrine:phpcr:fixtures:load command, you additionally need the Doctrine
