@@ -1,188 +1,22 @@
-# Doctrine PHPCR Bundle
+# DoctrinePHPCRBundle
 
-This bundle integrates Doctrine PHPCR ODM and PHPCR backends into Symfony2 like:
+PHPCR & Doctrine PHPCR-ODM Bundle for the Symfony Framework.
 
-* [Jackalope](http://jackalope.github.com/)
-* [Midgard2](http://midgard-project.org/phpcr/)
+This bundle integrates PHP Content Repository implementations and the Doctrine PHPCR-ODM into Symfony2.
 
-# Installation
+## What is Doctrine PHPCR-ODM?
 
-Follow the [installation tutorial](https://github.com/symfony-cmf/symfony-cmf-docs/blob/master/tutorials/installing-configuring-doctrine-phpcr-odm.rst)
+The Doctrine Project is the home of a selected set of PHP libraries primarily focused on providing persistence
+services and related functionality. The PHPCR-ODM project provides an Object - Document Mapper built on top of
+the content repository standard PHPCR.
 
+It leverages the various features of PHPCR like references, children and parent relations and versioning and
+adds features of its own like multilanguage.
 
-## Configuration
+## Documentation
 
-The configuration is similar to Doctrine ORM and MongoDB configuration for Symfony2 as its based
-on the `AbstractDoctrineBundle` as well:
+For information, see [Symfony CMF Documentation](http://symfony.com/doc/master/cmf/index.html),
+specifically [Installing and configuring Doctrine PHPCR-ODM](http://symfony.com/doc/master/cmf/tutorials/installing-configuring-doctrine-phpcr-odm.html)
+and [DoctrinePHPCRBundle](http://symfony.com/doc/master/cmf/bundles/phpcr-odm.html).
 
-``` yaml
-doctrine_phpcr:
-    # configure the PHPCR session
-    session:
-        backend:
-            ## backend type: jackrabbit, doctrinedbal or midgard
-            type: jackrabbit
-
-            ## doctrinedbal only, required
-            connection: <service name of the doctrine dbal connection>
-
-            ## jackrabbit only, required
-            url: http://localhost:8080/server/
-            ## jackrabbit only, optional. see https://github.com/jackalope/jackalope/blob/master/src/Jackalope/RepositoryFactoryJackrabbit.php
-            default_header: ...
-            expect: 'Expect: 100-continue'
-
-            ## tweak options for jackrabbit and doctrinedbal (all jackalope versions)
-            # optional, below set to the default
-            # enable if you want to have an exception right away if backend login fails
-            check_login_on_server: false
-            # enable if you experience segmentation faults while working with binary data in documents
-            disable_stream_wrapper: false
-            # enable if you do not want to use transactions and you neither want the odm to automatically use transactions
-            # its highly recommended NOT to disable transactions
-            disable_transactions: false
-        workspace: default
-        username: admin
-        password: admin
-        # not all backends support options
-        options:
-            'jackalope.fetch_depth': 1
-    # enable the ODM layer. omit the odm section if you only want a phpcr session but no odm
-    odm:
-        auto_mapping: true
-        # whether to automatically create proxy classes or create them manually
-        auto_generate_proxy_classes: %kernel.debug%
-        # overwrite the default location for generated proxies
-        proxy_dir: ...
-        # overwrite the default php namespace for proxies
-        proxy_namespace: ...
-        # set the language fallback order (for translatable documents)
-        locales:
-            en:
-                - en
-                - de
-                - fr
-            de:
-                - de
-                - en
-                - fr
-            fr:
-                - fr
-                - en
-                - de
-```
-
-### Configuration for Midgard2 PHPCR provider
-
-To use DoctrinePHPCRBundle with the Midgard2 PHPCR provider, you must have both the [midgard2 PHP extension](http://midgard-project.org/midgard2/#download) and [the midgard/phpcr package](http://packagist.org/packages/midgard/phpcr) installed. The configuration is similar, except for the session backend, which should be something like:
-
-``` yaml
-doctrine_phpcr:
-    # configure the PHPCR session
-    session:
-        backend:
-            type: midgard2
-            db_type: SQLite
-            db_name: cmf
-            db_dir: /tmp
-            db_init: true
-            blobdir: /tmp/cmf-blobs
-```
-
-The settings here correspond to Midgard2 repository parameters as explained in [the getting started document](http://midgard-project.org/phpcr/#getting_started).
-
-## Services
-
-You can access the PHPCR services like this:
-
-``` php
-<?php
-
-namespace Acme\DemoBundle\Controller;
-
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
-class DefaultController extends Controller
-{
-    public function indexAction()
-    {
-        // PHPCR session instance
-        $session = $this->container->get('doctrine_phpcr.default_session');
-        // PHPCR ODM document manager instance
-        $documentManager = $this->container->get('doctrine_phpcr.odm.default_document_manager');
-    }
-}
-```
-
-## Events
-
-You can tag services to listen to Doctrine phpcr events. It works the same way
-as for Doctrine ORM. The only differences are
-
-* use the tag name ``doctrine_phpcr.event_listener`` resp. ``doctrine_phpcr.event_subscriber`` instead of ``doctrine.event_listener``.
-* expect the argument to be of class Doctrine\ODM\PHPCR\Event\LifecycleEventArgs rather than in the ORM namespace.
-
-You can register for the events as described in [the PHPCR-ODM documentation](https://github.com/doctrine/phpcr-odm/).
-
-    services:
-        my.listener:
-            class: Acme\SearchBundle\Listener\SearchIndexer
-                tags:
-                    - { name: doctrine_phpcr.event_listener, event: postPersist }
-
-More information on the doctrine event system integration is in this [symfony cookbook entry](http://symfony.com/doc/current/cookbook/doctrine/event_listeners_subscribers.html).
-
-# Constraint validator
-
-The bundle provides a ``ValidPhpcrOdm`` constraint validator you can use to check if your document ``Id`` or ``Nodename`` and ``Parent`` fields are correct.
-
-# Form types
-
-The bundle will provide various form types for PHPCR and PHPCR-ODM specific cases.
-
-## PHPCRReferenceType
-
-Represent a PHPCR reference within a form. The input will be rendered as a text field
-containing either the PATH or the UUID as per the configuration. The form will resolve
-to a PHPCR node.
-
-# Additional requirements for the doctrine:phpcr:fixtures:load command
-
-To use the doctrine:phpcr:fixtures:load command, you additionally need the Doctrine
-data-fixtures and the symfony doctrine fixtures bundle:
-- https://github.com/symfony/DoctrineFixturesBundle
-- https://github.com/doctrine/data-fixtures
-
-
-# Commands
-
-The bundle provides a couple of symfony commands. To execute them, from your
-main project folder run
-
-    app/console.php <command> [options] [arguments]
-
-Look for the commands that start with `doctrine:phpcr`.
-
-
-# Fixtures
-
-The fixtures classes must implement `Doctrine\Common\DataFixtures\FixtureInterface`.
-
-Here is an example of fixture:
-
-``` php
-<?php
-
-namespace MyBundle\DataFixtures\PHPCR;
-
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\DataFixtures\FixtureInterface;
-
-class LoadMyData implements FixtureInterface
-{
-    public function load(ObjectManager $manager)
-    {
-        // Create and persist your data here...
-    }
-}
-```
+PHPCR-ODM in general is documented in the [Doctrine PHPCR-ODM documentation](http://docs.doctrine-project.org/projects/doctrine-phpcr-odm/en/latest/).
