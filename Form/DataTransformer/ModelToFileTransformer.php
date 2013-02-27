@@ -4,8 +4,7 @@ namespace Doctrine\Bundle\PHPCRBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Doctrine\ODM\PHPCR\Document\File as PHPCRFile;
-use Doctrine\Common\Util\Debug;
+use Doctrine\ODM\PHPCR\Document\File;
 use Doctrine\ODM\PHPCR\Document\Image;
 
 class ModelToFileTransformer implements DataTransformerInterface
@@ -20,7 +19,7 @@ class ModelToFileTransformer implements DataTransformerInterface
         }
 
         /** @var $uploadedFile UploadedFile */
-        $fileObj = new PHPCRFile();
+        $fileObj = new File();
         $fileObj->setFileContentFromFilesystem($uploadedFile->getPathname());
         $image = new Image();
         $image->setFile($fileObj);
