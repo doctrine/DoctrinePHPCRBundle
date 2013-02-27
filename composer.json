@@ -25,7 +25,8 @@
     "suggest": {
         "doctrine/phpcr-odm": "if you want to use the odm as well. require version 1.0.*",
         "doctrine/data-fixtures": "if you want to use the fixture loading",
-        "doctrine/doctrine-bundle": "when using jackalope-doctrine-dbal"
+        "doctrine/doctrine-bundle": "when using jackalope-doctrine-dbal",
+        "liip/imagine-bundle": "when using the phpcr_odm_image form type"
     },
     "autoload": {
         "psr-0": { "Doctrine\\Bundle\\PHPCRBundle": "" }
