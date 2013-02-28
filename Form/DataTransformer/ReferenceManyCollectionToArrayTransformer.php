@@ -38,7 +38,7 @@ class ReferenceManyCollectionToArrayTransformer implements DataTransformerInterf
         $arr = array();
 
         foreach ($collection as $item) {
-            $arr[$item->getPath()] = $item->getName();
+            $arr[] = $item->getPath();
         }
 
         return $arr;
