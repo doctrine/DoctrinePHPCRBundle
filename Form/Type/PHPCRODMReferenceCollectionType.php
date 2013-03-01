@@ -8,6 +8,12 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\ReferenceManyCollectionToArrayTransformer;
 
+/**
+ * A type to handle a list of references as simple choice.
+ *
+ * This is probably just a temporary replacement until https://github.com/sonata-project/SonataDoctrineORMAdminBundle/issues/145
+ * can be fixed.
+ */
 class PHPCRODMReferenceCollectionType extends AbstractType
 {
 
