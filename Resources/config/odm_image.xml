@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="form.type.phpcr_odm.image" class="Doctrine\Bundle\PHPCRBundle\Form\Type\ImageType">
+            <tag name="form.type" alias="phpcr_odm_image"/>
+        </service>
+
+        <service id="doctrine_phpcr.odm.listener.image_cache" class="Doctrine\Bundle\PHPCRBundle\EventListener\ImageCacheInvalidatorListener">
+            <tag name="doctrine_phpcr.event_listener" event="postUpdate" />
+            <argument type="service" id="liipch_core.imagine.data_loader.phpcr"/>
+        </service>
+
+    </services>
+
+</container>
