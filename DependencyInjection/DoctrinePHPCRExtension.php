@@ -145,14 +145,14 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                 // Factory
                 if (isset($session['backend']['factory'])) {
                     /**
-                     * If it is a class, pass the name as is, else assume it is 
+                     * If it is a class, pass the name as is, else assume it is
                      * a service id and get a reference to it
                      */
                     if (class_exists($session['backend']['factory'])) {
-                        $parameters['jackalope.factory'] = $session['backend']['factory'];    
+                        $parameters['jackalope.factory'] = $session['backend']['factory'];
                     } else {
                         $parameters['jackalope.factory'] = new Reference($session['backend']['factory']);
-                    }            
+                    }
                 }
                 break;
         }
@@ -250,6 +250,9 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             $dm = $container->getDefinition('doctrine_phpcr.odm.document_manager.abstract');
             $dm->addMethodCall('setLocaleChooserStrategy', array(new Reference('doctrine_phpcr.odm.locale_chooser')));
         }
+
+        // TODO make optional
+        $this->loader->load('odm_image.xml');
 
         $documentManagers = array();
         foreach ($config['document_managers'] as $name => $documentManager) {
