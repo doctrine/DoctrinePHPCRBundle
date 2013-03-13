@@ -3,6 +3,8 @@
 namespace Doctrine\Bundle\PHPCRBundle\EventListener;
 
 use Doctrine\Common\Util\Debug;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ODM\PHPCR\Document\Image;
 use Doctrine\ODM\PHPCR\Document\File;
 use Doctrine\ODM\PHPCR\Document\Resource;
@@ -17,10 +19,34 @@ use Liip\ImagineBundle\Imagine\Data\Loader\DoctrinePHPCRLoader;
  */
 class ImagineCacheInvalidatorSubscriber implements EventSubscriber
 {
+    /**
+     * @var CacheManager
+     */
+    private $manager;
 
-    public function __construct(CacheManager $manager)
+    /**
+     * Used to get the request from to remove cache
+     * @var Container
+     */
+    private $container;
+
+    /**
+     * Filter names to invalidate
+     * @var array
+     */
+    private $filters;
+
+    /**
+     * @param CacheManager $manager   the imagine cache manager
+     * @param Container    $container to get the request from. Need to inject
+     *      this as otherwise we have a scope problem
+     * @param array        $filter    list of filter names to invalidate
+     */
+    public function __construct(CacheManager $manager, Container $container, $filters)
     {
         $this->manager = $manager;
+        $this->container = $container;
+        $this->filters = $filters;
     }
 
     /**
@@ -30,15 +56,26 @@ class ImagineCacheInvalidatorSubscriber implements EventSubscriber
     {
         return array(
             'postUpdate',
-            'preRemove', // when removing, do before the flush to still get parents
+            'preRemove',
         );
     }
 
+    /**
+     * Invalidate cache after a document was updated.
+     *
+     * @param LifecycleEventArgs $args
+     */
     public function postUpdate(LifecycleEventArgs $args)
     {
         $this->invalidateCache($args);
     }
 
+    /**
+     * Invalidate the cache when removing an image. Do this before the flush to
+     * still have access to the parent of the document.
+     *
+     * @param LifecycleEventArgs $args
+     */
     public function preRemove(LifecycleEventArgs $args)
     {
         $this->invalidateCache($args);
@@ -60,9 +97,14 @@ class ImagineCacheInvalidatorSubscriber implements EventSubscriber
             $document = $document->getParent();
         }
         if ($document instanceof Image) {
-            // TODO: this does not work, what do we need to pass to manager->remove?
-            // TODO: can we invalidate all caches? otherwise inject filter name(s)? by config
-            $this->manager->remove($document->getId(), 'image_upload_thumbnail');
+            foreach ($this->filters as $filter) {
+                $path = $this->manager->resolve($this->container->get('request'), $document->getId(), 'image_upload_thumbnail')->getTargetUrl();
+                // TODO: this might not be needed https://github.com/liip/LiipImagineBundle/issues/162
+                if (false !== strpos($path, $filter)) {
+                    $path = substr($path, strpos($path, $filter) + strlen($filter));
+                }
+                $this->manager->remove($path, $filter);
+            }
         }
     }
 
