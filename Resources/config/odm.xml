@@ -60,10 +60,6 @@
             <argument type="service" id="service_container"/>
         </service>
 
-        <service id="form.type.phpcr_odm.image" class="Doctrine\Bundle\PHPCRBundle\Form\Type\ImageType">
-            <tag name="form.type" alias="phpcr_odm_image"/>
-        </service>
-
         <service id="form.type.phpcr_odm.reference_collection" class="Doctrine\Bundle\PHPCRBundle\Form\Type\PHPCRODMReferenceCollectionType">
             <tag name="form.type" alias="phpcr_odm_reference_collection"/>
             <argument type="service" id="doctrine_phpcr.odm.document_manager"/>
