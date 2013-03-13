@@ -252,7 +252,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             $dm->addMethodCall('setLocaleChooserStrategy', array(new Reference('doctrine_phpcr.odm.locale_chooser')));
         }
 
-        if ($config['imagine']['enabled']) {
+        if (isset($config['imagine']['enabled']) && $config['imagine']['enabled']) {
             $filter = $config['imagine']['filter'];
             $filters = isset($config['imagine']['extra_filters']) && is_array($config['imagine']['extra_filters'])
                 ? $config['imagine']['extra_filters']
