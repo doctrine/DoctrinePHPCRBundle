@@ -3,6 +3,7 @@
 namespace Doctrine\Bundle\PHPCRBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\ModelToFileTransformer;
 
@@ -22,5 +23,10 @@ class ImageType extends AbstractType
     {
         $transformer = new ModelToFileTransformer();
         $builder->addModelTransformer($transformer);
+    }
+
+    public function setDefaultOptions(OptionsResolverInterface $options)
+    {
+        $options->setDefaults(array('data_class' => 'Doctrine\ODM\PHPCR\Document\Image'));
     }
 }
