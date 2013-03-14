@@ -42,6 +42,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
     private $defaultSession;
     private $sessions = array();
     private $bundleDirs = array();
+    /** @var XmlFileLoader */
     private $loader;
 
     public function load(array $configs, ContainerBuilder $container)
@@ -145,14 +146,14 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                 // Factory
                 if (isset($session['backend']['factory'])) {
                     /**
-                     * If it is a class, pass the name as is, else assume it is 
+                     * If it is a class, pass the name as is, else assume it is
                      * a service id and get a reference to it
                      */
                     if (class_exists($session['backend']['factory'])) {
-                        $parameters['jackalope.factory'] = $session['backend']['factory'];    
+                        $parameters['jackalope.factory'] = $session['backend']['factory'];
                     } else {
                         $parameters['jackalope.factory'] = new Reference($session['backend']['factory']);
-                    }            
+                    }
                 }
                 break;
         }
@@ -249,6 +250,18 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
             $dm = $container->getDefinition('doctrine_phpcr.odm.document_manager.abstract');
             $dm->addMethodCall('setLocaleChooserStrategy', array(new Reference('doctrine_phpcr.odm.locale_chooser')));
+        }
+
+        if (isset($config['imagine']['enabled']) && $config['imagine']['enabled']) {
+            $filter = $config['imagine']['filter'];
+            $filters = isset($config['imagine']['extra_filters']) && is_array($config['imagine']['extra_filters'])
+                ? $config['imagine']['extra_filters']
+                : array();
+
+            $filters[] = $filter;
+            $container->setParameter('doctrine_phpcr.odm.subscriber.image_cache.filter', $filter);
+            $container->setParameter('doctrine_phpcr.odm.subscriber.image_cache.all_filters', $filters);
+            $this->loader->load('odm_image.xml');
         }
 
         $documentManagers = array();

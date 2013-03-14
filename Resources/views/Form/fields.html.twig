@@ -1,6 +1,6 @@
 {% block phpcr_odm_image_widget %}
     {{ form_widget(form) }}
     {% if form.vars.data %}
-        <img src="{{ form.vars.data | imagine_filter('image_upload_thumbnail') }}" alt="" />
+        <img src="{{ form.vars.data | imagine_filter( imagine_filter ) }}" alt="" />
     {% endif %}
 {% endblock %}
