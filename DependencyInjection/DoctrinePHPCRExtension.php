@@ -252,17 +252,15 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             $dm->addMethodCall('setLocaleChooserStrategy', array(new Reference('doctrine_phpcr.odm.locale_chooser')));
         }
 
-        if (isset($config['imagine']['enabled']) && $config['imagine']['enabled']) {
-            $filter = $config['imagine']['filter'];
-            $filters = isset($config['imagine']['extra_filters']) && is_array($config['imagine']['extra_filters'])
-                ? $config['imagine']['extra_filters']
-                : array();
-
-            $filters[] = $filter;
-            $container->setParameter('doctrine_phpcr.odm.subscriber.image_cache.filter', $filter);
-            $container->setParameter('doctrine_phpcr.odm.subscriber.image_cache.all_filters', $filters);
-            $this->loader->load('odm_image.xml');
-        }
+        $filter = isset($config['image']['imagine_filter'])
+            ? $config['image']['imagine_filter']
+            : false;
+        $filters = isset($config['image']['extra_filters']) && is_array($config['image']['extra_filters'])
+            ? array_merge(array($filter), $config['image']['extra_filters'])
+            : array();
+        $container->setParameter('doctrine_phpcr.odm.subscriber.image_cache.filter', $filter);
+        $container->setParameter('doctrine_phpcr.odm.subscriber.image_cache.all_filters', $filters);
+        $this->loader->load('odm_image.xml');
 
         $documentManagers = array();
         foreach ($config['document_managers'] as $name => $documentManager) {

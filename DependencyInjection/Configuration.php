@@ -154,7 +154,7 @@ class Configuration implements ConfigurationInterface
                     ->fixXmlConfig('document_manager')
                     ->append($this->getOdmDocumentManagersNode())
                     ->append($this->getOdmLocaleNode())
-                    ->append($this->getOdmImagineNode())
+                    ->append($this->getOdmImageNode())
                 ->end()
             ->end()
         ;
@@ -247,19 +247,17 @@ class Configuration implements ConfigurationInterface
         return $node;
     }
 
-    private function getOdmImagineNode()
+    private function getOdmImageNode()
     {
         $treeBuilder = new TreeBuilder();
-        $node = $treeBuilder->root('imagine');
+        $node = $treeBuilder->root('image');
 
         $node
             ->children()
-                ->scalarNode('enabled')->defaultValue(false)->end()
-                    ->scalarNode('filter')->defaultValue('image_upload_thumbnail')->end()
-                    ->arrayNode('extra_filters')
-                        ->requiresAtLeastOneElement()
-                        ->prototype('scalar')->end()
-                    ->end()
+                ->scalarNode('imagine_filter')->end()
+                ->arrayNode('extra_filters')
+                    ->requiresAtLeastOneElement()
+                    ->prototype('scalar')->end()
                 ->end()
             ->end()
         ;
