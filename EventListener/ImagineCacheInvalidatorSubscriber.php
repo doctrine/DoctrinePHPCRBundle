@@ -97,8 +97,14 @@ class ImagineCacheInvalidatorSubscriber implements EventSubscriber
             $document = $document->getParent();
         }
         if ($document instanceof Image) {
+            if (! $this->container->isScopeActive('request')
+                || ! $request = $this->container->get('request')
+            ) {
+                // do not fail on CLI
+                return;
+            }
             foreach ($this->filters as $filter) {
-                $path = $this->manager->resolve($this->container->get('request'), $document->getId(), 'image_upload_thumbnail')->getTargetUrl();
+                $path = $this->manager->resolve($request, $document->getId(), 'image_upload_thumbnail')->getTargetUrl();
                 // TODO: this might not be needed https://github.com/liip/LiipImagineBundle/issues/162
                 if (false !== strpos($path, $filter)) {
                     $path = substr($path, strpos($path, $filter) + strlen($filter));
