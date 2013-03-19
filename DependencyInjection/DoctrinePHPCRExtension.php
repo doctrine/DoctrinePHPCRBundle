@@ -261,6 +261,10 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         $container->setParameter('doctrine_phpcr.odm.subscriber.image_cache.filter', $filter);
         $container->setParameter('doctrine_phpcr.odm.subscriber.image_cache.all_filters', $filters);
         $this->loader->load('odm_image.xml');
+        $bundles = $container->getParameter('kernel.bundles');
+        if (!isset($bundles['LiipImagineBundle'])) {
+            $container->removeDefinition('doctrine_phpcr.odm.subscriber.image_cache');
+        }
 
         $documentManagers = array();
         foreach ($config['document_managers'] as $name => $documentManager) {
