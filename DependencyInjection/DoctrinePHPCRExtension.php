@@ -258,9 +258,11 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         $filters = isset($config['image']['extra_filters']) && is_array($config['image']['extra_filters'])
             ? array_merge(array($filter), $config['image']['extra_filters'])
             : array();
-        $container->setParameter('doctrine_phpcr.odm.subscriber.image_cache.filter', $filter);
-        $container->setParameter('doctrine_phpcr.odm.subscriber.image_cache.all_filters', $filters);
-        $this->loader->load('odm_image.xml');
+        $container->setParameter('doctrine_phpcr.odm.subscriber.imagine_cache.filter', $filter);
+        $container->setParameter('doctrine_phpcr.odm.subscriber.imagine_cache.all_filters', $filters);
+        if ($filter) {
+            $this->loader->load('odm_imagine.xml');
+        }
         $bundles = $container->getParameter('kernel.bundles');
         if (!isset($bundles['LiipImagineBundle'])) {
             $container->removeDefinition('doctrine_phpcr.odm.subscriber.image_cache');
