@@ -3,6 +3,7 @@
 namespace Doctrine\Bundle\PHPCRBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
+use Joiz\CmsBundle\Document\Show;
 use Doctrine\ODM\PHPCR\ReferenceManyCollection;
 use Doctrine\ODM\PHPCR\DocumentManager;
 
@@ -19,15 +20,22 @@ class ReferenceManyCollectionToArrayTransformer implements DataTransformerInterf
      */
     protected $referencedClass;
 
+    /**
+     * @var bool $useUuidAsArrayKey
+     */
+    protected $useUuidAsArrayKey;
+
 
     /**
      * @param \Doctrine\ODM\PHPCR\DocumentManager $dm
      * @param $referencedClass
+     * @param $useUuidAsArrayKey
      */
-    function __construct(DocumentManager $dm, $referencedClass)
+    function __construct(DocumentManager $dm, $referencedClass, $useUuidAsArrayKey)
     {
         $this->dm = $dm;
         $this->referencedClass = $referencedClass;
+        $this->useUuidAsArrayKey = $useUuidAsArrayKey;
     }
 
     /**
@@ -38,7 +46,7 @@ class ReferenceManyCollectionToArrayTransformer implements DataTransformerInterf
         $arr = array();
 
         foreach ($collection as $item) {
-            $arr[] = $item->getPath();
+            $arr[] = $this->useUuidAsArrayKey ? $item->getNode()->getPropertyValue('jcr:uuid') : $item->getPath();
         }
 
         return $arr;
