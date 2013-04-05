@@ -58,10 +58,9 @@ class PHPCRTypeGuesser implements FormTypeGuesserInterface
 
         if ($metadata->hasAssociation($property)) {
             $multiple = $metadata->isCollectionValuedAssociation($property);
-            $mapping = $metadata->getAssociationMapping($property);
+            $mapping = $metadata->getAssociation($property);
 
             return new TypeGuess('phpcr_document', array(
-                'dm' => $documentManager,
                 'class' => $mapping['targetDocument'],
                 'multiple' => $multiple
                 ),
