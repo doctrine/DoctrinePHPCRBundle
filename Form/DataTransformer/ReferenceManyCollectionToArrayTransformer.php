@@ -3,12 +3,14 @@
 namespace Doctrine\Bundle\PHPCRBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
-use Joiz\CmsBundle\Document\Show;
 use Doctrine\ODM\PHPCR\ReferenceManyCollection;
 use Doctrine\ODM\PHPCR\DocumentManager;
 
 class ReferenceManyCollectionToArrayTransformer implements DataTransformerInterface
 {
+
+    const KEY_PATH = 'path';
+    const KEY_UUID = 'uuid';
 
     /**
      * @var \Doctrine\ODM\PHPCR\DocumentManager $dm
@@ -21,21 +23,29 @@ class ReferenceManyCollectionToArrayTransformer implements DataTransformerInterf
     protected $referencedClass;
 
     /**
-     * @var bool $useUuidAsArrayKey
+     * @var string $key
      */
-    protected $useUuidAsArrayKey;
-
+    protected $key;
 
     /**
      * @param \Doctrine\ODM\PHPCR\DocumentManager $dm
      * @param $referencedClass
-     * @param $useUuidAsArrayKey
+     * @param string $key
+     * @throws \InvalidArgumentException
      */
-    function __construct(DocumentManager $dm, $referencedClass, $useUuidAsArrayKey)
+    function __construct(DocumentManager $dm, $referencedClass, $key)
     {
         $this->dm = $dm;
         $this->referencedClass = $referencedClass;
-        $this->useUuidAsArrayKey = $useUuidAsArrayKey;
+
+        if (!($key === self::KEY_UUID || $key === self::KEY_PATH)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Key must be either KEY_UUID or KEY_PATH. Received "%s"',
+                $key
+            ));
+        }
+
+        $this->key = $key;
     }
 
     /**
@@ -46,7 +56,7 @@ class ReferenceManyCollectionToArrayTransformer implements DataTransformerInterf
         $arr = array();
 
         foreach ($collection as $item) {
-            $arr[] = $this->useUuidAsArrayKey ? $item->getNode()->getPropertyValue('jcr:uuid') : $item->getPath();
+            $arr[] = ($this->key === self::KEY_UUID) ? $item->getNode()->getIdentifier() : $item->getPath();
         }
 
         return $arr;
