@@ -47,6 +47,11 @@ class PHPCRODMReferenceCollectionType extends AbstractType
     {
         parent::setDefaultOptions($resolver);
         $resolver->setRequired((array('referenced_class')));
+        $resolver->setOptional(array('key'));
+
+        $resolver->setDefaults(array(
+            'key' => ReferenceManyCollectionToArrayTransformer::KEY_UUID,
+        ));
     }
 
     /**
@@ -54,7 +59,7 @@ class PHPCRODMReferenceCollectionType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $transformer = new ReferenceManyCollectionToArrayTransformer($this->dm, $options['referenced_class']);
+        $transformer = new ReferenceManyCollectionToArrayTransformer($this->dm, $options['referenced_class'], $options['key']);
         $builder->addModelTransformer($transformer);
     }
 }
