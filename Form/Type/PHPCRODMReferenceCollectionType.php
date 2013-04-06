@@ -50,7 +50,7 @@ class PHPCRODMReferenceCollectionType extends AbstractType
         $resolver->setOptional(array('key'));
 
         $resolver->setDefaults(array(
-            'key' => ReferenceManyCollectionToArrayTransformer::KEY_PATH,
+            'key' => ReferenceManyCollectionToArrayTransformer::KEY_UUID,
         ));
     }
 

@@ -8,7 +8,6 @@ use Doctrine\ODM\PHPCR\DocumentManager;
 
 class ReferenceManyCollectionToArrayTransformer implements DataTransformerInterface
 {
-
     const KEY_PATH = 'path';
     const KEY_UUID = 'uuid';
 
@@ -33,7 +32,7 @@ class ReferenceManyCollectionToArrayTransformer implements DataTransformerInterf
      * @param string $key
      * @throws \InvalidArgumentException
      */
-    function __construct(DocumentManager $dm, $referencedClass, $key)
+    function __construct(DocumentManager $dm, $referencedClass, $key = self::KEY_UUID)
     {
         $this->dm = $dm;
         $this->referencedClass = $referencedClass;
