@@ -35,8 +35,7 @@ class InitializerPass implements CompilerPassInterface
     {
         $initializers = array();
         foreach ($container->findTaggedServiceIds('doctrine_phpcr.initializer') as $id => $attributes) {
-            $alias = isset($attributes[0]['alias']) ? $attributes[0]['alias'] : null;
-            $initializers[$alias] = $id;
+            $initializers[] = $id;
         }
 
         $container->setParameter('doctrine_phpcr.initialize.initializers', $initializers);
