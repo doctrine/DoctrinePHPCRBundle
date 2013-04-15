@@ -53,10 +53,8 @@ class GenericInitializer implements InitializerInterface
      * @param string|null $cnd       node type and namespace definitions in cnd
      *      format, pass null to not create any node types.
      */
-    public function __construct(
-        array $basePaths,
-        $cnd = null
-    ) {
+    public function __construct(array $basePaths, $cnd = null)
+    {
         $this->cnd = $cnd;
         $this->basePaths = $basePaths;
     }
@@ -64,7 +62,8 @@ class GenericInitializer implements InitializerInterface
     /**
      * {@inheritDoc}
      */
-    public function init(SessionInterface $session) {
+    public function init(SessionInterface $session)
+    {
         if ($this->cnd) {
             $this->registerCnd($session, $this->cnd);
         }
