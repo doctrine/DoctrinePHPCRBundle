@@ -33,13 +33,11 @@ class DocumentToPathTransformer implements DataTransformerInterface
     }
 
     /**
-     * Transform a path to its corresponding PHPCR document
+     * Transform a path to its corresponding PHPCR-ODM document
      *
      * @param string $path phpcr path
      *
-     * @return \PHPCR\NodeInterface|null returns the document or null if $path is empty
-     *
-     * @throws \PHPCR\ItemNotFoundException if document for a non-empty $path is not found
+     * @return object|null returns the document or null if $path is empty
      */
     public function reverseTransform($path)
     {
@@ -50,4 +48,3 @@ class DocumentToPathTransformer implements DataTransformerInterface
         return $this->dm->find(null, $path);
     }
 }
-

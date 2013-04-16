@@ -51,9 +51,4 @@ class DocumentToPathTransformerTest extends \PHPUnit_Framework_Testcase
         $this->assertNull($res);
 
     }
-
-    public function testReverseTransformNotFound()
-    {
-        // will return null
-    }
 }
