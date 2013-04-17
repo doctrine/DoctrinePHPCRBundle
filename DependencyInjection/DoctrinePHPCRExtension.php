@@ -25,6 +25,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Definition\Processor;
@@ -66,7 +67,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
         if (!empty($config['odm'])) {
             if (empty($this->sessions)) {
-                throw new \InvalidArgumentException("You did not configure a session for the document managers");
+                throw new InvalidArgumentException("You did not configure a session for the document managers");
             }
             $this->odmLoad($config['odm'], $container);
         }
@@ -323,7 +324,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         }
 
         if (!isset($this->sessions[$documentManager['session']])) {
-            throw new \InvalidArgumentException(sprintf("You have configured a non existent session '%s' for the document manager '%s'", $documentManager['session'], $documentManager['name']));
+            throw new InvalidArgumentException(sprintf("You have configured a non existent session '%s' for the document manager '%s'", $documentManager['session'], $documentManager['name']));
         }
 
         $container->setDefinition(
