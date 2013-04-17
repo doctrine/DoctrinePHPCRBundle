@@ -25,21 +25,51 @@ use Doctrine\ODM\PHPCR\Tools\Console\Command\RegisterSystemNodeTypesCommand as B
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Wrapper to use RegisterSystemNodeTypeCommand with Symfony's app/console
- *
- * @see Doctrine/ODM/PHPCR/Tools/Console/Command/RegisterSystemNodeTypesCommand
+ * Command to collect init operations from any interested bundles and the
+ * phpcr-odm itself.
  */
-class RegisterSystemNodeTypesCommand extends BaseRegisterSystemNodeTypesCommand
+class InitCommand extends BaseRegisterSystemNodeTypesCommand implements ContainerAwareInterface
 {
+    /** @var ContainerInterface */
+    protected $container;
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
+
+    /**
+     * @return ContainerInterface
+     */
+    protected function getContainer()
+    {
+        if (null === $this->container) {
+            $this->container = $this->getApplication()->getKernel()->getContainer();
+        }
+
+        return $this->container;
+    }
+
     protected function configure()
     {
         parent::configure();
 
         $this
-            ->setName('doctrine:phpcr:register-system-node-types')
+            ->setName('doctrine:phpcr:init')
             ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
+            ->setDescription('Initialize the PHPCR repository.')
+            ->setHelp(<<<EOT
+Initialize the PHPCR repository with node types and base paths provided by the bundles.
+Bundles can provide services tagged with doctrine_phpcr.initializer to provide their information.
+EOT
+            );
         ;
     }
 
@@ -47,6 +77,13 @@ class RegisterSystemNodeTypesCommand extends BaseRegisterSystemNodeTypesCommand
     {
         DoctrineCommandHelper::setApplicationPHPCRSession($this->getApplication(), $input->getOption('session'));
 
-        return parent::execute($input, $output);
+        parent::execute($input, $output);
+
+        foreach ($this->getContainer()->getParameter('doctrine_phpcr.initialize.initializers') as $id) {
+            $initializer = $this->getContainer()->get($id);
+            $initializer->init($session = $this->getHelper('phpcr')->getSession());
+        }
+
+        return 0;
     }
 }
