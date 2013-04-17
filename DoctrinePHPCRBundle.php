@@ -29,6 +29,7 @@ use Symfony\Bridge\Doctrine\DependencyInjection\CompilerPass\RegisterEventListen
 
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\MigratorPass;
+use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\InitializerPass;
 use Doctrine\Bundle\PHPCRBundle\OptionalCommand\InitDoctrineDbalCommand;
 use Doctrine\Bundle\PHPCRBundle\OptionalCommand\JackrabbitCommand;
 
@@ -39,6 +40,7 @@ class DoctrinePHPCRBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new MigratorPass());
+        $container->addCompilerPass(new InitializerPass());
         $container->addCompilerPass(new RegisterEventListenersAndSubscribersPass('doctrine_phpcr.sessions', 'doctrine_phpcr.odm.%s_session.event_manager', 'doctrine_phpcr'), PassConfig::TYPE_BEFORE_OPTIMIZATION);
     }
 
