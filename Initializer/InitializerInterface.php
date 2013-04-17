@@ -26,8 +26,8 @@ use PHPCR\SessionInterface;
  * An interface for services that initialize the repository.
  *
  * Put services of that class into the DI container and tag them with
- * doctrine_phpcr.initializer to have them executed by the doctrine:phpcr:init
- * command.
+ * doctrine_phpcr.initializer to have them executed by the
+ * doctrine:phpcr:repository:init command.
  *
  * @author David Buchmann <david@liip.ch>
  */
