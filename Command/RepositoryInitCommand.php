@@ -32,7 +32,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Command to collect init operations from any interested bundles and the
  * phpcr-odm itself.
  */
-class InitCommand extends BaseRegisterSystemNodeTypesCommand implements ContainerAwareInterface
+class RepositoryInitCommand extends BaseRegisterSystemNodeTypesCommand implements ContainerAwareInterface
 {
     /** @var ContainerInterface */
     protected $container;
@@ -62,7 +62,7 @@ class InitCommand extends BaseRegisterSystemNodeTypesCommand implements Containe
         parent::configure();
 
         $this
-            ->setName('doctrine:phpcr:init')
+            ->setName('doctrine:phpcr:repository:init')
             ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
             ->setDescription('Initialize the PHPCR repository.')
             ->setHelp(<<<EOT
