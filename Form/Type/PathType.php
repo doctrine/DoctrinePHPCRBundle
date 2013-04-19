@@ -8,14 +8,15 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\DocumentToPathTransformer;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 class PathType extends AbstractType
 {
-    protected $dm;
+    protected $registry;
 
-    public function __construct($dm)
+    public function __construct(ManagerRegistry $registry)
     {
-        $this->dm = $dm;
+        $this->registry = $registry;
     }
 
     public function getParent()
@@ -30,16 +31,15 @@ class PathType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $transformer = new DocumentToPathTransformer($this->dm);
+        $dm = $this->registry->getManager($options['manager_name']);
+        $transformer = new DocumentToPathTransformer($dm);
         $builder->addModelTransformer($transformer);
     }
 
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-    }
-
-    public function setDefaultOptions(OptionsResolverInterface $options)
-    {
+        $resolver->setDefaults(array(
+            'manager_name' => null,
+        ));
     }
 }
-

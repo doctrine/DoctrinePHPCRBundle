@@ -4,6 +4,7 @@ namespace Doctrine\Bundle\PHPCRBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Doctrine\ODM\PHPCR\DocumentManager;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class DocumentToPathTransformer implements DataTransformerInterface
 {
@@ -45,6 +46,12 @@ class DocumentToPathTransformer implements DataTransformerInterface
             return null;
         }
 
-        return $this->dm->find(null, $path);
+        $document = $this->dm->find(null, $path);
+
+        if (!$document) {
+            throw new TransformationFailedException(sprintf('Could not transform path "%s" to document. Path not found.', $path));
+        }
+
+        return $document;
     }
 }
