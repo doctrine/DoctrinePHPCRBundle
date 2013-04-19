@@ -10,7 +10,10 @@ class PathTypeTest extends \PHPUnit_Framework_Testcase
 {
     public function setUp()
     {
-        $this->reg = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
+        $this->reg = $this->getMockBuilder('Doctrine\Bundle\PHPCRBundle\ManagerRegistry')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->dm = $this->getMockBuilder('Doctrine\ODM\PHPCR\DocumentManager')
             ->disableOriginalConstructor()
             ->getMock();

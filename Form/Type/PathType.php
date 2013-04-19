@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\DocumentToPathTransformer;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
 
 class PathType extends AbstractType
 {
@@ -38,6 +38,7 @@ class PathType extends AbstractType
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        parent::setDefaultOptions($resolver);
         $resolver->setDefaults(array(
             'manager_name' => null,
         ));
