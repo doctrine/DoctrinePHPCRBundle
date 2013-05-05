@@ -20,31 +20,38 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
-use Symfony\Component\Console\Command\Command;
+use PHPCR\Util\Console\Command\WorkspaceQueryCommand as BaseWorkspaceQueryCommand;
+
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use PHPCR\Util\Console\Command\CreateWorkspaceCommand as BaseCreateWorkspaceCommand;
-
-class CreateWorkspaceCommand extends BaseCreateWorkspaceCommand
+/**
+ * @author Daniel Barsotti <daniel.barsotti@liip.ch>
+ */
+class WorkspaceQueryCommand extends BaseWorkspaceQueryCommand
 {
     /**
-     * @see Command
+     * Configures the current command.
      */
     protected function configure()
     {
         parent::configure();
 
         $this
-            ->setName('doctrine:phpcr:workspace:create')
+            ->setName('doctrine:phpcr:workspace:query')
             ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
         ;
     }
 
     /**
-     * @see Command
+     * Executes the current command.
+     *
+     * @param InputInterface  $input  An InputInterface instance
+     * @param OutputInterface $output An OutputInterface instance
+     *
+     * @return integer 0 if everything went fine, or an error code
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

@@ -20,7 +20,7 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
-use PHPCR\Util\Console\Command\MoveCommand as BaseNodeMoveCommand;
+use PHPCR\Util\Console\Command\NodeMoveCommand as BaseNodeMoveCommand;
 
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
@@ -40,7 +40,7 @@ class NodeMoveCommand extends BaseNodeMoveCommand
         parent::configure();
 
         $this
-            ->setName('doctrine:phpcr:move')
+            ->setName('doctrine:phpcr:node:move')
             ->addOption(
                 'session', null, 
                 InputOption::VALUE_OPTIONAL, 

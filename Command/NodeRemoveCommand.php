@@ -20,7 +20,7 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
-use PHPCR\Util\Console\Command\ImportXmlCommand as BaseImportXmlCommand;
+use PHPCR\Util\Console\Command\NodeRemoveCommand as BasePurgeCommand;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
@@ -28,16 +28,16 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * @author David Buchmann <david@liip.ch>
+ * @author Daniel Barsotti <daniel.barsotti@liip.ch>
  */
-class ImportXmlCommand extends BaseImportXmlCommand
+class NodeRemoveCommand extends BasePurgeCommand
 {
     protected function configure()
     {
         parent::configure();
 
         $this
-            ->setName('doctrine:phpcr:import')
+            ->setName('doctrine:phpcr:node:remove')
             ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
         ;
     }
