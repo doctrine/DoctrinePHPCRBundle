@@ -20,18 +20,43 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
-use PHPCR\Util\Console\Command\ListNodeTypesCommand as BaseTypeListCommand;
+use PHPCR\Util\Console\Command\NodeDumpCommand as BaseDumpCommand;
 
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+
 /**
- * @author Daniel Leech <daniel@dantleech.com>
+ * @author Daniel Barsotti <daniel.barsotti@liip.ch>
  */
-class TypeListCommand extends BaseTypeListCommand
+class NodeDumpCommand extends BaseDumpCommand implements ContainerAwareInterface
 {
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    protected function getContainer()
+    {
+        if (null === $this->container) {
+            $this->container = $this->getApplication()->getKernel()->getContainer();
+        }
+
+        return $this->container;
+    }
+
+    /**
+     * @see ContainerAwareInterface::setContainer()
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
+
     /**
      * Configures the current command.
      */
@@ -40,12 +65,8 @@ class TypeListCommand extends BaseTypeListCommand
         parent::configure();
 
         $this
-            ->setName('doctrine:phpcr:type:list')
-            ->addOption(
-                'session', null, 
-                InputOption::VALUE_OPTIONAL, 
-                'The session to use for this command'
-            )
+            ->setName('doctrine:phpcr:node:dump')
+            ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
         ;
     }
 
@@ -59,13 +80,11 @@ class TypeListCommand extends BaseTypeListCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        DoctrineCommandHelper::setApplicationPHPCRSession(
-            $this->getApplication(), 
-            $input->getOption('session')
-        );
+        DoctrineCommandHelper::setApplicationPHPCRSession($this->getApplication(), $input->getOption('session'));
+        if ($this->getContainer()->hasParameter('doctrine_phpcr.dump_max_line_length')) {
+            $this->setDumpMaxLineLength($this->getContainer()->getParameter('doctrine_phpcr.dump_max_line_length'));
+        }
 
         return parent::execute($input, $output);
     }
 }
-
-

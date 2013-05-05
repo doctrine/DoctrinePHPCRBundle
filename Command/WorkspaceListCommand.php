@@ -20,29 +20,36 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
-use PHPCR\Util\Console\Command\RegisterNodeTypesCommand as BaseRegisterNodeTypesCommand;
-
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * Wrapper to use RegisterNodeTypeCommand with Symfony's app/console
- *
- * @see Doctrine/ODM/PHPCR/Tools/Console/Command/RegisterNodeTypesCommand
- */
-class RegisterNodeTypesCommand extends BaseRegisterNodeTypesCommand
+use PHPCR\Util\Console\Command\WorkspaceListCommand as BaseListWorkspacesCommand;
+
+class WorkspaceListCommand extends BaseListWorkspacesCommand
 {
+    /**
+     * @see Command
+     */
     protected function configure()
     {
         parent::configure();
 
         $this
-            ->setName('doctrine:phpcr:register-node-types')
+            ->setName('doctrine:phpcr:workspace:list')
+            ->setDescription('List all available workspaces in the configured repository')
             ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
-        ;
+            ->setHelp(<<<EOT
+The <info>workspace:list</info> command lists all available workspaces.
+EOT
+        );
     }
 
+    /**
+     * @see Command
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         DoctrineCommandHelper::setApplicationPHPCRSession($this->getApplication(), $input->getOption('session'));
