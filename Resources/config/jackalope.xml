@@ -6,9 +6,13 @@
 
     <services>
 
+        <service id="doctrine_phpcr.jackalope.repository.factory.service.jackrabbit"
+                 class="Jackalope\RepositoryFactoryJackrabbit">
+        </service>
+        
         <service id="doctrine_phpcr.jackalope.repository.factory.jackrabbit"
                  class="Jackalope\Repository"
-                 factory-class="Jackalope\RepositoryFactoryJackrabbit"
+                 factory-service="doctrine_phpcr.jackalope.repository.factory.service.jackrabbit"
                  factory-method="getRepository"
         >
             <argument type="collection">
@@ -16,9 +20,12 @@
             </argument><!-- parameters (0) -->
         </service>
 
+        <service id="doctrine_phpcr.jackalope.repository.factory.service.doctrinedbal"
+                 class="Jackalope\RepositoryFactoryDoctrineDBAL">
+        </service>
         <service id="doctrine_phpcr.jackalope.repository.factory.doctrinedbal"
                  class="Jackalope\Repository"
-                 factory-class="Jackalope\RepositoryFactoryDoctrineDBAL"
+                 factory-service="doctrine_phpcr.jackalope.repository.factory.service.doctrinedbal"
                  factory-method="getRepository"
         >
             <argument type="collection" /><!-- parameters (0) -->

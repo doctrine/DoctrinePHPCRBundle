@@ -43,12 +43,25 @@ class DocumentToPathTransformerTest extends \PHPUnit_Framework_Testcase
         $this->assertSame($this->document, $res);
     }
 
+    /**
+     * @expectedException Symfony\Component\Form\Exception\TransformationFailedException
+     */
+    public function testReverseTransformNotFound()
+    {
+        $this->dm->expects($this->once())
+            ->method('find')
+            ->with(null, '/asd')
+            ->will($this->returnValue(null));
+
+        $res = $this->transformer->reverseTransform('/asd');
+        $this->assertSame($this->document, $res);
+    }
+
     public function testReverseTransformEmpty()
     {
         $this->dm->expects($this->never())
             ->method('find');
         $res = $this->transformer->reverseTransform('');
         $this->assertNull($res);
-
     }
 }

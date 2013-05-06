@@ -79,7 +79,7 @@
         </service>
 
         <service id="doctrine_phpcr.odm.form.type.path" class="%doctrine_phpcr.odm.form.path_class%">
-            <argument type="service" id="doctrine_phpcr.odm.document_manager"/>
+            <argument type="service" id="doctrine_phpcr"/>
             <tag name="form.type" alias="phpcr_odm_path"/>
         </service>
 

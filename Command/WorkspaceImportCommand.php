@@ -20,35 +20,35 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
+use PHPCR\Util\Console\Command\WorkspaceImportCommand as BaseImportXmlCommand;
+
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use PHPCR\Util\Console\Command\ListWorkspacesCommand as BaseListWorkspacesCommand;
-
-class ListWorkspacesCommand extends BaseListWorkspacesCommand
+/**
+ * @author David Buchmann <david@liip.ch>
+ */
+class WorkspaceImportCommand extends BaseImportXmlCommand
 {
-    /**
-     * @see Command
-     */
     protected function configure()
     {
         parent::configure();
 
         $this
-            ->setName('doctrine:phpcr:workspace:list')
-            ->setDescription('List all available workspaces in the configured repository')
+            ->setName('doctrine:phpcr:workspace:import')
             ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
-            ->setHelp(<<<EOT
-The <info>workspace:list</info> command lists all available workspaces.
-EOT
-        );
+        ;
     }
 
     /**
-     * @see Command
+     * Executes the current command.
+     *
+     * @param InputInterface  $input  An InputInterface instance
+     * @param OutputInterface $output An OutputInterface instance
+     *
+     * @return integer 0 if everything went fine, or an error code
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

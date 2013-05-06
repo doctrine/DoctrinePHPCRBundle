@@ -20,70 +20,35 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
-use PHPCR\Util\Console\Command\DumpCommand as BaseDumpCommand;
-
-use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use PHPCR\Util\Console\Command\WorkspaceCreateCommand as BaseCreateWorkspaceCommand;
 
-/**
- * @author Daniel Barsotti <daniel.barsotti@liip.ch>
- */
-class DumpCommand extends BaseDumpCommand implements ContainerAwareInterface
+class WorkspaceCreateCommand extends BaseCreateWorkspaceCommand
 {
     /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    protected function getContainer()
-    {
-        if (null === $this->container) {
-            $this->container = $this->getApplication()->getKernel()->getContainer();
-        }
-
-        return $this->container;
-    }
-
-    /**
-     * @see ContainerAwareInterface::setContainer()
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
-
-    /**
-     * Configures the current command.
+     * @see Command
      */
     protected function configure()
     {
         parent::configure();
 
         $this
-            ->setName('doctrine:phpcr:dump')
+            ->setName('doctrine:phpcr:workspace:create')
             ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
         ;
     }
 
     /**
-     * Executes the current command.
-     *
-     * @param InputInterface  $input  An InputInterface instance
-     * @param OutputInterface $output An OutputInterface instance
-     *
-     * @return integer 0 if everything went fine, or an error code
+     * @see Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         DoctrineCommandHelper::setApplicationPHPCRSession($this->getApplication(), $input->getOption('session'));
-        if ($this->getContainer()->hasParameter('doctrine_phpcr.dump_max_line_length')) {
-            $this->setDumpMaxLineLength($this->getContainer()->getParameter('doctrine_phpcr.dump_max_line_length'));
-        }
 
         return parent::execute($input, $output);
     }

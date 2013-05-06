@@ -20,27 +20,24 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
-use PHPCR\Util\Console\Command\QueryCommand as BaseQueryCommand;
+use PHPCR\Util\Console\Command\WorkspaceExportCommand as BaseExportXmlCommand;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * @author Daniel Barsotti <daniel.barsotti@liip.ch>
+ * @author David Buchmann <david@liip.ch>
  */
-class QueryCommand extends BaseQueryCommand
+class WorkspaceExportCommand extends BaseExportXmlCommand
 {
-    /**
-     * Configures the current command.
-     */
     protected function configure()
     {
         parent::configure();
 
         $this
-            ->setName('doctrine:phpcr:query')
+            ->setName('doctrine:phpcr:workspace:export')
             ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
         ;
     }
