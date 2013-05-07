@@ -105,7 +105,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                     $this->loadMidgard2Session($session, $container);
                     break;
                 default:
-                    throw new InvalidArgumentException("You set an unsupported transport type '$type' for session '$name'");
+                    throw new InvalidArgumentException(sprintf('You set an unsupported transport type "%s" for session "%s"', $type, $name));
             }
         }
 
@@ -219,7 +219,9 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                 $parameters['midgard2.configuration.loglevel'] = $session['backend']['loglevel'];
             }
         } else {
-            throw new InvalidArgumentException("You set an invalid Midgard2 PHPCR configuration for session '{$session['name']}'. Please provide a 'config' or 'db_name' key");
+            throw new InvalidArgumentException(
+                sprintf('You set an invalid Midgard2 PHPCR configuration for session "%s". Please provide a "config" or "db_name" key', $session['name'])
+            );
         }
 
         $factory = $container
