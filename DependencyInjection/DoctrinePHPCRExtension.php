@@ -26,6 +26,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+use Symfony\Component\DependencyInjection\Exception\LogicException;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Definition\Processor;
@@ -104,7 +105,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                     $this->loadMidgard2Session($session, $container);
                     break;
                 default:
-                    throw new \InvalidArgumentException("You set an unsupported transport type '$type' for session '$name'");
+                    throw new InvalidArgumentException(sprintf('You set an unsupported transport type "%s" for session "%s"', $type, $name));
             }
         }
 
@@ -218,7 +219,9 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                 $parameters['midgard2.configuration.loglevel'] = $session['backend']['loglevel'];
             }
         } else {
-            throw new \InvalidArgumentException("You set an invalid Midgard2 PHPCR configuration for session '{$session['name']}'. Please provide a 'config' or 'db_name' key");
+            throw new InvalidArgumentException(
+                sprintf('You set an invalid Midgard2 PHPCR configuration for session "%s". Please provide a "config" or "db_name" key', $session['name'])
+            );
         }
 
         $factory = $container
@@ -245,6 +248,15 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
         if (!empty($config['locales'])) {
             $this->loader->load('odm_multilang.xml');
+
+            foreach ($config['locales'] as $locale => $fallbacks) {
+                if (false !== array_search($locale, $fallbacks)) {
+                    throw new InvalidArgumentException(sprintf('The fallbacks for locale %s contain the locale itself.', $locale));
+                }
+                if (count($fallbacks) !== count(array_unique($fallbacks))) {
+                    throw new InvalidArgumentException(sprintf('Duplicate locale in the fallbacks for locale %s.', $locale));
+                }
+            }
 
             $container->setParameter('doctrine_phpcr.odm.locales', $config['locales']);
             $container->setParameter('doctrine_phpcr.odm.default_locale', key($config['locales']));
@@ -278,7 +290,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             $documentManager['name'] = $name;
             $documentManager['service_name'] = $documentManagers[$name] = sprintf('doctrine_phpcr.odm.%s_document_manager', $name);
             if ($documentManager['auto_mapping'] && count($config['document_managers']) > 1) {
-                throw new \LogicException('You cannot enable "auto_mapping" when several PHPCR document managers are defined.');
+                throw new LogicException('You cannot enable "auto_mapping" when several PHPCR document managers are defined.');
             }
 
             $this->loadOdmDocumentManager($documentManager, $container);
