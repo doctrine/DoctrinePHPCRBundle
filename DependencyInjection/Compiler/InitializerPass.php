@@ -26,6 +26,8 @@ use Symfony\Component\DependencyInjection\Exception\LogicException;
 
 /**
  * A CompilerPass which registers available initializers.
+ *
+ * @author David Buchmann <mail@davidbu.ch>
  */
 class InitializerPass implements CompilerPassInterface
 {
