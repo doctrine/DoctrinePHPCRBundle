@@ -4,6 +4,7 @@ namespace Doctrine\Bundle\PHPCRBundle\EventListener;
 
 use Doctrine\Common\Util\Debug;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ODM\PHPCR\Document\Image;
 use Doctrine\ODM\PHPCR\Document\File;
@@ -104,7 +105,11 @@ class ImagineCacheInvalidatorSubscriber implements EventSubscriber
                 return;
             }
             foreach ($this->filters as $filter) {
-                $path = $this->manager->resolve($request, $document->getId(), 'image_upload_thumbnail')->getTargetUrl();
+                $path = $this->manager->resolve($request, $document->getId(), $filter);
+                if ($path instanceof RedirectResponse) {
+                    $path = $path->getTargetUrl();
+                }
+
                 // TODO: this might not be needed https://github.com/liip/LiipImagineBundle/issues/162
                 if (false !== strpos($path, $filter)) {
                     $path = substr($path, strpos($path, $filter) + strlen($filter));
