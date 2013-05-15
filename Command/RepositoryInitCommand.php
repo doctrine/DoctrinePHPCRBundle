@@ -79,9 +79,10 @@ EOT
 
         parent::execute($input, $output);
 
+        $session = $this->getHelper('phpcr')->getSession();
         foreach ($this->getContainer()->getParameter('doctrine_phpcr.initialize.initializers') as $id) {
             $initializer = $this->getContainer()->get($id);
-            $initializer->init($session = $this->getHelper('phpcr')->getSession());
+            $initializer->init($session);
         }
 
         return 0;
