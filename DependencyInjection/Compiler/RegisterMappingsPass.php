@@ -138,7 +138,10 @@ abstract class RegisterMappingsPass implements CompilerPassInterface
             }
         }
 
-        throw new ParameterNotFoundException('None of the managerParameters resulted in a valid name');
+        throw new ParameterNotFoundException(sprintf(
+            'None of the managerParameters (%s) resulted in a valid name to be used in the mapping pass',
+            implode(', ', $this->managerParameters)
+        ));
     }
 
     /**
