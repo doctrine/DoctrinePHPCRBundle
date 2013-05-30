@@ -28,7 +28,7 @@
             <argument>%doctrine_phpcr.odm.document_managers%</argument>
             <argument>%doctrine_phpcr.default_session%</argument>
             <argument>%doctrine_phpcr.odm.default_document_manager%</argument>
-            <argument>Doctrine\ODM\PHPCR\Proxy\Proxy</argument>
+            <argument>Doctrine\Common\Proxy\Proxy</argument>
             <call method="setContainer">
                 <argument type="service" id="service_container" />
             </call>
