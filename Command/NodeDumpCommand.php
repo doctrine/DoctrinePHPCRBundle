@@ -80,7 +80,11 @@ class NodeDumpCommand extends BaseDumpCommand implements ContainerAwareInterface
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        DoctrineCommandHelper::setApplicationPHPCRSession($this->getApplication(), $input->getOption('session'));
+        $application = $this->getApplication();
+        DoctrineCommandHelper::setApplicationPHPCRSession($application, $input->getOption('session'));
+        $helperSet = $application->getHelperSet();
+        $helperSet->set($this->getContainer()->get('doctrine_phpcr.console_dumper'));
+
         if ($this->getContainer()->hasParameter('doctrine_phpcr.dump_max_line_length')) {
             $this->setDumpMaxLineLength($this->getContainer()->getParameter('doctrine_phpcr.dump_max_line_length'));
         }
