@@ -2,18 +2,16 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\EventListener;
 
-use Doctrine\Common\Util\Debug;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\Common\EventSubscriber;
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ODM\PHPCR\Document\Image;
 use Doctrine\ODM\PHPCR\Document\File;
 use Doctrine\ODM\PHPCR\Document\Resource;
-use Doctrine\Common\EventSubscriber;
-use Doctrine\ODM\PHPCR\Event\LifecycleEventArgs;
 
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-use Liip\ImagineBundle\Imagine\Data\Loader\DoctrinePHPCRLoader;
 
 /**
  * A listener to invalidate the imagine cache when Image documents are modified
@@ -90,7 +88,7 @@ class ImagineCacheInvalidatorSubscriber implements EventSubscriber
      */
     private function invalidateCache(LifecycleEventArgs $args)
     {
-        $document = $args->getDocument();
+        $document = $args->getObject();
         if ($document instanceof Resource) {
             $document = $document->getParent();
         }
