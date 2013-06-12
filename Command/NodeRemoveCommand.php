@@ -20,7 +20,7 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
-use PHPCR\Util\Console\Command\NodeRemoveCommand as BasePurgeCommand;
+use PHPCR\Util\Console\Command\NodeRemoveCommand as BaseNodeRemoveCommand;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
@@ -30,7 +30,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @author Daniel Barsotti <daniel.barsotti@liip.ch>
  */
-class NodeRemoveCommand extends BasePurgeCommand
+class NodeRemoveCommand extends BaseNodeRemoveCommand
 {
     protected function configure()
     {
