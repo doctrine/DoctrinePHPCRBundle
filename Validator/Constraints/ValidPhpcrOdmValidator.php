@@ -62,13 +62,13 @@ class ValidPhpcrOdmValidator extends ConstraintValidator
         $parent = $class->getFieldValue($document, $class->parentMapping);
 
         if (empty($parent)) {
-            $this->context->addViolationAtSubPath($class->parentMapping, $constraint->message);
+            $this->context->addViolationAt($class->parentMapping, $constraint->message);
         }
 
         $name = $class->getFieldValue($document, $class->nodename);
 
         if (empty($name)) {
-            $this->context->addViolationAtSubPath($class->nodename, $constraint->message);
+            $this->context->addViolationAt($class->nodename, $constraint->message);
         }
     }
 }
