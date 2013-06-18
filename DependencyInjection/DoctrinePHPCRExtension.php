@@ -279,22 +279,6 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             $dm->addMethodCall('setLocaleChooserStrategy', array(new Reference('doctrine_phpcr.odm.locale_chooser')));
         }
 
-        $filter = isset($config['image']['imagine_filter'])
-            ? $config['image']['imagine_filter']
-            : false;
-        $filters = isset($config['image']['extra_filters']) && is_array($config['image']['extra_filters'])
-            ? array_merge(array($filter), $config['image']['extra_filters'])
-            : array();
-        $container->setParameter('doctrine_phpcr.odm.subscriber.imagine_cache.filter', $filter);
-        $container->setParameter('doctrine_phpcr.odm.subscriber.imagine_cache.all_filters', $filters);
-        if ($filter) {
-            $this->loader->load('odm_imagine.xml');
-        }
-        $bundles = $container->getParameter('kernel.bundles');
-        if (!isset($bundles['LiipImagineBundle'])) {
-            $container->removeDefinition('doctrine_phpcr.odm.subscriber.image_cache');
-        }
-
         $documentManagers = array();
         foreach ($config['document_managers'] as $name => $documentManager) {
             if (empty($config['default_document_manager'])) {

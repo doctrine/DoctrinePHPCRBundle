@@ -22,7 +22,6 @@
         <!-- form field factory guesser -->
         <parameter key="form.type_guesser.doctrine_phpcr.class">Doctrine\Bundle\PHPCRBundle\Form\PHPCRTypeGuesser</parameter>
 
-        <parameter key="doctrine_phpcr.odm.form.image_class">Doctrine\Bundle\PHPCRBundle\Form\Type\ImageType</parameter>
         <parameter key="doctrine_phpcr.odm.form.path_class">Doctrine\Bundle\PHPCRBundle\Form\Type\PathType</parameter>
 
         <parameter key="doctrine_phpcr.odm.metadata.driver_chain.class">Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain</parameter>
@@ -71,11 +70,6 @@
         <service id="form.type.phpcr.document" class="Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType">
             <tag name="form.type" alias="phpcr_document"/>
             <argument type="service" id="doctrine_phpcr"/>
-        </service>
-
-        <service id="doctrine_phpcr.odm.form.type.image" class="%doctrine_phpcr.odm.form.image_class%">
-            <argument>%doctrine_phpcr.odm.subscriber.imagine_cache.filter%</argument>
-            <tag name="form.type" alias="phpcr_odm_image"/>
         </service>
 
         <service id="doctrine_phpcr.odm.form.type.path" class="%doctrine_phpcr.odm.form.path_class%">

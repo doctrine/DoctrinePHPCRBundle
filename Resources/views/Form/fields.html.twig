@@ -1,8 +1,0 @@
-{% block phpcr_odm_image_widget %}
-    {{ form_widget(form) }}
-    {% block phpcr_odm_image_widget_preview %}
-        {% if form.vars.data and imagine_filter %}
-            <img src="{{ form.vars.data | imagine_filter( imagine_filter ) }}" alt="" />
-        {% endif %}
-    {% endblock %}
-{% endblock %}
