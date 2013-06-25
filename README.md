@@ -17,6 +17,6 @@ adds features of its own like multilanguage.
 
 For information, see [Symfony CMF Documentation](http://symfony.com/doc/master/cmf/index.html),
 specifically [Installing and configuring Doctrine PHPCR-ODM](http://symfony.com/doc/master/cmf/tutorials/installing-configuring-doctrine-phpcr-odm.html)
-and [DoctrinePHPCRBundle](http://symfony.com/doc/master/cmf/bundles/phpcr-odm.html).
+and [DoctrinePHPCRBundle](http://symfony.com/doc/master/cmf/bundles/phpcr_odm.html).
 
 PHPCR-ODM in general is documented in the [Doctrine PHPCR-ODM documentation](http://docs.doctrine-project.org/projects/doctrine-phpcr-odm/en/latest/).
