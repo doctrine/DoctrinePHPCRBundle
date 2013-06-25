@@ -30,8 +30,8 @@ use Symfony\Bridge\Doctrine\DependencyInjection\CompilerPass\RegisterEventListen
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\MigratorPass;
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\InitializerPass;
-use Doctrine\Bundle\PHPCRBundle\OptionalCommand\InitDoctrineDbalCommand;
-use Doctrine\Bundle\PHPCRBundle\OptionalCommand\JackrabbitCommand;
+use Doctrine\Bundle\PHPCRBundle\OptionalCommand\Jackalope\InitDoctrineDbalCommand;
+use Doctrine\Bundle\PHPCRBundle\OptionalCommand\Jackalope\JackrabbitCommand;
 
 class DoctrinePHPCRBundle extends Bundle
 {
