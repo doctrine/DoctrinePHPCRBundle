@@ -18,21 +18,26 @@ namespace Doctrine\Bundle\PHPCRBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bridge\Doctrine\Form\Type\DoctrineType;
+use Doctrine\Bundle\PHPCRBundle\Form\ChoiceList\PHPCRODMQueryBuilderLoader;
 use Symfony\Component\Form\Exception\FormException;
 
 class DocumentType extends DoctrineType
 {
     /**
-     * Return the loader object.
+     * Return the default loader object.
      *
      * @param ObjectManager $manager
-     * @param array $options
-     * @return EntityLoaderInterface
+     * @param mixed         $queryBuilder
+     * @param string        $class
+     * @return PHPCRODMQueryBuilderLoader
      */
     public function getLoader(ObjectManager $manager, $queryBuilder, $class)
     {
-        // TODO: check if phpcr-odm query builder can work with the form component and return it
-        throw new FormException('The query builder option is not supported by PHPCR.');
+        return new PHPCRODMQueryBuilderLoader(
+            $queryBuilder,
+            $manager,
+            $class
+        );
     }
 
     public function getName()
