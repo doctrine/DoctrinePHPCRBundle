@@ -41,7 +41,7 @@ class PHPCRODMQueryBuilderLoader implements EntityLoaderInterface
      *
      * @throws UnexpectedTypeException
      */
-    public function __construct($queryBuilder, DocumentManager $manager = null, $class = null)
+    public function __construct($queryBuilder, DocumentManager $manager, $class)
     {
         // If a query builder was passed, it must be a closure or QueryBuilder instance
         if (!($queryBuilder instanceof QueryBuilder || $queryBuilder instanceof \Closure)) {
