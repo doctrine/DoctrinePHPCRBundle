@@ -43,7 +43,9 @@ class DoctrinePHPCRBundle extends Bundle
 
         $container->addCompilerPass(new MigratorPass());
         $container->addCompilerPass(new InitializerPass());
-        $container->addCompilerPass(new RegisterEventListenersAndSubscribersPass('doctrine_phpcr.sessions', 'doctrine_phpcr.odm.%s_session.event_manager', 'doctrine_phpcr'), PassConfig::TYPE_BEFORE_OPTIMIZATION);
+        if (class_exists('Doctrine\ODM\PHPCR\Version')) {
+            $container->addCompilerPass(new RegisterEventListenersAndSubscribersPass('doctrine_phpcr.sessions', 'doctrine_phpcr.odm.%s_session.event_manager', 'doctrine_phpcr'), PassConfig::TYPE_BEFORE_OPTIMIZATION);
+        }
     }
 
     /**
@@ -53,7 +55,7 @@ class DoctrinePHPCRBundle extends Bundle
     {
         parent::registerCommands($application);
 
-        if (class_exists('Doctrine\\ODM\\PHPCR\\Version')) {
+        if (class_exists('Doctrine\ODM\PHPCR\Version')) {
             $application->add(new InfoDoctrineCommand());
             $application->add(new RepositoryInitCommand());
         }

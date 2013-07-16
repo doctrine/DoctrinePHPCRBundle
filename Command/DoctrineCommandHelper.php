@@ -20,16 +20,18 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
+use Doctrine\ODM\PHPCR\Tools\Console\Helper\DocumentManagerHelper;
+use PHPCR\Util\Console\Helper\PhpcrHelper;
 use Symfony\Component\Console\Application;
 
 use Jackalope\Tools\Console\Helper\DoctrineDbalHelper;
-use Jackalope\Tools\Console\Helper\JackrabbitHelper;
-use Jackalope\Transport\DoctrineDBAL\Client;
+use Jackalope\Transport\DoctrineDBAL\Client as DbalClient;
+use Jackalope\Transport\Jackrabbit\Client as JackrabbitClient;
 use Jackalope\Session;
 
 /**
- * Provides some helper and convenience methods to configure doctrine commands in the context of bundles
- * and multiple sessions/document managers.
+ * Provides some helper and convenience methods to configure doctrine commands
+ * in the context of bundles and multiple sessions/document managers.
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
@@ -40,14 +42,13 @@ abstract class DoctrineCommandHelper
         $service = null === $connName ? 'doctrine_phpcr.session' : 'doctrine_phpcr.'.$connName.'_session';
         $session = $application->getKernel()->getContainer()->get($service);
         $helperSet = $application->getHelperSet();
-        if (class_exists('Doctrine\\ODM\\PHPCR\\Version')) {
-            $helperSet->set(new \Doctrine\ODM\PHPCR\Tools\Console\Helper\DocumentManagerHelper($session));
+        if (class_exists('Doctrine\ODM\PHPCR\Version')) {
+            $helperSet->set(new DocumentManagerHelper($session));
         } else {
-            $helperSet->set(new \PHPCR\Util\Console\Helper\PhpcrHelper($session));
-
+            $helperSet->set(new PhpcrHelper($session));
         }
 
-        if ($session instanceof Session && $session->getTransport() instanceof Client) {
+        if ($session instanceof Session && $session->getTransport() instanceof DbalClient) {
             $helperSet->set(new DoctrineDBALHelper($session->getTransport()->getConnection()));
         }
     }
