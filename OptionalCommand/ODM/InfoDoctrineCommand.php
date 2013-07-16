@@ -12,7 +12,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Doctrine\Bundle\PHPCRBundle\Command;
+namespace Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM;
 
 use Doctrine\ODM\PHPCR\Mapping\MappingException;
 use Symfony\Component\Console\Input\InputOption;
@@ -20,6 +20,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use Doctrine\ODM\PHPCR\Tools\Console\Command\InfoDoctrineCommand as BaseInfoDoctrineCommand;
+use Doctrine\Bundle\PHPCRBundle\Command\DoctrineCommandHelper;
 
 /**
  * Show information about mapped entities
