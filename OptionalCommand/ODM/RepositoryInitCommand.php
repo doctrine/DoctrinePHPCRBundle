@@ -18,9 +18,10 @@
  * <http://www.doctrine-project.org>.
  */
 
-namespace Doctrine\Bundle\PHPCRBundle\Command;
+namespace Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM;
 
 use Doctrine\ODM\PHPCR\Tools\Console\Command\RegisterSystemNodeTypesCommand as BaseRegisterSystemNodeTypesCommand;
+use Doctrine\Bundle\PHPCRBundle\Command\DoctrineCommandHelper;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

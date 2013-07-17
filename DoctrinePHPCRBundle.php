@@ -30,8 +30,10 @@ use Symfony\Bridge\Doctrine\DependencyInjection\CompilerPass\RegisterEventListen
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\MigratorPass;
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\InitializerPass;
-use Doctrine\Bundle\PHPCRBundle\OptionalCommand\InitDoctrineDbalCommand;
-use Doctrine\Bundle\PHPCRBundle\OptionalCommand\JackrabbitCommand;
+use Doctrine\Bundle\PHPCRBundle\OptionalCommand\Jackalope\InitDoctrineDbalCommand;
+use Doctrine\Bundle\PHPCRBundle\OptionalCommand\Jackalope\JackrabbitCommand;
+use Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\InfoDoctrineCommand;
+use Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\RepositoryInitCommand;
 
 class DoctrinePHPCRBundle extends Bundle
 {
@@ -41,7 +43,9 @@ class DoctrinePHPCRBundle extends Bundle
 
         $container->addCompilerPass(new MigratorPass());
         $container->addCompilerPass(new InitializerPass());
-        $container->addCompilerPass(new RegisterEventListenersAndSubscribersPass('doctrine_phpcr.sessions', 'doctrine_phpcr.odm.%s_session.event_manager', 'doctrine_phpcr'), PassConfig::TYPE_BEFORE_OPTIMIZATION);
+        if (class_exists('Doctrine\ODM\PHPCR\Version')) {
+            $container->addCompilerPass(new RegisterEventListenersAndSubscribersPass('doctrine_phpcr.sessions', 'doctrine_phpcr.odm.%s_session.event_manager', 'doctrine_phpcr'), PassConfig::TYPE_BEFORE_OPTIMIZATION);
+        }
     }
 
     /**
@@ -50,6 +54,11 @@ class DoctrinePHPCRBundle extends Bundle
     public function registerCommands(Application $application)
     {
         parent::registerCommands($application);
+
+        if (class_exists('Doctrine\ODM\PHPCR\Version')) {
+            $application->add(new InfoDoctrineCommand());
+            $application->add(new RepositoryInitCommand());
+        }
 
         if (class_exists('\Jackalope\Tools\Console\Command\JackrabbitCommand')) {
             $application->add(new JackrabbitCommand());

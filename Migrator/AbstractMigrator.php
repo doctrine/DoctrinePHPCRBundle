@@ -27,7 +27,7 @@ use PHPCR\Util\TraversingItemVisitor;
 abstract class AbstractMigrator extends TraversingItemVisitor implements MigratorInterface
 {
     /**
-     * @var PHPCR\SessionInterface
+     * @var SessionInterface
      */
     protected $session;
 
