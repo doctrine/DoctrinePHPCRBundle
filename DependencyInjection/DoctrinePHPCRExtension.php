@@ -126,9 +126,23 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
     {
         switch ($type) {
             case 'doctrinedbal':
-                if (isset($session['backend']['connection'])) {
-                    $parameters['jackalope.doctrine_dbal_connection'] = new Reference($session['backend']['connection']);
-                }
+                $connectionName = isset($session['backend']['connection'])
+                    ? $session['backend']['connection']
+                    : null
+                ;
+                $connectionService = $connectionName
+                    ? sprintf('doctrine.dbal.%s_connection', $connectionName)
+                    : 'database_connection'
+                ;
+                $parameters['jackalope.doctrine_dbal_connection'] = new Reference($connectionService);
+                $container
+                    ->getDefinition('doctrine_phpcr.jackalope_doctrine_dbal.schema_listener')
+                    ->addTag('doctrine.event_listener', array(
+                        'connection' => $connectionName,
+                        'event'      => 'postGenerateSchema',
+                        'lazy'       => true
+                    ))
+                ;
                 if (isset($session['backend']['caches'])) {
                     foreach ($session['backend']['caches'] as $key => $cache) {
                         $parameters['jackalope.data_caches'][$key] = new Reference($cache);
