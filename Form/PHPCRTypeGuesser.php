@@ -107,6 +107,22 @@ class PHPCRTypeGuesser implements FormTypeGuesserInterface
      */
     public function guessRequired($class, $property)
     {
+        list($metadata, $documentManager) = $this->getMetadata($class);
+
+        if (!$metadata) {
+            return null;
+        }
+
+        // Check whether the field exists and is nullable or not
+        if ($metadata->hasField($property)) {
+            if (!isset($metadata->mappings[$property]['nullable']) || !$metadata->mappings[$property]['nullable']) {
+                return new ValueGuess(true, Guess::HIGH_CONFIDENCE);
+            }
+
+            return new ValueGuess(false, Guess::MEDIUM_CONFIDENCE);
+        }
+
+        return null;
     }
 
     /**
