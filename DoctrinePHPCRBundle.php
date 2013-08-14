@@ -34,6 +34,7 @@ use Doctrine\Bundle\PHPCRBundle\OptionalCommand\Jackalope\InitDoctrineDbalComman
 use Doctrine\Bundle\PHPCRBundle\OptionalCommand\Jackalope\JackrabbitCommand;
 use Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\InfoDoctrineCommand;
 use Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\RepositoryInitCommand;
+use Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\DocumentMigrateClassCommand;
 
 class DoctrinePHPCRBundle extends Bundle
 {
@@ -58,6 +59,7 @@ class DoctrinePHPCRBundle extends Bundle
         if (class_exists('Doctrine\ODM\PHPCR\Version')) {
             $application->add(new InfoDoctrineCommand());
             $application->add(new RepositoryInitCommand());
+            $application->add(new DocumentMigrateClassCommand());
         }
 
         if (class_exists('\Jackalope\Tools\Console\Command\JackrabbitCommand')) {
