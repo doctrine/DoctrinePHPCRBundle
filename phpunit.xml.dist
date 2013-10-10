@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+        colors="true"
+        bootstrap="Tests/bootstrap.php"
+        >
+
+    <testsuites>
+        <testsuite name="Symfony DoctrinePHPCRBundle Test Suite">
+            <directory>./Tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="true">
+            <directory>.</directory>
+            <exclude>
+                <directory>Resources/</directory>
+                <directory>Tests/</directory>
+                <directory>vendor/</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+
+</phpunit>
