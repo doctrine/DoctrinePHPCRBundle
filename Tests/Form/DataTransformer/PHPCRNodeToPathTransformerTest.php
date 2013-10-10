@@ -30,13 +30,13 @@ class PHPCRNodeToPathTransformerTest extends \PHPUnit_Framework_Testcase
      */
     public function testTransformWrongType()
     {
-        $res = $this->transformer->transform(new \stdClass);
+        $this->transformer->transform(new \stdClass);
     }
 
     public function testReverseTransform()
     {
         $this->session->expects($this->once())
-            ->method('getNodeByIdentifier')
+            ->method('getNode')
             ->with('/asd')
             ->will($this->returnValue($this->node));
 
@@ -47,10 +47,9 @@ class PHPCRNodeToPathTransformerTest extends \PHPUnit_Framework_Testcase
     public function testReverseTransformEmpty()
     {
         $this->session->expects($this->never())
-            ->method('getNodeByIdentifier');
+            ->method('getNode');
         $res = $this->transformer->reverseTransform('');
         $this->assertNull($res);
-
     }
 
     public function testReverseTransformNotFound()

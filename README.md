@@ -4,6 +4,8 @@ PHPCR & Doctrine PHPCR-ODM Bundle for the Symfony Framework.
 
 This bundle integrates PHP Content Repository implementations and the Doctrine PHPCR-ODM into Symfony2.
 
+[![Build Status](https://secure.travis-ci.org/doctrine/DoctrinePHPCRBundle.png)](http://travis-ci.org/doctrine/DoctrinePHPCRBundle)
+
 ## What is Doctrine PHPCR-ODM?
 
 The Doctrine Project is the home of a selected set of PHP libraries primarily focused on providing persistence
