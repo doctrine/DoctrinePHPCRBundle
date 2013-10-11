@@ -17,13 +17,13 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "symfony/framework-bundle": "~2.1",
-        "symfony/doctrine-bridge": "~2.1",
+        "symfony/framework-bundle": "~2.2",
+        "symfony/doctrine-bridge": "~2.2",
         "phpcr/phpcr-implementation": "2.1.*",
         "phpcr/phpcr-utils": "~1.0.0"
     },
     "require-dev": {
-        "symfony/form": "~2.1",
+        "symfony/form": "~2.2",
         "doctrine/phpcr-odm": "1.0.*",
         "jackalope/jackalope-jackrabbit": "1.0.*"
     },
