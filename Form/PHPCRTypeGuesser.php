@@ -21,6 +21,7 @@
 namespace Doctrine\Bundle\PHPCRBundle\Form;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
 use Symfony\Component\Form\FormTypeGuesserInterface;
 use Symfony\Component\Form\Guess\Guess;
 use Symfony\Component\Form\Guess\TypeGuess;
@@ -54,20 +55,46 @@ class PHPCRTypeGuesser implements FormTypeGuesserInterface
             return new TypeGuess('text', array(), Guess::LOW_CONFIDENCE);
         }
 
+        /** @var ClassMetadata $metadata */
         list($metadata, $documentManager) = $ret;
 
         if ($metadata->hasAssociation($property)) {
-            $multiple = $metadata->isCollectionValuedAssociation($property);
             $mapping = $metadata->getAssociation($property);
 
+            if ('parent' === $mapping['type']) {
+                return new TypeGuess('phpcr_odm_path', array(), Guess::LOW_CONFIDENCE);
+            }
+            if ('mixedreferrers' === $mapping['type']) {
+                return new TypeGuess('phpcr_document', array(
+                        'multiple' => true,
+                        'readonly' => true,
+                    ),
+                    Guess::HIGH_CONFIDENCE
+                );
+            }
+            if ('child' === $mapping['type']) {
+                return null;
+            } elseif ('children' === $mapping['type']) {
+                return null;
+            }
+
+            if ('referrers' === $mapping['type']) {
+                $multiple = true;
+                $class = $mapping['referringDocument'];
+            } else {
+                $multiple = $metadata->isCollectionValuedAssociation($property);
+                $class = $mapping['targetDocument'];
+            }
+
             return new TypeGuess('phpcr_document', array(
-                'class' => $mapping['targetDocument'],
+                'class' => $class,
                 'multiple' => $multiple
                 ),
                 Guess::HIGH_CONFIDENCE
             );
         }
 
+        // TODO: missing multi value support
         switch ($metadata->getTypeOfField($property)) {
             case 'boolean':
                 return new TypeGuess('checkbox', array(), Guess::HIGH_CONFIDENCE);
@@ -107,6 +134,7 @@ class PHPCRTypeGuesser implements FormTypeGuesserInterface
      */
     public function guessRequired($class, $property)
     {
+        /** @var ClassMetadata $metadata */
         list($metadata, $documentManager) = $this->getMetadata($class);
 
         if (!$metadata) {
