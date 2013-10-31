@@ -99,6 +99,10 @@ EOF
             $this->setWorkspaceDir($this->getContainer()->getParameter('doctrine_phpcr.workspace_dir'));
         }
 
+        if ($this->getContainer()->hasParameter('doctrine_phpcr.jackrabbit_port')) {
+            $this->setPort($this->getContainer()->getParameter('doctrine_phpcr.jackrabbit_port'));
+        }
+
         return parent::execute($input, $output);
     }
 }
