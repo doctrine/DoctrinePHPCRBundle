@@ -185,6 +185,38 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             $parameters['jackalope.disable_transactions'] = $session['backend']['disable_transactions'];
         }
 
+        $logger = null;
+        if (!empty($session['backend']['logging'])) {
+            $logger = new Reference('doctrine_phpcr.logger');
+        }
+
+        if (!empty($session['backend']['profiling'])) {
+            $profilingLoggerId = 'doctrine_phpcr.logger.profiling.'.$session['name'];
+            $container->setDefinition($profilingLoggerId, new DefinitionDecorator('doctrine_phpcr.logger.profiling'));
+            $profilerLogger = new Reference($profilingLoggerId);
+            $container->getDefinition('doctrine_phpcr.data_collector')->addMethodCall('addLogger', array($session['name'], $profilerLogger));
+
+            $stopWatchLoggerId = 'doctrine_phpcr.logger.stop_watch.'.$session['name'];
+            $container->setDefinition($stopWatchLoggerId, new DefinitionDecorator('doctrine_phpcr.logger.stop_watch'));
+            $stopWatchLogger = new Reference($stopWatchLoggerId);
+
+            $chainLogger = new DefinitionDecorator('doctrine_phpcr.logger.chain');
+            $chainLogger->addMethodCall('addLogger', array($profilerLogger));
+            $chainLogger->addMethodCall('addLogger', array($stopWatchLogger));
+
+            if (null !== $logger) {
+                $chainLogger->addMethodCall('addLogger', array($logger));
+            }
+
+            $loggerId = 'doctrine_phpcr.logger.chain.'.$session['name'];
+            $container->setDefinition($loggerId, $chainLogger);
+            $logger = new Reference($loggerId);
+        }
+
+        if ($logger) {
+            $parameters['jackalope.logger'] = $logger;
+        }
+
         $factory = $container
             ->setDefinition(sprintf('doctrine_phpcr.jackalope.repository.%s', $session['name']), new DefinitionDecorator('doctrine_phpcr.jackalope.repository.factory.'.$type))
         ;
