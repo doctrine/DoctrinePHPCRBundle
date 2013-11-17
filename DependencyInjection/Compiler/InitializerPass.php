@@ -23,6 +23,7 @@ namespace Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * A CompilerPass which registers available initializers.
@@ -37,14 +38,16 @@ class InitializerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $initializers = array();
+        $initializerManagerDef = $container->getDefinition('doctrine_phpcr.initializer_manager');
         foreach ($container->findTaggedServiceIds('doctrine_phpcr.initializer') as $id => $attributes) {
             $definition = $container->getDefinition($id);
             if (!$definition->isPublic()) {
                 throw new LogicException(sprintf('initializer "%s" must be public', $id));
             }
-            $initializers[] = $id;
-        }
 
-        $container->setParameter('doctrine_phpcr.initialize.initializers', $initializers);
+            $initializerManagerDef->addMethodCall('addInitializer', array(
+                new Reference($id)
+            ));
+        }
     }
 }

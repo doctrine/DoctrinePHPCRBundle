@@ -76,16 +76,11 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        DoctrineCommandHelper::setApplicationPHPCRSession($this->getApplication(), $input->getOption('session'));
+        $initializerManager = $this->container->get('doctrine_phpcr.initializer_manager');
+        $initializerManager->setLoggingClosure(function ($message) use ($output) {
+            $output->writeln($message);
+        });
 
-        parent::execute($input, $output);
-
-        $session = $this->getHelper('phpcr')->getSession();
-        foreach ($this->getContainer()->getParameter('doctrine_phpcr.initialize.initializers') as $id) {
-            $initializer = $this->getContainer()->get($id);
-            $initializer->init($session);
-        }
-
-        return 0;
+        $initializerManager->initialize();
     }
 }

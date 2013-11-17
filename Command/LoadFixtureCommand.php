@@ -30,15 +30,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
 
-use Doctrine\Common\DataFixtures\Executor\PHPCRExecutor;
 use Doctrine\Common\DataFixtures\Purger\PHPCRPurger;
 
 use InvalidArgumentException;
+use Doctrine\Bundle\PHPCRBundle\DataFixtures\PHPCRExecutor;
 
 /**
  * @author Daniel Barsotti <daniel.barsotti@liip.ch>
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Jonathan H. Wage <jonwage@gmail.com>
+ * @author Daniel Leech <daniel@dantleech.com>
  */
 class LoadFixtureCommand extends ContainerAwareCommand
 {
@@ -50,6 +51,7 @@ class LoadFixtureCommand extends ContainerAwareCommand
             ->addOption('fixtures', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'The directory or file to load data fixtures from.')
             ->addOption('append', null, InputOption::VALUE_NONE, 'Append the data fixtures instead of deleting all data from the database first.')
             ->addOption('name', null, InputOption::VALUE_OPTIONAL, 'The document manager to use for this command.', null)
+            ->addOption('no-initialize', null, InputOption::VALUE_NONE, 'Do not initialize the repository.')
             ->setHelp(<<<EOT
 The <info>doctrine:phpcr:fixtures:load</info> command loads data fixtures from your bundles DataFixtures/PHPCR directory:
 
@@ -70,6 +72,7 @@ EOT
     {
         $registry = $this->getContainer()->get('doctrine_phpcr');
         $dm = $registry->getManager($input->getOption('name'));
+        $noInitialize = $input->getOption('no-initialize');
 
         if ($input->isInteractive() && !$input->getOption('append')) {
             $dialog = $this->getHelperSet()->get('dialog');
@@ -103,7 +106,14 @@ EOT
         }
 
         $purger = new PHPCRPurger($dm);
-        $executor = new PHPCRExecutor($dm, $purger);
+
+        if ($noInitialize) {
+            $initializerManager = null;
+        } else {
+            $initializerManager = $this->getContainer()->get('doctrine_phpcr.initializer_manager');
+        }
+
+        $executor = new PHPCRExecutor($dm, $purger, $initializerManager);
         $executor->setLogger(function($message) use ($output)
         {
             $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', $message));
