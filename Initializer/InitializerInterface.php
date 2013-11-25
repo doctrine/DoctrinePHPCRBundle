@@ -20,26 +20,29 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Initializer;
 
-use PHPCR\SessionInterface;
+use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
+
 
 /**
- * An interface for services that initialize the repository.
- *
- * Put services of that class into the DI container and tag them with
- * doctrine_phpcr.initializer to have them executed by the
- * doctrine:phpcr:repository:init command.
+ * Interface for intiializers
  *
  * @author David Buchmann <mail@davidbu.ch>
  */
 interface InitializerInterface
 {
     /**
-     * Initialize the session for the bundle providing this service.
+     * This method should be used to establish the requisite
+     * structure needed by the application or bundle of the
+     * content repository.
      *
-     * If nodes are added, $session->save() must be called as the init command
-     * does not do that.
-     *
-     * @param SessionInterface $session
+     * @param ManagerRegistry $registry
      */
-    public function init(SessionInterface $session);
+    public function init(ManagerRegistry $registry);
+
+    /**
+     * Return a name which can be used to identify this intializer.
+     * 
+     * @return string
+     */
+    public function getName();
 }

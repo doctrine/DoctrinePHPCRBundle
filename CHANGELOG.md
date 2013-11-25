@@ -1,6 +1,13 @@
 Changelog
 =========
 
+* **2014-02-01**: [Initializer] Initializer names
+ * All initializers now must implement the `getName` method.
+ * Pushed $name as the first argument for the `GenericInitializer`.
+ * The object passed to the `init` method of classes implementing `InitializerInterface`
+   is now the PHPCR `ManagerRegistry`. Custom implementations can now retrieve:
+   * The document manager: `$registry->getManager()`
+   * The PHPCR session: `$registry->getConnection()`
 * **2013-12-11**: [Form] Deprecated the form type "phpcr_odm_reference_collection".
   It seems to not work and "phpcr_document" should cover everything we need.
 
