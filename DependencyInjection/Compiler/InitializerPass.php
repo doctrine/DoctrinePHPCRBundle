@@ -37,9 +37,14 @@ class InitializerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $initializers = array();
+        if (!$container->hasDefinition('doctrine_phpcr.initializer_manager')) {
+            return;
+        }
+
         $initializerManagerDef = $container->getDefinition('doctrine_phpcr.initializer_manager');
-        foreach ($container->findTaggedServiceIds('doctrine_phpcr.initializer') as $id => $attributes) {
+        $services = $container->findTaggedServiceIds('doctrine_phpcr.initializer');
+
+        foreach ($services as $id => $attributes) {
             $definition = $container->getDefinition($id);
             if (!$definition->isPublic()) {
                 throw new LogicException(sprintf('initializer "%s" must be public', $id));
