@@ -127,18 +127,21 @@ class Configuration implements ConfigurationInterface
                         ->ifTrue(function ($v) { return null === $v || (is_array($v) && !array_key_exists('document_managers', $v) && !array_key_exists('document_manager', $v)); })
                         ->then(function ($v) {
                             $v = (array) $v;
+                            // Key that should not be rewritten to the connection config
+                            $excludedKeys = array(
+                                'default_document_manager' => true,
+                                'auto_generate_proxy_classes' => true,
+                                'proxy_dir' => true,
+                                'proxy_namespace' => true,
+                                'locales' => true,
+                            );
                             $documentManagers = array();
-                            foreach (array(
-                                'metadata_cache_driver', 'metadata-cache-driver',
-                                'auto_mapping', 'auto-mapping',
-                                'mappings', 'mapping',
-                                'session',
-                                'configuration_id',
-                            ) as $key) {
-                                if (array_key_exists($key, $v)) {
-                                    $documentManagers[$key] = $v[$key];
-                                    unset($v[$key]);
+                            foreach ($v as $key => $value) {
+                                if (isset($excludedKeys[$key])) {
+                                    continue;
                                 }
+                                $documentManagers[$key] = $v[$key];
+                                unset($v[$key]);
                             }
                             $v['default_document_manager'] = isset($v['default_document_manager']) ? (string) $v['default_document_manager'] : 'default';
                             $v['document_managers'] = array($v['default_document_manager'] => $documentManagers);
@@ -190,7 +193,10 @@ class Configuration implements ConfigurationInterface
                 ->children()
                     ->scalarNode('session')->end()
                     ->scalarNode('configuration_id')->end()
+                    ->scalarNode('class_metadata_factory_name')->defaultValue('Doctrine\ODM\PHPCR\Mapping\ClassMetadataFactory')->end()
                     ->scalarNode('auto_mapping')->defaultFalse()->end()
+                    ->scalarNode('default_repository_class')->defaultValue('Doctrine\ODM\PHPCR\DocumentRepository')->end()
+                    ->scalarNode('repository_factory')->defaultNull()->end()
                 ->end()
                 ->fixXmlConfig('mapping')
                 ->children()

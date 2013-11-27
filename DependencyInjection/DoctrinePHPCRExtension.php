@@ -33,6 +33,8 @@ use Symfony\Component\Config\Definition\Processor;
 
 use Symfony\Bridge\Doctrine\DependencyInjection\AbstractDoctrineExtension;
 
+use Doctrine\ODM\PHPCR\Version;
+
 /**
  * PHPCR Extension
  *
@@ -325,6 +327,15 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             'setProxyNamespace' => array('%doctrine_phpcr.odm.proxy_namespace%'),
             'setAutoGenerateProxyClasses' => array('%doctrine_phpcr.odm.auto_generate_proxy_classes%'),
         );
+
+        if (version_compare(Version::VERSION, "1.1.0-DEV") >= 0) {
+            $methods['setClassMetadataFactoryName'] = array($documentManager['class_metadata_factory_name']);
+            $methods['setDefaultRepositoryClassName'] = array($documentManager['default_repository_class']);
+
+            if ($documentManager['repository_factory']) {
+                $methods['setRepositoryFactory'] = array(new Reference($documentManager['repository_factory']));
+            }
+        }
         foreach ($methods as $method => $args) {
             $odmConfigDef->addMethodCall($method, $args);
         }
