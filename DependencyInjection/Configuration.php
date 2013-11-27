@@ -38,6 +38,7 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('doctrine_phpcr')
             ->children()
                 ->scalarNode('jackrabbit_jar')->end()
+                ->scalarNode('jackrabbit_port')->end()
                 ->scalarNode('workspace_dir')->end()
                 ->scalarNode('dump_max_line_length')->defaultValue(120)->end()
             ->end()
