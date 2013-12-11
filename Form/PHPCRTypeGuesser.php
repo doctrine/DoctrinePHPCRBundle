@@ -21,6 +21,7 @@
 namespace Doctrine\Bundle\PHPCRBundle\Form;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
 use Symfony\Component\Form\FormTypeGuesserInterface;
 use Symfony\Component\Form\Guess\Guess;
 use Symfony\Component\Form\Guess\TypeGuess;
@@ -54,15 +55,40 @@ class PHPCRTypeGuesser implements FormTypeGuesserInterface
             return new TypeGuess('text', array(), Guess::LOW_CONFIDENCE);
         }
 
+        /** @var $metadata ClassMetadata */
         list($metadata, $documentManager) = $ret;
 
         if ($metadata->hasAssociation($property)) {
-            $multiple = $metadata->isCollectionValuedAssociation($property);
+            $type = $metadata->getTypeOfField($property);
+            if ('child' === $type || 'children' === $type) {
+                // abort, we have no form type suitable for children
+                return new TypeGuess('text', array(), Guess::LOW_CONFIDENCE);
+            }
             $mapping = $metadata->getAssociation($property);
+            $class = null;
+            switch($type) {
+                case 'referrers':
+                    $class = $mapping['referringDocument'];
+                    break;
+                case ClassMetadata::MANY_TO_MANY:
+                case ClassMetadata::MANY_TO_ONE:
+                    if (isset($mapping['targetDocument'])) {
+                        $class = $mapping['targetDocument'];
+                    }
+                    break;
+            }
+            // for parent mapping, the user needs to specify the class himself,
 
-            return new TypeGuess('phpcr_document', array(
-                'class' => $mapping['targetDocument'],
-                'multiple' => $multiple
+            $multiple = $metadata->isCollectionValuedAssociation($property);
+            $disabled = 'mixedreferrers' === $type;
+
+            return new TypeGuess(
+                'phpcr_document',
+                array(
+                    'class' => $class,
+                    'multiple' => $multiple,
+                    'disabled' => $disabled,
+
                 ),
                 Guess::HIGH_CONFIDENCE
             );
