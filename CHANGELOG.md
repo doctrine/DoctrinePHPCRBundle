@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* **2013-12-11**: [Form] Deprecated the form type "phpcr_odm_reference_collection".
+  It seems to not work and "phpcr_document" should cover everything we need.
+
 * **2013-11-27**: [Initializer] Parameter "doctrine_phpcr.initialize.initializers" no longer defined
  * Initializers are now collected using a compiler pass and injected into the new InitializerManager
 * **2013-11-27**: [Initializer] `doctrine:phpcr:fixtures:load` now executes all of the initializers
