@@ -10,6 +10,9 @@ use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\ReferenceManyCollectionToAr
 
 /**
  * A type to handle a list of references as simple choice.
+ *
+ * @deprecated This seems to do nothing more than the DocumentType.
+ *      Will be removed in 1.2.
  */
 class PHPCRODMReferenceCollectionType extends AbstractType
 {
@@ -59,6 +62,8 @@ class PHPCRODMReferenceCollectionType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        trigger_error('This form type is deprecated in favor of phpcr_document. If you think this is an error, please contact us and explain. We where not able to figure out what this type is good for.', E_WARNING);
+
         $transformer = new ReferenceManyCollectionToArrayTransformer($this->dm, $options['referenced_class'], $options['key']);
         $builder->addModelTransformer($transformer);
     }
