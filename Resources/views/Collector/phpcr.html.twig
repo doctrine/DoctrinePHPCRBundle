@@ -50,18 +50,12 @@
                 {% for i, call in calls %}
                     <li class="{{ cycle(['odd', 'even'], i) }}" data-extra-info="{{ '%0.2f'|format(call.executionMS * 1000) }}" data-target-id="{{ i }}">
                         <div style="margin-top: 4px" id="callNo-{{ i }}-{{ loop.parent.loop.index }}">
-                            <div onclick="return expandCall(this);" title="Expand call" data-target-id="code-{{ i }}-{{ loop.parent.loop.index }}" style="cursor: pointer;">
-                                <span style="display: none">Shrink call</span>
-                                <span id="smallcode-{{ i }}-{{ loop.parent.loop.index }}">
-                                    {{ call.method|raw }}
-                                </span>
-                            </div>
                             <code id="code-{{ i }}-{{ loop.parent.loop.index }}">
                                 {{ call.method|raw }}
                             </code>
                             <small>
                                 <strong>Parameters</strong>: {{ call.params|yaml_encode }} <br />
-                                [<span id="expandParams-{{ i }}-{{ loop.parent.loop.index }}" onclick="javascript:toggleRunnableCall(this);" target-data-id="original-call-{{ i }}-{{ loop.parent.loop.index }}" style="cursor: pointer;">Display runnable call</span>]<br/>
+                                <strong>Environment</strong>: {{ call.env|yaml_encode }} <br />
                                 <strong>Time</strong>: {{ '%0.2f'|format(call.executionMS * 1000) }} ms
                             </small>
                         </div>
