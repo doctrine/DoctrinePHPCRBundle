@@ -117,6 +117,7 @@ class PHPCRDataCollector extends DataCollector
         foreach ($call['params'] as &$param) {
             $param = $this->sanitizeParam($param);
         }
+        $call['env'] = (array) $call['env'];
 
         return $call;
     }
