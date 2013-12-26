@@ -72,7 +72,7 @@
         </service>
 
         <service id="doctrine_phpcr.initializer_manager" class="%doctrine_phpcr.initializer_manager%">
-            <argument type="service" id="doctrine_phpcr.session"/>
+            <argument type="service" id="doctrine_phpcr"/>
         </service>
 
     </services>

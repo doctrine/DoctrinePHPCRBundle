@@ -33,7 +33,7 @@ use PHPCR\Util\NodeHelper;
  * The nodes will be created as nt:unstructured nodes. To not create any
  * nodes, pass an empty array.
  *
- * @author David Buchmann <david@liip.ch>
+ * @author David Buchmann <mail@davidbu.ch>
  */
 class GenericInitializer implements InitializerInterface
 {

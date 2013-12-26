@@ -20,17 +20,19 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
+use Symfony\Bridge\Doctrine\ManagerRegistry;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+
 use Doctrine\ODM\PHPCR\Tools\Console\Helper\DocumentManagerHelper;
 use PHPCR\Util\Console\Helper\PhpcrHelper;
-use Symfony\Component\Console\Application;
 
 use Jackalope\Tools\Console\Helper\DoctrineDbalHelper;
 use Jackalope\Transport\DoctrineDBAL\Client as DbalClient;
 use Jackalope\Transport\Jackrabbit\Client as JackrabbitClient;
-use Jackalope\Session;
+use Jackalope\Session as JackalopeSession;
 
 /**
- * Provides some helper and convenience methods to configure doctrine commands
+ * Provides helper methods to configure doctrine PHPCR-ODM commands
  * in the context of bundles and multiple sessions/document managers.
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
@@ -39,8 +41,10 @@ abstract class DoctrineCommandHelper
 {
     static public function setApplicationPHPCRSession(Application $application, $connName)
     {
-        $service = null === $connName ? 'doctrine_phpcr.session' : 'doctrine_phpcr.'.$connName.'_session';
-        $session = $application->getKernel()->getContainer()->get($service);
+        /** @var $registry ManagerRegistry */
+        $registry = $application->getKernel()->getContainer()->get('doctrine_phpcr');
+        $session = $registry->getConnection($connName);
+
         $helperSet = $application->getHelperSet();
         if (class_exists('Doctrine\ODM\PHPCR\Version')) {
             $helperSet->set(new DocumentManagerHelper($session));
@@ -48,15 +52,17 @@ abstract class DoctrineCommandHelper
             $helperSet->set(new PhpcrHelper($session));
         }
 
-        if ($session instanceof Session && $session->getTransport() instanceof DbalClient) {
+        if ($session instanceof JackalopeSession && $session->getTransport() instanceof DbalClient) {
             $helperSet->set(new DoctrineDBALHelper($session->getTransport()->getConnection()));
         }
     }
 
     static public function setApplicationDocumentManager(Application $application, $dmName)
     {
-        $service = null === $dmName ? 'doctrine_phpcr.odm.document_manager' : 'doctrine_phpcr.odm.'.$dmName.'_document_manager';
-        $documentManager = $application->getKernel()->getContainer()->get($service);
+        /** @var $registry ManagerRegistry */
+        $registry = $application->getKernel()->getContainer()->get('doctrine_phpcr');
+        $documentManager = $registry->getManager($dmName);
+
         $helperSet = $application->getHelperSet();
         $helperSet->set(new DocumentManagerHelper(null, $documentManager));
     }

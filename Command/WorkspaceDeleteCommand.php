@@ -20,19 +20,20 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
-use PHPCR\Util\Console\Command\NodeMoveCommand as BaseNodeMoveCommand;
-
-use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+
+use PHPCR\Util\Console\Command\WorkspaceDeleteCommand as BaseWorkspaceDeleteCommand;
 
 /**
  * Wrapper to use this command in the symfony console with multiple sessions.
  *
- * @author Daniel Leech <daniel@dantleech.com>
+ * @author David Buchmann <mail@davidbu.ch>
  */
-class NodeMoveCommand extends BaseNodeMoveCommand
+class WorkspaceDeleteCommand extends BaseWorkspaceDeleteCommand
 {
     /**
      * {@inheritDoc}
@@ -42,7 +43,7 @@ class NodeMoveCommand extends BaseNodeMoveCommand
         parent::configure();
 
         $this
-            ->setName('doctrine:phpcr:node:move')
+            ->setName('doctrine:phpcr:workspace:delete')
             ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
         ;
     }
@@ -60,4 +61,3 @@ class NodeMoveCommand extends BaseNodeMoveCommand
         return parent::execute($input, $output);
     }
 }
-

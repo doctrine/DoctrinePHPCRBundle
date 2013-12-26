@@ -53,7 +53,7 @@ class JackrabbitCommand extends BaseJackrabbitCommand implements ContainerAwareI
     }
 
     /**
-     * @see ContainerAwareInterface::setContainer()
+     * {@inheritDoc}
      */
     public function setContainer(ContainerInterface $container = null)
     {
@@ -61,7 +61,7 @@ class JackrabbitCommand extends BaseJackrabbitCommand implements ContainerAwareI
     }
 
     /**
-     * Configures the current command.
+     * {@inheritDoc}
      */
     protected function configure()
     {
@@ -82,12 +82,7 @@ EOF
     }
 
     /**
-     * Executes the current command.
-     *
-     * @param InputInterface  $input  An InputInterface instance
-     * @param OutputInterface $output An OutputInterface instance
-     *
-     * @return integer 0 if everything went fine, or an error code
+     * {@inheritDoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -97,10 +92,6 @@ EOF
 
         if ($this->getContainer()->hasParameter('doctrine_phpcr.workspace_dir')) {
             $this->setWorkspaceDir($this->getContainer()->getParameter('doctrine_phpcr.workspace_dir'));
-        }
-
-        if ($this->getContainer()->hasParameter('doctrine_phpcr.jackrabbit_port')) {
-            $this->setPort($this->getContainer()->getParameter('doctrine_phpcr.jackrabbit_port'));
         }
 
         return parent::execute($input, $output);

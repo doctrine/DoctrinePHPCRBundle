@@ -34,15 +34,15 @@ use Doctrine\Bundle\PHPCRBundle\Command\DoctrineCommandHelper;
 class DocumentMigrateClassCommand extends NodesUpdateCommand
 {
     /**
-     * Configures the current command.
+     * {@inheritDoc}
      */
     protected function configure()
     {
         $this
             ->setName('doctrine:phpcr:document:migrate-class')
             ->addOption(
-                'session', null, 
-                InputOption::VALUE_OPTIONAL, 
+                'session', null,
+                InputOption::VALUE_OPTIONAL,
                 'The session to use for this command'
             )
             ->setDescription('Command to migrate document classes.')
@@ -58,18 +58,16 @@ HERE
     }
 
     /**
-     * Executes the current command.
-     *
-     * @param InputInterface  $input  An InputInterface instance
-     * @param OutputInterface $output An OutputInterface instance
-     *
-     * @return integer 0 if everything went fine, or an error code
+     * {@inheritDoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // we do not want to expose the parent options, but use the arguments and
+        // options to pass information to the parent.
         parent::configure();
+
         DoctrineCommandHelper::setApplicationPHPCRSession(
-            $this->getApplication(), 
+            $this->getApplication(),
             $input->getOption('session')
         );
 
@@ -91,7 +89,7 @@ HERE
 
         $input->setOption('apply-closure', array(
             function ($session, $node) use ($newClassname, $classParents) {
-                $node->setProperty('phpcr:class', $newClassname); 
+                $node->setProperty('phpcr:class', $newClassname);
                 $node->setProperty('phpcr:classparents', $classParents);
             }
         ));

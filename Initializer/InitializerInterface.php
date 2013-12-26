@@ -29,7 +29,7 @@ use PHPCR\SessionInterface;
  * doctrine_phpcr.initializer to have them executed by the
  * doctrine:phpcr:repository:init command.
  *
- * @author David Buchmann <david@liip.ch>
+ * @author David Buchmann <mail@davidbu.ch>
  */
 interface InitializerInterface
 {

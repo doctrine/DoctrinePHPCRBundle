@@ -26,12 +26,15 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use PHPCR\Util\Console\Command\WorkspaceListCommand as BaseListWorkspacesCommand;
+use PHPCR\Util\Console\Command\WorkspaceListCommand as BaseWorkspaceListCommand;
 
-class WorkspaceListCommand extends BaseListWorkspacesCommand
+/**
+ * Wrapper to use this command in the symfony console with multiple sessions.
+ */
+class WorkspaceListCommand extends BaseWorkspaceListCommand
 {
     /**
-     * @see Command
+     * {@inheritDoc}
      */
     protected function configure()
     {
@@ -39,20 +42,19 @@ class WorkspaceListCommand extends BaseListWorkspacesCommand
 
         $this
             ->setName('doctrine:phpcr:workspace:list')
-            ->setDescription('List all available workspaces in the configured repository')
             ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
-            ->setHelp(<<<EOT
-The <info>workspace:list</info> command lists all available workspaces.
-EOT
-        );
+        ;
     }
 
     /**
-     * @see Command
+     * {@inheritDoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        DoctrineCommandHelper::setApplicationPHPCRSession($this->getApplication(), $input->getOption('session'));
+        DoctrineCommandHelper::setApplicationPHPCRSession(
+            $this->getApplication(),
+            $input->getOption('session')
+        );
 
         return parent::execute($input, $output);
     }

@@ -29,7 +29,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 class MigratorMigrateCommand extends ContainerAwareCommand
 {
     /**
-     * @see \Symfony\Bundle\FrameworkBundle\Command\Command
+     * {@inheritDoc}
      */
     protected function configure()
     {
@@ -39,11 +39,12 @@ class MigratorMigrateCommand extends ContainerAwareCommand
             ->addArgument('migrator_name', InputArgument::OPTIONAL, 'The name of the alias/service to be used to migrate the data.')
             ->addOption('identifier', null, InputOption::VALUE_OPTIONAL, 'Path or UUID of the node to dump', '/')
             ->addOption('depth', null, InputOption::VALUE_OPTIONAL, 'Set to a number to limit how deep into the tree to recurse', "-1")
-            ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command', null)
+            ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
             ->setHelp(<<<EOT
 To find the available 'migrators' run this command without an input argument
 EOT
-            );
+            )
+        ;
     }
 
     /**
@@ -51,6 +52,12 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        DoctrineCommandHelper::setApplicationPHPCRSession(
+            $this->getApplication(),
+            $input->getOption('session')
+        );
+        $session = $this->getHelperSet()->get('phpcr')->getSession();
+
         $container = $this->getContainer();
         $migrators = $container->getParameter('doctrine_phpcr.migrate.migrators');
 
@@ -68,8 +75,6 @@ EOT
 
         $migrator = $container->get($id);
 
-        $mr = $container->get('doctrine_phpcr');
-        $session = $mr->getConnection($input->getOption('session'));
         $migrator->init($session, $output);
 
         $identifier = $input->getOption('identifier');
