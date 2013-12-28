@@ -26,12 +26,15 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use PHPCR\Util\Console\Command\WorkspaceCreateCommand as BaseCreateWorkspaceCommand;
+use PHPCR\Util\Console\Command\WorkspaceCreateCommand as BaseWorkspaceCreateCommand;
 
-class WorkspaceCreateCommand extends BaseCreateWorkspaceCommand
+/**
+ * Wrapper to use this command in the symfony console with multiple sessions.
+ */
+class WorkspaceCreateCommand extends BaseWorkspaceCreateCommand
 {
     /**
-     * @see Command
+     * {@inheritDoc}
      */
     protected function configure()
     {
@@ -44,11 +47,14 @@ class WorkspaceCreateCommand extends BaseCreateWorkspaceCommand
     }
 
     /**
-     * @see Command
+     * {@inheritDoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        DoctrineCommandHelper::setApplicationPHPCRSession($this->getApplication(), $input->getOption('session'));
+        DoctrineCommandHelper::setApplicationPHPCRSession(
+            $this->getApplication(),
+            $input->getOption('session')
+        );
 
         return parent::execute($input, $output);
     }

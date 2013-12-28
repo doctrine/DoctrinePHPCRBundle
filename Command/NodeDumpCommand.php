@@ -31,6 +31,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 /**
+ * Wrapper to use this command in the symfony console with multiple sessions.
+ *
  * @author Daniel Barsotti <daniel.barsotti@liip.ch>
  */
 class NodeDumpCommand extends BaseDumpCommand implements ContainerAwareInterface
@@ -50,7 +52,7 @@ class NodeDumpCommand extends BaseDumpCommand implements ContainerAwareInterface
     }
 
     /**
-     * @see ContainerAwareInterface::setContainer()
+     * {@inheritDoc}
      */
     public function setContainer(ContainerInterface $container = null)
     {
@@ -58,7 +60,7 @@ class NodeDumpCommand extends BaseDumpCommand implements ContainerAwareInterface
     }
 
     /**
-     * Configures the current command.
+     * {@inheritDoc}
      */
     protected function configure()
     {
@@ -71,22 +73,23 @@ class NodeDumpCommand extends BaseDumpCommand implements ContainerAwareInterface
     }
 
     /**
-     * Executes the current command.
-     *
-     * @param InputInterface  $input  An InputInterface instance
-     * @param OutputInterface $output An OutputInterface instance
-     *
-     * @return integer 0 if everything went fine, or an error code
+     * {@inheritDoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $application = $this->getApplication();
-        DoctrineCommandHelper::setApplicationPHPCRSession($application, $input->getOption('session'));
+        DoctrineCommandHelper::setApplicationPHPCRSession(
+            $application,
+            $input->getOption('session')
+        );
         $helperSet = $application->getHelperSet();
         $helperSet->set($this->getContainer()->get('doctrine_phpcr.console_dumper'));
 
-        if ($this->getContainer()->hasParameter('doctrine_phpcr.dump_max_line_length')) {
-            $this->setDumpMaxLineLength($this->getContainer()->getParameter('doctrine_phpcr.dump_max_line_length'));
+
+        if (!$input->getParameterOption('max_line_length')
+            && $this->getContainer()->hasParameter('doctrine_phpcr.dump_max_line_length')
+        ) {
+            $input->setOption('max_line_length', $this->getContainer()->getParameter('doctrine_phpcr.dump_max_line_length'));
         }
 
         return parent::execute($input, $output);

@@ -35,6 +35,9 @@ use Doctrine\Bundle\PHPCRBundle\Command\DoctrineCommandHelper;
  */
 class InfoDoctrineCommand extends BaseInfoDoctrineCommand
 {
+    /**
+     * {@inheritDoc}
+     */
     protected function configure()
     {
         parent::configure();
@@ -50,16 +53,22 @@ not.
 <info>php app/console doctrine:phpcr:mapping:info</info>
 
 If you are using multiple document managers you can pick your choice with the
-<info>--name</info> option:
+<info>--session</info> option:
 
 <info>php app/console doctrine:phpcr:mapping:info --session=default</info>
 EOT
         );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        DoctrineCommandHelper::setApplicationDocumentManager($this->getApplication(), $input->getOption('session'));
+        DoctrineCommandHelper::setApplicationDocumentManager(
+            $this->getApplication(),
+            $input->getOption('session')
+        );
 
         return parent::execute($input, $output);
     }

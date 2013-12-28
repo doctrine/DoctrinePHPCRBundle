@@ -9,14 +9,21 @@ class InitializerManagerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->session = $this->getMock('PHPCR\SessionInterface');
-        $this->initializerManager = new InitializerManager($this->session);
+        $this->registry = $this->getMockBuilder('Doctrine\Bundle\PHPCRBundle\ManagerRegistry')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->registry->expects($this->any())
+            ->method('getConnection')
+            ->will($this->returnValue($this->session));
+
+        $this->initializerManager = new InitializerManager($this->registry);
 
         $this->initializer1 = $this->getMockBuilder(
             'Doctrine\Bundle\PHPCRBundle\Initializer\InitializerInterface'
-        )->setMockClassName('TestInitializerOne')->getMock();;
+        )->setMockClassName('TestInitializerOne')->getMock();
         $this->initializer2 = $this->getMockBuilder(
             'Doctrine\Bundle\PHPCRBundle\Initializer\InitializerInterface'
-        )->setMockClassName('TestInitializerTwo')->getMock();;
+        )->setMockClassName('TestInitializerTwo')->getMock();
     }
 
     public function provideInitialize()

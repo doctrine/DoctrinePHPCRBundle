@@ -20,6 +20,7 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Initializer;
 
+use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
 use PHPCR\SessionInterface;
 
 /**
@@ -29,13 +30,19 @@ use PHPCR\SessionInterface;
  */
 class InitializerManager
 {
+    /**
+     * @var InitializerInterface[]
+     */
     protected $initializers = array();
-    protected $session = null;
-    protected $loggingClosure = null;
+    /**
+     * @var ManagerRegistry
+     */
+    protected $registry;
+    protected $loggingClosure;
 
-    public function __construct(SessionInterface $session)
+    public function __construct(ManagerRegistry $registry)
     {
-        $this->session = $session;
+        $this->registry = $registry;
     }
 
     /**
@@ -63,14 +70,15 @@ class InitializerManager
      * Iterate over the registered initializers and execute init
      * on each.
      */
-    public function initialize()
+    public function initialize($session = null)
     {
+        $session = $this->registry->getConnection($session);
         $loggingClosure = $this->loggingClosure;
-        foreach ($this->initializers as $i => $initializer) {
+        foreach ($this->initializers as $initializer) {
             if ($loggingClosure) {
                 $loggingClosure(sprintf('<info>Executing initializer:</info> %s', get_class($initializer)));
             }
-            $initializer->init($this->session);
+            $initializer->init($session);
         }
     }
 }

@@ -27,12 +27,13 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Wrapper to use RegisterNodeTypeCommand with Symfony's app/console
- *
- * @see Doctrine/ODM/PHPCR/Tools/Console/Command/RegisterNodeTypesCommand
+ * Wrapper to use this command in the symfony console with multiple sessions.
  */
 class NodeTypeRegisterCommand extends BaseRegisterNodeTypesCommand
 {
+    /**
+     * {@inheritDoc}
+     */
     protected function configure()
     {
         parent::configure();
@@ -43,9 +44,15 @@ class NodeTypeRegisterCommand extends BaseRegisterNodeTypesCommand
         ;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        DoctrineCommandHelper::setApplicationPHPCRSession($this->getApplication(), $input->getOption('session'));
+        DoctrineCommandHelper::setApplicationPHPCRSession(
+            $this->getApplication(),
+            $input->getOption('session')
+        );
 
         return parent::execute($input, $output);
     }

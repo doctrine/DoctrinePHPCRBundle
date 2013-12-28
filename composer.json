@@ -15,17 +15,18 @@
             "email": "kontakt@beberlei.de"
         }
     ],
+    "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.3",
         "symfony/framework-bundle": "~2.2",
         "symfony/doctrine-bridge": "~2.2",
         "phpcr/phpcr-implementation": "2.1.*",
-        "phpcr/phpcr-utils": "~1.0.0"
+        "phpcr/phpcr-utils": "~1.1.0"
     },
     "require-dev": {
         "symfony/form": "~2.2",
         "doctrine/phpcr-odm": "1.1.*",
-        "jackalope/jackalope-jackrabbit": "~1.0.1"
+        "jackalope/jackalope-jackrabbit": "~1.1.0"
     },
     "suggest": {
         "doctrine/phpcr-odm": "if you want to use the odm as well. require version 1.1.*",
@@ -37,7 +38,6 @@
     "autoload": {
         "psr-0": { "Doctrine\\Bundle\\PHPCRBundle": "" }
     },
-    "minimum-stability": "dev",
     "target-dir": "Doctrine/Bundle/PHPCRBundle",
     "extra": {
         "branch-alias": {

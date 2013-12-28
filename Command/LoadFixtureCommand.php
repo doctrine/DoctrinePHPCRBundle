@@ -22,6 +22,7 @@ namespace Doctrine\Bundle\PHPCRBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
+use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
@@ -36,6 +37,8 @@ use InvalidArgumentException;
 use Doctrine\Bundle\PHPCRBundle\DataFixtures\PHPCRExecutor;
 
 /**
+ * Command to load PHPCR-ODM fixtures.
+ *
  * @author Daniel Barsotti <daniel.barsotti@liip.ch>
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Jonathan H. Wage <jonwage@gmail.com>
@@ -43,6 +46,9 @@ use Doctrine\Bundle\PHPCRBundle\DataFixtures\PHPCRExecutor;
  */
 class LoadFixtureCommand extends ContainerAwareCommand
 {
+    /**
+     * {@inheritDoc}
+     */
     protected function configure()
     {
         $this
@@ -50,37 +56,46 @@ class LoadFixtureCommand extends ContainerAwareCommand
             ->setDescription('Load data fixtures to your PHPCR database.')
             ->addOption('fixtures', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'The directory or file to load data fixtures from.')
             ->addOption('append', null, InputOption::VALUE_NONE, 'Append the data fixtures to the existing data - will not purge the workspace.')
-            ->addOption('name', null, InputOption::VALUE_OPTIONAL, 'The document manager to use for this command.', null)
+            ->addOption('name', null, InputOption::VALUE_OPTIONAL, 'The document manager to use for this command.')
             ->addOption('no-initialize', null, InputOption::VALUE_NONE, 'Do not run the repository initializers after purging the repository.')
+            ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
             ->setHelp(<<<EOT
-The <info>doctrine:phpcr:fixtures:load</info> command loads data fixtures from 
+The <info>doctrine:phpcr:fixtures:load</info> command loads data fixtures from
 your bundles DataFixtures/PHPCR directory:
 
   <info>./app/console doctrine:phpcr:fixtures:load</info>
 
-You can also optionally specify the path to fixtures with the 
+You can also optionally specify the path to fixtures with the
 <info>--fixtures</info> option:
 
   <info>./app/console doctrine:phpcr:fixtures:load --fixtures=/path/to/fixtures1 --fixtures=/path/to/fixtures2</info>
 
-If you want to append the fixtures instead of flushing the database first you 
+If you want to append the fixtures instead of flushing the database first you
 can use the <info>--append</info> option:
 
   <info>./app/console doctrine:phpcr:fixtures:load --append</info>
 
-This command will also execute any registered Initializer classes after 
+This command will also execute any registered Initializer classes after
 purging.
 EOT
         );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $registry = $this->getContainer()->get('doctrine_phpcr');
-        $dm = $registry->getManager($input->getOption('name'));
+        DoctrineCommandHelper::setApplicationDocumentManager(
+            $this->getApplication(),
+            $input->getOption('session')
+        );
+
+        $dm = $this->getHelperSet()->get('phpcr');
         $noInitialize = $input->getOption('no-initialize');
 
         if ($input->isInteractive() && !$input->getOption('append')) {
+            /** @var $dialog DialogHelper */
             $dialog = $this->getHelperSet()->get('dialog');
             if (!$dialog->askConfirmation($output, '<question>Careful, database will be purged. Do you want to continue Y/N ?</question>', false)) {
                 return 0;

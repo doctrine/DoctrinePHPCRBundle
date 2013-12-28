@@ -20,7 +20,7 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
-use PHPCR\Util\Console\Command\WorkspacePurgeCommand as BasePurgeCommand;
+use PHPCR\Util\Console\Command\WorkspacePurgeCommand as BaseWorkspacePurgeCommand;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
@@ -28,10 +28,15 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
+ * Wrapper to use this command in the symfony console with multiple sessions.
+ *
  * @author Daniel Barsotti <daniel.barsotti@liip.ch>
  */
-class WorkspacePurgeCommand extends BasePurgeCommand
+class WorkspacePurgeCommand extends BaseWorkspacePurgeCommand
 {
+    /**
+     * {@inheritDoc}
+     */
     protected function configure()
     {
         parent::configure();
@@ -43,16 +48,14 @@ class WorkspacePurgeCommand extends BasePurgeCommand
     }
 
     /**
-     * Executes the current command.
-     *
-     * @param InputInterface  $input  An InputInterface instance
-     * @param OutputInterface $output An OutputInterface instance
-     *
-     * @return integer 0 if everything went fine, or an error code
+     * {@inheritDoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        DoctrineCommandHelper::setApplicationPHPCRSession($this->getApplication(), $input->getOption('session'));
+        DoctrineCommandHelper::setApplicationPHPCRSession(
+            $this->getApplication(),
+            $input->getOption('session')
+        );
 
         return parent::execute($input, $output);
     }

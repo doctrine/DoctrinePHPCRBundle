@@ -56,12 +56,16 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         $config = $processor->processConfiguration($configuration, $configs);
         $this->loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
-        if (isset($config['workspace_dir'])) {
-            $container->setParameter('doctrine_phpcr.workspace_dir', $config['workspace_dir']);
-        }
+        $parameters = array(
+            'workspace_dir',
+            'jackrabbit_jar',
+            'dump_max_line_length',
+        );
 
-        if (isset($config['jackrabbit_jar'])) {
-            $container->setParameter('doctrine_phpcr.jackrabbit_jar', $config['jackrabbit_jar']);
+        foreach ($parameters as $param) {
+            if (isset($config[$param])) {
+                $container->setParameter('doctrine_phpcr.'.$param, $config[$param]);
+            }
         }
 
         if (!empty($config['session'])) {

@@ -28,12 +28,14 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
+ * Wrapper to use this command in the symfony console with multiple sessions.
+ *
  * @author Daniel Leech <daniel@dantleech.com>
  */
 class NodeTouchCommand extends BaseNodeTouchCommand
 {
     /**
-     * Configures the current command.
+     * {@inheritDoc}
      */
     protected function configure()
     {
@@ -41,26 +43,17 @@ class NodeTouchCommand extends BaseNodeTouchCommand
 
         $this
             ->setName('doctrine:phpcr:node:touch')
-            ->addOption(
-                'session', null, 
-                InputOption::VALUE_OPTIONAL, 
-                'The session to use for this command'
-            )
+            ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
         ;
     }
 
     /**
-     * Executes the current command.
-     *
-     * @param InputInterface  $input  An InputInterface instance
-     * @param OutputInterface $output An OutputInterface instance
-     *
-     * @return integer 0 if everything went fine, or an error code
+     * {@inheritDoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         DoctrineCommandHelper::setApplicationPHPCRSession(
-            $this->getApplication(), 
+            $this->getApplication(),
             $input->getOption('session')
         );
 

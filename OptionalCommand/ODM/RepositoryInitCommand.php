@@ -65,7 +65,7 @@ class RepositoryInitCommand extends BaseRegisterSystemNodeTypesCommand implement
         $this
             ->setName('doctrine:phpcr:repository:init')
             ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
-            ->setDescription('Initialize the PHPCR repository.')
+            ->setDescription('Initialize the PHPCR repository for PHPCR-ODM.')
             ->setHelp(<<<EOT
 Initialize the PHPCR repository with node types and base paths provided by the bundles.
 Bundles can provide services tagged with doctrine_phpcr.initializer to provide their information.
@@ -81,6 +81,6 @@ EOT
             $output->writeln($message);
         });
 
-        $initializerManager->initialize();
+        $initializerManager->initialize($input->getOption('session'));
     }
 }
