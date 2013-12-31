@@ -91,7 +91,7 @@ EOT
             $input->getOption('session')
         );
 
-        $dm = $this->getHelperSet()->get('phpcr');
+        $dm = $this->getHelperSet()->get('phpcr')->getDocumentManager();
         $noInitialize = $input->getOption('no-initialize');
 
         if ($input->isInteractive() && !$input->getOption('append')) {
