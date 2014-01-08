@@ -76,6 +76,13 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        DoctrineCommandHelper::setApplicationPHPCRSession(
+            $this->getApplication(),
+            $input->getOption('session')
+        );
+
+        parent::execute($input, $output);
+
         $initializerManager = $this->container->get('doctrine_phpcr.initializer_manager');
         $initializerManager->setLoggingClosure(function ($message) use ($output) {
             $output->writeln($message);
