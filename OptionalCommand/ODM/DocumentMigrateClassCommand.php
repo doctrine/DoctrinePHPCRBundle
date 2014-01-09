@@ -83,7 +83,7 @@ HERE
         $classParents = array_reverse(class_parents($newClassname));
 
         $input->setOption('query', sprintf(
-            'SELECT * FROM [nt:unstructured] WHERE [phpcr:class] = "%s"',
+            'SELECT * FROM [nt:base] WHERE [phpcr:class] = "%s"',
             $classname
         ));
 
