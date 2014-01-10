@@ -1,6 +1,6 @@
 <?php
 
-namespace Doctrine\Bundle\PHPCRBundle\Tests\Form\Type;
+namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\Form\Type;
 
 use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\PHPCRNodeToPathTransformer;
 use Jackalope\Node;

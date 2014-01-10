@@ -26,7 +26,8 @@
     "require-dev": {
         "symfony/form": "~2.2",
         "doctrine/phpcr-odm": "1.1.*",
-        "jackalope/jackalope-jackrabbit": "~1.1.0"
+        "jackalope/jackalope-jackrabbit": "~1.1.0",
+        "symfony-cmf/testing": "1.1.*"
     },
     "suggest": {
         "doctrine/phpcr-odm": "if you want to use the odm as well. require version 1.1.*",

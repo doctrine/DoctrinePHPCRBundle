@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit
-        colors="true"
-        bootstrap="Tests/bootstrap.php"
-        >
+    colors="true"
+    bootstrap="vendor/symfony-cmf/testing/bootstrap/bootstrap.php"
+>
 
     <testsuites>
         <testsuite name="Symfony DoctrinePHPCRBundle Test Suite">
@@ -20,5 +20,9 @@
             </exclude>
         </whitelist>
     </filter>
+
+    <php>
+        <server name="KERNEL_DIR" value="Tests/Resources/app" />
+    </php>
 
 </phpunit>
