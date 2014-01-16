@@ -8,7 +8,8 @@ use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityLoaderInterface;
 use Symfony\Component\Form\Exception\FormException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
-class PhpcrQueryBuilderLoader implements EntityLoaderInterface {
+class PhpcrQueryBuilderLoader implements EntityLoaderInterface
+{
 
     /**
      * Contains the query builder that builds the query for fetching the
