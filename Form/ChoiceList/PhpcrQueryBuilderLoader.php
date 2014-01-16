@@ -70,8 +70,9 @@ class PhpcrQueryBuilderLoader implements EntityLoaderInterface
     public function getEntitiesByIds($identifier, array $values)
     {
         $qb = $this->queryBuilder;
-        foreach($values as $val)
+        foreach($values as $val) {
             $qb->orWhere()->eq()->field($qb->getPrimaryAlias().'.'.$identifier)->literal($val);
+        }
         return array_values($qb->getQuery()->execute()->toArray());
     }
 
