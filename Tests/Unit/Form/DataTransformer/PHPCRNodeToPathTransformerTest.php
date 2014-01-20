@@ -1,6 +1,6 @@
 <?php
 
-namespace Doctrine\Bundle\PHPCRBundle\Tests\Form\DataTransformer;
+namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\Form\DataTransformer;
 
 use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\PHPCRNodeToPathTransformer;
 use Jackalope\Node;
@@ -54,7 +54,7 @@ class PHPCRNodeToPathTransformerTest extends \PHPUnit_Framework_Testcase
 
     public function testReverseTransformNotFound()
     {
-        // nothing to test, the PHPCR session will throw an 
+        // nothing to test, the PHPCR session will throw an
         // ItemNotFoundException
     }
 }

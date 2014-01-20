@@ -1,6 +1,6 @@
 <?php
 
-namespace Doctrine\Bundle\PHPCRBundle\Tests\Form\DataTransformer;
+namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\Form\DataTransformer;
 
 use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\DocumentToPathTransformer;
 

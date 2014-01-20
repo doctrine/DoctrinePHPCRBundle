@@ -8,11 +8,13 @@ php:
 env:
   - SYMFONY_VERSION=2.2.*
   - SYMFONY_VERSION=2.3.*
+  - SYMFONY_VERSION=2.4.*
   - SYMFONY_VERSION=dev-master
 
 before_script:
   - composer self-update
-  - composer require symfony/symfony:${SYMFONY_VERSION}
+  - COMPOSER_ROOT_VERSION=dev-master composer require symfony/symfony:${SYMFONY_VERSION}
+  - vendor/symfony-cmf/testing/bin/travis/phpcr_odm_doctrine_dbal.sh
 
 script: phpunit --coverage-text
 

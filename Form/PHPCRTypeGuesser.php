@@ -21,6 +21,8 @@
 namespace Doctrine\Bundle\PHPCRBundle\Form;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ODM\PHPCR\DocumentManager;
+use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
 use Symfony\Component\Form\FormTypeGuesserInterface;
 use Symfony\Component\Form\Guess\Guess;
 use Symfony\Component\Form\Guess\TypeGuess;
@@ -54,37 +56,128 @@ class PHPCRTypeGuesser implements FormTypeGuesserInterface
             return new TypeGuess('text', array(), Guess::LOW_CONFIDENCE);
         }
 
+        /** @var ClassMetadata $metadata */
+        /** @var DocumentManager $documentManager */
         list($metadata, $documentManager) = $ret;
 
         if ($metadata->hasAssociation($property)) {
-            $multiple = $metadata->isCollectionValuedAssociation($property);
             $mapping = $metadata->getAssociation($property);
 
-            return new TypeGuess('phpcr_document', array(
-                'class' => $mapping['targetDocument'],
-                'multiple' => $multiple
-                ),
-                Guess::HIGH_CONFIDENCE
-            );
+            switch($mapping['type']) {
+                case 'parent':
+                    return new TypeGuess('phpcr_odm_path', array(), Guess::MEDIUM_CONFIDENCE);
+
+                case 'mixedreferrers':
+                    $options = array(
+                        'read_only' => true,
+                        'type' => 'phpcr_odm_path',
+                    );
+
+                    return new TypeGuess('collection', $options, Guess::LOW_CONFIDENCE);
+
+                case 'referrers':
+                    return new TypeGuess('phpcr_document', array(
+                            'class' => $mapping['referringDocument'],
+                            'multiple' => true
+                        ),
+                        Guess::HIGH_CONFIDENCE
+                    );
+
+                case ClassMetadata::MANY_TO_MANY:
+                case ClassMetadata::MANY_TO_ONE:
+                    $options = array(
+                        'multiple' => $metadata->isCollectionValuedAssociation($property),
+                    );
+                    if (isset($mapping['targetDocument'])) {
+                        $options['class'] = $mapping['targetDocument'];
+                    }
+
+                    return new TypeGuess('phpcr_document', $options, Guess::HIGH_CONFIDENCE);
+
+                case 'child':
+                    $options = array(
+                        'read_only' => true,
+                    );
+
+                    return new TypeGuess('phpcr_odm_path', $options, Guess::LOW_CONFIDENCE);
+
+                case 'children':
+                    $options = array(
+                        'read_only' => true,
+                        'type' => 'phpcr_odm_path',
+                    );
+
+                    return new TypeGuess('collection', $options, Guess::LOW_CONFIDENCE);
+
+                default:
+                    return null;
+            }
         }
 
+        $mapping = $metadata->getField($property);
+        if (! empty($mapping['assoc'])) {
+            // TODO https://github.com/doctrine/DoctrinePHPCRBundle/issues/111
+            return null;
+        }
+
+        $options = array();
         switch ($metadata->getTypeOfField($property)) {
             case 'boolean':
-                return new TypeGuess('checkbox', array(), Guess::HIGH_CONFIDENCE);
+                $type = 'checkbox';
+                break;
             case 'binary':
-                return new TypeGuess('file', array(), Guess::HIGH_CONFIDENCE);
+                // the file type only works on documents like the File document,
+                // not directly on properties with raw binary data.
+                return null;
+            case 'node':
+                // editing the phpcr node has no meaning
+                return null;
             case 'date':
-                return new TypeGuess('datetime', array(), Guess::HIGH_CONFIDENCE);
+                $type = 'datetime';
+                break;
             case 'double':
-                return new TypeGuess('number', array(), Guess::MEDIUM_CONFIDENCE);
+                $type = 'number';
+                break;
             case 'long':
             case 'integer':
-                return new TypeGuess('integer', array(), Guess::MEDIUM_CONFIDENCE);
+                $type = 'integer';
+                break;
             case 'string':
-                return new TypeGuess('text', array(), Guess::MEDIUM_CONFIDENCE);
+                if ($metadata->isIdentifier($property)
+                    || $metadata->isUuid($property)
+                ) {
+                    $options['read_only'] = true;
+                }
+                $type = 'text';
+                break;
+            case 'nodename':
+                $type = 'text';
+                break;
+            case 'locale':
+                $locales = $documentManager->getLocaleChooserStrategy();
+                $type = 'choice';
+                $options['choices'] = array_combine($locales->getDefaultLocalesOrder(), $locales->getDefaultLocalesOrder());
+                break;
+            case 'versionname':
+            case 'versioncreated':
             default:
-                return new TypeGuess('text', array(), Guess::LOW_CONFIDENCE);
+                $options['read_only'] = true;
+                $options['required'] = false;
+                $type = 'text';
+                break;
         }
+
+        if (!empty($mapping['multivalue'])) {
+            $options['type'] = $type;
+            $type = 'collection';
+        }
+
+        if (!empty($mapping['translated'])) {
+            $options['attr'] = array('class' => 'translated');
+        }
+
+        return new TypeGuess($type, $options, Guess::HIGH_CONFIDENCE);
+
     }
 
     /**
@@ -92,6 +185,7 @@ class PHPCRTypeGuesser implements FormTypeGuesserInterface
      */
     public function guessMaxLength($class, $property)
     {
+        return null;
     }
 
     /**
@@ -99,7 +193,7 @@ class PHPCRTypeGuesser implements FormTypeGuesserInterface
      */
     public function guessMinLength($class, $property)
     {
-
+        return null;
     }
 
     /**
@@ -107,19 +201,39 @@ class PHPCRTypeGuesser implements FormTypeGuesserInterface
      */
     public function guessRequired($class, $property)
     {
+        /** @var ClassMetadata $metadata */
         list($metadata, $documentManager) = $this->getMetadata($class);
 
         if (!$metadata) {
             return null;
         }
 
-        // Check whether the field exists and is nullable or not
         if ($metadata->hasField($property)) {
-            if (!isset($metadata->mappings[$property]['nullable']) || !$metadata->mappings[$property]['nullable']) {
-                return new ValueGuess(true, Guess::HIGH_CONFIDENCE);
+            if (!$metadata->isNullable($property)
+                && 'boolean' !== $metadata->getTypeOfField($property)
+                && !$metadata->isUuid($property)
+            ) {
+                $required = true;
+                if (ClassMetadata::GENERATOR_TYPE_ASSIGNED !== $metadata->idGenerator && $metadata->isIdentifier($property)
+                    || ClassMetadata::GENERATOR_TYPE_PARENT !== $metadata->idGenerator && $property === $metadata->nodename
+                ) {
+                    $required = false;
+                }
+
+                return new ValueGuess($required, Guess::HIGH_CONFIDENCE);
             }
 
             return new ValueGuess(false, Guess::MEDIUM_CONFIDENCE);
+        }
+
+        if ($metadata->hasAssociation($property)) {
+            if ($property === $metadata->parentMapping
+                && ClassMetadata::GENERATOR_TYPE_ASSIGNED !== $metadata->idGenerator
+            ) {
+                return new ValueGuess(true, Guess::HIGH_CONFIDENCE);
+            }
+
+            return new ValueGuess(false, Guess::LOW_CONFIDENCE);
         }
 
         return null;
@@ -130,6 +244,7 @@ class PHPCRTypeGuesser implements FormTypeGuesserInterface
      */
     public function guessPattern($class, $property)
     {
+        return null;
     }
 
     protected function getMetadata($class)
