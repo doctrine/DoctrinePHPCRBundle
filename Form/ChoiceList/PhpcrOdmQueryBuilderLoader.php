@@ -8,21 +8,28 @@ use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityLoaderInterface;
 use Symfony\Component\Form\Exception\FormException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
-class PhpcrQueryBuilderLoader implements EntityLoaderInterface
+/**
+ * Getting Documents through the PHPCR ODM QueryBuilder.
+ *
+ * This class is using a misnamed interface from the symfony doctrine bridge,
+ * hence the use of "entity" instead of the "object".
+ *
+ * @author Fabien Potencier <fabien@symfony.com>
+ * @author Ivan Borzenkov <ivan.borzenkov@gmail.com>
+ */
+class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
 {
 
     /**
      * Contains the query builder that builds the query for fetching the
-     * entities
-     *
-     * This property should only be accessed through queryBuilder.
+     * entities.
      *
      * @var QueryBuilder
      */
     private $queryBuilder;
 
     /**
-     * Construct an ORM Query Builder Loader
+     * Construct a PHPCR-ODM Query Builder Loader
      *
      * @param QueryBuilder|\Closure $queryBuilder
      * @param ObjectManager $manager
@@ -48,17 +55,18 @@ class PhpcrQueryBuilderLoader implements EntityLoaderInterface
     }
 
     /**
-     * Returns an array of entities that are valid choices in the corresponding choice list.
+     * Returns an array of documents that are valid choices in the
+     * corresponding choice list.
      *
-     * @return array The entities.
+     * @return array The documents.
      */
     public function getEntities()
     {
-        return array_values($this->queryBuilder->getQuery()->execute()->toArray());
+        return $this->getResult($this->queryBuilder);
     }
 
     /**
-     * Returns an array of entities matching the given identifiers.
+     * Returns an array of documents matching the given identifiers.
      *
      * @param string $identifier The identifier field of the object. This method
      *                           is not applicable for fields with multiple
@@ -69,13 +77,24 @@ class PhpcrQueryBuilderLoader implements EntityLoaderInterface
      */
     public function getEntitiesByIds($identifier, array $values)
     {
-        $qb = $this->queryBuilder;
-        foreach($values as $val) {
-            $qb->orWhere()->eq()->field($qb->getPrimaryAlias().'.'.$identifier)->literal($val);
+        $qb = clone $this->queryBuilder;
+        $alias = $qb->getPrimaryAlias();
+        foreach ($values as $val) {
+            $qb->orWhere()->eq()->field($alias.'.'.$identifier)->literal($val);
         }
-        
-        return array_values($qb->getQuery()->execute()->toArray());
+
+        return $this->getResult($qb);
     }
 
-
+    /**
+     * Evaluate the query and clean the result.
+     *
+     * @param QueryBuilder $qb
+     *
+     * @return array list of result documents
+     */
+    private function getResult(QueryBuilder $qb)
+    {
+        return array_values($qb->getQuery()->execute()->toArray());
+    }
 }
