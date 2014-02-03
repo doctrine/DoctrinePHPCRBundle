@@ -20,8 +20,9 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Initializer;
 
-use PHPCR\SessionInterface;
 use PHPCR\Util\NodeHelper;
+use PHPCR\SessionInterface;
+use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
 
 /**
  * In most cases, this initializer should be usable as is by bundles.
@@ -38,6 +39,12 @@ use PHPCR\Util\NodeHelper;
 class GenericInitializer implements InitializerInterface
 {
     /**
+     * Name for this initializer
+     * @var string
+     */
+    protected $name;
+
+    /**
      * The cnd definition
      * @var string
      */
@@ -53,23 +60,31 @@ class GenericInitializer implements InitializerInterface
      * @param string|null $cnd       node type and namespace definitions in cnd
      *      format, pass null to not create any node types.
      */
-    public function __construct(array $basePaths, $cnd = null)
+    public function __construct($name, array $basePaths, $cnd = null)
     {
         $this->cnd = $cnd;
         $this->basePaths = $basePaths;
+        $this->name = $name;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function init(SessionInterface $session)
+    public function init(ManagerRegistry $registry)
     {
+        $session = $registry->getConnection();
+
         if ($this->cnd) {
             $this->registerCnd($session, $this->cnd);
         }
         if (count($this->basePaths)) {
             $this->createBasePaths($session, $this->basePaths);
         }
+    }
+
+    public function getName()
+    {
+        return $this->name;
     }
 
     protected function registerCnd(SessionInterface $session, $cnd)
