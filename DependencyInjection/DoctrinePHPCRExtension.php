@@ -78,6 +78,19 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             }
             $this->odmLoad($config['odm'], $container);
         }
+        $this->loadTypeGuess($config, $container);
+    }
+
+    private function loadTypeGuess($config, ContainerBuilder $container)
+    {
+        $types = array();
+
+        $bundles = $container->getParameter('kernel.bundles');
+        if (isset($bundles['BurgovKeyValueFormBundle'])) {
+            $types['assoc'] = array('burgov_key_value' => array('value_type' => 'text'));
+        }
+
+        $container->setParameter('doctrine_phpcr.form.type_guess', $types);
     }
 
     private function sessionLoad($config, ContainerBuilder $container)
