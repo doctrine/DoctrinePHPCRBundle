@@ -40,11 +40,14 @@ class PHPCRTypeGuesser implements FormTypeGuesserInterface
      */
     private $registry;
 
+    private $bundles = array();
+
     private $cache = array();
 
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, array $bundles)
     {
         $this->registry = $registry;
+        $this->bundles = $bundles;
     }
 
     /**
@@ -59,6 +62,7 @@ class PHPCRTypeGuesser implements FormTypeGuesserInterface
         /** @var ClassMetadata $metadata */
         /** @var DocumentManager $documentManager */
         list($metadata, $documentManager) = $ret;
+
 
         if ($metadata->hasAssociation($property)) {
             $mapping = $metadata->getAssociation($property);
@@ -115,9 +119,10 @@ class PHPCRTypeGuesser implements FormTypeGuesserInterface
         }
 
         $mapping = $metadata->getField($property);
-        if (! empty($mapping['assoc'])) {
+
+        if (! empty($mapping['assoc']) && isset($this->bundles['BurgovKeyValueFormBundle'])) {
             // TODO https://github.com/doctrine/DoctrinePHPCRBundle/issues/111
-            return null;
+            return new TypeGuess( 'burgov_key_value', array('value_type' => 'text'), Guess::MEDIUM_CONFIDENCE);
         }
 
         $options = array();
