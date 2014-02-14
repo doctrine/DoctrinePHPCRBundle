@@ -80,7 +80,7 @@
         <service id="form.type_guesser.doctrine_phpcr" class="%form.type_guesser.doctrine_phpcr.class%">
             <tag name="form.type_guesser"/>
             <argument type="service" id="doctrine_phpcr"/>
-            <argument>%kernel.bundles%</argument>
+            <argument>%doctrine_phpcr.form.type_guess%</argument>
         </service>
 
         <service id="doctrine_phpcr.odm.validator.valid_phpcr_odm" class="%doctrine_phpcr.odm.validator.valid_phpcr_odm.class%">
