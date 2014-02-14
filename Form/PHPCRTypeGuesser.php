@@ -68,7 +68,6 @@ class PHPCRTypeGuesser implements FormTypeGuesserInterface
         /** @var DocumentManager $documentManager */
         list($metadata, $documentManager) = $ret;
 
-
         if ($metadata->hasAssociation($property)) {
             $mapping = $metadata->getAssociation($property);
 
