@@ -22,7 +22,6 @@ namespace Doctrine\Bundle\PHPCRBundle\Initializer;
 
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
 
-
 /**
  * Interface for intiializers
  *
@@ -41,7 +40,7 @@ interface InitializerInterface
 
     /**
      * Return a name which can be used to identify this intializer.
-     * 
+     *
      * @return string
      */
     public function getName();
