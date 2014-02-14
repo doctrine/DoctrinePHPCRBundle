@@ -17,6 +17,7 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
 
     public function testLoad()
     {
+        $bundles = $this->container->setParameter('kernel.bundles', array());
         // Smoke test for DI extension
         $this->load();
     }

@@ -35,7 +35,8 @@
         "jackalope/jackalope-jackrabbit": "if you want to connect to jackrabbit. require version ~1.0.1",
         "jackalope/jackalope-doctrine-dbal": "if you want to use jackalope-doctrine-dbal. require version 1.0.*",
         "doctrine/data-fixtures": "if you want to use the fixture loading.",
-        "doctrine/doctrine-bundle": "when using jackalope-doctrine-dbal"
+        "doctrine/doctrine-bundle": "when using jackalope-doctrine-dbal",
+        "burgov/key-value-form-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": { "Doctrine\\Bundle\\PHPCRBundle": "" }
