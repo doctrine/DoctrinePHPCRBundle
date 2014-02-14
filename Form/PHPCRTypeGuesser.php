@@ -40,11 +40,19 @@ class PHPCRTypeGuesser implements FormTypeGuesserInterface
      */
     private $registry;
 
+    /**
+     * @var string
+     *
+     * guessed form types
+     */
+    private $typeGuess = array();
+
     private $cache = array();
 
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, $typeGuess)
     {
         $this->registry = $registry;
+        $this->typeGuess = $typeGuess;
     }
 
     /**
@@ -115,8 +123,13 @@ class PHPCRTypeGuesser implements FormTypeGuesserInterface
         }
 
         $mapping = $metadata->getField($property);
+
         if (! empty($mapping['assoc'])) {
-            // TODO https://github.com/doctrine/DoctrinePHPCRBundle/issues/111
+            if (isset($this->typeGuess['assoc'])) {
+                list($type, $options) = each($this->typeGuess['assoc']);
+
+                return new TypeGuess($type, $options, Guess::MEDIUM_CONFIDENCE);
+            }
             return null;
         }
 
