@@ -19,6 +19,8 @@
         <service id="doctrine_phpcr.odm.locale_listener" class="%doctrine_phpcr.odm.locale_listener.class%">
             <tag name="kernel.event_subscriber"/>
             <argument type="service" id="doctrine_phpcr.odm.locale_chooser"/>
+            <argument>%doctrine_phpcr.odm.allowed_locales%</argument>
+            <argument>%doctrine_phpcr.odm.locale_fallback%</argument>
         </service>
 
     </services>

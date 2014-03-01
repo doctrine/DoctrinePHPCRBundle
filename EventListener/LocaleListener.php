@@ -29,17 +29,60 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
  * A listener to tell the locale chooser the request locale.
  *
  * This listener is invoked on every sub-request, keeping the locale up to date.
+ *
+ * If a fallback type other than hardcoded is specified, the LocaleChooser is
+ * also updated with the fallback locales to use based on the Accept-Language
+ * header.
  */
 class LocaleListener implements EventSubscriberInterface
 {
     /**
+     * Append locales not in request header but in configured fallback.
+     */
+    const FALLBACK_MERGE = 'merge';
+
+    /**
+     * Only use locales from request.
+     */
+    const FALLBACK_REPLACE = 'replace';
+
+    /**
+     * Do not look into request.
+     */
+    const FALLBACK_HARDCODED = 'hardcoded';
+
+    /**
+     * @var LocaleChooser
+     */
+    private $chooser;
+
+    /**
+     * Whether to update the locale chooser to update the allowed languages.
+     *
+     * @var string|null One of the FALLBACK_ constants or empty.
+     */
+    private $fallback = null;
+
+    /**
+     * List of allowed locales to set on the LocaleChooser.
+     *
+     * @var array
+     */
+    private $allowedLocales;
+
+    /**
      * The locale chooser to update on each request
      *
-     * @param LocaleChooser $chooser
+     * @param LocaleChooser $chooser        The locale chooser to update.
+     * @param array         $allowedLocales List of locales that are allowed.
+     * @param string        $fallback       One of the FALLBACK_* constants.
+     *
      */
-    public function __construct(LocaleChooser $chooser)
+    public function __construct(LocaleChooser $chooser, array $allowedLocales, $fallback = self::FALLBACK_HARDCODED)
     {
         $this->chooser = $chooser;
+        $this->allowedLocales = $allowedLocales;
+        $this->fallback = $fallback;
     }
 
     /**
@@ -50,7 +93,31 @@ class LocaleListener implements EventSubscriberInterface
     public function onKernelRequest(GetResponseEvent $event)
     {
         $request = $event->getRequest();
-        $this->chooser->setLocale($request->getLocale());
+        $locale = $request->getLocale();
+        if (!in_array($locale, $this->allowedLocales)) {
+            return;
+        }
+        $this->chooser->setLocale($locale);
+
+        if (self::FALLBACK_HARDCODED == $this->fallback) {
+            return;
+        }
+
+        // expand language list to include base locales
+        // copy-pasted from Request::getPreferredLanguage
+        $preferredLanguages = $request->getLanguages();
+        $extendedPreferredLanguages = array();
+        foreach ($preferredLanguages as $language) {
+            $extendedPreferredLanguages[] = $language;
+            if (false !== $position = strpos($language, '_')) {
+                $superLanguage = substr($language, 0, $position);
+                if (!in_array($superLanguage, $preferredLanguages)) {
+                    $extendedPreferredLanguages[] = $superLanguage;
+                }
+            }
+        }
+        $order = array_intersect($this->allowedLocales, $extendedPreferredLanguages);
+        $this->chooser->setFallbackLocales($locale, $order, self::FALLBACK_REPLACE == $this->fallback);
     }
 
     /**

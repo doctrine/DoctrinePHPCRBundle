@@ -132,6 +132,7 @@ class Configuration implements ConfigurationInterface
                                 'auto_generate_proxy_classes' => true,
                                 'proxy_dir' => true,
                                 'proxy_namespace' => true,
+                                'locale_fallback' => true,
                                 'locales' => true,
                             );
                             $documentManagers = array();
@@ -153,6 +154,10 @@ class Configuration implements ConfigurationInterface
                         ->booleanNode('auto_generate_proxy_classes')->defaultFalse()->end()
                         ->scalarNode('proxy_dir')->defaultValue('%kernel.cache_dir%/doctrine/PHPCRProxies')->end()
                         ->scalarNode('proxy_namespace')->defaultValue('PHPCRProxies')->end()
+                        ->enumNode('locale_fallback')
+                            ->values(array('hardcoded', 'merge', 'replace'))
+                            ->defaultValue('hardcoded')
+                        ->end()
                     ->end()
                     ->fixXmlConfig('document_manager')
                     ->append($this->getOdmDocumentManagersNode())
