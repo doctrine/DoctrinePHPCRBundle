@@ -324,7 +324,9 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             }
 
             $container->setParameter('doctrine_phpcr.odm.locales', $config['locales']);
+            $container->setParameter('doctrine_phpcr.odm.allowed_locales', array_keys($config['locales']));
             $container->setParameter('doctrine_phpcr.odm.default_locale', key($config['locales']));
+            $container->setParameter('doctrine_phpcr.odm.locale_fallback', $config['locale_fallback'] == 'hardcoded' ? null : $config['locale_fallback']);
 
             $dm = $container->getDefinition('doctrine_phpcr.odm.document_manager.abstract');
             $dm->addMethodCall('setLocaleChooserStrategy', array(new Reference('doctrine_phpcr.odm.locale_chooser')));
