@@ -33,7 +33,6 @@ use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\InitializerPass;
 use Doctrine\Bundle\PHPCRBundle\OptionalCommand\Jackalope\InitDoctrineDbalCommand;
 use Doctrine\Bundle\PHPCRBundle\OptionalCommand\Jackalope\JackrabbitCommand;
 use Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\InfoDoctrineCommand;
-use Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\RepositoryInitCommand;
 use Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\DocumentMigrateClassCommand;
 
 class DoctrinePHPCRBundle extends Bundle
@@ -58,7 +57,6 @@ class DoctrinePHPCRBundle extends Bundle
 
         if (class_exists('Doctrine\ODM\PHPCR\Version')) {
             $application->add(new InfoDoctrineCommand());
-            $application->add(new RepositoryInitCommand());
             $application->add(new DocumentMigrateClassCommand());
         }
 
