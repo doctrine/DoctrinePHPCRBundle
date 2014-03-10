@@ -76,10 +76,7 @@ class InitializerManager
     }
 
     /**
-     * Iterate over the registered initializers and execute init
-     * on each.
-     *
-     * @param string $sessionName
+     * Iterate over the registered initializers and execute each of them.
      */
     public function initialize()
     {

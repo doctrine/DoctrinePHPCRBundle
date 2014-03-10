@@ -18,22 +18,21 @@
  * <http://www.doctrine-project.org>.
  */
 
-namespace Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM;
+namespace Doctrine\Bundle\PHPCRBundle\Command;
 
-use Doctrine\ODM\PHPCR\Tools\Console\Command\RegisterSystemNodeTypesCommand as BaseRegisterSystemNodeTypesCommand;
-use Doctrine\Bundle\PHPCRBundle\Command\DoctrineCommandHelper;
+use Doctrine\ODM\PHPCR\Tools\Console\Command\RegisterSystemNodeTypesCommand;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 /**
- * Command to collect init operations from any interested bundles and the
- * phpcr-odm itself.
+ * Command to collect init operations from any interested bundles. If phpcr-odm
+ * is present also executes RegisterSystemNodeTypesCommand.
  */
-class RepositoryInitCommand extends BaseRegisterSystemNodeTypesCommand implements ContainerAwareInterface
+class RepositoryInitCommand extends ContainerAwareCommand
 {
     /** @var ContainerInterface */
     protected $container;
@@ -46,18 +45,6 @@ class RepositoryInitCommand extends BaseRegisterSystemNodeTypesCommand implement
         $this->container = $container;
     }
 
-    /**
-     * @return ContainerInterface
-     */
-    protected function getContainer()
-    {
-        if (null === $this->container) {
-            $this->container = $this->getApplication()->getKernel()->getContainer();
-        }
-
-        return $this->container;
-    }
-
     protected function configure()
     {
         parent::configure();
@@ -65,10 +52,11 @@ class RepositoryInitCommand extends BaseRegisterSystemNodeTypesCommand implement
         $this
             ->setName('doctrine:phpcr:repository:init')
             ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
-            ->setDescription('Initialize the PHPCR repository for PHPCR-ODM.')
+            ->setDescription('Initialize the PHPCR repository.')
             ->setHelp(<<<EOT
-Initialize the PHPCR repository with node types and base paths provided by the bundles.
-Bundles can provide services tagged with doctrine_phpcr.initializer to provide their information.
+Run all initializers tagged with doctrine_phpcr.initializer to create documents
+or base paths so the application can work. If phpcr-odm is present, also runs
+the doctrine:phpcr:register-system-node-types command.
 EOT
             );
         ;
@@ -81,7 +69,11 @@ EOT
             $input->getOption('session')
         );
 
-        parent::execute($input, $output);
+        if (class_exists('Doctrine\ODM\PHPCR\Tools\Console\Command\RegisterSystemNodeTypesCommand')) {
+            $command = new RegisterSystemNodeTypesCommand();
+            $command->setApplication($this->getApplication());
+            $command->execute($input, $output);
+        }
 
         $initializerManager = $this->getContainer()->get('doctrine_phpcr.initializer_manager');
         $initializerManager->setLoggingClosure(function ($message) use ($output) {

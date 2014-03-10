@@ -39,7 +39,7 @@ interface InitializerInterface
     public function init(ManagerRegistry $registry);
 
     /**
-     * Return a name which can be used to identify this intializer.
+     * Return a name which can be used to identify this initializer.
      *
      * @return string
      */
