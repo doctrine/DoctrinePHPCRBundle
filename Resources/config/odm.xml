@@ -22,7 +22,7 @@
         <!-- form field factory guesser -->
         <parameter key="form.type_guesser.doctrine_phpcr.class">Doctrine\Bundle\PHPCRBundle\Form\PHPCRTypeGuesser</parameter>
 
-        <parameter key="doctrine_phpcr.odm.form.path_class">Doctrine\Bundle\PHPCRBundle\Form\Type\PathType</parameter>
+        <parameter key="doctrine_phpcr.odm.form.path.type.class">Doctrine\Bundle\PHPCRBundle\Form\Type\PathType</parameter>
 
         <parameter key="doctrine_phpcr.odm.metadata.driver_chain.class">Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain</parameter>
         <parameter key="doctrine_phpcr.odm.metadata.annotation.class">Doctrine\ODM\PHPCR\Mapping\Driver\AnnotationDriver</parameter>
@@ -72,7 +72,7 @@
             <argument type="service" id="doctrine_phpcr"/>
         </service>
 
-        <service id="doctrine_phpcr.odm.form.type.path" class="%doctrine_phpcr.odm.form.path_class%">
+        <service id="doctrine_phpcr.odm.form.type.path" class="%doctrine_phpcr.odm.form.path.type.class%">
             <argument type="service" id="doctrine_phpcr"/>
             <tag name="form.type" alias="phpcr_odm_path"/>
         </service>
