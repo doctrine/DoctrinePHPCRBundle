@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <container xmlns="http://symfony.com/schema/dic/services">
 
-    <config xmlns="http://example.org/schema/dic/doctrine_phpcr">
+    <config xmlns="http://example.org/schema/dic/doctrine_phpcr"
+        jackrabbit_jar="/path/to/jackrabbit.jar"
+        dump_max_line_length="20"
+    >
 
         <session
             workspace="default"

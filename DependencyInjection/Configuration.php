@@ -210,6 +210,7 @@ class Configuration implements ConfigurationInterface
                                 'proxy_namespace' => true,
                                 'locale_fallback' => true,
                                 'locales' => true,
+                                'locale' => true,
                             );
                             $documentManagers = array();
                             foreach ($v as $key => $value) {
@@ -252,6 +253,19 @@ class Configuration implements ConfigurationInterface
         $node
             ->useAttributeAsKey('name')
             ->prototype('array')
+                ->beforeNormalization()
+                    ->ifTrue(function ($v) {
+                        return isset($v['fallback']);
+                    })
+                    ->then(function ($v) {
+                        $fallbackLocales = array();
+                        foreach ($v['fallback'] as $fallback) {
+                            $fallbackLocales[] = $fallback;
+                        }
+
+                        return $fallbackLocales;
+                    })
+                ->end()
                 ->prototype('scalar')
             ->end()
         ->end()

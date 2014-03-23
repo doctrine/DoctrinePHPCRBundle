@@ -58,5 +58,5 @@ $container->loadFromExtension('doctrine_phpcr', array(
         'locale_fallback' => 'hardcoded',
     ),
     'jackrabbit_jar' => '/path/to/jackrabbit.jar',
-    'dump_max_line_length' => 120,
+    'dump_max_line_length' => 20,
 ));

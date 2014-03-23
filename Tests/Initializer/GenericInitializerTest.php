@@ -1,6 +1,6 @@
 <?php
 
-namespace Doctrine\Bundle\PHPCRBundle\Tests\Initializer;
+namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\Initializer;
 
 use Doctrine\Bundle\PHPCRBundle\Initializer\GenericInitializer;
 

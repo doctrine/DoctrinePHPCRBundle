@@ -28,9 +28,23 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
         return new Configuration();
     }
 
-    public function testSupportsSingle()
+    /**
+     * @dataProvider configurations
+     */
+    public function testSupports($expectedConfiguration, array $files)
     {
-        $expectedConfiguration = array(
+        $formats = array_map(function ($path) {
+            return __DIR__.'/../../Resources/Fixtures/'.$path;
+        }, $files);
+
+        foreach ($formats as $format) {
+            $this->assertProcessedConfigurationEquals($expectedConfiguration, array($format));
+        }
+    }
+
+    public function configurations()
+    {
+        $singleConfiguration = array(
             'session' => array(
                 'default_session' => 'default',
                 'sessions' => array(
@@ -98,25 +112,9 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                 ),
             ),
             'jackrabbit_jar' => '/path/to/jackrabbit.jar',
-            'dump_max_line_length' => 120,
+            'dump_max_line_length' => 20,
         );
-
-        $formats = array_map(function ($path) {
-            return __DIR__.'/../../Resources/Fixtures/'.$path;
-        }, array(
-            'config/single.yml',
-            'config/single.xml',
-            'config/single.php',
-        ));
-
-        foreach ($formats as $format) {
-            $this->assertProcessedConfigurationEquals($expectedConfiguration, array($format));
-        }
-    }
-
-    public function testSupportsMultiple()
-    {
-        $expectedConfiguration = array(
+        $multipleConfiguration = array(
             'session' => array(
                 'sessions' => array(
                     'default' => array(
@@ -194,23 +192,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
             ),
             'dump_max_line_length' => 120,
         );
-
-        $formats = array_map(function ($path) {
-            return __DIR__.'/../../Resources/Fixtures/'.$path;
-        }, array(
-            'config/multiple.yml',
-            'config/multiple.xml',
-            'config/multiple.php',
-        ));
-
-        foreach ($formats as $format) {
-            $this->assertProcessedConfigurationEquals($expectedConfiguration, array($format));
-        }
-    }
-
-    public function testBC()
-    {
-        $expectedConfiguration = array(
+        $bc = array(
             'session' => array(
                 'default_session' => 'default',
                 'sessions' => array(
@@ -236,9 +218,27 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
             'dump_max_line_length' => 120,
         );
 
-        $this->assertProcessedConfigurationEquals(
-            $expectedConfiguration,
-            array(__DIR__.'/../../Resources/Fixtures/config/bc.php')
+        return array(
+            array(
+                $singleConfiguration,
+                array(
+                    'config/single.yml',
+                    'config/single.xml',
+                    'config/single.php',
+                ),
+            ),
+            array(
+                $multipleConfiguration,
+                array(
+                    'config/multiple.yml',
+                    'config/multiple.xml',
+                    'config/multiple.php',
+                ),
+            ),
+            array(
+                $bc,
+                array('config/bc.php'),
+            )
         );
     }
 }
