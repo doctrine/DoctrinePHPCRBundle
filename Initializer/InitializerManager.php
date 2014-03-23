@@ -60,7 +60,7 @@ class InitializerManager
      *
      * @param \Closure $closure
      */
-    public function setLoggingClosure(\Closure $closure)
+    public function setLoggingClosure(\Closure $closure = null)
     {
         $this->loggingClosure = $closure;
     }
