@@ -219,7 +219,6 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                             'type' => 'doctrinedbal',
                             'logging' => false,
                             'profiling' => false,
-                            'connection' => 'default',
                             'parameters' => array(
                                 'jackalope.factory' => 'Jackalope\Factory',
                                 'jackalope.check_login_on_server' => true,

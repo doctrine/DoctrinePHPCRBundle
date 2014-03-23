@@ -106,7 +106,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             $session['name'] = $name;
             $session['service_name'] = $sessions[$name] = sprintf('doctrine_phpcr.%s_session', $name);
 
-            $type = isset($session['backend']['type']) ? $session['backend']['type'] : 'jackrabbit';
+            $type = $session['backend']['type'];
             switch ($type) {
                 case 'doctrinedbal':
                 case 'jackrabbit':
@@ -146,7 +146,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         $backendParameters = array();
         switch ($type) {
             case 'doctrinedbal':
-                $connectionName = isset($session['backend']['connection'])
+                $connectionName = !empty($session['backend']['connection'])
                     ? $session['backend']['connection']
                     : null
                 ;
@@ -175,10 +175,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         }
 
         // pipe additional parameters unchanged to jackalope
-        $backendParameters += isset($session['backend']['parameters'])
-            ? $session['backend']['parameters']
-            : array()
-        ;
+        $backendParameters += $session['backend']['parameters'];
         // only set this default here when we know we are jackalope
         if (!isset($backendParameters['jackalope.check_login_on_server'])) {
             $backendParameters['jackalope.check_login_on_server'] = false;
@@ -243,10 +240,8 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             ->replaceArgument(0, new Reference(sprintf('doctrine_phpcr.%s_credentials', $session['name'])))
             ->replaceArgument(1, $session['workspace'])
         ;
-        if (isset($session['options']) && is_array($session['options'])) {
-            foreach ($session['options'] as $key => $value) {
-                $definition->addMethodCall('setSessionOption', array($key, $value));
-            }
+        foreach ($session['options'] as $key => $value) {
+            $definition->addMethodCall('setSessionOption', array($key, $value));
         }
     }
 

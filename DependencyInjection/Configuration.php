@@ -134,9 +134,6 @@ class Configuration implements ConfigurationInterface
                                         }
                                         break;
                                     case 'doctrinedbal':
-                                        if (!isset($v['connection'])) {
-                                            $v['connection'] = 'default';
-                                        }
                                         break;
                                     case 'midgard2':
                                         if (! (isset($v['db_name']) || isset($v['config']))) {
@@ -228,7 +225,6 @@ class Configuration implements ConfigurationInterface
                             return $v;
                         })
                     ->end()
-                    ->fixXmlConfig('locale')
                     ->children()
                         ->scalarNode('default_document_manager')->end()
                         ->booleanNode('auto_generate_proxy_classes')->defaultFalse()->end()
@@ -241,6 +237,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                     ->fixXmlConfig('document_manager')
                     ->append($this->getOdmDocumentManagersNode())
+                    ->fixXmlConfig('locale')
                     ->append($this->getOdmLocaleNode())
                 ->end()
             ->end()
