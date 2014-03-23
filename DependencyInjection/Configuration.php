@@ -23,6 +23,7 @@ namespace Doctrine\Bundle\PHPCRBundle\DependencyInjection;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * Configuration for the PHPCR extension
@@ -96,20 +97,93 @@ class Configuration implements ConfigurationInterface
 
         $node
             ->requiresAtLeastOneElement()
+            ->fixXmlConfig('option')
             ->useAttributeAsKey('name')
             ->prototype('array')
                 ->children()
-                    ->fixXmlConfig('option')
                     ->scalarNode('workspace')->isRequired()->cannotBeEmpty()->end()
                     ->scalarNode('username')->defaultNull()->end()
                     ->scalarNode('password')->defaultNull()->end()
                     ->arrayNode('backend')
-                        ->useAttributeAsKey('name')
+                        ->addDefaultsIfNotSet()
+                        ->beforeNormalization()
+                            ->ifArray()
+                            ->then(function ($v) {
+                                $map = array(
+                                    'check_login_on_server' => 'jackalope.check_login_on_server',
+                                    'disable_stream_wrapper' => 'jackalope.disable_stream_wrapper',
+                                    'disable_transactions' => 'jackalope.disable_transactions',
+                                );
+                                foreach ($map as $key => $jackalope) {
+                                    if (isset($v[$key])) {
+                                        $v['parameters'][$jackalope] = $v[$key];
+                                        unset($v[$key]);
+                                    }
+                                }
+
+                                return $v;
+                            })
+                        ->end()
+                        ->validate()
+                            ->always()
+                            ->then(function ($v) {
+                                switch ($v['type']) {
+                                    case 'jackrabbit':
+                                        if (!isset($v['url'])) {
+                                            throw new InvalidConfigurationException('jackrabbit backend requires the url argument.');
+                                        }
+                                        break;
+                                    case 'doctrinedbal':
+                                        if (!isset($v['connection'])) {
+                                            $v['connection'] = 'default';
+                                        }
+                                        break;
+                                    case 'midgard2':
+                                        if (! (isset($v['db_name']) || isset($v['config']))) {
+                                            throw new InvalidConfigurationException('midgard2 backend requires either the db_name or the config argument.');
+                                        }
+                                        break;
+                                }
+
+                                return $v;
+                            })
+                        ->end()
                         ->fixXmlConfig('parameter')
-                        ->arrayNode('parameters')
-                            ->useAttributeAsKey('key')
-                            ->prototype('scalar')->end()
-                        ->prototype('variable')->end()
+                        ->fixXmlConfig('cache')
+                        ->children()
+                            ->enumNode('type')
+                                ->values(array('jackrabbit', 'doctrinedbal', 'midgard2'))
+                                ->defaultValue('jackrabbit')
+                            ->end()
+                            // all jackalope
+                            ->booleanNode('logging')->defaultFalse()->end()
+                            ->booleanNode('profiling')->defaultFalse()->end()
+                            ->arrayNode('parameters')
+                                ->useAttributeAsKey('key')
+                                ->prototype('scalar')->end()
+                            ->end()
+
+                            // jackrabbit
+                            ->scalarNode('url')->end()
+                            // doctrinedbal
+                            ->scalarNode('connection')->end()
+                            ->arrayNode('caches')
+                                ->children()
+                                    ->scalarNode('meta')->end()
+                                    ->scalarNode('nodes')->end()
+                                ->end()
+                            ->end()
+                            // midgard
+                            ->scalarNode('config')->end()
+                            ->scalarNode('db_type')->end()
+                            ->scalarNode('db_name')->end()
+                            ->scalarNode('db_host')->end()
+                            ->scalarNode('db_port')->end()
+                            ->scalarNode('db_username')->end()
+                            ->scalarNode('db_password')->end()
+                            ->scalarNode('db_init')->end()
+                            ->scalarNode('blobdir')->end()
+                        ->end()
                     ->end()
                     ->arrayNode('options')
                         ->useAttributeAsKey('name')
@@ -154,6 +228,7 @@ class Configuration implements ConfigurationInterface
                             return $v;
                         })
                     ->end()
+                    ->fixXmlConfig('locale')
                     ->children()
                         ->scalarNode('default_document_manager')->end()
                         ->booleanNode('auto_generate_proxy_classes')->defaultFalse()->end()
@@ -166,7 +241,6 @@ class Configuration implements ConfigurationInterface
                     ->end()
                     ->fixXmlConfig('document_manager')
                     ->append($this->getOdmDocumentManagersNode())
-                    ->fixXmlConfig('locale')
                     ->append($this->getOdmLocaleNode())
                 ->end()
             ->end()

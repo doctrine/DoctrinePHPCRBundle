@@ -170,31 +170,19 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                 }
                 break;
             case 'jackrabbit':
-                $backendParameters['jackalope.jackrabbit_uri'] = $session['backend']['uri'];
+                $backendParameters['jackalope.jackrabbit_uri'] = $session['backend']['url'];
                 break;
         }
 
         // pipe additional parameters unchanged to jackalope
-        $parameters = isset($session['backend']['parameters'])
+        $backendParameters += isset($session['backend']['parameters'])
             ? $session['backend']['parameters']
             : array()
         ;
         // only set this default here when we know we are jackalope
-        if (!isset($parameters['jackalope.check_login_on_server'])) {
-            $parameters['jackalope.check_login_on_server'] = false;
+        if (!isset($backendParameters['jackalope.check_login_on_server'])) {
+            $backendParameters['jackalope.check_login_on_server'] = false;
         }
-        // BC for parameters
-        $map = array(
-            'check_login_on_server' => 'jackalope.check_login_on_server',
-            'disable_stream_wrapper' => 'jackalope.disable_stream_wrapper',
-            'disable_transactions' => 'jackalope.disable_transactions',
-        );
-        foreach ($map as $key => $jackalope) {
-            if (isset($session['backend'][$key])) {
-                $parameters[$jackalope] = $session['backend'][$key];
-            }
-        }
-        $backendParameters += $parameters;
 
         if (isset($session['backend']['factory'])) {
             /**

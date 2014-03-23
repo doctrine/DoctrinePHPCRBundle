@@ -1,0 +1,32 @@
+doctrine_phpcr:
+    session:
+        sessions:
+            default:
+                backend:
+                    type: jackrabbit
+                    url: http://a
+                workspace: "default"
+                username: "admin"
+                password: "admin"
+
+            website:
+                backend:
+                    type: jackrabbit
+                    url: "http://b"
+                workspace: website
+                username: "root"
+                password: "root"
+
+    odm:
+        auto_generate_proxy_classes: true
+        document_managers:
+            default:
+                session: default
+                mappings:
+                    SandboxMainBundle: ~
+
+            website:
+                session: website
+                configuration_id: sandbox_magnolia.odm_configuration
+                mappings:
+                    SandboxMagnoliaBundle: ~

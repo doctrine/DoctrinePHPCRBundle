@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services">
+
+    <config xmlns="http://example.org/schema/dic/doctrine_phpcr">
+
+        <session
+            workspace="default"
+            username="admin"
+            password="admin"
+        >
+            <backend
+                type="jackrabbit"
+                url="http://localhost:8080/server/"
+                logging="true"
+                profiling="true"
+            >
+                <parameters
+                    jackalope.factory="Jackalope\Factory"
+                    jackalope.check_login_on_server="false"
+                    jackalope.disable_stream_wrapper="false"
+                    jackalope.auto_lastmodified="true"
+                    jackalope.default_header="X-ID: %serverid%"
+                    jackalope.jackrabbit_expect="true"
+                />
+            </backend>
+            <options
+                jackalope.fetch_depth="1"
+            />
+        </session>
+
+        <odm
+            configuration-id="null"
+            auto-mapping="true"
+            auto-generate-proxy-classes="true"
+            proxy-dir="/doctrine/PHPCRProxies"
+            proxy_namespace="PHPCRProxies"
+            locale-fallback="hardcoded"
+        >
+            <mappings>
+                <test
+                    mapping="true"
+                    type="null"
+                    dir="null"
+                    alias="null"
+                    prefix="null"
+                    is-bundle="null"
+                />
+            </mappings>
+            <metadata-cache-driver
+                type="array"
+                host="null"
+                port="null"
+                instance-class="null"
+                class="null"
+                id="null"
+            />
+            <locale name="en">
+                <fallback>de</fallback>
+                <fallback>fr</fallback>
+            </locale>
+            <locale name="de">
+                <fallback>en</fallback>
+                <fallback>fr</fallback>
+            </locale>
+            <locale name="fr">
+                <fallback>en</fallback>
+                <fallback>de</fallback>
+            </locale>
+        </odm>
+
+    </config>
+</container>
