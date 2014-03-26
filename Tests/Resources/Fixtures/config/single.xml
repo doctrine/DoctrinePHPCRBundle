@@ -17,14 +17,12 @@
                 logging="true"
                 profiling="true"
             >
-                <parameters
-                    jackalope.factory="Jackalope\Factory"
-                    jackalope.check_login_on_server="false"
-                    jackalope.disable_stream_wrapper="false"
-                    jackalope.auto_lastmodified="true"
-                    jackalope.default_header="X-ID: %serverid%"
-                    jackalope.jackrabbit_expect="true"
-                />
+                <parameter key="jackalope.factory">Jackalope\Factory</parameter>
+                <parameter key="jackalope.check_login_on_server">false</parameter>
+                <parameter key="jackalope.disable_stream_wrapper">false</parameter>
+                <parameter key="jackalope.auto_lastmodified">true</parameter>
+                <parameter key="jackalope.default_header">X-ID: %serverid%</parameter>
+                <parameter key="jackalope.jackrabbit_expect">true</parameter>
             </backend>
             <options
                 jackalope.fetch_depth="1"
