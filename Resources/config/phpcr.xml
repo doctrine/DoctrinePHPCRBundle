@@ -8,12 +8,14 @@
 
         <parameter key="doctrine_phpcr.credentials.class">PHPCR\SimpleCredentials</parameter>
         <parameter key="doctrine_phpcr.class">Doctrine\Bundle\PHPCRBundle\ManagerRegistry</parameter>
+        <parameter key="doctrine_phpcr.proxy.class">Doctrine\Common\Proxy\Proxy</parameter>
         <parameter key="doctrine_phpcr.sessions" type="collection" />
         <parameter key="doctrine_phpcr.odm.document_managers" type="collection" />
         <parameter key="doctrine_phpcr.default_session" />
         <parameter key="doctrine_phpcr.odm.default_document_manager" />
-        <parameter key="doctrine_phpcr.console_dumper_class">PHPCR\Util\Console\Helper\PhpcrConsoleDumperHelper</parameter>
-        <parameter key="doctrine_phpcr.initializer_manager">Doctrine\Bundle\PHPCRBundle\Initializer\InitializerManager</parameter>
+        <parameter key="doctrine_phpcr.console_dumper.class">PHPCR\Util\Console\Helper\PhpcrConsoleDumperHelper</parameter>
+        <parameter key="doctrine_phpcr.initializer_manager.class">Doctrine\Bundle\PHPCRBundle\Initializer\InitializerManager</parameter>
+        <parameter key="doctrine_phpcr.form.type.phpcr_reference.class">Doctrine\Bundle\PHPCRBundle\Form\Type\PHPCRReferenceType</parameter>
 
         <parameter key="doctrine_phpcr.logger.chain.class">Jackalope\Transport\Logging\LoggerChain</parameter>
         <parameter key="doctrine_phpcr.logger.class">Jackalope\Transport\Logging\Psr3Logger</parameter>
@@ -57,21 +59,21 @@
             <argument>%doctrine_phpcr.odm.document_managers%</argument>
             <argument>%doctrine_phpcr.default_session%</argument>
             <argument>%doctrine_phpcr.odm.default_document_manager%</argument>
-            <argument>Doctrine\Common\Proxy\Proxy</argument>
+            <argument>%doctrine_phpcr.proxy.class%</argument>
             <call method="setContainer">
                 <argument type="service" id="service_container" />
             </call>
         </service>
 
-        <service id="form.type.phpcr.reference" class="Doctrine\Bundle\PHPCRBundle\Form\Type\PHPCRReferenceType">
+        <service id="form.type.phpcr.reference" class="%doctrine_phpcr.form.type.phpcr_reference.class%">
             <tag name="form.type" alias="phpcr_reference"/>
             <argument type="service" id="doctrine_phpcr.session"/>
         </service>
 
-        <service id="doctrine_phpcr.console_dumper" class="%doctrine_phpcr.console_dumper_class%">
+        <service id="doctrine_phpcr.console_dumper" class="%doctrine_phpcr.console_dumper.class%">
         </service>
 
-        <service id="doctrine_phpcr.initializer_manager" class="%doctrine_phpcr.initializer_manager%">
+        <service id="doctrine_phpcr.initializer_manager" class="%doctrine_phpcr.initializer_manager.class%">
             <argument type="service" id="doctrine_phpcr"/>
         </service>
 

@@ -1,0 +1,51 @@
+doctrine_phpcr:
+    session:
+        backend:
+            type: jackrabbit
+            url: http://localhost:8080/server/
+            logging: true
+            profiling: true
+
+            parameters:
+                jackalope.factory: "Jackalope\Factory"
+                jackalope.check_login_on_server: false
+                jackalope.disable_stream_wrapper: false
+                jackalope.auto_lastmodified: true
+                jackalope.default_header: 'X-ID: %serverid%'
+                jackalope.jackrabbit_expect: true
+        workspace: default
+        username: admin
+        password: admin
+        options:
+            jackalope.fetch_depth: 1
+    odm:
+        configuration_id:     ~
+        auto_mapping: true
+        mappings:
+            test:
+                mapping:              true
+                type:                 ~
+                dir:                  ~
+                alias:                ~
+                prefix:               ~
+                is_bundle:            ~
+        auto_generate_proxy_classes: true
+        proxy_dir:            /doctrine/PHPCRProxies
+        proxy_namespace:      PHPCRProxies
+
+        metadata_cache_driver:
+            type:                 array
+            host:                 ~
+            port:                 ~
+            instance_class:       ~
+            class:                ~
+            id:                   ~
+
+        locales:
+            en: [de, fr]
+            de: [en, fr]
+            fr: [en, de]
+        locale_fallback: hardcoded
+
+    jackrabbit_jar:       /path/to/jackrabbit.jar
+    dump_max_line_length:  20

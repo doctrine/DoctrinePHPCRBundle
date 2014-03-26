@@ -1,6 +1,6 @@
 <?php
 
-namespace DependencyInjection\Compiler;
+namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Definition;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
@@ -19,7 +19,7 @@ class InitializerPassTest extends AbstractCompilerPassTestCase
     {
         $inititializerDefintiion = new Definition();
         $this->setDefinition(
-            'doctrine_phpcr.initializer_manager', 
+            'doctrine_phpcr.initializer_manager',
             $inititializerDefintiion
         );
 

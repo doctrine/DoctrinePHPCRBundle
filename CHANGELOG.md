@@ -1,6 +1,22 @@
 Changelog
 =========
 
+* **2014-03-14**: [Configuration] Cleaned up parameters that define service
+  classes. A few needed to be renamed, if you use them you need to update:
+  * doctrine_phpcr.odm.form.path_class => doctrine_phpcr.odm.form.path.type.class
+  * doctrine_phpcr.console_dumper_class => doctrine_phpcr.console_dumper.class
+  * doctrine_phpcr.initializer_manager => doctrine_phpcr.initializer_manager.class
+
+* **2014-03-14**: [Configuration] Jackalope repository factory configuration is
+  cleaned up. Instead of the explicit list of options, the DI now passes on all
+  parameters you provide as phpcr_backend.parameters.<parameter-name>: value.
+  The previously supported options directly specified on phpcr_backend are kept
+  for backwards compatibility but it is recommended to switch to the new mode.
+  The names need to be adjusted to the jackalope parameter names as follows:
+  * check_login_on_server => jackalope.check_login_on_server
+  * disable_stream_wrapper => jackalope.disable_stream_wrapper
+  * disable_transactions => jackalope.disable_transactions
+
 * **2014-02-01**: [Initializer] Initializer names
  * All initializers now must implement the `getName` method.
  * Pushed $name as the first argument for the `GenericInitializer`.

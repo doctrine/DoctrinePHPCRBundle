@@ -106,7 +106,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             $session['name'] = $name;
             $session['service_name'] = $sessions[$name] = sprintf('doctrine_phpcr.%s_session', $name);
 
-            $type = isset($session['backend']['type']) ? $session['backend']['type'] : 'jackrabbit';
+            $type = $session['backend']['type'];
             switch ($type) {
                 case 'doctrinedbal':
                 case 'jackrabbit':
@@ -143,9 +143,10 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
     private function loadJackalopeSession(array $session, ContainerBuilder $container, $type)
     {
+        $backendParameters = array();
         switch ($type) {
             case 'doctrinedbal':
-                $connectionName = isset($session['backend']['connection'])
+                $connectionName = !empty($session['backend']['connection'])
                     ? $session['backend']['connection']
                     : null
                 ;
@@ -153,7 +154,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                     ? sprintf('doctrine.dbal.%s_connection', $connectionName)
                     : 'database_connection'
                 ;
-                $parameters['jackalope.doctrine_dbal_connection'] = new Reference($connectionService);
+                $backendParameters['jackalope.doctrine_dbal_connection'] = new Reference($connectionService);
                 $container
                     ->getDefinition('doctrine_phpcr.jackalope_doctrine_dbal.schema_listener')
                     ->addTag('doctrine.event_listener', array(
@@ -164,51 +165,38 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                 ;
                 if (isset($session['backend']['caches'])) {
                     foreach ($session['backend']['caches'] as $key => $cache) {
-                        $parameters['jackalope.data_caches'][$key] = new Reference($cache);
+                        $backendParameters['jackalope.data_caches'][$key] = new Reference($cache);
                     }
                 }
                 break;
             case 'jackrabbit':
-                if (isset($session['backend']['url'])) {
-                    $parameters['jackalope.jackrabbit_uri'] = $session['backend']['url'];
-                }
-                if (isset($session['backend']['default_header'])) {
-                    $parameters['jackalope.jackalope.default_header'] = $session['backend']['default_header'];
-                }
-                if (isset($session['backend']['expect'])) {
-                    $parameters['jackalope.jackalope.jackrabbit_expect'] = $session['backend']['expect'];
-                }
-                // Factory
-                if (isset($session['backend']['factory'])) {
-                    /**
-                     * If it is a class, pass the name as is, else assume it is
-                     * a service id and get a reference to it
-                     */
-                    if (class_exists($session['backend']['factory'])) {
-                        $parameters['jackalope.factory'] = $session['backend']['factory'];
-                    } else {
-                        $parameters['jackalope.factory'] = new Reference($session['backend']['factory']);
-                    }
-                }
+                $backendParameters['jackalope.jackrabbit_uri'] = $session['backend']['url'];
                 break;
         }
 
-        $parameters['jackalope.check_login_on_server'] = false;
-        if (isset($session['backend']['check_login_on_server'])) {
-            $parameters['jackalope.check_login_on_server'] = $session['backend']['check_login_on_server'];
+        // pipe additional parameters unchanged to jackalope
+        $backendParameters += $session['backend']['parameters'];
+        // only set this default here when we know we are jackalope
+        if (!isset($backendParameters['jackalope.check_login_on_server'])) {
+            $backendParameters['jackalope.check_login_on_server'] = false;
         }
-        if (isset($session['backend']['disable_stream_wrapper'])) {
-            $parameters['jackalope.disable_stream_wrapper'] = $session['backend']['disable_stream_wrapper'];
-        }
-        if (isset($session['backend']['disable_transactions'])) {
-            $parameters['jackalope.disable_transactions'] = $session['backend']['disable_transactions'];
+
+        if (isset($session['backend']['factory'])) {
+            /**
+             * If it is a class, pass the name as is, else assume it is
+             * a service id and get a reference to it
+             */
+            if (class_exists($session['backend']['factory'])) {
+                $backendParameters['jackalope.factory'] = $session['backend']['factory'];
+            } else {
+                $backendParameters['jackalope.factory'] = new Reference($session['backend']['factory']);
+            }
         }
 
         $logger = null;
         if (!empty($session['backend']['logging'])) {
             $logger = new Reference('doctrine_phpcr.logger');
         }
-
         if (!empty($session['backend']['profiling'])) {
             $profilingLoggerId = 'doctrine_phpcr.logger.profiling.'.$session['name'];
             $container->setDefinition($profilingLoggerId, new DefinitionDecorator('doctrine_phpcr.logger.profiling'));
@@ -233,31 +221,27 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         }
 
         if ($logger) {
-            $parameters['jackalope.logger'] = $logger;
+            $backendParameters['jackalope.logger'] = $logger;
         }
 
         $factory = $container
             ->setDefinition(sprintf('doctrine_phpcr.jackalope.repository.%s', $session['name']), new DefinitionDecorator('doctrine_phpcr.jackalope.repository.factory.'.$type))
         ;
-        $factory->replaceArgument(0, $parameters);
+        $factory->replaceArgument(0, $backendParameters);
 
         $container
             ->setDefinition(sprintf('doctrine_phpcr.%s_credentials', $session['name']), new DefinitionDecorator('doctrine_phpcr.credentials'))
             ->replaceArgument(0, $session['username'])
             ->replaceArgument(1, $session['password'])
         ;
-
         $definition = $container
             ->setDefinition($session['service_name'], new DefinitionDecorator('doctrine_phpcr.jackalope.session'))
             ->setFactoryService(sprintf('doctrine_phpcr.jackalope.repository.%s', $session['name']))
             ->replaceArgument(0, new Reference(sprintf('doctrine_phpcr.%s_credentials', $session['name'])))
             ->replaceArgument(1, $session['workspace'])
         ;
-
-        if (isset($session['options']) && is_array($session['options'])) {
-            foreach ($session['options'] as $key => $value) {
-                $definition->addMethodCall('setSessionOption', array($key, $value));
-            }
+        foreach ($session['options'] as $key => $value) {
+            $definition->addMethodCall('setSessionOption', array($key, $value));
         }
     }
 

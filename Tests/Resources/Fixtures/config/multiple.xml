@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services">
+    <config xmlns="http://example.org/schema/dic/doctrine_phpcr">
+        <session>
+            <session name="default"
+                     workspace="default"
+                     username="admin"
+                     password="admin"
+            >
+                <backend type="jackrabbit" url="http://a"/>
+            </session>
+            <session name="website"
+                     workspace="website"
+                     username="root"
+                     password="root"
+            >
+                <backend type="jackrabbit" url="http://b"/>
+            </session>
+        </session>
+
+        <odm auto_generate_proxy_classes="true">
+            <document-manager
+                name="default"
+                session="default"
+            >
+                <mapping name="SandboxMainBundle" />
+            </document-manager>
+
+            <document-manager
+                    name="website"
+                    session="website"
+                    configuration-id="sandbox_magnolia.odm_configuration"
+                    >
+                <mapping name="SandboxMagnoliaBundle" />
+            </document-manager>
+
+        </odm>
+    </config>
+</container>
