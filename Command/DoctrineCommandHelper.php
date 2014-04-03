@@ -28,6 +28,7 @@ use PHPCR\Util\Console\Helper\PhpcrHelper;
 
 use Jackalope\Tools\Console\Helper\DoctrineDbalHelper;
 use Jackalope\Transport\DoctrineDBAL\Client as DbalClient;
+use Jackalope\Transport\DoctrineDBAL\LoggingClient as DbalLoggingClient;
 use Jackalope\Transport\Jackrabbit\Client as JackrabbitClient;
 use Jackalope\Session as JackalopeSession;
 
@@ -52,7 +53,11 @@ abstract class DoctrineCommandHelper
             $helperSet->set(new PhpcrHelper($session));
         }
 
-        if ($session instanceof JackalopeSession && $session->getTransport() instanceof DbalClient) {
+        if ($session instanceof JackalopeSession
+            && ($session->getTransport() instanceof DbalClient
+                || $session->getTransport() instanceof DbalLoggingClient
+            )
+        ) {
             $helperSet->set(new DoctrineDBALHelper($session->getTransport()->getConnection()));
         }
     }
