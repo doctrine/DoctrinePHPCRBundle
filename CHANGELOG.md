@@ -1,6 +1,14 @@
 Changelog
 =========
 
+1.1.0-RC2
+---------
+
+* **2014-04-11**: drop Symfony 2.2 compatibility
+
+1.1.0-beta2
+-----------
+
 * **2014-03-14**: [Configuration] Cleaned up parameters that define service
   classes. A few needed to be renamed, if you use them you need to update:
   * doctrine_phpcr.odm.form.path_class => doctrine_phpcr.odm.form.path.type.class
