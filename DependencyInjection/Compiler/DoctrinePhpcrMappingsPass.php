@@ -20,6 +20,7 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler;
 
+use Symfony\Bridge\Doctrine\DependencyInjection\CompilerPass\RegisterMappingsPass;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
