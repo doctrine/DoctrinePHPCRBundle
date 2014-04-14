@@ -355,12 +355,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
     {
         $formView = $formBuilder->getForm()->createView();
         $templating = $this->getContainer()->get('templating');
-        // there was a BC break in symfony2 form rendering between 2.2 and 2.3
-        $template = version_compare(Kernel::VERSION, '2.3.0') < 0
-            ? '::form22.html.twig'
-            : '::form.html.twig'
-        ;
-        $templating->render($template, array('form' => $formView));
+        $templating->render('::form.html.twig', array('form' => $formView));
     }
 
     /**
