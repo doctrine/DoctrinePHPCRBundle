@@ -56,9 +56,10 @@ class LoadFixtureCommand extends ContainerAwareCommand
             ->setDescription('Load data fixtures to your PHPCR database.')
             ->addOption('fixtures', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'The directory or file to load data fixtures from.')
             ->addOption('append', null, InputOption::VALUE_NONE, 'Append the data fixtures to the existing data - will not purge the workspace.')
-            ->addOption('name', null, InputOption::VALUE_OPTIONAL, 'The document manager to use for this command.')
+            ->addOption('name', null, InputOption::VALUE_OPTIONAL, 'Deprecated')
             ->addOption('no-initialize', null, InputOption::VALUE_NONE, 'Do not run the repository initializers after purging the repository.')
-            ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
+            ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command (deprecated, alias for dm)')
+            ->addOption('dm', null, InputOption::VALUE_OPTIONAL, 'The document manager to use for this command')
             ->setHelp(<<<EOT
 The <info>doctrine:phpcr:fixtures:load</info> command loads data fixtures from
 your bundles DataFixtures/PHPCR directory:
@@ -75,6 +76,9 @@ can use the <info>--append</info> option:
 
   <info>./app/console doctrine:phpcr:fixtures:load --append</info>
 
+The <info>--dm</info> specifies wich documentmanager to use.
+  <info>./app/console doctrine:phpcr:fixtures:load --dm="mydm"</info>
+
 This command will also execute any registered Initializer classes after
 purging.
 EOT
@@ -86,20 +90,27 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if ($input->hasOption('session')) {
-            $session = $input->getOption('session');
-        } else if($input->hasOption('name')) {
-            $session = $session = $input->getOption('name');
+        if ($input->hasOption('name')) {
             trigger_error(
-                'the name attribute for command doctrine:phpcr:fixtures:load is deprecated. use --session instead',
+                'The name attribute for command doctrine:phpcr:fixtures:load is deprecated. It does nothing.',
+                E_USER_DEPRECATED
+            );
+        }
+        
+        if ($input->hasOption('dm')) {
+            $dmName = $input->getOption('dm');
+        } else if($input->hasOption('session')) {
+            $dmName = $input->getOption('session');
+            trigger_error(
+                'The session attribute for command doctrine:phpcr:fixtures:load is deprecated. Use --dm instead.',
                 E_USER_DEPRECATED
             );
         } else {
-            $session = null;
+            $dmName = null;
         }
         DoctrineCommandHelper::setApplicationDocumentManager(
             $this->getApplication(),
-            $session
+            $dmName
         );
 
         $dm = $this->getHelperSet()->get('phpcr')->getDocumentManager();
