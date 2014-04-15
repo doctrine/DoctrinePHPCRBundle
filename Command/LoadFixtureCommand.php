@@ -86,9 +86,20 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if($input->hasOption('session')){
+            $session = $input->getOption('session');
+        }else if($input->hasOption('name')){
+            $session = $session = $input->getOption('name');
+            trigger_error(
+                'the name attribute for command doctrine:phpcr:fixtures:load is deprecated. use --session instead',
+                E_USER_DEPRECATED
+            );
+        }else{
+            $session = null;
+        }
         DoctrineCommandHelper::setApplicationDocumentManager(
             $this->getApplication(),
-            $input->getOption('session')
+            $session
         );
 
         $dm = $this->getHelperSet()->get('phpcr')->getDocumentManager();
