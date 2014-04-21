@@ -36,6 +36,20 @@
             <argument type="collection" /><!-- parameters (0) -->
         </service>
 
+        <service id="doctrine_phpcr.jackalope.repository.factory.service.prismic"
+                 class="Jackalope\RepositoryFactoryPrismic">
+        </service>
+
+        <service id="doctrine_phpcr.jackalope.repository.factory.prismic"
+                 class="Jackalope\Repository"
+                 factory-service="doctrine_phpcr.jackalope.repository.factory.service.prismic"
+                 factory-method="getRepository"
+                >
+            <argument type="collection">
+                <argument key="jackalope.prismic_check_login_on_server">false</argument>
+            </argument><!-- parameters (0) -->
+        </service>
+
         <service id="doctrine_phpcr.jackalope.session"
                  class="Jackalope\Session"
                  factory-service="doctrine_phpcr.jackalope.repository"

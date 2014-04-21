@@ -108,6 +108,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
             $type = $session['backend']['type'];
             switch ($type) {
+                case 'prismic':
                 case 'doctrinedbal':
                 case 'jackrabbit':
                     if (empty($loaded['jackalope'])) {
@@ -168,6 +169,9 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                         $backendParameters['jackalope.data_caches'][$key] = new Reference($cache);
                     }
                 }
+                break;
+            case 'prismic':
+                $backendParameters['jackalope.prismic_uri'] = $session['backend']['url'];
                 break;
             case 'jackrabbit':
                 $backendParameters['jackalope.jackrabbit_uri'] = $session['backend']['url'];
