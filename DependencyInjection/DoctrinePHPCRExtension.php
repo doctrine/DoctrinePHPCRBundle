@@ -414,6 +414,10 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         $this->aliasMap = array();
         $this->bundleDirs = array();
 
+        if (!class_exists('Doctrine\ODM\PHPCR\Document\Generic')) {
+            throw new \RuntimeException('PHPCR ODM is activated in the config but does not seem loadable.');
+        }
+
         $class = new \ReflectionClass('Doctrine\ODM\PHPCR\Document\Generic');
 
         $documentManager['mappings']['__PHPCRODM__'] = array(
