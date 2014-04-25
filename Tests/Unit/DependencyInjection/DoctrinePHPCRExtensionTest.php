@@ -54,6 +54,39 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
         $this->assertEquals('doctrine_phpcr.jackalope.repository.factory.jackrabbit', $repositoryFactory->getParent());
     }
 
+    public function testJackrabbitSessions()
+    {
+        $this->load(array(
+            'session' => array(
+                'default_session' => 'bar',
+                'sessions' => array(
+                    'foo' => array(
+                        'backend' => array(
+                            'url' => 'http://foo',
+                        ),
+                        'workspace' => 'default',
+                        'username' => 'admin',
+                        'password' => 'admin',
+                    ),
+                    'bar' => array(
+                        'backend' => array(
+                            'url' => 'http://bar',
+                        ),
+                        'workspace' => 'default',
+                        'username' => 'admin',
+                        'password' => 'admin',
+                    ),
+                )
+            ),
+        ));
+
+        $this->assertCount(2, $this->container->getParameter('doctrine_phpcr.sessions'));
+
+        foreach ($this->container->getParameter('doctrine_phpcr.sessions') as $id) {
+            $this->container->getDefinition($id);
+        }
+    }
+
     public function testDoctrineDbalSession()
     {
         $this->load(array(
