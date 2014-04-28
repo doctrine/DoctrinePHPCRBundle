@@ -23,9 +23,16 @@
         <parameter key="doctrine_phpcr.logger.stop_watch.class">Doctrine\Bundle\PHPCRBundle\DataCollector\StopWatchLogger</parameter>
         <parameter key="doctrine_phpcr.data_collector.class">Doctrine\Bundle\PHPCRBundle\DataCollector\PHPCRDataCollector</parameter>
 
+        <parameter key="doctrine_phpcr.session.event_manager.class">Symfony\Bridge\Doctrine\ContainerAwareEventManager</parameter>
+
     </parameters>
 
     <services>
+
+        <service id="doctrine_phpcr.session.event_manager" class="%doctrine_phpcr.session.event_manager.class%" public="false" abstract="true">
+            <argument type="service" id="service_container"/>
+        </service>
+
         <service id="doctrine_phpcr.logger.chain" class="%doctrine_phpcr.logger.chain.class%" public="false" abstract="true">
             <call method="addLogger">
                 <argument type="service" id="doctrine_phpcr.logger" />
