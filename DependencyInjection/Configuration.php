@@ -151,7 +151,6 @@ class Configuration implements ConfigurationInterface
                             })
                         ->end()
                         ->fixXmlConfig('parameter')
-                        ->fixXmlConfig('cache')
                         ->children()
                             ->enumNode('type')
                                 ->values(array('jackrabbit', 'doctrinedbal', 'prismic', 'midgard2'))
