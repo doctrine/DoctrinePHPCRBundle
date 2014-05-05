@@ -50,6 +50,9 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
     /** @var XmlFileLoader */
     private $loader;
 
+    /**
+     * {@inheritDoc}
+     */
     public function load(array $configs, ContainerBuilder $container)
     {
         $processor = new Processor();
@@ -401,6 +404,9 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         ;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function getMappingDriverBundleConfigDefaults(array $bundleConfig, \ReflectionClass $bundle, ContainerBuilder $container)
     {
         $this->bundleDirs[] = dirname($bundle->getFileName());
@@ -445,23 +451,43 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         $this->loadObjectManagerCacheDriver($documentManager, $container, 'metadata_cache');
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function getObjectManagerElementName($name)
     {
         return 'doctrine_phpcr.odm.'.$name;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function getMappingObjectDefaultName()
     {
         return 'Document';
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function getMappingResourceConfigDirectory()
     {
         return 'Resources/config/doctrine';
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function getMappingResourceExtension()
     {
         return 'phpcr';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getNamespace()
+    {
+        return 'http://doctrine-project.org/schema/symfony-dic/odm/phpcr';
     }
 }
