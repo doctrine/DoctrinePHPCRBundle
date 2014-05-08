@@ -1,8 +1,15 @@
 Changelog
 =========
 
-1.1.0-RC2
----------
+1.1.0
+-----
+
+* **2014-05-05**: XML configuration is now supported with namespace
+  http://doctrine-project.org/schema/symfony-dic/odm/phpcr
+
+* **2014-04-15**: doctrine:phpcr:fixtures:load command should be called with
+  dm instead of session to avoid confusion. Throws error when the previously
+  unused parameter `--name` is passed.
 
 * **2014-04-11**: drop Symfony 2.2 compatibility
 
