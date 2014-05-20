@@ -37,6 +37,13 @@ use Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\DocumentMigrateClassCommand;
 
 class DoctrinePHPCRBundle extends Bundle
 {
+    /**
+     * Autoloader for proxies
+     *
+     * @var \Closure
+     */
+    private $autoloader;
+
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
