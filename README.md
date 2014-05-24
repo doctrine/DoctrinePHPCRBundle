@@ -1,10 +1,12 @@
 # DoctrinePHPCRBundle
 
+[![Build Status](https://secure.travis-ci.org/doctrine/DoctrinePHPCRBundle.png)](http://travis-ci.org/doctrine/DoctrinePHPCRBundle)
+[![Latest Stable Version](https://poser.pugx.org/doctrine/phpcr-bundle/version.png)](https://packagist.org/packages/doctrine/phpcr-bundle)
+[![Total Downloads](https://poser.pugx.org/doctrine/phpcr-bundle/d/total.png)](https://packagist.org/packages/doctrine/phpcr-bundle)
+
 PHPCR & Doctrine PHPCR-ODM Bundle for the Symfony Framework.
 
 This bundle integrates PHP Content Repository implementations and the Doctrine PHPCR-ODM into Symfony2.
-
-[![Build Status](https://secure.travis-ci.org/doctrine/DoctrinePHPCRBundle.png)](http://travis-ci.org/doctrine/DoctrinePHPCRBundle)
 
 ## What is Doctrine PHPCR-ODM?
 
