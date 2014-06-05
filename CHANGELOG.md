@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* **2014-08-09**: Added PHPCR-Shell proxy command. This command deprecates the existing 
+  PHPCR commands and provides access to the full suite of commands provided by PHPCR shell.
+
 * **2014-07-25**: jackalope.check_login_on_server now defaults to kernel.debug.
   Furthermore Proxy cache warming is disabled when jackalope.check_login_on_server
   is enabled and Jackalope Doctrine DBAL is used by any Document Manager
