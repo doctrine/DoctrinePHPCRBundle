@@ -64,12 +64,12 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        DoctrineCommandHelper::setApplicationPHPCRSession(
-            $this->getApplication(),
-            $input->getOption('session')
-        );
-
         if (class_exists('Doctrine\ODM\PHPCR\Tools\Console\Command\RegisterSystemNodeTypesCommand')) {
+            DoctrineCommandHelper::setApplicationPHPCRSession(
+                $this->getApplication(),
+                $input->getOption('session')
+            );
+
             $command = new RegisterSystemNodeTypesCommand();
             $command->setApplication($this->getApplication());
             $command->execute($input, $output);
@@ -80,6 +80,6 @@ EOT
             $output->writeln($message);
         });
 
-        $initializerManager->initialize($input->getOption('session'));
+        $initializerManager->initialize();
     }
 }

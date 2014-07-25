@@ -1,6 +1,11 @@
 Changelog
 =========
 
+* **2014-07-25**: jackalope.check_login_on_server now defaults to kernel.debug.
+  Furthermore Proxy cache warming is disabled when jackalope.check_login_on_server
+  is enabled and Jackalope Doctirne DBAL is used by any Document Manager
+  to prevent issues while bootstrapping the repository
+
 1.1.0
 -----
 

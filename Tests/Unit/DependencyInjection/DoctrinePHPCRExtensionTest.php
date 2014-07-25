@@ -22,6 +22,7 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
         parent::setUp();
 
         $this->container->setParameter('kernel.bundles', array());
+        $this->container->setParameter('kernel.debug', false);
     }
 
     public function testLoad()

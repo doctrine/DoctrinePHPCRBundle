@@ -49,6 +49,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
     private $bundleDirs = array();
     /** @var XmlFileLoader */
     private $loader;
+    private $disableProxyWarmer = false;
 
     /**
      * {@inheritDoc}
@@ -81,6 +82,10 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                 throw new InvalidArgumentException("You did not configure a session for the document managers");
             }
             $this->odmLoad($config['odm'], $container);
+
+            if ($this->disableProxyWarmer) {
+                $container->removeDefinition('doctrine_phpcr.odm.proxy_cache_warmer');
+            }
         }
         $this->loadTypeGuess($config, $container);
     }
@@ -159,7 +164,11 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                     ? sprintf('doctrine.dbal.%s_connection', $connectionName)
                     : 'database_connection'
                 ;
-                $backendParameters['jackalope.doctrine_dbal_connection'] = new Reference($connectionService);
+                $connectionService = new Alias($connectionService, true);
+                $connectionAliasName = sprintf('doctrine_phpcr.jackalope_doctrine_dbal.%s_connection', $session['name']);
+                $container->setAlias($connectionAliasName, $connectionService);
+
+                $backendParameters['jackalope.doctrine_dbal_connection'] = new Reference($connectionAliasName);
                 $container
                     ->getDefinition('doctrine_phpcr.jackalope_doctrine_dbal.schema_listener')
                     ->addTag('doctrine.event_listener', array(
@@ -186,7 +195,11 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         $backendParameters += $session['backend']['parameters'];
         // only set this default here when we know we are jackalope
         if (!isset($backendParameters['jackalope.check_login_on_server'])) {
-            $backendParameters['jackalope.check_login_on_server'] = false;
+            $backendParameters['jackalope.check_login_on_server'] = $container->getParameter('kernel.debug');
+        }
+
+        if ('doctrinedbal' === $type && $backendParameters['jackalope.check_login_on_server']) {
+            $this->disableProxyWarmer = true;
         }
 
         if (isset($session['backend']['factory'])) {

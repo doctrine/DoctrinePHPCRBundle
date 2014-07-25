@@ -40,11 +40,30 @@ use Jackalope\Session as JackalopeSession;
  */
 abstract class DoctrineCommandHelper
 {
-    static public function setApplicationPHPCRSession(Application $application, $connName)
+    /**
+     * Prepare just the DBAL connection for the init command where no session is available yet.
+     *
+     * @param Application $application
+     * @param string      $sessionName
+     */
+    static public function setApplicationConnection(Application $application, $sessionName)
+    {
+        $connectionService = sprintf('doctrine_phpcr.jackalope_doctrine_dbal.%s_connection', $sessionName);
+        $helperSet = $application->getHelperSet();
+        $helperSet->set(new DoctrineDBALHelper($application->getKernel()->getContainer()->get($connectionService)));
+    }
+
+    /**
+     * Set the PHPCR session and connection.
+     *
+     * @param Application $application
+     * @param string      $sessionName
+     */
+    static public function setApplicationPHPCRSession(Application $application, $sessionName)
     {
         /** @var $registry ManagerRegistry */
         $registry = $application->getKernel()->getContainer()->get('doctrine_phpcr');
-        $session = $registry->getConnection($connName);
+        $session = $registry->getConnection($sessionName);
 
         $helperSet = $application->getHelperSet();
         if (class_exists('Doctrine\ODM\PHPCR\Version')) {
@@ -62,6 +81,12 @@ abstract class DoctrineCommandHelper
         }
     }
 
+    /**
+     * Set the document manager on the application.
+     *
+     * @param Application $application
+     * @param string      $dmName
+     */
     static public function setApplicationDocumentManager(Application $application, $dmName)
     {
         /** @var $registry ManagerRegistry */
