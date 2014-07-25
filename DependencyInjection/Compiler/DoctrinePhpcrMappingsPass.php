@@ -28,7 +28,10 @@ use Symfony\Component\DependencyInjection\Reference;
  * Class for Symfony bundles to configure mappings for model classes not in the
  * automapped folder.
  *
+ * NOTE: alias is only supported by Symfony 2.6+ and will be ignored with older versions.
+ *
  * @author David Buchmann <mail@davidbu.ch>
+ *
  */
 class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
 {
@@ -36,15 +39,18 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      * You should not directly instantiate this class but use one of the
      * factory methods.
      *
-     * @param Definition|Reference $driver            the driver to use
-     * @param array                $namespaces        list of namespaces this driver should handle.
-     * @param string[]             $managerParameters ordered list of container parameters that may
-     *      provide the name of the manager to register the mappings for. The first non-empty name
-     *      is used, the others skipped.
-     * @param bool                 $enabledParameter  if specified, the compiler pass only executes
-     *      if this parameter exists in the service container.
+     * @param Definition|Reference $driver            Driver DI definition or reference.
+     * @param array                $namespaces        List of namespaces handled by $driver.
+     * @param string[]             $managerParameters List of container parameters that could hold
+     *                                                the manager name.
+     *                                                doctrine_phpcr.odm.default_document_manager
+     *                                                is appended automatically.
+     * @param bool                 $enabledParameter  Service container parameter that must be
+     *                                                present to enable the mapping. Set to false
+     *                                                to not do any check, optional.
+     * @param array                $aliasMap          Map of alias to namespace.
      */
-    public function __construct($driver, $namespaces, array $managerParameters, $enabledParameter = false)
+    public function __construct($driver, array $namespaces, array $managerParameters, $enabledParameter = false, array $aliasMap = array())
     {
         $managerParameters[] = 'doctrine_phpcr.odm.default_document_manager';
         parent::__construct(
@@ -52,13 +58,15 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
             $namespaces,
             $managerParameters,
             'doctrine_phpcr.odm.%s_metadata_driver',
-            $enabledParameter
+            $enabledParameter,
+            'doctrine_phpcr.odm.%s_configuration',
+            'addDocumentNamespace',
+            $aliasMap
         );
-
     }
 
     /**
-     * @param array    $mappings          Hashmap of directory path to namespace
+     * @param array    $namespaces        Hashmap of directory path to namespace
      * @param string[] $managerParameters List of parameters that could which object manager name
      *                                    your bundle uses. This compiler pass will automatically
      *                                    append the parameter name for the default entity manager
@@ -66,18 +74,19 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      * @param string   $enabledParameter  Service container parameter that must be present to
      *                                    enable the mapping. Set to false to not do any check,
      *                                    optional.
+     * @param string[] $aliasMap          Map of alias to namespace.
      */
-    public static function createXmlMappingDriver(array $mappings, array $managerParameters = array(), $enabledParameter = false)
+    public static function createXmlMappingDriver(array $namespaces, array $managerParameters = array(), $enabledParameter = false, array $aliasMap = array())
     {
-        $arguments = array($mappings, '.phpcr.xml');
+        $arguments = array($namespaces, '.phpcr.xml');
         $locator = new Definition('Doctrine\Common\Persistence\Mapping\Driver\SymfonyFileLocator', $arguments);
         $driver = new Definition('Doctrine\ODM\PHPCR\Mapping\Driver\XmlDriver', array($locator));
 
-        return new DoctrinePhpcrMappingsPass($driver, $mappings, $managerParameters, $enabledParameter);
+        return new DoctrinePhpcrMappingsPass($driver, $namespaces, $managerParameters, $enabledParameter, $aliasMap);
     }
 
     /**
-     * @param array  $mappings            Hashmap of directory path to namespace
+     * @param array  $namespaces          Hashmap of directory path to namespace
      * @param string[] $managerParameters List of parameters that could which object manager name
      *                                    your bundle uses. This compiler pass will automatically
      *                                    append the parameter name for the default entity manager
@@ -85,14 +94,15 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      * @param string $enabledParameter    Service container parameter that must be present to
      *                                    enable the mapping. Set to false to not do any check,
      *                                    optional.
+     * @param string[] $aliasMap          Map of alias to namespace.
      */
-    public static function createYamlMappingDriver(array $mappings, array $managerParameters = array(), $enabledParameter = false)
+    public static function createYamlMappingDriver(array $namespaces, array $managerParameters = array(), $enabledParameter = false, array $aliasMap = array())
     {
-        $arguments = array($mappings, '.phpcr.yml');
+        $arguments = array($namespaces, '.phpcr.yml');
         $locator = new Definition('Doctrine\Common\Persistence\Mapping\Driver\SymfonyFileLocator', $arguments);
         $driver = new Definition('Doctrine\ODM\PHPCR\Mapping\Driver\YamlDriver', array($locator));
 
-        return new DoctrinePhpcrMappingsPass($driver, $mappings, $managerParameters, $enabledParameter);
+        return new DoctrinePhpcrMappingsPass($driver, $namespaces, $managerParameters, $enabledParameter, $aliasMap);
     }
 
     /**
@@ -104,14 +114,15 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      * @param string   $enabledParameter  Service container parameter that must be present to
      *                                    enable the mapping. Set to false to not do any check,
      *                                    optional.
+     * @param string[] $aliasMap          Map of alias to namespace.
      */
-    public static function createPhpMappingDriver(array $mappings, array $managerParameters = array(), $enabledParameter = false)
+    public static function createPhpMappingDriver(array $mappings, array $managerParameters = array(), $enabledParameter = false, array $aliasMap = array())
     {
         $arguments = array($mappings, '.php');
         $locator = new Definition('Doctrine\Common\Persistence\Mapping\Driver\SymfonyFileLocator', $arguments);
         $driver = new Definition('Doctrine\Common\Persistence\Mapping\Driver\PHPDriver', array($locator));
 
-        return new DoctrinePhpcrMappingsPass($driver, $mappings, $managerParameters, $enabledParameter);
+        return new DoctrinePhpcrMappingsPass($driver, $mappings, $managerParameters, $enabledParameter, $aliasMap);
     }
 
     /**
@@ -124,13 +135,14 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      * @param string   $enabledParameter  Service container parameter that must be present to
      *                                    enable the mapping. Set to false to not do any check,
      *                                    optional.
+     * @param string[] $aliasMap          Map of alias to namespace.
      */
-    public static function createAnnotationMappingDriver(array $namespaces, array $directories, array $managerParameters = array(), $enabledParameter = false)
+    public static function createAnnotationMappingDriver(array $namespaces, array $directories, array $managerParameters = array(), $enabledParameter = false, array $aliasMap = array())
     {
         $reader = new Reference('doctrine_phpcr.odm.metadata.annotation_reader');
         $driver = new Definition('Doctrine\ODM\PHPCR\Mapping\Driver\AnnotationDriver', array($reader, $directories));
 
-        return new DoctrinePhpcrMappingsPass($driver, $namespaces, $managerParameters, $enabledParameter);
+        return new DoctrinePhpcrMappingsPass($driver, $namespaces, $managerParameters, $enabledParameter, $aliasMap);
     }
 
     /**
@@ -143,11 +155,12 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      * @param string   $enabledParameter  Service container parameter that must be present to
      *                                    enable the mapping. Set to false to not do any check,
      *                                    optional.
+     * @param string[] $aliasMap          Map of alias to namespace.
      */
-    public static function createStaticPhpMappingDriver(array $namespaces, array $directories, array $managerParameters = array(), $enabledParameter = false)
+    public static function createStaticPhpMappingDriver(array $namespaces, array $directories, array $managerParameters = array(), $enabledParameter = false, array $aliasMap = array())
     {
         $driver = new Definition('Doctrine\Common\Persistence\Mapping\Driver\StaticPHPDriver', array($directories));
 
-        return new DoctrinePhpcrMappingsPass($driver, $namespaces, $managerParameters, $enabledParameter);
+        return new DoctrinePhpcrMappingsPass($driver, $namespaces, $managerParameters, $enabledParameter, $aliasMap);
     }
 }
