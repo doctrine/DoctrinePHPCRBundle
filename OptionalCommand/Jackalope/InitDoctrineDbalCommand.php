@@ -26,6 +26,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use Jackalope\Tools\Console\Command\InitDoctrineDbalCommand as BaseInitDoctrineDbalCommand;
+
 use Doctrine\Bundle\PHPCRBundle\Command\DoctrineCommandHelper;
 
 class InitDoctrineDbalCommand extends BaseInitDoctrineDbalCommand
@@ -39,7 +40,7 @@ class InitDoctrineDbalCommand extends BaseInitDoctrineDbalCommand
 
         $this
             ->setName('doctrine:phpcr:init:dbal')
-            ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
+            ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command', 'default')
         ;
     }
 
@@ -48,7 +49,7 @@ class InitDoctrineDbalCommand extends BaseInitDoctrineDbalCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        DoctrineCommandHelper::setApplicationPHPCRSession($this->getApplication(), $input->getOption('session'));
+        DoctrineCommandHelper::setApplicationConnection($this->getApplication(), $input->getOption('session'));
 
         parent::execute($input, $output);
     }

@@ -20,9 +20,7 @@
                  factory-service="doctrine_phpcr.jackalope.repository.factory.service.jackrabbit"
                  factory-method="getRepository"
         >
-            <argument type="collection">
-                <argument key="jackalope.jackrabbit_check_login_on_server">false</argument>
-            </argument><!-- parameters (0) -->
+            <argument type="collection"/>
         </service>
 
         <service id="doctrine_phpcr.jackalope.repository.factory.service.doctrinedbal"
@@ -33,7 +31,7 @@
                  factory-service="doctrine_phpcr.jackalope.repository.factory.service.doctrinedbal"
                  factory-method="getRepository"
         >
-            <argument type="collection" /><!-- parameters (0) -->
+            <argument type="collection" />
         </service>
 
         <service id="doctrine_phpcr.jackalope.repository.factory.service.prismic"
@@ -45,9 +43,7 @@
                  factory-service="doctrine_phpcr.jackalope.repository.factory.service.prismic"
                  factory-method="getRepository"
                 >
-            <argument type="collection">
-                <argument key="jackalope.prismic_check_login_on_server">false</argument>
-            </argument><!-- parameters (0) -->
+            <argument type="collection"/>
         </service>
 
         <service id="doctrine_phpcr.jackalope.session"
