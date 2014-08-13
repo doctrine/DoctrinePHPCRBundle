@@ -15,6 +15,7 @@ $container->loadFromExtension('doctrine_phpcr', array(
                 'backend' => array(
                     'type' => 'jackrabbit',
                     'url' => 'http://b',
+                    'factory' => null,
                 ),
                 'workspace' => 'website',
                 'username' => 'root',

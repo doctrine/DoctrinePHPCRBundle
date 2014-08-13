@@ -95,8 +95,8 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
                     'type' => 'doctrinedbal',
                     'logging' => true,
                     'profiling' => true,
+                    'factory' => 'my_factory',
                     'parameters' => array(
-                        'jackalope.factory' => 'Jackalope\Factory',
                         'jackalope.check_login_on_server' => false,
                         'jackalope.disable_stream_wrapper' => false,
                         'jackalope.auto_lastmodified' => true,
@@ -117,12 +117,15 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
         $this->assertInternalType('array', $parameters);
         $this->assertEquals(array(
             'jackalope.doctrine_dbal_connection',
-            'jackalope.factory',
             'jackalope.check_login_on_server',
             'jackalope.disable_stream_wrapper',
             'jackalope.auto_lastmodified',
+            'jackalope.factory',
             'jackalope.logger',
         ), array_keys($parameters));
+
+        $this->assertEquals('my_factory', (string) $parameters['jackalope.factory']);
+        $this->assertInstanceOf('Symfony\Component\DependencyInjection\Reference', $parameters['jackalope.factory']);
 
         $this->assertEquals('doctrine_phpcr.jackalope.repository.factory.doctrinedbal', $repositoryFactory->getParent());
 
