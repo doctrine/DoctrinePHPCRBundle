@@ -157,6 +157,7 @@ class Configuration implements ConfigurationInterface
                                 ->defaultValue('jackrabbit')
                             ->end()
                             // all jackalope
+                            ->scalarNode('factory')->defaultNull()->end()
                             ->booleanNode('logging')->defaultFalse()->end()
                             ->booleanNode('profiling')->defaultFalse()->end()
                             ->arrayNode('parameters')
