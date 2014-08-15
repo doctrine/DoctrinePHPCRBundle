@@ -31,6 +31,7 @@
         "matthiasnoback/symfony-dependency-injection-test": "0.*"
     },
     "suggest": {
+        "phpcr/phpcr-shell": "If you want native access to PHPCR-Shell to manage the PHPCR repository",
         "doctrine/phpcr-odm": "if you want to use the odm as well. require version 1.1.*",
         "jackalope/jackalope-jackrabbit": "if you want to connect to jackrabbit. require version ~1.0.1",
         "jackalope/jackalope-doctrine-dbal": "if you want to use jackalope-doctrine-dbal. require version 1.0.*",

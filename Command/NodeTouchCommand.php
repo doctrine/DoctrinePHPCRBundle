@@ -60,4 +60,3 @@ class NodeTouchCommand extends BaseNodeTouchCommand
         return parent::execute($input, $output);
     }
 }
-

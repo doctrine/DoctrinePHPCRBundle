@@ -60,4 +60,3 @@ class WorkspacePurgeCommand extends BaseWorkspacePurgeCommand
         return parent::execute($input, $output);
     }
 }
-

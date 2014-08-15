@@ -60,5 +60,3 @@ class NodeTypeListCommand extends BaseTypeListCommand
         return parent::execute($input, $output);
     }
 }
-
-
