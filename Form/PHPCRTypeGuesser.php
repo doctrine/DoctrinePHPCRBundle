@@ -49,7 +49,7 @@ class PHPCRTypeGuesser implements FormTypeGuesserInterface
 
     private $cache = array();
 
-    public function __construct(ManagerRegistry $registry, $typeGuess)
+    public function __construct(ManagerRegistry $registry, $typeGuess = array())
     {
         $this->registry = $registry;
         $this->typeGuess = $typeGuess;

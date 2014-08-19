@@ -53,6 +53,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                             'type' => 'jackrabbit',
                             'logging' => true,
                             'profiling' => true,
+                            'factory' => null,
                             'parameters' => array(
                                 'jackalope.factory' => 'Jackalope\Factory',
                                 'jackalope.check_login_on_server' => false,
@@ -122,6 +123,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                             'type' => 'jackrabbit',
                             'logging' => false,
                             'profiling' => false,
+                            'factory' => null,
                             'parameters' => array(
                             ),
                             'url' => 'http://a',
@@ -140,6 +142,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                             'parameters' => array(
                             ),
                             'url' => 'http://b',
+                            'factory' => null,
                         ),
                         'workspace' => 'website',
                         'username' => 'root',
@@ -201,6 +204,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                             'type' => 'doctrinedbal',
                             'logging' => false,
                             'profiling' => false,
+                            'factory' => null,
                             'parameters' => array(
                                 'jackalope.factory' => 'Jackalope\Factory',
                                 'jackalope.check_login_on_server' => true,

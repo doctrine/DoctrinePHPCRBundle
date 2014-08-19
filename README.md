@@ -1,6 +1,6 @@
 # DoctrinePHPCRBundle
 
-[![Build Status](https://secure.travis-ci.org/doctrine/DoctrinePHPCRBundle.png)](http://travis-ci.org/doctrine/DoctrinePHPCRBundle)
+[![Build Status](https://secure.travis-ci.org/doctrine/DoctrinePHPCRBundle.png?branch=1.1)](http://travis-ci.org/doctrine/DoctrinePHPCRBundle)
 [![Latest Stable Version](https://poser.pugx.org/doctrine/phpcr-bundle/version.png)](https://packagist.org/packages/doctrine/phpcr-bundle)
 [![Total Downloads](https://poser.pugx.org/doctrine/phpcr-bundle/d/total.png)](https://packagist.org/packages/doctrine/phpcr-bundle)
 

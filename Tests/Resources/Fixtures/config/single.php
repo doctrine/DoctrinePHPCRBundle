@@ -7,6 +7,7 @@ $container->loadFromExtension('doctrine_phpcr', array(
             'url' => 'http://localhost:8080/server/',
             'logging' => true,
             'profiling' => true,
+            'factory' => null,
             'parameters' => array(
                 'jackalope.factory' => 'Jackalope\Factory',
                 'jackalope.check_login_on_server' => false,
