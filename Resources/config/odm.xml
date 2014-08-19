@@ -19,7 +19,7 @@
         <parameter key="doctrine_phpcr.odm.cache.xcache.class">Doctrine\Common\Cache\XcacheCache</parameter>
 
         <!-- form field factory guesser -->
-        <parameter key="form.type_guesser.doctrine_phpcr.class">Doctrine\Bundle\PHPCRBundle\Form\PHPCRTypeGuesser</parameter>
+        <parameter key="form.type_guesser.doctrine_phpcr.class">Doctrine\Bundle\PHPCRBundle\Form\PhpcrOdmTypeGuesser</parameter>
 
         <parameter key="doctrine_phpcr.odm.form.path.type.class">Doctrine\Bundle\PHPCRBundle\Form\Type\PathType</parameter>
 

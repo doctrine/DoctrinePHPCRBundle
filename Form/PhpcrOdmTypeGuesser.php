@@ -33,7 +33,7 @@ use Symfony\Component\Form\Guess\ValueGuess;
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
-class PHPCRTypeGuesser implements FormTypeGuesserInterface
+class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
 {
     /**
      * @var ManagerRegistry

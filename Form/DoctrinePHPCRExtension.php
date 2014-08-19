@@ -32,6 +32,6 @@ class DoctrinePHPCRExtension extends AbstractExtension
 
     protected function loadTypeGuesser()
     {
-        return new PHPCRTypeGuesser($this->registry);
+        return new PhpcrOdmTypeGuesser($this->registry);
     }
 }
