@@ -1,6 +1,9 @@
 Changelog
 =========
 
+1.2.0-RC1
+---------
+
 * **2014-08-19**: Renamed PHPCRTypeGuesser to PhpcrOdmTypeGuesser as its about phpcr-odm.
 
 * **2014-08-09**: Added PHPCR-Shell proxy command. This command deprecates the existing
