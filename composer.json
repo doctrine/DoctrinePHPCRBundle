@@ -40,9 +40,8 @@
         "burgov/key-value-form-bundle": "to edit assoc multivalue properties. require version 1.0.*"
     },
     "autoload": {
-        "psr-0": { "Doctrine\\Bundle\\PHPCRBundle": "" }
+        "psr-4": { "Doctrine\\Bundle\\PHPCRBundle\\": "" }
     },
-    "target-dir": "Doctrine/Bundle/PHPCRBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "1.2-dev"
