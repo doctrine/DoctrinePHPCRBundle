@@ -11,7 +11,7 @@ use Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument;
 use Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\ReferrerDocument;
 use Symfony\Component\HttpKernel\Kernel;
 
-class PHPCRTypeGuesserTest extends BaseTestCase
+class PhpcrOdmTypeGuesserTest extends BaseTestCase
 {
     /**
      * @var TestDocument
