@@ -105,6 +105,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                             'instance_class' => null,
                             'class' => null,
                             'id' => null,
+                            'namespace' => null,
                         ),
                         'class_metadata_factory_name' => 'Doctrine\ODM\PHPCR\Mapping\ClassMetadataFactory',
                         'default_repository_class' => 'Doctrine\ODM\PHPCR\DocumentRepository',
@@ -169,6 +170,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                         ),
                         'metadata_cache_driver' => array(
                             'type' => 'array',
+                            'namespace' => null,
                         ),
                         'class_metadata_factory_name' => 'Doctrine\ODM\PHPCR\Mapping\ClassMetadataFactory',
                         'default_repository_class' => 'Doctrine\ODM\PHPCR\DocumentRepository',
@@ -184,6 +186,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                         ),
                         'metadata_cache_driver' => array(
                             'type' => 'array',
+                            'namespace' => null,
                         ),
                         'class_metadata_factory_name' => 'Doctrine\ODM\PHPCR\Mapping\ClassMetadataFactory',
                         'default_repository_class' => 'Doctrine\ODM\PHPCR\DocumentRepository',
