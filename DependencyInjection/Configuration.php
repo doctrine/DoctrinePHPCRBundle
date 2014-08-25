@@ -41,6 +41,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('jackrabbit_jar')->end()
                 ->scalarNode('workspace_dir')->end()
                 ->scalarNode('dump_max_line_length')->defaultValue(120)->end()
+                ->scalarNode('manager_registry_service_id')->defaultNull()->end()
             ->end()
         ;
 

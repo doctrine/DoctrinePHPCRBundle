@@ -55,6 +55,28 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
         $this->assertEquals('doctrine_phpcr.jackalope.repository.factory.jackrabbit', $repositoryFactory->getParent());
     }
 
+    public function testCustomManagerRegistryService()
+    {
+        $this->container->setDefinition('my_phpcr_registry', new Definition('\stdClass'));
+
+        $this->load(array(
+            'session' => array(
+                'backend' => array(
+                    'url' => 'http://localhost',
+                ),
+                'workspace' => 'default',
+                'username' => 'admin',
+                'password' => 'admin',
+            ),
+            'manager_registry_service_id' => 'my_phpcr_registry',
+        ));
+
+        /** @var $repositoryFactory DefinitionDecorator */
+        $managerRegistry = $this->container->getAlias('doctrine_phpcr');
+        $this->assertInstanceOf('\Symfony\Component\DependencyInjection\Alias', $managerRegistry);
+        $this->assertEquals('my_phpcr_registry', $managerRegistry);
+    }
+
     public function testJackrabbitSessions()
     {
         $this->load(array(
