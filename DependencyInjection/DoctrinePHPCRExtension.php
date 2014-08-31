@@ -61,6 +61,12 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         $config = $processor->processConfiguration($configuration, $configs);
         $this->loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
+        $this->loader->load('phpcr.xml');
+
+        if (!empty($config['manager_registry_service_id'])) {
+            $container->setAlias('doctrine_phpcr', new Alias($config['manager_registry_service_id']));
+        }
+
         $parameters = array(
             'workspace_dir',
             'jackrabbit_jar',
@@ -104,8 +110,6 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
     private function sessionLoad($config, ContainerBuilder $container)
     {
-        $this->loader->load('phpcr.xml');
-
         $sessions = $loaded = array();
         foreach ($config['sessions'] as $name => $session) {
             if (empty($config['default_session'])) {

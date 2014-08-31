@@ -60,4 +60,5 @@ $container->loadFromExtension('doctrine_phpcr', array(
     ),
     'jackrabbit_jar' => '/path/to/jackrabbit.jar',
     'dump_max_line_length' => 20,
+    'manager_registry_service_id' => 'my_phpcr_registry',
 ));
