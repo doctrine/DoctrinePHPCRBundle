@@ -44,7 +44,7 @@ class LocaleListenerTest extends \PHPUnit_Framework_TestCase
             LocaleListener::FALLBACK_HARDCODED
         );
 
-        $this->responseEvent->expects($this->exactly(2))
+        $this->responseEvent->expects($this->exactly(4))
             ->method('getRequest')
             ->will($this->returnValue($this->request));
 
@@ -70,7 +70,7 @@ class LocaleListenerTest extends \PHPUnit_Framework_TestCase
             LocaleListener::FALLBACK_REPLACE
         );
 
-        $this->responseEvent->expects($this->once())
+        $this->responseEvent->expects($this->exactly(2))
             ->method('getRequest')
             ->will($this->returnValue($this->request));
 

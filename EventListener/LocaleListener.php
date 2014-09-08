@@ -86,6 +86,23 @@ class LocaleListener implements EventSubscriberInterface
     }
 
     /**
+     * Decides which locale will be used.
+     *
+     * @param GetResponseEvent $event used to get the request
+     *
+     * @return mixed string|false a locale or false it cannot be found in the
+     *                            array of allowed locales
+     */
+    protected function determineLocale(GetResponseEvent $event)
+    {
+        $locale = $event->getRequest()->getLocale();
+
+        return in_array($locale, $this->allowedLocales) ?
+            $locale:
+            false;
+    }
+
+    /**
      * Handling the request event
      *
      * @param GetResponseEvent $event
@@ -93,10 +110,11 @@ class LocaleListener implements EventSubscriberInterface
     public function onKernelRequest(GetResponseEvent $event)
     {
         $request = $event->getRequest();
-        $locale = $request->getLocale();
-        if (!in_array($locale, $this->allowedLocales)) {
+
+        if (!$locale = $this->determineLocale($event)) {
             return;
         }
+
         $this->chooser->setLocale($locale);
 
         if (self::FALLBACK_HARDCODED == $this->fallback) {
