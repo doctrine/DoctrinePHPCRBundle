@@ -344,6 +344,17 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             $dm->addMethodCall('setLocaleChooserStrategy', array(new Reference('doctrine_phpcr.odm.locale_chooser')));
         }
 
+        // BC logic to handle DoctrineBridge < 2.6
+        if (!method_exists($this, 'fixManagersAutoMappings')) {
+            foreach ($config['document_managers'] as $documentManager) {
+                if ($documentManager['auto_mapping'] && count($config['document_managers']) > 1) {
+                    throw new LogicException('You cannot enable "auto_mapping" when several PHPCR document managers are defined.');
+                }
+            }
+        } else {
+            $config['document_managers'] = $this->fixManagersAutoMappings($config['document_managers'], $container->getParameter('kernel.bundles'));
+        }
+
         $documentManagers = array();
         foreach ($config['document_managers'] as $name => $documentManager) {
             if (empty($config['default_document_manager'])) {
@@ -352,10 +363,6 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
             $documentManager['name'] = $name;
             $documentManager['service_name'] = $documentManagers[$name] = sprintf('doctrine_phpcr.odm.%s_document_manager', $name);
-            if ($documentManager['auto_mapping'] && count($config['document_managers']) > 1) {
-                throw new LogicException('You cannot enable "auto_mapping" when several PHPCR document managers are defined.');
-            }
-
             $this->loadOdmDocumentManager($documentManager, $container);
         }
 
