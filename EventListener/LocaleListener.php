@@ -90,7 +90,7 @@ class LocaleListener implements EventSubscriberInterface
      *
      * @param GetResponseEvent $event used to get the request
      *
-     * @return mixed string|false a locale or false if no valid locale is found
+     * @return mixed string|null a locale or null if no valid locale is found
      */
     protected function determineLocale(GetResponseEvent $event)
     {
@@ -98,7 +98,7 @@ class LocaleListener implements EventSubscriberInterface
 
         return in_array($locale, $this->allowedLocales) ?
             $locale:
-            false;
+            null;
     }
 
     /**
