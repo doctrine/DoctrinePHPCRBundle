@@ -38,11 +38,9 @@ class DocumentMigrateClassCommand extends BaseDocumentMigrateClassCommand
     {
         parent::configure();
 
-        $this->addOption(
-                'session', null,
-                InputOption::VALUE_OPTIONAL,
-                'The session to use for this command'
-        );
+
+        $this->addOption('dm', null, InputOption::VALUE_OPTIONAL, 'The document manager to use for this command')
+            ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The document manager to use for this command (deprecated, alias for dm)');
     }
 
     /**
@@ -50,9 +48,20 @@ class DocumentMigrateClassCommand extends BaseDocumentMigrateClassCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        DoctrineCommandHelper::setApplicationPHPCRSession(
+        if ($input->getOption('dm')) {
+            $dmName = $input->getOption('dm');
+        } else if($input->getOption('session')) {
+            $dmName = $input->getOption('session');
+            trigger_error(
+                'The session attribute for command doctrine:phpcr:fixtures:load is deprecated. Use --dm instead.',
+                E_USER_DEPRECATED
+            );
+        } else {
+            $dmName = null;
+        }
+        DoctrineCommandHelper::setApplicationDocumentManager(
             $this->getApplication(),
-            $input->getOption('session')
+            $dmName
         );
 
         return parent::execute($input, $output);
