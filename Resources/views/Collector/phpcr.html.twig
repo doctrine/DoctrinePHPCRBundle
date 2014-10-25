@@ -64,6 +64,7 @@
                                 {{ call.method|raw }}
                             </code>
                             <small>
+                                <strong>Method</strong>: {{ call.method|yaml_encode }} <br />
                                 <strong>Parameters</strong>: {{ call.params|yaml_encode }} <br />
                                 <strong>Environment</strong>: {{ call.env|yaml_encode }} <br />
                             </small>
