@@ -70,9 +70,14 @@ class InitializerManager
      *
      * @param InitializerInterface $initializer
      */
-    public function addInitializer(InitializerInterface $initializer)
+    public function addInitializer(InitializerInterface $initializer, $priority = 0)
     {
-        $this->initializers[] = $initializer;
+        if (empty($this->initializers[$priority])) {
+            $this->initializers[$priority] = array();
+        }
+
+        $this->initializers[$priority][] = $initializer;
+        $this->sortedInitializers = array();
     }
 
     /**
@@ -82,12 +87,44 @@ class InitializerManager
     {
         $loggingClosure = $this->loggingClosure;
 
-        foreach ($this->initializers as $initializer) {
+        foreach ($this->getInitializers() as $initializer) {
             if ($loggingClosure) {
                 $loggingClosure(sprintf('<info>Executing initializer:</info> %s', $initializer->getName()));
             }
 
             $initializer->init($this->registry);
         }
+    }
+
+    /**
+     * Return the ordered initializers
+     *
+     * @return InitializerInterface[]
+     */
+    private function getInitializers()
+    {
+        if (empty($this->sortedInitializers)) {
+            $this->sortedInitializers = $this->sortInitializers();
+        }
+
+        return $this->sortedInitializers;
+    }
+
+    /**
+     * Sort initializers by priority.
+     * The highest priority number is the highest priority (reverse sorting)
+     *
+     * @return InitializerInterface[]
+     */
+    private function sortInitializers()
+    {
+        $sortedInitializers = array();
+        krsort($this->initializers);
+
+        foreach ($this->initializers as $initializers) {
+            $sortedInitializers = array_merge($sortedInitializers, $initializers);
+        }
+
+        return $sortedInitializers;
     }
 }

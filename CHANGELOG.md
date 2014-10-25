@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.2.1
+-----
+
+* Added support for priorities. This fixes a regression whereby the new CMF initializer services would
+  be executed in an arbitry order, causing unresolvable conflicts.
+
 1.2.0-RC1
 ---------
 

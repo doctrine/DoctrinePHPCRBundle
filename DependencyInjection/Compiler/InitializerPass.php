@@ -50,8 +50,14 @@ class InitializerPass implements CompilerPassInterface
                 throw new LogicException(sprintf('initializer "%s" must be public', $id));
             }
 
+            $priority = 0;
+
+            if (isset($attributes[0]['priority'])) {
+                $priority = $attributes[0]['priority'];
+            }
+
             $initializerManagerDef->addMethodCall('addInitializer', array(
-                new Reference($id)
+                new Reference($id), $priority
             ));
         }
     }
