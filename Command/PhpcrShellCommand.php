@@ -23,13 +23,9 @@ namespace Doctrine\Bundle\PHPCRBundle\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use PHPCR\Shell\Console\Application\EmbeddedApplication;
-use Symfony\Component\Console\Input\ArgvInput;
-use PHPCR\Shell\Console\Input\StringInput;
-use PHPCR\Shell\PhpcrSession;
 use Symfony\Component\Console\Input\InputArgument;
-use PHPCR\Shell\Console\Application\Shell;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use PHPCR\Shell\PhpcrShell;
 
 /**
  * Wrapper to use this command in the symfony console with multiple sessions.
@@ -93,20 +89,24 @@ EOT
         );
 
         $args = $input->getArgument('cmd');
-        $mode = empty($args) ? EmbeddedApplication::MODE_SHELL : EmbeddedApplication::MODE_COMMAND;
+        $launchShell = empty($args);
         $session = $this->getHelper('phpcr')->getSession();
 
-        $application = new EmbeddedApplication($mode);
-        $application->getHelperSet()->get('phpcr')->setSession(new PhpcrSession($session));
+        // If no arguments supplied, launch the shell uwith the embedded application
+        if ($launchShell) {
+            $shell = PhpcrShell::createEmbeddedShell($session);
+            $exitCode = $shell->run();
 
-        // If no arguments supplied, launch the shell with the embedded application
-        if ($mode === EmbeddedApplication::MODE_SHELL) {
-            $shell = new Shell($application);
-            $shell->run();
-        } else {
-            // else try and run the command using the given input
-            $application->run(new StringInput(implode(' ', $args), $output));
-            $session->save();
+            return $exitCode;
         }
+
+        // else try and run the command using the given input
+        $application = PhpcrShell::createEmbeddedApplication($session);
+        $exitCode = $application->runWithStringInput(implode(' ', $args), $output);
+
+        // always save the session after running a single command
+        $session->save();
+
+        return $exitCode;
     }
 }
