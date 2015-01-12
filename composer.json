@@ -39,6 +39,9 @@
         "doctrine/doctrine-bundle": "when using jackalope-doctrine-dbal",
         "burgov/key-value-form-bundle": "to edit assoc multivalue properties. require version 1.0.*"
     },
+    "conflict": {
+        "phpcr/phpcr-shell": "<1.0.0-beta1"
+    },
     "autoload": {
         "psr-4": { "Doctrine\\Bundle\\PHPCRBundle\\": "" }
     },
