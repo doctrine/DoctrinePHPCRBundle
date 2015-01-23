@@ -103,7 +103,7 @@ class Configuration implements ConfigurationInterface
             ->prototype('array')
                 ->children()
                     ->scalarNode('workspace')->isRequired()->cannotBeEmpty()->end()
-                    ->scalarNode('username')->defaultNull()->end()
+                    ->scalarNode('username')->isRequired()->cannotBeEmpty()->end()
                     ->scalarNode('password')->defaultNull()->end()
                     ->arrayNode('backend')
                         ->addDefaultsIfNotSet()
