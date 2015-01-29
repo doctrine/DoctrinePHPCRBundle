@@ -16,6 +16,10 @@
         <parameter key="doctrine_phpcr.odm.cache.memcache_host">localhost</parameter>
         <parameter key="doctrine_phpcr.odm.cache.memcache_port">11211</parameter>
         <parameter key="doctrine_phpcr.odm.cache.memcache_instance.class">Memcache</parameter>
+        <parameter key="doctrine_phpcr.odm.cache.memcached.class">Doctrine\Common\Cache\MemcachedCache</parameter>
+        <parameter key="doctrine_phpcr.odm.cache.memcached_host">localhost</parameter>
+        <parameter key="doctrine_phpcr.odm.cache.memcached_port">11211</parameter>
+        <parameter key="doctrine_phpcr.odm.cache.memcached_instance.class">Memcached</parameter>
         <parameter key="doctrine_phpcr.odm.cache.xcache.class">Doctrine\Common\Cache\XcacheCache</parameter>
 
         <!-- form field factory guesser -->
