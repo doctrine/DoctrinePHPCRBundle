@@ -112,6 +112,11 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                         'repository_factory' => null,
                     ),
                 ),
+                'namespaces' => array(
+                    'translation' => array(
+                        'alias' => 'phpcr_locale',
+                    ),
+                ),
             ),
             'jackrabbit_jar' => '/path/to/jackrabbit.jar',
             'dump_max_line_length' => 20,
@@ -194,6 +199,11 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                         'repository_factory' => null,
                         'session' => 'website',
                         'configuration_id' => 'sandbox_magnolia.odm_configuration',
+                    ),
+                ),
+                'namespaces' => array(
+                    'translation' => array(
+                        'alias' => 'phpcr_locale'
                     ),
                 ),
             ),

@@ -380,6 +380,14 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         foreach ($options as $key) {
             $container->setParameter('doctrine_phpcr.odm.' . $key, $config[$key]);
         }
+
+        if (!$config['namespaces']['translation']['alias']) {
+            throw new InvalidArgumentException(
+                'Translation namespace alias must not be empty'
+            );
+        }
+
+        $container->setParameter('doctrine_phpcr.odm.namespaces.translation.alias', $config['namespaces']['translation']['alias']);
     }
 
     private function loadOdmDocumentManager(array $documentManager, ContainerBuilder $container)
@@ -418,14 +426,25 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             throw new InvalidArgumentException(sprintf("You have configured a non existent session '%s' for the document manager '%s'", $documentManager['session'], $documentManager['name']));
         }
 
-        $container
+        $documentManagerDefinition = $container
             ->setDefinition($documentManager['service_name'], new DefinitionDecorator('doctrine_phpcr.odm.document_manager.abstract'))
             ->setArguments(array(
                 new Reference(sprintf('doctrine_phpcr.%s_session', $documentManager['session'])),
                 new Reference(sprintf('doctrine_phpcr.odm.%s_configuration', $documentManager['name'])),
                 new Reference(sprintf('doctrine_phpcr.%s_session.event_manager', $documentManager['session']))
-            ))
-        ;
+            ));
+
+        foreach (array(
+            'child' => 'doctrine_phpcr.odm.translation.strategy.child',
+            'attribute' => 'doctrine_phpcr.odm.translation.strategy.attribute',
+        ) as $name => $strategyTemplateId) {
+            $strategyId = sprintf('doctrine_phpcr.odm.%s.translation.strategy.%s', $documentManager['name'], $name);
+            $strategyDefinition = new DefinitionDecorator($strategyTemplateId);
+            $container->setDefinition($strategyId, $strategyDefinition);
+
+            $strategyDefinition->replaceArgument(0, new Reference($documentManager['service_name']));
+            $documentManagerDefinition->addMethodCall('setTranslationStrategy', array($name, new Reference($strategyId)));
+        }
     }
 
     /**
