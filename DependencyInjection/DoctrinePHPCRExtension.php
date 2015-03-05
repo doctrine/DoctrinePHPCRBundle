@@ -87,7 +87,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             if (empty($this->sessions)) {
                 throw new InvalidArgumentException("You did not configure a session for the document managers");
             }
-            $this->odmLoad($config['odm'], $container);
+            $this->loadOdm($config['odm'], $container);
 
             if ($this->disableProxyWarmer) {
                 $container->removeDefinition('doctrine_phpcr.odm.proxy_cache_warmer');
@@ -319,30 +319,10 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         ;
     }
 
-    private function odmLoad(array $config, ContainerBuilder $container)
+    private function loadOdm(array $config, ContainerBuilder $container)
     {
         $this->loader->load('odm.xml');
-
-        if (!empty($config['locales'])) {
-            $this->loader->load('odm_multilang.xml');
-
-            foreach ($config['locales'] as $locale => $fallbacks) {
-                if (false !== array_search($locale, $fallbacks)) {
-                    throw new InvalidArgumentException(sprintf('The fallbacks for locale %s contain the locale itself.', $locale));
-                }
-                if (count($fallbacks) !== count(array_unique($fallbacks))) {
-                    throw new InvalidArgumentException(sprintf('Duplicate locale in the fallbacks for locale %s.', $locale));
-                }
-            }
-
-            $container->setParameter('doctrine_phpcr.odm.locales', $config['locales']);
-            $container->setParameter('doctrine_phpcr.odm.allowed_locales', array_keys($config['locales']));
-            $container->setParameter('doctrine_phpcr.odm.default_locale', key($config['locales']));
-            $container->setParameter('doctrine_phpcr.odm.locale_fallback', $config['locale_fallback'] == 'hardcoded' ? null : $config['locale_fallback']);
-
-            $dm = $container->getDefinition('doctrine_phpcr.odm.document_manager.abstract');
-            $dm->addMethodCall('setLocaleChooserStrategy', array(new Reference('doctrine_phpcr.odm.locale_chooser')));
-        }
+        $this->loadOdmLocales($config, $container);
 
         // BC logic to handle DoctrineBridge < 2.6
         if (!method_exists($this, 'fixManagersAutoMappings')) {
@@ -388,6 +368,42 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         }
 
         $container->setParameter('doctrine_phpcr.odm.namespaces.translation.alias', $config['namespaces']['translation']['alias']);
+    }
+
+    private function loadOdmLocales(array $config, ContainerBuilder $container)
+    {
+        $localeChooser = $config['locale_chooser'];
+
+        if (empty($config['locales']) && null === $config['locale_chooser']) {
+            return;
+        }
+
+        if (!empty($config['locales'])) {
+            $this->loader->load('odm_multilang.xml');
+
+            foreach ($config['locales'] as $locale => $fallbacks) {
+                if (false !== array_search($locale, $fallbacks)) {
+                    throw new InvalidArgumentException(sprintf('The fallbacks for locale %s contain the locale itself.', $locale));
+                }
+                if (count($fallbacks) !== count(array_unique($fallbacks))) {
+                    throw new InvalidArgumentException(sprintf('Duplicate locale in the fallbacks for locale %s.', $locale));
+                }
+            }
+
+            $container->setParameter('doctrine_phpcr.odm.locales', $config['locales']);
+            $container->setParameter('doctrine_phpcr.odm.allowed_locales', array_keys($config['locales']));
+            $container->setParameter('doctrine_phpcr.odm.default_locale', key($config['locales']));
+            $container->setParameter('doctrine_phpcr.odm.locale_fallback', $config['locale_fallback'] == 'hardcoded' ? null : $config['locale_fallback']);
+
+            $localeChooser = $localeChooser ? : 'doctrine_phpcr.odm.locale_chooser';
+        }
+
+        // only set the locale chooser if it has been explicitly configured or implicitly
+        // set by configuring the locales node.
+        if (null !== $localeChooser) {
+            $dm = $container->getDefinition('doctrine_phpcr.odm.document_manager.abstract');
+            $dm->addMethodCall('setLocaleChooserStrategy', array(new Reference($localeChooser)));
+        }
     }
 
     private function loadOdmDocumentManager(array $documentManager, ContainerBuilder $container)
