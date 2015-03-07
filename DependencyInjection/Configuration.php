@@ -24,6 +24,7 @@ use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
+use Doctrine\ODM\PHPCR\Translation\Translation;
 
 /**
  * Configuration for the PHPCR extension
@@ -240,6 +241,17 @@ class Configuration implements ConfigurationInterface
                         ->enumNode('locale_fallback')
                             ->values(array('hardcoded', 'merge', 'replace'))
                             ->defaultValue('hardcoded')
+                        ->end()
+                        ->arrayNode('namespaces')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->arrayNode('translation')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('alias')->defaultValue(Translation::LOCALE_NAMESPACE)->end()
+                                    ->end()
+                                ->end()
+                            ->end()
                         ->end()
                     ->end()
                     ->fixXmlConfig('document_manager')

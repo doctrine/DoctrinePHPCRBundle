@@ -9,6 +9,10 @@
         <parameter key="doctrine_phpcr.odm.configuration.class">Doctrine\ODM\PHPCR\Configuration</parameter>
         <parameter key="doctrine_phpcr.odm.document_manager.class">Doctrine\ODM\PHPCR\DocumentManager</parameter>
 
+        <!-- Translation strategies -->
+        <parameter key="doctrine_phpcr.odm.translation.strategy.attribute.class">Doctrine\ODM\PHPCR\Translation\TranslationStrategy\AttributeTranslationStrategy</parameter>
+        <parameter key="doctrine_phpcr.odm.translation.strategy.child.class">Doctrine\ODM\PHPCR\Translation\TranslationStrategy\ChildTranslationStrategy</parameter>
+
         <!-- cache -->
         <parameter key="doctrine_phpcr.odm.cache.array.class">Doctrine\Common\Cache\ArrayCache</parameter>
         <parameter key="doctrine_phpcr.odm.cache.apc.class">Doctrine\Common\Cache\ApcCache</parameter>
@@ -85,6 +89,18 @@
         <service id="doctrine_phpcr.odm.validator.valid_phpcr_odm" class="%doctrine_phpcr.odm.validator.valid_phpcr_odm.class%">
             <argument type="service" id="doctrine_phpcr" />
             <tag name="validator.constraint_validator" alias="doctrine_phpcr.odm.validator.valid_phpcr_odm"/>
+        </service>
+
+        <!-- Translation strategies -->
+        <service id="doctrine_phpcr.odm.translation.strategy.attribute" class="%doctrine_phpcr.odm.translation.strategy.attribute.class%">
+            <argument />
+            <call method="setPrefix">
+                <argument>%doctrine_phpcr.odm.namespaces.translation.alias%</argument>
+            </call>
+        </service>
+
+        <service id="doctrine_phpcr.odm.translation.strategy.child" class="%doctrine_phpcr.odm.translation.strategy.child.class%">
+            <argument />
         </service>
 
     </services>
