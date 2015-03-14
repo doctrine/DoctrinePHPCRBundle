@@ -7,6 +7,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\DoctrinePHPCRExtension;
+use Symfony\Component\DependencyInjection\Reference;
 
 class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
 {
@@ -21,6 +22,8 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
     {
         parent::setUp();
 
+        $this->container->setParameter('kernel.root_dir', null);
+        $this->container->setParameter('kernel.environment', 'test');
         $this->container->setParameter('kernel.bundles', array());
         $this->container->setParameter('kernel.debug', false);
     }
@@ -157,5 +160,56 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
         $calls = $session->getMethodCalls();
         $this->assertCount(1, $calls);
         $this->assertEquals(array('setSessionOption', array('jackalope.fetch_depth', 2)), current($calls));
+    }
+
+    public function provideLocaleChooser()
+    {
+        return array(
+            array(
+                array(
+                    'odm' => array(
+                        'locales' => array('fr' => array('de', 'en')),
+                    ),
+                ),
+                'doctrine_phpcr.odm.locale_chooser',
+            ),
+            array(
+                array(
+                    'odm' => array(
+                        'locales' => array('fr' => array('de', 'en')),
+                        'locale_chooser' => 'foobar',
+                    ),
+                ),
+                'foobar',
+            ),
+            array(
+                array(
+                    'odm' => array(
+                        'locale_chooser' => 'foobar',
+                    ),
+                ),
+                'foobar',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideLocaleChooser
+     */
+    public function testLocales($odmConfig, $expectedChooser)
+    {
+        $this->load(array_merge(array(
+            'session' => array(
+                'backend' => array(
+                    'type' => 'doctrinedbal',
+                ),
+                'workspace' => 'default',
+            ),
+        ), $odmConfig));
+
+        $managerDef = $this->container->getDefinition('doctrine_phpcr.odm.document_manager.abstract');
+        $calls = $managerDef->getMethodCalls();
+        $this->assertCount(1, $calls);
+        $this->assertEquals(array('setLocaleChooserStrategy', array(new Reference($expectedChooser))), current($calls));
     }
 }

@@ -117,6 +117,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                         'alias' => 'phpcr_locale',
                     ),
                 ),
+                'locale_chooser' => null,
             ),
             'jackrabbit_jar' => '/path/to/jackrabbit.jar',
             'dump_max_line_length' => 20,
@@ -206,6 +207,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                         'alias' => 'phpcr_locale'
                     ),
                 ),
+                'locale_chooser' => null,
             ),
             'dump_max_line_length' => 120,
             'manager_registry_service_id' => null,

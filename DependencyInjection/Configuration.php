@@ -218,6 +218,7 @@ class Configuration implements ConfigurationInterface
                                 'locale_fallback' => true,
                                 'locales' => true,
                                 'locale' => true,
+                                'locale_chooser' => true,
                             );
                             $documentManagers = array();
                             foreach ($v as $key => $value) {
@@ -238,6 +239,10 @@ class Configuration implements ConfigurationInterface
                         ->booleanNode('auto_generate_proxy_classes')->defaultFalse()->end()
                         ->scalarNode('proxy_dir')->defaultValue('%kernel.cache_dir%/doctrine/PHPCRProxies')->end()
                         ->scalarNode('proxy_namespace')->defaultValue('PHPCRProxies')->end()
+                        ->scalarNode('locale_chooser')
+                            ->info('Specify custom locale chooser service ID')
+                            ->defaultNull()
+                        ->end()
                         ->enumNode('locale_fallback')
                             ->values(array('hardcoded', 'merge', 'replace'))
                             ->defaultValue('hardcoded')
