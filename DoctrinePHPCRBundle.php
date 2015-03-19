@@ -20,6 +20,7 @@
 
 namespace Doctrine\Bundle\PHPCRBundle;
 
+use Symfony\Component\DependencyInjection\IntrospectableContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -124,6 +125,24 @@ class DoctrinePHPCRBundle extends Bundle
         if (null !== $this->autoloader) {
             spl_autoload_unregister($this->autoloader);
             $this->autoloader = null;
+        }
+
+        // Clear all document managers to clear references to entities for GC
+        if ($this->container->hasParameter('doctrine_phpcr.odm.document_managers')) {
+            foreach ($this->container->getParameter('doctrine_phpcr.odm.document_managers') as $id) {
+                if (!$this->container instanceof IntrospectableContainerInterface || $this->container->initialized($id)) {
+                    $this->container->get($id)->clear();
+                }
+            }
+        }
+
+        // Close all connections to avoid reaching too many connections in the process when booting again later (tests)
+        if ($this->container->hasParameter('doctrine_phpcr.sessions')) {
+            foreach ($this->container->getParameter('doctrine_phpcr.sessions') as $id) {
+                if (!$this->container instanceof IntrospectableContainerInterface || $this->container->initialized($id)) {
+                    $this->container->get($id)->getTransport()->logout();
+                }
+            }
         }
     }
 }
