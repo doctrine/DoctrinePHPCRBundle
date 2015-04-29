@@ -162,6 +162,7 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('factory')->defaultNull()->end()
                             ->booleanNode('logging')->defaultFalse()->end()
                             ->booleanNode('profiling')->defaultFalse()->end()
+                            ->booleanNode('backtrace')->defaultFalse()->end()
                             ->arrayNode('parameters')
                                 ->useAttributeAsKey('key')
                                 ->prototype('scalar')->end()

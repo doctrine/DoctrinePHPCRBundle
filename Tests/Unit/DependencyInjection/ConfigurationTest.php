@@ -63,15 +63,16 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                                 'jackalope.jackrabbit_expect' => true,
                             ),
                             'url' => 'http://localhost:8080/server/',
-                        ),
-                        'workspace' => 'default',
-                        'username' => 'admin',
-                        'password' => 'admin',
-                        'options' => array(
-                            'jackalope.fetch_depth' => 1,
+                            'backtrace' => false,
+                            ),
+                            'workspace' => 'default',
+                            'username' => 'admin',
+                            'password' => 'admin',
+                            'options' => array(
+                                'jackalope.fetch_depth' => 1,
+                            ),
                         ),
                     ),
-                ),
             ),
             'odm' => array(
                 'auto_generate_proxy_classes' => true,
@@ -135,6 +136,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                             'parameters' => array(
                             ),
                             'url' => 'http://a',
+                            'backtrace' => false,
                         ),
                         'workspace' => 'default',
                         'username' => 'admin',
@@ -150,6 +152,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                             'parameters' => array(
                             ),
                             'url' => 'http://b',
+                            'backtrace' => false,
                             'factory' => null,
                         ),
                         'workspace' => 'website',
@@ -222,6 +225,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                             'logging' => false,
                             'profiling' => false,
                             'factory' => null,
+                            'backtrace' => false,
                             'parameters' => array(
                                 'jackalope.factory' => 'Jackalope\Factory',
                                 'jackalope.check_login_on_server' => true,

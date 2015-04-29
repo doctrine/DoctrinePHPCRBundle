@@ -67,6 +67,9 @@
                                 <strong>Method</strong>: {{ call.method|yaml_encode }} <br />
                                 <strong>Parameters</strong>: {{ call.params|yaml_encode }} <br />
                                 <strong>Environment</strong>: {{ call.env|yaml_encode }} <br />
+                                {% if call.caller is defined %}
+                                    <strong>Callers</strong><ul>{% for caller in call.caller %}<li> - {{ caller }}</li>{% endfor %}</ul>
+                                {% endif %}
                             </small>
                         </td>
                     </tr>
