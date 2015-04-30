@@ -224,7 +224,13 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         }
         if (!empty($session['backend']['profiling'])) {
             $profilingLoggerId = 'doctrine_phpcr.logger.profiling.'.$session['name'];
-            $container->setDefinition($profilingLoggerId, new DefinitionDecorator('doctrine_phpcr.logger.profiling'));
+            $profilingLoggerDef = new DefinitionDecorator('doctrine_phpcr.logger.profiling');
+
+            if ($session['backend']['backtrace']) {
+                $profilingLoggerDef->addMethodCall('enableBacktrace');
+            }
+
+            $container->setDefinition($profilingLoggerId, $profilingLoggerDef);
             $profilerLogger = new Reference($profilingLoggerId);
             $container->getDefinition('doctrine_phpcr.data_collector')->addMethodCall('addLogger', array($session['name'], $profilerLogger));
 
