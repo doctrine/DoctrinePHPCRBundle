@@ -266,13 +266,15 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             ->replaceArgument(1, $session['password'])
         ;
 
-        $definition = new DefinitionDecorator('doctrine_phpcr.jackalope.session'));
+        $definition = new DefinitionDecorator('doctrine_phpcr.jackalope.session');
         $factoryServiceId = sprintf('doctrine_phpcr.jackalope.repository.%s', $session['name']);
         if (method_exists($definition, 'setFactory')) {
             $definition->setFactory(array(
                 new Reference($factoryServiceId),
                 'login'
             ));
+            $definition->setFactoryService(null);
+            $definition->setFactoryMethod(null);
         } else {
             // todo: remove when Symfony <2.6 support is dropped
             $definition->setFactoryService($factoryServiceId);

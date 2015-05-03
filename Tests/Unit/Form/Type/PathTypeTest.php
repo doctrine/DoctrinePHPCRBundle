@@ -21,7 +21,7 @@ class PathTypeTest extends \PHPUnit_Framework_Testcase
         $this->builder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->optionsResolver = $this->getMock('Symfony\Component\OptionsResolver\OptionsResolverInterface');
+        $this->optionsResolver = $this->getMock('Symfony\Component\OptionsResolver\OptionsResolver');
         $this->type = new PathType($this->reg);
     }
 
