@@ -7,26 +7,25 @@ php:
   - hhvm
 
 env:
-  - SYMFONY_VERSION=2.6.* PACKAGE_VERSION=high
+  - SYMFONY_VERSION=2.6.*
 
 matrix:
   include:
     - php: 5.3.3
-      env: SYMFONY_VERSION=2.3.* PACKAGE_VERSION=low
+      env: SYMFONY_VERSION=2.3.* COMPOSER_FLAGS="--prefer-lowest"
     - php: 5.5
-      env: SYMFONY_VERSION=2.3.* PACKAGE_VERSION=high
+      env: SYMFONY_VERSION=2.3.*
     - php: 5.5
-      env: SYMFONY_VERSION=2.4.* PACKAGE_VERSION=high
+      env: SYMFONY_VERSION=2.4.*
     - php: 5.5
-      env: SYMFONY_VERSION=2.5.* PACKAGE_VERSION=high
+      env: SYMFONY_VERSION=2.5.*
     - php: 5.5
-      env: SYMFONY_VERSION=2.7.* PACKAGE_VERSION=high SYMFONY_DEPRECATIONS_HELPER=weak
+      env: SYMFONY_VERSION=2.7.* SYMFONY_DEPRECATIONS_HELPER=weak
 
 before_install:
   - composer self-update || true
   - composer require --no-update symfony/symfony:${SYMFONY_VERSION}
-  - if [[ "$PACKAGE_VERSION" == "high" ]]; then COMPOSER_ROOT_VERSION=dev-master composer update --prefer-source --no-interaction; fi
-  - if [[ "$PACKAGE_VERSION" == "low" ]]; then COMPOSER_ROOT_VERSION=dev-master composer update --prefer-lowest --prefer-source --no-interaction; fi
+  - COMPOSER_ROOT_VERSION=dev-master composer update $COMPOSER_FLAGS --prefer-source --no-interaction
   - vendor/symfony-cmf/testing/bin/travis/phpcr_odm_doctrine_dbal.sh
 
 script: phpunit --coverage-text
