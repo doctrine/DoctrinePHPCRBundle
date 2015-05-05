@@ -25,8 +25,7 @@ matrix:
 before_install:
   - composer self-update || true
   - composer require --no-update symfony/symfony:${SYMFONY_VERSION}
-  - if [[ "$PACKAGE_VERSION" == "high" ]]; then COMPOSER_ROOT_VERSION=dev-master composer update --prefer-source --no-interaction; fi
-  - if [[ "$PACKAGE_VERSION" == "low" ]]; then COMPOSER_ROOT_VERSION=dev-master composer update $COMPOSER_FLAGS --prefer-source --no-interaction; fi
+  - COMPOSER_ROOT_VERSION=dev-master composer update $COMPOSER_FLAGS --prefer-source --no-interaction
   - vendor/symfony-cmf/testing/bin/travis/phpcr_odm_doctrine_dbal.sh
 
 script: phpunit --coverage-text
