@@ -3,6 +3,7 @@
 namespace Doctrine\Bundle\PHPCRBundle\Form\ChoiceList;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ODM\PHPCR\DocumentManager;
 use Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityLoaderInterface;
 use Symfony\Component\Form\Exception\FormException;
@@ -32,10 +33,10 @@ class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
      * Construct a PHPCR-ODM Query Builder Loader
      *
      * @param QueryBuilder|\Closure $queryBuilder
-     * @param ObjectManager $manager
+     * @param DocumentManager $manager
      * @param string $class
      */
-    public function __construct($queryBuilder, ObjectManager $manager = null, $class = null)
+    public function __construct($queryBuilder, DocumentManager $manager = null, $class = null)
     {
         // If a query builder was passed, it must be a closure or QueryBuilder
         // instance
@@ -50,6 +51,8 @@ class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
                 throw new UnexpectedTypeException($queryBuilder, 'Doctrine\Common\Persistence\ObjectManager');
             }
         }
+
+        $this->manager = $manager;
 
         $this->queryBuilder = $queryBuilder;
     }
@@ -77,10 +80,16 @@ class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
      */
     public function getEntitiesByIds($identifier, array $values)
     {
+        /* performance: if we could figure out whether the query builder is "
+         * empty" (that is only checking for the class) we could optimize this
+         * to a $this->dm->findMany(null, $values)
+         */
+
         $qb = clone $this->queryBuilder;
         $alias = $qb->getPrimaryAlias();
+        $where = $qb->andWhere()->orX();
         foreach ($values as $val) {
-            $qb->orWhere()->eq()->field($alias.'.'.$identifier)->literal($val);
+            $where->same($val, $alias);
         }
 
         return $this->getResult($qb);

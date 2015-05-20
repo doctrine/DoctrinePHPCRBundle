@@ -3,17 +3,23 @@
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Functional\Form;
 
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 use Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument;
 use Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\ReferrerDocument;
+use Doctrine\ODM\PHPCR\DocumentManager;
 
 class PhpcrOdmTypeGuesserTest extends BaseTestCase
 {
     /**
+     * @var DocumentManager
+     */
+    private $dm;
+
+    /**
      * @var TestDocument
      */
     private $document;
+
     /**
      * @var ReferrerDocument
      */
