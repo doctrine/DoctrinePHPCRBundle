@@ -48,6 +48,17 @@ class LoadData implements FixtureInterface, DependentFixtureInterface
 
         $manager->persist($doc);
 
+        $doc = new TestDocument();
+        $doc->id = '/test/doc2';
+        $doc->bool = true;
+        $doc->date = new \DateTime('2014-01-14');
+        $doc->integer = 42;
+        $doc->long = 24;
+        $doc->number = 3.14;
+        $doc->text = 'text content';
+
+        $manager->persist($doc);
+
         $ref = new ReferrerDocument();
         $ref->id = '/test/ref';
         $ref->addDocument($doc);

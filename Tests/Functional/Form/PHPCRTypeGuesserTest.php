@@ -11,9 +11,15 @@ use Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\ReferrerDocument;
 class PhpcrOdmTypeGuesserTest extends BaseTestCase
 {
     /**
+     * @var DocumentManager
+     */
+    private $dm;
+
+    /**
      * @var TestDocument
      */
     private $document;
+
     /**
      * @var ReferrerDocument
      */
