@@ -4,6 +4,7 @@ namespace Doctrine\Bundle\PHPCRBundle\Tests\Functional\Form;
 
 use Doctrine\Common\Util\Debug;
 use Symfony\Component\Form\FormBuilderInterface;
+
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
@@ -14,9 +15,15 @@ use Symfony\Component\HttpKernel\Kernel;
 class PhpcrOdmTypeGuesserTest extends BaseTestCase
 {
     /**
+     * @var DocumentManager
+     */
+    private $dm;
+
+    /**
      * @var TestDocument
      */
     private $document;
+
     /**
      * @var ReferrerDocument
      */
