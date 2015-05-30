@@ -7,7 +7,7 @@ php:
   - hhvm
 
 env:
-  - SYMFONY_VERSION=2.6.*
+  - SYMFONY_VERSION="~2.3||~3.0"
 
 matrix:
   include:
