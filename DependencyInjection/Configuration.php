@@ -142,11 +142,6 @@ class Configuration implements ConfigurationInterface
                                         break;
                                     case 'doctrinedbal':
                                         break;
-                                    case 'midgard2':
-                                        if (! (isset($v['db_name']) || isset($v['config']))) {
-                                            throw new InvalidConfigurationException('midgard2 backend requires either the db_name or the config argument.');
-                                        }
-                                        break;
                                 }
 
                                 return $v;
@@ -155,7 +150,7 @@ class Configuration implements ConfigurationInterface
                         ->fixXmlConfig('parameter')
                         ->children()
                             ->enumNode('type')
-                                ->values(array('jackrabbit', 'doctrinedbal', 'prismic', 'midgard2'))
+                                ->values(array('jackrabbit', 'doctrinedbal', 'prismic'))
                                 ->defaultValue('jackrabbit')
                             ->end()
                             // all jackalope
@@ -178,16 +173,6 @@ class Configuration implements ConfigurationInterface
                                     ->scalarNode('nodes')->end()
                                 ->end()
                             ->end()
-                            // midgard
-                            ->scalarNode('config')->end()
-                            ->scalarNode('db_type')->end()
-                            ->scalarNode('db_name')->end()
-                            ->scalarNode('db_host')->end()
-                            ->scalarNode('db_port')->end()
-                            ->scalarNode('db_username')->end()
-                            ->scalarNode('db_password')->end()
-                            ->scalarNode('db_init')->end()
-                            ->scalarNode('blobdir')->end()
                         ->end()
                     ->end()
                     ->arrayNode('options')
