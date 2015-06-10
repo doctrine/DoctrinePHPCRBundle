@@ -126,6 +126,23 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                 case 'jackrabbit':
                     if (empty($loaded['jackalope'])) {
                         $this->loader->load('jackalope.xml');
+
+                        // TODO: move the following code block back into the XML file when we drop support for symfony <2.6
+                        $jackalopeTransports = array('prismic', 'doctrinedbal', 'jackrabbit');
+                        foreach ($jackalopeTransports as $transport) {
+                            $factoryServiceId = sprintf('doctrine_phpcr.jackalope.repository.factory.service.%s', $transport);
+                            $factoryService = $container->getDefinition(sprintf('doctrine_phpcr.jackalope.repository.factory.%s', $transport));
+                            if (method_exists($factoryService, 'setFactory')) {
+                                $factoryService->setFactory(array(
+                                    new Reference($factoryServiceId),
+                                    'getRepository'
+                                ));
+                            } else {
+                                $factoryService->setFactoryService($factoryServiceId);
+                                $factoryService->setFactoryMethod('getRepository');
+                            }
+                        }
+
                         $loaded['jackalope'] = true;
                     }
                     $this->loadJackalopeSession($session, $container, $type);
@@ -266,6 +283,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             ->replaceArgument(1, $session['password'])
         ;
 
+        // TODO: move the following code block back into the XML file when we drop support for symfony <2.6
         $definition = new DefinitionDecorator('doctrine_phpcr.jackalope.session');
         $factoryServiceId = sprintf('doctrine_phpcr.jackalope.repository.%s', $session['name']);
         if (method_exists($definition, 'setFactory')) {
@@ -273,12 +291,12 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                 new Reference($factoryServiceId),
                 'login'
             ));
-            $definition->setFactoryService(null);
-            $definition->setFactoryMethod(null);
         } else {
-            // todo: remove when Symfony <2.6 support is dropped
             $definition->setFactoryService($factoryServiceId);
+            $definition->setFactoryMethod('login');
         }
+
+
         $definition
             ->replaceArgument(0, new Reference(sprintf('doctrine_phpcr.%s_credentials', $session['name'])))
             ->replaceArgument(1, $session['workspace'])

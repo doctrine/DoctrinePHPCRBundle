@@ -24,6 +24,8 @@
         "phpcr/phpcr-utils": "~1.2.0"
     },
     "require-dev": {
+        "phpunit/phpunit": "~4.5@stable",
+        "phpunit/php-code-coverage": "@stable",
         "symfony/form": "~2.3 || ~3.0",
         "doctrine/phpcr-odm": "~1.3",
         "jackalope/jackalope-jackrabbit": "~1.1.0",
