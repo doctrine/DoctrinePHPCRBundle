@@ -17,8 +17,6 @@
 
         <service id="doctrine_phpcr.jackalope.repository.factory.jackrabbit"
                  class="Jackalope\Repository"
-                 factory-service="doctrine_phpcr.jackalope.repository.factory.service.jackrabbit"
-                 factory-method="getRepository"
         >
             <argument type="collection"/>
         </service>
@@ -28,8 +26,6 @@
         </service>
         <service id="doctrine_phpcr.jackalope.repository.factory.doctrinedbal"
                  class="Jackalope\Repository"
-                 factory-service="doctrine_phpcr.jackalope.repository.factory.service.doctrinedbal"
-                 factory-method="getRepository"
         >
             <argument type="collection" />
         </service>
@@ -40,16 +36,12 @@
 
         <service id="doctrine_phpcr.jackalope.repository.factory.prismic"
                  class="Jackalope\Repository"
-                 factory-service="doctrine_phpcr.jackalope.repository.factory.service.prismic"
-                 factory-method="getRepository"
                 >
             <argument type="collection"/>
         </service>
 
         <service id="doctrine_phpcr.jackalope.session"
                  class="Jackalope\Session"
-                 factory-service="doctrine_phpcr.jackalope.repository"
-                 factory-method="login"
                  abstract="true"
         >
             <argument /><!-- phpcr credentials service (0) -->

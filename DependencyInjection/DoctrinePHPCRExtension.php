@@ -126,6 +126,23 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                 case 'jackrabbit':
                     if (empty($loaded['jackalope'])) {
                         $this->loader->load('jackalope.xml');
+
+                        // TODO: move the following code block back into the XML file when we drop support for symfony <2.6
+                        $jackalopeTransports = array('prismic', 'doctrinedbal', 'jackrabbit');
+                        foreach ($jackalopeTransports as $transport) {
+                            $factoryServiceId = sprintf('doctrine_phpcr.jackalope.repository.factory.service.%s', $transport);
+                            $factoryService = $container->getDefinition(sprintf('doctrine_phpcr.jackalope.repository.factory.%s', $transport));
+                            if (method_exists($factoryService, 'setFactory')) {
+                                $factoryService->setFactory(array(
+                                    new Reference($factoryServiceId),
+                                    'getRepository',
+                                ));
+                            } else {
+                                $factoryService->setFactoryService($factoryServiceId);
+                                $factoryService->setFactoryMethod('getRepository');
+                            }
+                        }
+
                         $loaded['jackalope'] = true;
                     }
                     $this->loadJackalopeSession($session, $container, $type);
