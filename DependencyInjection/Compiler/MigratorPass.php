@@ -42,4 +42,3 @@ class MigratorPass implements CompilerPassInterface
         $container->setParameter('doctrine_phpcr.migrate.migrators', $migrators);
     }
 }
-

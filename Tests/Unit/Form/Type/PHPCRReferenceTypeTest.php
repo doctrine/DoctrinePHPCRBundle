@@ -2,8 +2,6 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\Form\DataTransformer;
 
-use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\PHPCRNodeToPathTransformer;
-use Jackalope\Node;
 use Doctrine\Bundle\PHPCRBundle\Form\Type\PHPCRReferenceType;
 
 class PHPCRReferenceTypeTest extends \PHPUnit_Framework_Testcase
@@ -37,7 +35,8 @@ class PHPCRReferenceTypeTest extends \PHPUnit_Framework_Testcase
             ->method('addModelTransformer')
             ->will($this->returnCallback(function ($transformer) use (&$type) {
                 $type = get_class($transformer);
-                return null;
+
+                return;
             }));
         $this->type->buildForm($this->builder, array('transformer_type' => $transformerType));
 
@@ -52,4 +51,3 @@ class PHPCRReferenceTypeTest extends \PHPUnit_Framework_Testcase
         $this->type->buildForm($this->builder, array('transformer_type' => 'asdasd'));
     }
 }
-

@@ -21,7 +21,6 @@
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
 use PHPCR\Util\Console\Command\NodeTypeRegisterCommand as BaseRegisterNodeTypesCommand;
-
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -45,7 +44,7 @@ class NodeTypeRegisterCommand extends BaseRegisterNodeTypesCommand
 If no cnd-files are specified, the command will automatically try and find node files in the
 <comment>%s</comment> directory of activated bundles.
 EOT;
-        $help = $this->getHelp() . sprintf($newHelp, self::BUNDLE_NT_PATH);
+        $help = $this->getHelp().sprintf($newHelp, self::BUNDLE_NT_PATH);
 
         $this
             ->setName('doctrine:phpcr:node-type:register')
@@ -87,6 +86,7 @@ EOT;
                     'No definition files specified and could not find any definitions in any <comment><bundle>/%s</comment> folders. Aborting.',
                     self::BUNDLE_NT_PATH
                 ));
+
                 return 1;
             }
 

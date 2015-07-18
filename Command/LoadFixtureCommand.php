@@ -21,18 +21,12 @@
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-
 use Symfony\Component\Console\Helper\DialogHelper;
-use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-
 use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
-
 use Doctrine\Common\DataFixtures\Purger\PHPCRPurger;
-
 use InvalidArgumentException;
 use Doctrine\Bundle\PHPCRBundle\DataFixtures\PHPCRExecutor;
 
@@ -99,7 +93,7 @@ EOT
 
         if ($input->getOption('dm')) {
             $dmName = $input->getOption('dm');
-        } else if($input->getOption('session')) {
+        } elseif ($input->getOption('session')) {
             $dmName = $input->getOption('session');
             trigger_error(
                 'The session attribute for command doctrine:phpcr:fixtures:load is deprecated. Use --dm instead.',
@@ -130,7 +124,7 @@ EOT
         } else {
             $paths = array();
             foreach ($this->getApplication()->getKernel()->getBundles() as $bundle) {
-                $paths[] = $bundle->getPath() . '/DataFixtures/PHPCR';
+                $paths[] = $bundle->getPath().'/DataFixtures/PHPCR';
             }
         }
 
@@ -144,7 +138,7 @@ EOT
         $fixtures = $loader->getFixtures();
         if (!$fixtures) {
             throw new InvalidArgumentException(
-                sprintf('Could not find any fixtures to load in: %s', "\n\n- " . implode("\n- ", $paths))
+                sprintf('Could not find any fixtures to load in: %s', "\n\n- ".implode("\n- ", $paths))
             );
         }
 
@@ -157,8 +151,7 @@ EOT
         }
 
         $executor = new PHPCRExecutor($dm, $purger, $initializerManager);
-        $executor->setLogger(function($message) use ($output)
-        {
+        $executor->setLogger(function ($message) use ($output) {
             $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', $message));
         });
         $executor->execute($fixtures, $input->getOption('append'));

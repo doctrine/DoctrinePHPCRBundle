@@ -71,7 +71,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
         if ($metadata->hasAssociation($property)) {
             $mapping = $metadata->getAssociation($property);
 
-            switch($mapping['type']) {
+            switch ($mapping['type']) {
                 case 'parent':
                     return new TypeGuess('phpcr_odm_path', array(), Guess::MEDIUM_CONFIDENCE);
 
@@ -86,7 +86,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
                 case 'referrers':
                     return new TypeGuess('phpcr_document', array(
                             'class' => $mapping['referringDocument'],
-                            'multiple' => true
+                            'multiple' => true,
                         ),
                         Guess::HIGH_CONFIDENCE
                     );
@@ -118,19 +118,20 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
                     return new TypeGuess('collection', $options, Guess::LOW_CONFIDENCE);
 
                 default:
-                    return null;
+                    return;
             }
         }
 
         $mapping = $metadata->getField($property);
 
-        if (! empty($mapping['assoc'])) {
+        if (!empty($mapping['assoc'])) {
             if (isset($this->typeGuess['assoc'])) {
                 list($type, $options) = each($this->typeGuess['assoc']);
 
                 return new TypeGuess($type, $options, Guess::MEDIUM_CONFIDENCE);
             }
-            return null;
+
+            return;
         }
 
         $options = array();
@@ -141,10 +142,10 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
             case 'binary':
                 // the file type only works on documents like the File document,
                 // not directly on properties with raw binary data.
-                return null;
+                return;
             case 'node':
                 // editing the phpcr node has no meaning
-                return null;
+                return;
             case 'date':
                 $type = 'datetime';
                 break;
@@ -190,7 +191,6 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
         }
 
         return new TypeGuess($type, $options, Guess::HIGH_CONFIDENCE);
-
     }
 
     /**
@@ -198,7 +198,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
      */
     public function guessMaxLength($class, $property)
     {
-        return null;
+        return;
     }
 
     /**
@@ -206,7 +206,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
      */
     public function guessMinLength($class, $property)
     {
-        return null;
+        return;
     }
 
     /**
@@ -218,7 +218,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
         list($metadata, $documentManager) = $this->getMetadata($class);
 
         if (!$metadata) {
-            return null;
+            return;
         }
 
         if ($metadata->hasField($property)) {
@@ -249,7 +249,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
             return new ValueGuess(false, Guess::LOW_CONFIDENCE);
         }
 
-        return null;
+        return;
     }
 
     /**
@@ -257,7 +257,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
      */
     public function guessPattern($class, $property)
     {
-        return null;
+        return;
     }
 
     protected function getMetadata($class)
@@ -270,6 +270,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
         if ($manager) {
             return $this->cache[$class] = array($manager->getClassMetadata($class), $manager);
         }
+
         return $this->cache[$class] = null;
     }
 }

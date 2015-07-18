@@ -21,11 +21,6 @@
 namespace Doctrine\Bundle\PHPCRBundle\Initializer;
 
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
-use PHPCR\SessionInterface;
-use Doctrine\ODM\PHPCR\DocumentManager;
-use Doctrine\Bundle\PHPCRBundle\Initializer\InitializerInterface;
-use Doctrine\Bundle\PHPCRBundle\Initializer\PhpcrInitializerInterface;
-use Doctrine\Bundle\PHPCRBundle\Initializer\PhpcrOdmInitializerInterface;
 
 /**
  * Service which is used to aggregate and execute the initializers.
@@ -66,7 +61,7 @@ class InitializerManager
     }
 
     /**
-     * Add an initializer
+     * Add an initializer.
      *
      * @param InitializerInterface $initializer
      */
@@ -97,7 +92,7 @@ class InitializerManager
     }
 
     /**
-     * Return the ordered initializers
+     * Return the ordered initializers.
      *
      * @return InitializerInterface[]
      */
@@ -112,7 +107,7 @@ class InitializerManager
 
     /**
      * Sort initializers by priority.
-     * The highest priority number is the highest priority (reverse sorting)
+     * The highest priority number is the highest priority (reverse sorting).
      *
      * @return InitializerInterface[]
      */

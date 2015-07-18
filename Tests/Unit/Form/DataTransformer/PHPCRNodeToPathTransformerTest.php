@@ -30,7 +30,7 @@ class PHPCRNodeToPathTransformerTest extends \PHPUnit_Framework_Testcase
      */
     public function testTransformWrongType()
     {
-        $this->transformer->transform(new \stdClass);
+        $this->transformer->transform(new \stdClass());
     }
 
     public function testReverseTransform()

@@ -66,7 +66,8 @@ class PathTypeTest extends \PHPUnit_Framework_Testcase
                     'Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\DocumentToPathTransformer',
                     $transformer
                 );
-                return null;
+
+                return;
             }));
 
         $this->type->buildForm($this->builder, array('manager_name' => null));

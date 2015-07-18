@@ -2,11 +2,9 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Form\ChoiceList;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityLoaderInterface;
-use Symfony\Component\Form\Exception\FormException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 /**
@@ -20,7 +18,6 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
  */
 class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
 {
-
     /**
      * Contains the query builder that builds the query for fetching the
      * entities.
@@ -30,11 +27,11 @@ class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
     private $queryBuilder;
 
     /**
-     * Construct a PHPCR-ODM Query Builder Loader
+     * Construct a PHPCR-ODM Query Builder Loader.
      *
      * @param QueryBuilder|\Closure $queryBuilder
-     * @param DocumentManager $manager
-     * @param string $class
+     * @param DocumentManager       $manager
+     * @param string                $class
      */
     public function __construct($queryBuilder, DocumentManager $manager = null, $class = null)
     {
@@ -74,7 +71,7 @@ class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
      * @param string $identifier The identifier field of the object. This method
      *                           is not applicable for fields with multiple
      *                           identifiers.
-     * @param array $values The values of the identifiers.
+     * @param array  $values     The values of the identifiers.
      *
      * @return array The entities.
      */

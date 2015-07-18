@@ -27,7 +27,7 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Doctrine\ODM\PHPCR\Translation\Translation;
 
 /**
- * Configuration for the PHPCR extension
+ * Configuration for the PHPCR extension.
  *
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  * @author Benjamin Eberlei <kontakt@beberlei.de>
@@ -70,7 +70,7 @@ class Configuration implements ConfigurationInterface
                             'username',
                             'password',
                             'backend',
-                            'options'
+                            'options',
                         ) as $key) {
                             if (array_key_exists($key, $v)) {
                                 $session[$key] = $v[$key];
@@ -309,7 +309,7 @@ class Configuration implements ConfigurationInterface
                         ->prototype('array')
                             ->beforeNormalization()
                                 ->ifString()
-                                ->then(function($v) { return array('type' => $v); })
+                                ->then(function ($v) { return array('type' => $v); })
                             ->end()
                             ->treatNullLike(array())
                             ->treatFalseLike(array('mapping' => false))
@@ -340,8 +340,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->beforeNormalization()
             ->ifString()
-            ->then(function($v)
-        {
+            ->then(function ($v) {
             return array('type' => $v);
         })
             ->end()

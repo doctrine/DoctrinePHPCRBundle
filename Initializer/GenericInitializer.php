@@ -39,18 +39,21 @@ use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
 class GenericInitializer implements InitializerInterface
 {
     /**
-     * Name for this initializer
+     * Name for this initializer.
+     *
      * @var string
      */
     protected $name;
 
     /**
-     * The cnd definition
+     * The cnd definition.
+     *
      * @var string
      */
     protected $cnd;
     /**
-     * List of base paths to create
+     * List of base paths to create.
+     *
      * @var array
      */
     protected $basePaths;
@@ -58,7 +61,7 @@ class GenericInitializer implements InitializerInterface
     /**
      * @param array       $basePaths a list of base paths to create if not existing
      * @param string|null $cnd       node type and namespace definitions in cnd
-     *      format, pass null to not create any node types.
+     *                               format, pass null to not create any node types.
      */
     public function __construct($name, array $basePaths, $cnd = null)
     {

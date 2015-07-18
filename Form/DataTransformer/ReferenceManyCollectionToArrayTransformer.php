@@ -16,17 +16,17 @@ class ReferenceManyCollectionToArrayTransformer implements DataTransformerInterf
     const KEY_UUID = 'uuid';
 
     /**
-     * @var \Doctrine\ODM\PHPCR\DocumentManager $dm
+     * @var \Doctrine\ODM\PHPCR\DocumentManager
      */
     protected $dm;
 
     /**
-     * @var string $referencedClass
+     * @var string
      */
     protected $referencedClass;
 
     /**
-     * @var string $key
+     * @var string
      */
     protected $key;
 
@@ -34,9 +34,10 @@ class ReferenceManyCollectionToArrayTransformer implements DataTransformerInterf
      * @param \Doctrine\ODM\PHPCR\DocumentManager $dm
      * @param $referencedClass
      * @param string $key
+     *
      * @throws \InvalidArgumentException
      */
-    function __construct(DocumentManager $dm, $referencedClass, $key = self::KEY_UUID)
+    public function __construct(DocumentManager $dm, $referencedClass, $key = self::KEY_UUID)
     {
         trigger_error('This is deprecated in favor of phpcr_document. If you think this is an error, please contact us and explain. We where not able to figure out what this type is good for.', E_WARNING);
 

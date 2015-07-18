@@ -1,4 +1,5 @@
 <?php
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -39,7 +40,7 @@ class PHPCRExecutor extends BasePHPCRExecutor
      * @param DocumentManager $dm DocumentManager instance used for persistence.
      */
     public function __construct(
-        DocumentManager $dm, 
+        DocumentManager $dm,
         PHPCRPurger $purger = null,
         InitializerManager $initializerManager = null
     ) {
@@ -47,7 +48,6 @@ class PHPCRExecutor extends BasePHPCRExecutor
 
         $this->initializerManager = $initializerManager;
     }
-
 
     public function purge()
     {

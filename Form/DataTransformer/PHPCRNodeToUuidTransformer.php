@@ -17,7 +17,7 @@ class PHPCRNodeToUuidTransformer implements DataTransformerInterface
     }
 
     /**
-     * Transform a node into a uuid
+     * Transform a node into a uuid.
      *
      * @param \PHPCR\NodeInterface|null $node
      *
@@ -28,17 +28,18 @@ class PHPCRNodeToUuidTransformer implements DataTransformerInterface
     public function transform($node)
     {
         if (null === $node) {
-            return null;
+            return;
         }
 
         if (!$node instanceof NodeInterface) {
             throw new UnexpectedTypeException($node, 'PHPCR\NodeInterface');
         }
+
         return $node->getIdentifier();
     }
 
     /**
-     * Transform a uuid to its corresponding PHPCR node
+     * Transform a uuid to its corresponding PHPCR node.
      *
      * @param string $id uuid
      *
@@ -49,7 +50,7 @@ class PHPCRNodeToUuidTransformer implements DataTransformerInterface
     public function reverseTransform($id)
     {
         if (!$id) {
-            return null;
+            return;
         }
 
         return $this->session->getNodeByIdentifier($id);

@@ -16,7 +16,7 @@ class DocumentToPathTransformer implements DataTransformerInterface
     }
 
     /**
-     * Transform a document into a path
+     * Transform a document into a path.
      *
      * @param object|null $document
      *
@@ -25,7 +25,7 @@ class DocumentToPathTransformer implements DataTransformerInterface
     public function transform($document)
     {
         if (null === $document) {
-            return null;
+            return;
         }
 
         $path = $this->dm->getUnitOfWork()->getDocumentId($document);
@@ -34,7 +34,7 @@ class DocumentToPathTransformer implements DataTransformerInterface
     }
 
     /**
-     * Transform a path to its corresponding PHPCR-ODM document
+     * Transform a path to its corresponding PHPCR-ODM document.
      *
      * @param string $path phpcr path
      *
@@ -43,7 +43,7 @@ class DocumentToPathTransformer implements DataTransformerInterface
     public function reverseTransform($path)
     {
         if (!$path) {
-            return null;
+            return;
         }
 
         $document = $this->dm->find(null, $path);

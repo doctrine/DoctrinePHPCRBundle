@@ -25,9 +25,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Console\Application;
-
 use Symfony\Bridge\Doctrine\DependencyInjection\CompilerPass\RegisterEventListenersAndSubscribersPass;
-
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\MigratorPass;
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\InitializerPass;
@@ -39,7 +37,7 @@ use Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\DocumentMigrateClassCommand;
 class DoctrinePHPCRBundle extends Bundle
 {
     /**
-     * Autoloader for proxies
+     * Autoloader for proxies.
      *
      * @var \Closure
      */
@@ -83,11 +81,11 @@ class DoctrinePHPCRBundle extends Bundle
             $namespace = $this->container->getParameter('doctrine_phpcr.odm.proxy_namespace');
             $dir = $this->container->getParameter('doctrine_phpcr.odm.proxy_dir');
             // See https://github.com/symfony/symfony/pull/3419 for usage of references
-            $container =& $this->container;
+            $container = &$this->container;
 
-            $this->autoloader = function($class) use ($namespace, $dir, &$container) {
+            $this->autoloader = function ($class) use ($namespace, $dir, &$container) {
                 if (0 === strpos($class, $namespace)) {
-                    $fileName = str_replace('\\', '', substr($class, strlen($namespace) +1));
+                    $fileName = str_replace('\\', '', substr($class, strlen($namespace) + 1));
                     $file = $dir.DIRECTORY_SEPARATOR.$fileName.'.php';
 
                     if (!is_file($file) && $container->getParameter('doctrine_phpcr.odm.auto_generate_proxy_classes')) {
@@ -96,7 +94,6 @@ class DoctrinePHPCRBundle extends Bundle
 
                         // Tries to auto-generate the proxy file
                         foreach ($registry->getManagers() as $dm) {
-
                             if ($dm->getConfiguration()->getAutoGenerateProxyClasses()) {
                                 $classes = $dm->getMetadataFactory()->getAllMetadata();
 
