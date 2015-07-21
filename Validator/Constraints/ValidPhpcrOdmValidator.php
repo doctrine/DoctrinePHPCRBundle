@@ -21,13 +21,12 @@
 namespace Doctrine\Bundle\PHPCRBundle\Validator\Constraints;
 
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
-
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 
 /**
- * Valid PHPCR ODM Validator checks if a document has an identifier or a parent and a name
+ * Valid PHPCR ODM Validator checks if a document has an identifier or a parent and a name.
  *
  * @author Emmanuel Vella <vella.emmanuel@gmail.com>
  */

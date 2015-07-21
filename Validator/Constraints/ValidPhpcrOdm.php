@@ -23,9 +23,10 @@ namespace Doctrine\Bundle\PHPCRBundle\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Constraint for the Valid PHPCR ODM validator
+ * Constraint for the Valid PHPCR ODM validator.
  *
  * @Annotation
+ *
  * @author Emmanuel Vella <vella.emmanuel@gmail.com>
  */
 class ValidPhpcrOdm extends Constraint

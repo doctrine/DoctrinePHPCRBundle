@@ -1,4 +1,5 @@
 <?php
+
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\EventListener\LocaleListenerTest;
 
 use Doctrine\Bundle\PHPCRBundle\EventListener\LocaleListener;
@@ -89,7 +90,6 @@ class LocaleListenerTest extends \PHPUnit_Framework_TestCase
         $this->chooser->expects($this->once())
             ->method('setFallbackLocales')
             ->with('en', array('fr', 'en'), true);
-
 
         $localeListener->onKernelRequest($this->responseEvent);
     }

@@ -3,8 +3,6 @@
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\Initializer;
 
 use Doctrine\Bundle\PHPCRBundle\Initializer\InitializerManager;
-use Doctrine\Bundle\PHPCRBundle\Initializer\PhpcrInitializerInterface;
-use Doctrine\Bundle\PHPCRBundle\Initializer\PhpcrOdmInitializerInterface;
 
 class InitializerManagerTest extends \PHPUnit_Framework_TestCase
 {
@@ -18,15 +16,15 @@ class InitializerManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->initializer1 = $this->getMockBuilder(
             'Doctrine\Bundle\PHPCRBundle\Initializer\InitializerInterface'
-        )->setMockClassName('TestInitializerOne')->getMock();;
+        )->setMockClassName('TestInitializerOne')->getMock();
 
         $this->initializer2 = $this->getMockBuilder(
             'Doctrine\Bundle\PHPCRBundle\Initializer\InitializerInterface'
-        )->setMockClassName('TestInitializerTwo')->getMock();;
+        )->setMockClassName('TestInitializerTwo')->getMock();
 
         $this->initializer3 = $this->getMockBuilder(
             'Doctrine\Bundle\PHPCRBundle\Initializer\InitializerInterface'
-        )->setMockClassName('TestInitializerTwo')->getMock();;
+        )->setMockClassName('TestInitializerTwo')->getMock();
     }
 
     public function provideInitialize()
@@ -38,7 +36,7 @@ class InitializerManagerTest extends \PHPUnit_Framework_TestCase
                     array('initializer2', 0),
                     array('initializer3', 0),
                 ),
-                array('initializer1', 'initializer2', 'initializer3')
+                array('initializer1', 'initializer2', 'initializer3'),
             ),
             array(
                 array(
@@ -46,7 +44,7 @@ class InitializerManagerTest extends \PHPUnit_Framework_TestCase
                     array('initializer2', null),
                     array('initializer3', null),
                 ),
-                array('initializer1', 'initializer2', 'initializer3')
+                array('initializer1', 'initializer2', 'initializer3'),
             ),
             array(
                 array(
@@ -54,7 +52,7 @@ class InitializerManagerTest extends \PHPUnit_Framework_TestCase
                     array('initializer1', 0),
                     array('initializer2', 0),
                 ),
-                array('initializer3', 'initializer1', 'initializer2')
+                array('initializer3', 'initializer1', 'initializer2'),
             ),
             array(
                 array(
@@ -62,7 +60,7 @@ class InitializerManagerTest extends \PHPUnit_Framework_TestCase
                     array('initializer1', -100),
                     array('initializer2', 0),
                 ),
-                array('initializer3', 'initializer2', 'initializer1')
+                array('initializer3', 'initializer2', 'initializer1'),
             ),
         );
     }
@@ -73,7 +71,7 @@ class InitializerManagerTest extends \PHPUnit_Framework_TestCase
     public function testInitialize($initializers, $expectedOrder)
     {
         foreach ($initializers as $initializerConfig) {
-            list ($initializerVar, $priority) = $initializerConfig;
+            list($initializerVar, $priority) = $initializerConfig;
 
             $initializer = $this->$initializerVar;
 

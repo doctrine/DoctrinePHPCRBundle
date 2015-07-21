@@ -28,16 +28,13 @@ use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
-
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Definition\Processor;
-
 use Symfony\Bridge\Doctrine\DependencyInjection\AbstractDoctrineExtension;
-
 use Doctrine\ODM\PHPCR\Version;
 
 /**
- * PHPCR Extension
+ * PHPCR Extension.
  *
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  * @author Benjamin Eberlei <kontakt@beberlei.de>
@@ -85,7 +82,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
         if (!empty($config['odm'])) {
             if (empty($this->sessions)) {
-                throw new InvalidArgumentException("You did not configure a session for the document managers");
+                throw new InvalidArgumentException('You did not configure a session for the document managers');
             }
             $this->loadOdm($config['odm'], $container);
 
@@ -135,7 +132,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                             if (method_exists($factoryService, 'setFactory')) {
                                 $factoryService->setFactory(array(
                                     new Reference($factoryServiceId),
-                                    'getRepository'
+                                    'getRepository',
                                 ));
                             } else {
                                 $factoryService->setFactoryService($factoryServiceId);
@@ -187,8 +184,8 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                     ->getDefinition('doctrine_phpcr.jackalope_doctrine_dbal.schema_listener')
                     ->addTag('doctrine.event_listener', array(
                         'connection' => $connectionName,
-                        'event'      => 'postGenerateSchema',
-                        'lazy'       => true
+                        'event' => 'postGenerateSchema',
+                        'lazy' => true,
                     ))
                 ;
                 if (isset($session['backend']['caches'])) {
@@ -217,7 +214,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         }
 
         if (isset($session['backend']['factory'])) {
-            /**
+            /*
              * If it is a class, pass the name as is, else assume it is
              * a service id and get a reference to it
              */
@@ -282,13 +279,12 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         if (method_exists($definition, 'setFactory')) {
             $definition->setFactory(array(
                 new Reference($factoryServiceId),
-                'login'
+                'login',
             ));
         } else {
             $definition->setFactoryService($factoryServiceId);
             $definition->setFactoryMethod('login');
         }
-
 
         $definition
             ->replaceArgument(0, new Reference(sprintf('doctrine_phpcr.%s_credentials', $session['name'])))
@@ -343,7 +339,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
         $options = array('auto_generate_proxy_classes', 'proxy_dir', 'proxy_namespace');
         foreach ($options as $key) {
-            $container->setParameter('doctrine_phpcr.odm.' . $key, $config[$key]);
+            $container->setParameter('doctrine_phpcr.odm.'.$key, $config[$key]);
         }
 
         if (!$config['namespaces']['translation']['alias']) {
@@ -380,7 +376,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             $container->setParameter('doctrine_phpcr.odm.default_locale', key($config['locales']));
             $container->setParameter('doctrine_phpcr.odm.locale_fallback', $config['locale_fallback'] == 'hardcoded' ? null : $config['locale_fallback']);
 
-            $localeChooser = $localeChooser ? : 'doctrine_phpcr.odm.locale_chooser';
+            $localeChooser = $localeChooser ?: 'doctrine_phpcr.odm.locale_chooser';
         }
 
         // only set the locale chooser if it has been explicitly configured or implicitly
@@ -401,13 +397,13 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
         $methods = array(
             'setMetadataCacheImpl' => array(new Reference(sprintf('doctrine_phpcr.odm.%s_metadata_cache', $documentManager['name']))),
-            'setMetadataDriverImpl' => array(new Reference('doctrine_phpcr.odm.' . $documentManager['name'] . '_metadata_driver'), false),
+            'setMetadataDriverImpl' => array(new Reference('doctrine_phpcr.odm.'.$documentManager['name'].'_metadata_driver'), false),
             'setProxyDir' => array('%doctrine_phpcr.odm.proxy_dir%'),
             'setProxyNamespace' => array('%doctrine_phpcr.odm.proxy_namespace%'),
             'setAutoGenerateProxyClasses' => array('%doctrine_phpcr.odm.auto_generate_proxy_classes%'),
         );
 
-        if (version_compare(Version::VERSION, "1.1.0-DEV") >= 0) {
+        if (version_compare(Version::VERSION, '1.1.0-DEV') >= 0) {
             $methods['setClassMetadataFactoryName'] = array($documentManager['class_metadata_factory_name']);
             $methods['setDefaultRepositoryClassName'] = array($documentManager['default_repository_class']);
 
@@ -432,7 +428,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             ->setArguments(array(
                 new Reference(sprintf('doctrine_phpcr.%s_session', $documentManager['session'])),
                 new Reference(sprintf('doctrine_phpcr.odm.%s_configuration', $documentManager['name'])),
-                new Reference(sprintf('doctrine_phpcr.%s_session.event_manager', $documentManager['session']))
+                new Reference(sprintf('doctrine_phpcr.%s_session.event_manager', $documentManager['session'])),
             ));
 
         foreach (array(
@@ -488,7 +484,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
      * Loads a configured document managers cache drivers.
      *
      * @param array            $documentManager A configured ORM document manager.
-     * @param ContainerBuilder $container     A ContainerBuilder instance
+     * @param ContainerBuilder $container       A ContainerBuilder instance
      */
     protected function loadOdmCacheDrivers(array $documentManager, ContainerBuilder $container)
     {

@@ -12,7 +12,7 @@ use PHPCR\SessionInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
- * Form type for PHPCR Node references
+ * Form type for PHPCR Node references.
  *
  * Can use either a UUID or a PATH transformer as specified by
  * the "transfomer_type" option.

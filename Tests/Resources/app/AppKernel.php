@@ -8,7 +8,7 @@ class AppKernel extends TestKernel
     public function configure()
     {
         $this->requireBundleSets(array(
-            'default', 'phpcr_odm'
+            'default', 'phpcr_odm',
         ));
     }
 
@@ -16,5 +16,4 @@ class AppKernel extends TestKernel
     {
         $loader->load(__DIR__.'/config/config.php');
     }
-
 }

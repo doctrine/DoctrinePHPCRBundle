@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\DependencyInjection;
 
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\DoctrinePHPCRExtension;
@@ -207,7 +206,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                 ),
                 'namespaces' => array(
                     'translation' => array(
-                        'alias' => 'phpcr_locale'
+                        'alias' => 'phpcr_locale',
                     ),
                 ),
                 'locale_chooser' => null,
@@ -264,7 +263,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
             array(
                 $bc,
                 array('config/bc.php'),
-            )
+            ),
         );
     }
 }

@@ -26,15 +26,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 interface MigratorInterface
 {
     /**
-     * @param \PHPCR\SessionInterface $session
+     * @param \PHPCR\SessionInterface                           $session
      * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @return void
      */
     public function init(SessionInterface $session, OutputInterface $output);
 
     /**
      * @param string $identifier
-     * @param int $depth
+     * @param int    $depth
+     *
      * @return int exit code
      */
     public function migrate($identifier = '/', $depth = -1);

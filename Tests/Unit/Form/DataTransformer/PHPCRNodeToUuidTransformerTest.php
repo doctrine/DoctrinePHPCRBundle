@@ -43,5 +43,4 @@ class PHPCRNodeToUuidTransformerTest extends \PHPUnit_Framework_Testcase
         $res = $this->transformer->reverseTransform('');
         $this->assertNull($res);
     }
-
 }

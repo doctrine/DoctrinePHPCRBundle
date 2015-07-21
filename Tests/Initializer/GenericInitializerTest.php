@@ -30,7 +30,7 @@ class GenericInitializerTest extends \PHPUnit_Framework_TestCase
             array(
                 'test_init', array(
                     'foo/bar/1', 'foobar/2',
-                ), 'this is CND'
+                ), 'this is CND',
             ),
         );
     }

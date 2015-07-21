@@ -17,13 +17,12 @@ use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\ReferenceManyCollectionToAr
  */
 class PHPCRODMReferenceCollectionType extends AbstractType
 {
-
     protected $dm;
 
     /**
      * @param DocumentManager $dm
      */
-    function __construct(DocumentManager $dm)
+    public function __construct(DocumentManager $dm)
     {
         $this->dm = $dm;
     }

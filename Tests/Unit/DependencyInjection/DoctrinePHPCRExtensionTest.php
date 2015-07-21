@@ -5,7 +5,6 @@ namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\DependencyInjection;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\DoctrinePHPCRExtension;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -14,7 +13,7 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
     protected function getContainerExtensions()
     {
         return array(
-            new DoctrinePHPCRExtension()
+            new DoctrinePHPCRExtension(),
         );
     }
 
@@ -74,7 +73,6 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
             'manager_registry_service_id' => 'my_phpcr_registry',
         ));
 
-        /** @var $repositoryFactory DefinitionDecorator */
         $managerRegistry = $this->container->getAlias('doctrine_phpcr');
         $this->assertInstanceOf('\Symfony\Component\DependencyInjection\Alias', $managerRegistry);
         $this->assertEquals('my_phpcr_registry', $managerRegistry);
@@ -102,7 +100,7 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
                         'username' => 'admin',
                         'password' => 'admin',
                     ),
-                )
+                ),
             ),
         ));
 

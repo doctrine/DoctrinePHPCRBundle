@@ -33,7 +33,7 @@ class InitializerPassTest extends AbstractCompilerPassTestCase
             'addInitializer',
             array(
                 new Reference('test.initializer.1'),
-                0
+                0,
             )
         );
     }
@@ -50,7 +50,7 @@ class InitializerPassTest extends AbstractCompilerPassTestCase
             'addInitializer',
             array(
                 new Reference('test.initializer.1'),
-                40
+                40,
             )
         );
     }

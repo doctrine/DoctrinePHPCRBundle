@@ -1,4 +1,5 @@
 <?php
+
 $container->loadFromExtension('doctrine_phpcr', array(
     'session' => array(
         'sessions' => array(

@@ -17,7 +17,7 @@ class PHPCRNodeToPathTransformer implements DataTransformerInterface
     }
 
     /**
-     * Transform a node into a path
+     * Transform a node into a path.
      *
      * @param \PHPCR\NodeInterface|null $node
      *
@@ -28,17 +28,18 @@ class PHPCRNodeToPathTransformer implements DataTransformerInterface
     public function transform($node)
     {
         if (null === $node) {
-            return null;
+            return;
         }
 
         if (!$node instanceof NodeInterface) {
             throw new UnexpectedTypeException($node, 'PHPCR\NodeInterface');
         }
+
         return $node->getPath();
     }
 
     /**
-     * Transform a path to its corresponding PHPCR node
+     * Transform a path to its corresponding PHPCR node.
      *
      * @param string $path phpcr path
      *
@@ -49,7 +50,7 @@ class PHPCRNodeToPathTransformer implements DataTransformerInterface
     public function reverseTransform($path)
     {
         if (!$path) {
-            return null;
+            return;
         }
 
         return $this->session->getNode($path);

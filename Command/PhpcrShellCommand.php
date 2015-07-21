@@ -78,7 +78,7 @@ EOT
     {
         if (!class_exists('PHPCR\Shell\Console\Application\SessionApplication')) {
             throw new \InvalidArgumentException(sprintf(
-                'PHPCR-Shell not installed as a dependency. Add the "phpcr/phpcr-shell" to your ' .
+                'PHPCR-Shell not installed as a dependency. Add the "phpcr/phpcr-shell" to your '.
                 'composer.json file to use this command'
             ));
         }

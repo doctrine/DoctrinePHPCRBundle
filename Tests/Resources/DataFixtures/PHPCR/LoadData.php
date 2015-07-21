@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Resources\DataFixtures\PHPCR;
 
 use Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\ReferrerDocument;

@@ -29,7 +29,9 @@ class ManagerRegistry extends BaseManagerRegistry
      * Resolves a registered namespace alias to the full namespace.
      *
      * @param string $alias
+     *
      * @return string
+     *
      * @throws PHPCRException
      */
     public function getAliasNamespace($alias)

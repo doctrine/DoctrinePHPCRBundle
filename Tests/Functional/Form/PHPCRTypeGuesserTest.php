@@ -3,12 +3,11 @@
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Functional\Form;
 
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 use Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument;
 use Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\ReferrerDocument;
 
-class PhpcrOdmTypeGuesserTest extends BaseTestCase
+class PHPCRTypeGuesserTest extends BaseTestCase
 {
     /**
      * @var DocumentManager
@@ -128,7 +127,6 @@ class PhpcrOdmTypeGuesserTest extends BaseTestCase
             ->add('mlong')
             ->add('minteger')
         ;
-
 
         $this->assertFormType(
             $formBuilder->get('mbool'),
