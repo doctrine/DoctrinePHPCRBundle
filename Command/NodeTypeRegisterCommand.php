@@ -60,7 +60,8 @@ EOT;
     {
         DoctrineCommandHelper::setApplicationPHPCRSession(
             $this->getApplication(),
-            $input->getOption('session')
+            $input->getOption('session'),
+            true
         );
 
         $definitions = $input->getArgument('cnd-file');

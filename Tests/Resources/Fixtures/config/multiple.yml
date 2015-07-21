@@ -16,7 +16,8 @@ doctrine_phpcr:
                 workspace: website
                 username: "root"
                 password: "root"
-
+                admin_username: admin
+                admin_password: admin
     odm:
         auto_generate_proxy_classes: true
         document_managers:

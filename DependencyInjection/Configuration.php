@@ -69,6 +69,8 @@ class Configuration implements ConfigurationInterface
                             'workspace',
                             'username',
                             'password',
+                            'admin_username',
+                            'admin_password',
                             'backend',
                             'options',
                         ) as $key) {
@@ -106,6 +108,8 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('workspace')->isRequired()->cannotBeEmpty()->end()
                     ->scalarNode('username')->defaultNull()->end()
                     ->scalarNode('password')->defaultNull()->end()
+                    ->scalarNode('admin_username')->defaultNull()->end()
+                    ->scalarNode('admin_password')->defaultNull()->end()
                     ->arrayNode('backend')
                         ->addDefaultsIfNotSet()
                         ->beforeNormalization()

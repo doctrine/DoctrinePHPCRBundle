@@ -53,7 +53,8 @@ class WorkspaceDeleteCommand extends BaseWorkspaceDeleteCommand
     {
         DoctrineCommandHelper::setApplicationPHPCRSession(
             $this->getApplication(),
-            $input->getOption('session')
+            $input->getOption('session'),
+            true
         );
 
         return parent::execute($input, $output);

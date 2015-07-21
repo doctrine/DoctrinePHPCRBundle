@@ -20,6 +20,7 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -156,14 +157,18 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             return;
         }
 
+        if (empty($sessions[$config['default_session']])) {
+            throw new InvalidConfigurationException(sprintf("Default session is configured to '%s' which does not match any configured session name: %s", $config['default_session'], implode(', ', array_keys($sessions))));
+        }
         $this->defaultSession = $config['default_session'];
         $this->sessions = $sessions;
         $container->setParameter('doctrine_phpcr.default_session', $config['default_session']);
         $container->setAlias('doctrine_phpcr.session', $sessions[$config['default_session']]);
     }
 
-    private function loadJackalopeSession(array $session, ContainerBuilder $container, $type)
+    private function loadJackalopeSession(array $session, ContainerBuilder $container, $type, $admin = false)
     {
+        $serviceNamePrefix = $admin ? '.admin' : '';
         $backendParameters = array();
         switch ($type) {
             case 'doctrinedbal':
@@ -176,7 +181,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                     : 'database_connection'
                 ;
                 $connectionService = new Alias($connectionService, true);
-                $connectionAliasName = sprintf('doctrine_phpcr.jackalope_doctrine_dbal.%s_connection', $session['name']);
+                $connectionAliasName = sprintf('doctrine_phpcr.jackalope_doctrine_dbal%s.%s_connection', $serviceNamePrefix, $session['name']);
                 $container->setAlias($connectionAliasName, $connectionService);
 
                 $backendParameters['jackalope.doctrine_dbal_connection'] = new Reference($connectionAliasName);
@@ -262,20 +267,25 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             $backendParameters['jackalope.logger'] = $logger;
         }
 
+        $repositoryFactory = new DefinitionDecorator('doctrine_phpcr.jackalope.repository.factory.'.$type);
         $factory = $container
-            ->setDefinition(sprintf('doctrine_phpcr.jackalope.repository.%s', $session['name']), new DefinitionDecorator('doctrine_phpcr.jackalope.repository.factory.'.$type))
+            ->setDefinition(sprintf('doctrine_phpcr.jackalope.repository%s.%s', $serviceNamePrefix, $session['name']), $repositoryFactory)
         ;
         $factory->replaceArgument(0, $backendParameters);
 
+        $username = $admin && $session['admin_username'] ? $session['admin_username'] : $session['username'];
+        $password = $admin && $session['admin_password'] ? $session['admin_password'] : $session['password'];
+        $credentials = new DefinitionDecorator('doctrine_phpcr.credentials');
+        $credentialsServiceId = sprintf('doctrine_phpcr%s.%s_credentials', $serviceNamePrefix, $session['name']);
         $container
-            ->setDefinition(sprintf('doctrine_phpcr.%s_credentials', $session['name']), new DefinitionDecorator('doctrine_phpcr.credentials'))
-            ->replaceArgument(0, $session['username'])
-            ->replaceArgument(1, $session['password'])
+            ->setDefinition($credentialsServiceId, $credentials)
+            ->replaceArgument(0, $username)
+            ->replaceArgument(1, $password)
         ;
 
         // TODO: move the following code block back into the XML file when we drop support for symfony <2.6
         $definition = new DefinitionDecorator('doctrine_phpcr.jackalope.session');
-        $factoryServiceId = sprintf('doctrine_phpcr.jackalope.repository.%s', $session['name']);
+        $factoryServiceId = sprintf('doctrine_phpcr%s.jackalope.repository.%s', $serviceNamePrefix, $session['name']);
         if (method_exists($definition, 'setFactory')) {
             $definition->setFactory(array(
                 new Reference($factoryServiceId),
@@ -286,17 +296,20 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             $definition->setFactoryMethod('login');
         }
 
+        $workspace = $admin ? null : $session['workspace'];
         $definition
-            ->replaceArgument(0, new Reference(sprintf('doctrine_phpcr.%s_credentials', $session['name'])))
-            ->replaceArgument(1, $session['workspace'])
+            ->replaceArgument(0, new Reference($credentialsServiceId))
+            ->replaceArgument(1, $workspace)
         ;
-        $container->setDefinition($session['service_name'], $definition);
+
+        $serviceName = sprintf('doctrine_phpcr%s.%s_session', $serviceNamePrefix, $session['name']);
+        $container->setDefinition($serviceName, $definition);
 
         foreach ($session['options'] as $key => $value) {
             $definition->addMethodCall('setSessionOption', array($key, $value));
         }
 
-        $eventManagerServiceId = sprintf('doctrine_phpcr.%s_session.event_manager', $session['name']);
+        $eventManagerServiceId = sprintf('doctrine_phpcr%s.%s_session.event_manager', $serviceNamePrefix, $session['name']);
         $container->setDefinition($eventManagerServiceId, new DefinitionDecorator('doctrine_phpcr.session.event_manager'));
     }
 
