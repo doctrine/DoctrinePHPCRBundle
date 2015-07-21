@@ -22,6 +22,8 @@ namespace Doctrine\Bundle\PHPCRBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\DialogHelper;
+use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -111,9 +113,20 @@ EOT
         $noInitialize = $input->getOption('no-initialize');
 
         if ($input->isInteractive() && !$input->getOption('append')) {
-            /** @var $dialog DialogHelper */
-            $dialog = $this->getHelperSet()->get('dialog');
-            if (!$dialog->askConfirmation($output, '<question>Careful, database will be purged. Do you want to continue Y/N ?</question>', false)) {
+            $question = '<question>Careful, database will be purged. Do you want to continue Y/N ?</question>';
+            $default = false;
+            if ($this->getHelperSet()->has('question')) {
+                /** @var $questionHelper QuestionHelper */
+                $questionHelper = $this->getHelperSet()->get('question');
+                $question = new ConfirmationQuestion($question, $default);
+                $result = $questionHelper->ask($input, $output, $question, $default);
+            } else {
+                /** @var $dialog DialogHelper */
+                $dialog = $this->getHelperSet()->get('dialog');
+                $result = $dialog->askConfirmation($output, $question, $default);
+            }
+
+            if (!$result) {
                 return 0;
             }
         }
