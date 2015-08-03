@@ -33,7 +33,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class NodeMoveCommand extends BaseNodeMoveCommand
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -46,7 +46,7 @@ class NodeMoveCommand extends BaseNodeMoveCommand
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

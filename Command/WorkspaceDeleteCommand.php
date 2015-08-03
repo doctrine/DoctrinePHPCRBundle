@@ -34,7 +34,7 @@ use PHPCR\Util\Console\Command\WorkspaceDeleteCommand as BaseWorkspaceDeleteComm
 class WorkspaceDeleteCommand extends BaseWorkspaceDeleteCommand
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -47,7 +47,7 @@ class WorkspaceDeleteCommand extends BaseWorkspaceDeleteCommand
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

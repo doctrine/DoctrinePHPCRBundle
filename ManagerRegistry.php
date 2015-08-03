@@ -47,9 +47,10 @@ class ManagerRegistry extends BaseManagerRegistry
     }
 
     /**
-     * Get the admin connection associated to the connection
+     * Get the admin connection associated to the connection.
      *
      * @param null $name
+     *
      * @return object
      */
     public function getAdminConnection($name = null)
@@ -67,5 +68,4 @@ class ManagerRegistry extends BaseManagerRegistry
 
         return $this->getService($serviceName);
     }
-
 }

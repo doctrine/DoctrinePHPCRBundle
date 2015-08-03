@@ -32,7 +32,7 @@ use PHPCR\Util\Console\Command\WorkspaceListCommand as BaseWorkspaceListCommand;
 class WorkspaceListCommand extends BaseWorkspaceListCommand
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -45,7 +45,7 @@ class WorkspaceListCommand extends BaseWorkspaceListCommand
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

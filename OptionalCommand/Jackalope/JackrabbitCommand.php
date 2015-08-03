@@ -49,7 +49,7 @@ class JackrabbitCommand extends BaseJackrabbitCommand implements ContainerAwareI
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
     {
@@ -57,7 +57,7 @@ class JackrabbitCommand extends BaseJackrabbitCommand implements ContainerAwareI
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -78,7 +78,7 @@ EOF
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

@@ -60,7 +60,7 @@ abstract class DoctrineCommandHelper
     public static function setApplicationPHPCRSession(Application $application, $sessionName, $admin = false)
     {
         $registry = $application->getKernel()->getContainer()->get('doctrine_phpcr');
-        $session = $admin ? $registry->getAdminConnection($sessionName): $registry->getConnection($sessionName);
+        $session = $admin ? $registry->getAdminConnection($sessionName) : $registry->getConnection($sessionName);
 
         $helperSet = $application->getHelperSet();
         if (class_exists('Doctrine\ODM\PHPCR\Version')) {

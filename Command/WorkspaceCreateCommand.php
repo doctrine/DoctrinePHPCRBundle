@@ -32,7 +32,7 @@ use PHPCR\Util\Console\Command\WorkspaceCreateCommand as BaseWorkspaceCreateComm
 class WorkspaceCreateCommand extends BaseWorkspaceCreateCommand
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -45,7 +45,7 @@ class WorkspaceCreateCommand extends BaseWorkspaceCreateCommand
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

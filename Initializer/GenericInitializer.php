@@ -71,7 +71,7 @@ class GenericInitializer implements InitializerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function init(ManagerRegistry $registry)
     {

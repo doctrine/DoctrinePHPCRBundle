@@ -32,7 +32,7 @@ use Doctrine\Bundle\PHPCRBundle\Command\DoctrineCommandHelper;
 class DocumentMigrateClassCommand extends BaseDocumentMigrateClassCommand
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -43,7 +43,7 @@ class DocumentMigrateClassCommand extends BaseDocumentMigrateClassCommand
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

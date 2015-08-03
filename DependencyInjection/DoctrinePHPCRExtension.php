@@ -50,7 +50,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
     private $disableProxyWarmer = false;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -458,7 +458,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getMappingDriverBundleConfigDefaults(array $bundleConfig, \ReflectionClass $bundle, ContainerBuilder $container)
     {
@@ -505,7 +505,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getObjectManagerElementName($name)
     {
@@ -513,7 +513,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getMappingObjectDefaultName()
     {
@@ -521,7 +521,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getMappingResourceConfigDirectory()
     {
@@ -529,7 +529,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getMappingResourceExtension()
     {
@@ -537,7 +537,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getNamespace()
     {

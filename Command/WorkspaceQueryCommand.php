@@ -33,7 +33,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class WorkspaceQueryCommand extends BaseWorkspaceQueryCommand
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -46,7 +46,7 @@ class WorkspaceQueryCommand extends BaseWorkspaceQueryCommand
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

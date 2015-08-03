@@ -55,7 +55,7 @@ class DoctrinePHPCRBundle extends Bundle
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function registerCommands(Application $application)
     {

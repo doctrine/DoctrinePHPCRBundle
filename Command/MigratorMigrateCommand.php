@@ -29,7 +29,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 class MigratorMigrateCommand extends ContainerAwareCommand
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configure()
     {

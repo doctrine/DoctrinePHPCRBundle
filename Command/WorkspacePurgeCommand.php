@@ -34,7 +34,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class WorkspacePurgeCommand extends BaseWorkspacePurgeCommand
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -47,7 +47,7 @@ class WorkspacePurgeCommand extends BaseWorkspacePurgeCommand
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
