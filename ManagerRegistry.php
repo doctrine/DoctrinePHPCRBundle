@@ -45,4 +45,27 @@ class ManagerRegistry extends BaseManagerRegistry
 
         throw PHPCRException::unknownDocumentNamespace($alias);
     }
+
+    /**
+     * Get the admin connection associated to the connection.
+     *
+     * @param null $name
+     *
+     * @return object
+     */
+    public function getAdminConnection($name = null)
+    {
+        if (null === $name) {
+            $name = $this->getDefaultConnectionName();
+        }
+
+        $serviceName = sprintf('doctrine_phpcr.admin.%s_session', $name);
+
+        $connections = $this->getConnectionNames();
+        if (!isset($connections[$name])) {
+            throw new \InvalidArgumentException(sprintf('Doctrine %s Connection named "%s" does not exist.', $this->getName(), $name));
+        }
+
+        return $this->getService($serviceName);
+    }
 }

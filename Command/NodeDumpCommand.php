@@ -49,7 +49,7 @@ class NodeDumpCommand extends BaseDumpCommand implements ContainerAwareInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
     {
@@ -57,7 +57,7 @@ class NodeDumpCommand extends BaseDumpCommand implements ContainerAwareInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -70,7 +70,7 @@ class NodeDumpCommand extends BaseDumpCommand implements ContainerAwareInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

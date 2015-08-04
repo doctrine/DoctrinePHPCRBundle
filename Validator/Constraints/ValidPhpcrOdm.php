@@ -45,7 +45,7 @@ class ValidPhpcrOdm extends Constraint
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getTargets()
     {

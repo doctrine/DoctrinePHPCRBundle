@@ -33,7 +33,7 @@ class NodeTypeRegisterCommand extends BaseRegisterNodeTypesCommand
     const BUNDLE_NT_PATH = 'Resources/config/phpcr-node-types';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -54,13 +54,14 @@ EOT;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         DoctrineCommandHelper::setApplicationPHPCRSession(
             $this->getApplication(),
-            $input->getOption('session')
+            $input->getOption('session'),
+            true
         );
 
         $definitions = $input->getArgument('cnd-file');

@@ -70,6 +70,8 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                             'options' => array(
                                 'jackalope.fetch_depth' => 1,
                             ),
+                            'admin_username' => null,
+                            'admin_password' => null,
                         ),
                     ),
             ),
@@ -142,6 +144,8 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                         'password' => 'admin',
                         'options' => array(
                         ),
+                        'admin_username' => null,
+                        'admin_password' => null,
                     ),
                     'website' => array(
                         'backend' => array(
@@ -159,6 +163,8 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                         'password' => 'root',
                         'options' => array(
                         ),
+                        'admin_username' => 'admin',
+                        'admin_password' => 'admin',
                     ),
                 ),
             ),
@@ -236,6 +242,8 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                         'username' => 'admin',
                         'password' => 'admin',
                         'options' => array(),
+                        'admin_username' => null,
+                        'admin_password' => null,
                     ),
                 ),
             ),

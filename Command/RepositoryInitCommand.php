@@ -37,7 +37,7 @@ class RepositoryInitCommand extends ContainerAwareCommand
     protected $container;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
     {

@@ -33,7 +33,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class NodeTouchCommand extends BaseNodeTouchCommand
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -46,7 +46,7 @@ class NodeTouchCommand extends BaseNodeTouchCommand
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

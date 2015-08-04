@@ -34,7 +34,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class WorkspaceImportCommand extends BaseWorkspaceImportCommand
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -47,7 +47,7 @@ class WorkspaceImportCommand extends BaseWorkspaceImportCommand
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

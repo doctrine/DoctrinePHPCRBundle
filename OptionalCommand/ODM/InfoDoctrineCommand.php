@@ -34,7 +34,7 @@ use Doctrine\Bundle\PHPCRBundle\Command\DoctrineCommandHelper;
 class InfoDoctrineCommand extends BaseInfoDoctrineCommand
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -59,7 +59,7 @@ EOT
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

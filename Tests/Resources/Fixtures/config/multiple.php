@@ -21,6 +21,8 @@ $container->loadFromExtension('doctrine_phpcr', array(
                 'workspace' => 'website',
                 'username' => 'root',
                 'password' => 'root',
+                'admin_username' => 'admin',
+                'admin_password' => 'admin',
             ),
         ),
     ),

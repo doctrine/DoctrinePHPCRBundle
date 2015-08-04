@@ -56,7 +56,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function guessType($class, $property)
     {
@@ -194,7 +194,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function guessMaxLength($class, $property)
     {
@@ -202,7 +202,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function guessMinLength($class, $property)
     {
@@ -210,7 +210,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function guessRequired($class, $property)
     {
@@ -253,7 +253,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function guessPattern($class, $property)
     {

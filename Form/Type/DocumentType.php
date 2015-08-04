@@ -23,7 +23,7 @@ use Symfony\Bridge\Doctrine\Form\Type\DoctrineType;
 class DocumentType extends DoctrineType
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getLoader(ObjectManager $manager, $queryBuilder, $class)
     {

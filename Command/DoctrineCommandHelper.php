@@ -55,12 +55,12 @@ abstract class DoctrineCommandHelper
      *
      * @param Application $application
      * @param string      $sessionName
+     * @param Boolean     $admin
      */
-    public static function setApplicationPHPCRSession(Application $application, $sessionName)
+    public static function setApplicationPHPCRSession(Application $application, $sessionName, $admin = false)
     {
-        /** @var $registry ManagerRegistry */
         $registry = $application->getKernel()->getContainer()->get('doctrine_phpcr');
-        $session = $registry->getConnection($sessionName);
+        $session = $admin ? $registry->getAdminConnection($sessionName) : $registry->getConnection($sessionName);
 
         $helperSet = $application->getHelperSet();
         if (class_exists('Doctrine\ODM\PHPCR\Version')) {
