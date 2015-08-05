@@ -193,7 +193,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                         'lazy' => true,
                     ))
                 ;
-                if (isset($session['backend']['caches'])) {
+                if (false === $admin && isset($session['backend']['caches'])) {
                     foreach ($session['backend']['caches'] as $key => $cache) {
                         $backendParameters['jackalope.data_caches'][$key] = new Reference($cache);
                     }
