@@ -77,7 +77,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
 
                 case 'mixedreferrers':
                     $options = array(
-                        'read_only' => true,
+                        'attr' => array('readonly' => 'readonly'),
                         'type' => 'phpcr_odm_path',
                     );
 
@@ -104,14 +104,14 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
 
                 case 'child':
                     $options = array(
-                        'read_only' => true,
+                        'attr' => array('readonly' => 'readonly'),
                     );
 
                     return new TypeGuess('phpcr_odm_path', $options, Guess::LOW_CONFIDENCE);
 
                 case 'children':
                     $options = array(
-                        'read_only' => true,
+                        'attr' => array('readonly' => 'readonly'),
                         'type' => 'phpcr_odm_path',
                     );
 
@@ -160,7 +160,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
                 if ($metadata->isIdentifier($property)
                     || $metadata->isUuid($property)
                 ) {
-                    $options['read_only'] = true;
+                    $options['attr'] = array('readonly' => 'readonly');
                 }
                 $type = 'text';
                 break;
@@ -175,7 +175,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
             case 'versionname':
             case 'versioncreated':
             default:
-                $options['read_only'] = true;
+                $options['attr'] = array('readonly' => 'readonly');
                 $options['required'] = false;
                 $type = 'text';
                 break;

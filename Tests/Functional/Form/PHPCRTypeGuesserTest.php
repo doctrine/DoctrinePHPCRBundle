@@ -62,7 +62,6 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             $formBuilder->get('bool'),
             '\Symfony\Component\Form\Extension\Core\Type\CheckboxType',
             array(
-                'read_only' => false,
                 'required' => false,
             )
         );
@@ -71,7 +70,6 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             $formBuilder->get('date'),
             '\Symfony\Component\Form\Extension\Core\Type\DateTimeType',
             array(
-                'read_only' => false,
                 'required' => true,
             )
         );
@@ -80,7 +78,6 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             $formBuilder->get('text'),
             '\Symfony\Component\Form\Extension\Core\Type\TextType',
             array(
-                'read_only' => false,
                 'required' => true,
             )
         );
@@ -89,7 +86,6 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             $formBuilder->get('number'),
             '\Symfony\Component\Form\Extension\Core\Type\NumberType',
             array(
-                'read_only' => false,
                 'required' => true,
             )
         );
@@ -98,7 +94,6 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             $formBuilder->get('integer'),
             '\Symfony\Component\Form\Extension\Core\Type\IntegerType',
             array(
-                'read_only' => false,
                 'required' => true,
             )
         );
@@ -107,7 +102,6 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             $formBuilder->get('long'),
             '\Symfony\Component\Form\Extension\Core\Type\IntegerType',
             array(
-                'read_only' => false,
                 'required' => true,
             )
         );
@@ -133,7 +127,6 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
             array(
                 'type' => 'checkbox',
-                'read_only' => false,
                 'required' => false,
             )
         );
@@ -143,7 +136,6 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
             array(
                 'type' => 'datetime',
-                'read_only' => false,
                 'required' => false,
             )
         );
@@ -153,7 +145,6 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
             array(
                 'type' => 'text',
-                'read_only' => false,
                 'required' => false,
             )
         );
@@ -163,7 +154,6 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
             array(
                 'type' => 'number',
-                'read_only' => false,
                 'required' => false,
             )
         );
@@ -173,7 +163,6 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
             array(
                 'type' => 'integer',
-                'read_only' => false,
                 'required' => false,
             )
         );
@@ -183,7 +172,6 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
             array(
                 'type' => 'integer',
-                'read_only' => false,
                 'required' => false,
             )
         );
@@ -208,7 +196,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             $formBuilder->get('id'),
             '\Symfony\Component\Form\Extension\Core\Type\TextType',
             array(
-                'read_only' => true,
+                'attr' => array('readonly' => 'readonly'),
                 'required' => false,
             )
         );
@@ -217,7 +205,6 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             $formBuilder->get('parent'),
             'Doctrine\Bundle\PHPCRBundle\Form\Type\PathType',
             array(
-                'read_only' => false,
                 'required' => true,
             )
         );
@@ -226,7 +213,6 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             $formBuilder->get('nodename'),
             '\Symfony\Component\Form\Extension\Core\Type\TextType',
             array(
-                'read_only' => false,
                 'required' => true,
             )
         );
@@ -235,7 +221,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             $formBuilder->get('uuid'),
             '\Symfony\Component\Form\Extension\Core\Type\TextType',
             array(
-                'read_only' => true,
+                'attr' => array('readonly' => 'readonly'),
                 'required' => false,
             )
         );
@@ -244,7 +230,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             $formBuilder->get('child'),
             'Doctrine\Bundle\PHPCRBundle\Form\Type\PathType',
             array(
-                'read_only' => true,
+                'attr' => array('readonly' => 'readonly'),
                 'required' => false,
             )
         );
@@ -253,7 +239,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             $formBuilder->get('children'),
             '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
             array(
-                'read_only' => true,
+                'attr' => array('readonly' => 'readonly'),
                 'required' => false,
                 'type' => 'phpcr_odm_path',
             )
@@ -337,7 +323,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             $formBuilder->get('mixedReferrers'),
             '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
             array(
-                'read_only' => true,
+                'attr' => array('readonly' => 'readonly'),
                 'required' => false,
                 'type' => 'phpcr_odm_path',
             )
@@ -373,7 +359,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
         $type = $element->getType()->getInnerType();
         $this->assertInstanceOf($typeClass, $type);
         foreach ($options as $option => $expected) {
-            $this->assertEquals($expected, $element->getOption($option), "Option '$option' does not have the expected value '$expected'");
+            $this->assertEquals($expected, $element->getOption($option), "Option '$option' does not have the expected value '".serialize($expected)."'");
         }
     }
 }
