@@ -131,15 +131,15 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                         $jackalopeTransports = array('prismic', 'doctrinedbal', 'jackrabbit');
                         foreach ($jackalopeTransports as $transport) {
                             $factoryServiceId = sprintf('doctrine_phpcr.jackalope.repository.factory.service.%s', $transport);
-                            $factoryService = $container->getDefinition(sprintf('doctrine_phpcr.jackalope.repository.factory.%s', $transport));
-                            if (method_exists($factoryService, 'setFactory')) {
-                                $factoryService->setFactory(array(
+                            $factoryDefinition = $container->getDefinition(sprintf('doctrine_phpcr.jackalope.repository.factory.%s', $transport));
+                            if (method_exists($factoryDefinition, 'setFactory')) {
+                                $factoryDefinition->setFactory(array(
                                     new Reference($factoryServiceId),
                                     'getRepository',
                                 ));
                             } else {
-                                $factoryService->setFactoryService($factoryServiceId);
-                                $factoryService->setFactoryMethod('getRepository');
+                                $factoryDefinition->setFactoryService($factoryServiceId);
+                                $factoryDefinition->setFactoryMethod('getRepository');
                             }
                         }
 
