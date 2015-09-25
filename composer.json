@@ -29,7 +29,8 @@
         "symfony/form": "~2.3 || ~3.0",
         "doctrine/phpcr-odm": "~1.3@dev",
         "symfony-cmf/testing": "~1.2,>=1.2.7",
-        "matthiasnoback/symfony-dependency-injection-test": "~0.7"
+        "matthiasnoback/symfony-dependency-injection-test": "~0.7",
+        "sllh/php-cs-fixer-styleci-bridge": "~1.1@stable"
     },
     "suggest": {
         "phpcr/phpcr-shell": "If you want native access to PHPCR-Shell to manage the PHPCR repository",
