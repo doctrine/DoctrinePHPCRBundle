@@ -55,7 +55,7 @@ abstract class DoctrineCommandHelper
      *
      * @param Application $application
      * @param string      $sessionName
-     * @param Boolean     $admin
+     * @param bool        $admin
      */
     public static function setApplicationPHPCRSession(Application $application, $sessionName, $admin = false)
     {
