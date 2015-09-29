@@ -144,6 +144,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                         $loaded['jackalope'] = true;
                     }
                     $this->loadJackalopeSession($session, $container, $type);
+                    $this->loadJackalopeSession($session, $container, $type, true);
                     break;
                 default:
                     throw new InvalidArgumentException(sprintf('You set an unsupported transport type "%s" for session "%s"', $type, $name));
