@@ -57,7 +57,9 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
         $this->assertEquals('doctrine_phpcr.jackalope.repository.factory.jackrabbit', $repositoryFactory->getParent());
 
         $this->assertTrue($this->container->hasDefinition('doctrine_phpcr.default_session'));
+        $this->assertTrue($this->container->hasDefinition('doctrine_phpcr.jackalope.repository.default'));
         $this->assertTrue($this->container->hasDefinition('doctrine_phpcr.admin.default_session'));
+        $this->assertTrue($this->container->hasDefinition('doctrine_phpcr.admin.jackalope.repository.default'));
     }
 
     public function testCustomManagerRegistryService()

@@ -182,7 +182,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                     : 'database_connection'
                 ;
                 $connectionService = new Alias($connectionService, true);
-                $connectionAliasName = sprintf('doctrine_phpcr.jackalope_doctrine_dbal%s.%s_connection', $serviceNamePrefix, $session['name']);
+                $connectionAliasName = sprintf('doctrine_phpcr%s.jackalope_doctrine_dbal.%s_connection', $serviceNamePrefix, $session['name']);
                 $container->setAlias($connectionAliasName, $connectionService);
 
                 $backendParameters['jackalope.doctrine_dbal_connection'] = new Reference($connectionAliasName);
@@ -270,7 +270,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
         $repositoryFactory = new DefinitionDecorator('doctrine_phpcr.jackalope.repository.factory.'.$type);
         $factory = $container
-            ->setDefinition(sprintf('doctrine_phpcr.jackalope.repository%s.%s', $serviceNamePrefix, $session['name']), $repositoryFactory)
+            ->setDefinition(sprintf('doctrine_phpcr%s.jackalope.repository.%s', $serviceNamePrefix, $session['name']), $repositoryFactory)
         ;
         $factory->replaceArgument(0, $backendParameters);
 
