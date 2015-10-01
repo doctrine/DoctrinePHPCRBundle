@@ -25,7 +25,7 @@ before_install:
   - COMPOSER_ROOT_VERSION=dev-master composer require symfony/symfony:${SYMFONY_VERSION}
   - vendor/symfony-cmf/testing/bin/travis/phpcr_odm_doctrine_dbal.sh
 
-script: phpunit --coverage-text
+script: SYMFONY_DEPRECATIONS_HELPER=weak phpunit --coverage-text
 
 notifications:
   irc: "irc.freenode.org#symfony-cmf"
