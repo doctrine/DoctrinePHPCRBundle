@@ -31,7 +31,7 @@ before_install:
   - COMPOSER_ROOT_VERSION=dev-master composer update $COMPOSER_FLAGS --prefer-source --no-interaction
   - vendor/symfony-cmf/testing/bin/travis/phpcr_odm_doctrine_dbal.sh
 
-script: ./vendor/bin/phpunit --coverage-text
+script: SYMFONY_DEPRECATIONS_HELPER=weak phpunit --coverage-text
 
 notifications:
   irc: "irc.freenode.org#symfony-cmf"
