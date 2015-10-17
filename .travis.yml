@@ -30,7 +30,7 @@ before_install:
   - COMPOSER_ROOT_VERSION=dev-master composer require symfony/symfony:${SYMFONY_VERSION} symfony/framework-bundle:${SYMFONY_VERSION}
   - vendor/symfony-cmf/testing/bin/travis/phpcr_odm_doctrine_dbal.sh
 
-script: SYMFONY_DEPRECATIONS_HELPER=weak ./vendor/bin/phpunit --coverage-text
+script: ./vendor/bin/phpunit --coverage-text
 
 notifications:
   irc: "irc.freenode.org#symfony-cmf"
