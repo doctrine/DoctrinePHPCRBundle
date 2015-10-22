@@ -82,7 +82,16 @@ class LocaleListener implements EventSubscriberInterface
     {
         $this->chooser = $chooser;
         $this->allowedLocales = $allowedLocales;
-        $this->fallback = $fallback;
+        switch ($fallback) {
+            case self::FALLBACK_MERGE:
+            case self::FALLBACK_REPLACE:
+            case self::FALLBACK_HARDCODED:
+                $this->fallback = $fallback;
+                break;
+            default:
+                $this->fallback = self::FALLBACK_HARDCODED;
+                break;
+        }
     }
 
     /**

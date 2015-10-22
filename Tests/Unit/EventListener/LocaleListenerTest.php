@@ -60,6 +60,32 @@ class LocaleListenerTest extends \PHPUnit_Framework_TestCase
         $localeListener->onKernelRequest($this->responseEvent);
     }
 
+    public function testOnKernelRequestWithDefaultFallback()
+    {
+        $this->setUpTestOnKernelRequest();
+
+        $localeListener = new LocaleListener(
+            $this->chooser,
+            $this->allowedLocales,
+            null
+        );
+
+        $this->responseEvent->expects($this->exactly(4))
+            ->method('getRequest')
+            ->will($this->returnValue($this->request));
+
+        $this->request->expects($this->exactly(2))
+            ->method('getLocale')
+            ->will($this->onConsecutiveCalls('it', 'fr'));
+
+        $this->chooser->expects($this->once())
+            ->method('setLocale')
+            ->with($this->equalTo('fr'));
+
+        $localeListener->onKernelRequest($this->responseEvent);
+        $localeListener->onKernelRequest($this->responseEvent);
+    }
+
     public function testOnKernelRequestWithFallbackReplace()
     {
         $this->setUpTestOnKernelRequest();
