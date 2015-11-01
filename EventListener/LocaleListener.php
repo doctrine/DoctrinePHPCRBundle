@@ -78,11 +78,20 @@ class LocaleListener implements EventSubscriberInterface
      * @param string        $fallback       One of the FALLBACK_* constants.
      *
      */
-    public function __construct(LocaleChooser $chooser, array $allowedLocales, $fallback = self::FALLBACK_HARDCODED)
+    public function __construct(LocaleChooser $chooser, array $allowedLocales, $fallback = self::FALLBACK_MERGE)
     {
         $this->chooser = $chooser;
         $this->allowedLocales = $allowedLocales;
-        $this->fallback = $fallback;
+        switch ($fallback) {
+            case self::FALLBACK_MERGE:
+            case self::FALLBACK_REPLACE:
+            case self::FALLBACK_HARDCODED:
+                $this->fallback = $fallback;
+                break;
+            default:
+                $this->fallback = self::FALLBACK_MERGE;
+                break;
+        }
     }
 
     /**
