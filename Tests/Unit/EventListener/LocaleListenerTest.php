@@ -91,7 +91,6 @@ class LocaleListenerTest extends \PHPUnit_Framework_TestCase
             ->method('setFallbackLocales')
             ->with('en', array('fr', 'en'), false);
 
-
         $localeListener->onKernelRequest($this->responseEvent);
     }
 
