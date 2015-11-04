@@ -77,6 +77,14 @@ class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
      */
     public function getEntitiesByIds($identifier, array $values)
     {
+        $values = array_values(array_filter($values, function ($v) {
+            return !empty($v);
+        }));
+
+        if (0 == count($values)) {
+            return array();
+        }
+
         /* performance: if we could figure out whether the query builder is "
          * empty" (that is only checking for the class) we could optimize this
          * to a $this->dm->findMany(null, $values)
