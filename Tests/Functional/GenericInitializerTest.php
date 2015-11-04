@@ -7,7 +7,7 @@ use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 
 /**
- * Functional test for generic initializer
+ * Functional test for generic initializer.
  */
 class GenericInitializerTest extends BaseTestCase
 {
