@@ -21,12 +21,9 @@
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
 use PHPCR\Util\Console\Command\NodeDumpCommand as BaseDumpCommand;
-
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
@@ -52,7 +49,7 @@ class NodeDumpCommand extends BaseDumpCommand implements ContainerAwareInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
     {
@@ -60,7 +57,7 @@ class NodeDumpCommand extends BaseDumpCommand implements ContainerAwareInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -73,7 +70,7 @@ class NodeDumpCommand extends BaseDumpCommand implements ContainerAwareInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -84,7 +81,6 @@ class NodeDumpCommand extends BaseDumpCommand implements ContainerAwareInterface
         );
         $helperSet = $application->getHelperSet();
         $helperSet->set($this->getContainer()->get('doctrine_phpcr.console_dumper'));
-
 
         if (!$input->getParameterOption('max_line_length')
             && $this->getContainer()->hasParameter('doctrine_phpcr.dump_max_line_length')

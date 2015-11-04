@@ -2,17 +2,12 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Functional\Form;
 
-use Doctrine\Common\Util\Debug;
 use Symfony\Component\Form\FormBuilderInterface;
-
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 use Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument;
 use Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\ReferrerDocument;
-use Symfony\Component\HttpKernel\Kernel;
 
-class PhpcrOdmTypeGuesserTest extends BaseTestCase
+class PHPCRTypeGuesserTest extends BaseTestCase
 {
     /**
      * @var DocumentManager
@@ -67,7 +62,6 @@ class PhpcrOdmTypeGuesserTest extends BaseTestCase
             $formBuilder->get('bool'),
             '\Symfony\Component\Form\Extension\Core\Type\CheckboxType',
             array(
-                'read_only' => false,
                 'required' => false,
             )
         );
@@ -76,7 +70,6 @@ class PhpcrOdmTypeGuesserTest extends BaseTestCase
             $formBuilder->get('date'),
             '\Symfony\Component\Form\Extension\Core\Type\DateTimeType',
             array(
-                'read_only' => false,
                 'required' => true,
             )
         );
@@ -85,7 +78,6 @@ class PhpcrOdmTypeGuesserTest extends BaseTestCase
             $formBuilder->get('text'),
             '\Symfony\Component\Form\Extension\Core\Type\TextType',
             array(
-                'read_only' => false,
                 'required' => true,
             )
         );
@@ -94,7 +86,6 @@ class PhpcrOdmTypeGuesserTest extends BaseTestCase
             $formBuilder->get('number'),
             '\Symfony\Component\Form\Extension\Core\Type\NumberType',
             array(
-                'read_only' => false,
                 'required' => true,
             )
         );
@@ -103,7 +94,6 @@ class PhpcrOdmTypeGuesserTest extends BaseTestCase
             $formBuilder->get('integer'),
             '\Symfony\Component\Form\Extension\Core\Type\IntegerType',
             array(
-                'read_only' => false,
                 'required' => true,
             )
         );
@@ -112,7 +102,6 @@ class PhpcrOdmTypeGuesserTest extends BaseTestCase
             $formBuilder->get('long'),
             '\Symfony\Component\Form\Extension\Core\Type\IntegerType',
             array(
-                'read_only' => false,
                 'required' => true,
             )
         );
@@ -133,13 +122,11 @@ class PhpcrOdmTypeGuesserTest extends BaseTestCase
             ->add('minteger')
         ;
 
-
         $this->assertFormType(
             $formBuilder->get('mbool'),
             '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
             array(
                 'type' => 'checkbox',
-                'read_only' => false,
                 'required' => false,
             )
         );
@@ -149,7 +136,6 @@ class PhpcrOdmTypeGuesserTest extends BaseTestCase
             '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
             array(
                 'type' => 'datetime',
-                'read_only' => false,
                 'required' => false,
             )
         );
@@ -159,7 +145,6 @@ class PhpcrOdmTypeGuesserTest extends BaseTestCase
             '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
             array(
                 'type' => 'text',
-                'read_only' => false,
                 'required' => false,
             )
         );
@@ -169,7 +154,6 @@ class PhpcrOdmTypeGuesserTest extends BaseTestCase
             '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
             array(
                 'type' => 'number',
-                'read_only' => false,
                 'required' => false,
             )
         );
@@ -179,7 +163,6 @@ class PhpcrOdmTypeGuesserTest extends BaseTestCase
             '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
             array(
                 'type' => 'integer',
-                'read_only' => false,
                 'required' => false,
             )
         );
@@ -189,7 +172,6 @@ class PhpcrOdmTypeGuesserTest extends BaseTestCase
             '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
             array(
                 'type' => 'integer',
-                'read_only' => false,
                 'required' => false,
             )
         );
@@ -214,7 +196,7 @@ class PhpcrOdmTypeGuesserTest extends BaseTestCase
             $formBuilder->get('id'),
             '\Symfony\Component\Form\Extension\Core\Type\TextType',
             array(
-                'read_only' => true,
+                'attr' => array('readonly' => 'readonly'),
                 'required' => false,
             )
         );
@@ -223,7 +205,6 @@ class PhpcrOdmTypeGuesserTest extends BaseTestCase
             $formBuilder->get('parent'),
             'Doctrine\Bundle\PHPCRBundle\Form\Type\PathType',
             array(
-                'read_only' => false,
                 'required' => true,
             )
         );
@@ -232,7 +213,6 @@ class PhpcrOdmTypeGuesserTest extends BaseTestCase
             $formBuilder->get('nodename'),
             '\Symfony\Component\Form\Extension\Core\Type\TextType',
             array(
-                'read_only' => false,
                 'required' => true,
             )
         );
@@ -241,7 +221,7 @@ class PhpcrOdmTypeGuesserTest extends BaseTestCase
             $formBuilder->get('uuid'),
             '\Symfony\Component\Form\Extension\Core\Type\TextType',
             array(
-                'read_only' => true,
+                'attr' => array('readonly' => 'readonly'),
                 'required' => false,
             )
         );
@@ -250,7 +230,7 @@ class PhpcrOdmTypeGuesserTest extends BaseTestCase
             $formBuilder->get('child'),
             'Doctrine\Bundle\PHPCRBundle\Form\Type\PathType',
             array(
-                'read_only' => true,
+                'attr' => array('readonly' => 'readonly'),
                 'required' => false,
             )
         );
@@ -259,7 +239,7 @@ class PhpcrOdmTypeGuesserTest extends BaseTestCase
             $formBuilder->get('children'),
             '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
             array(
-                'read_only' => true,
+                'attr' => array('readonly' => 'readonly'),
                 'required' => false,
                 'type' => 'phpcr_odm_path',
             )
@@ -343,7 +323,7 @@ class PhpcrOdmTypeGuesserTest extends BaseTestCase
             $formBuilder->get('mixedReferrers'),
             '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
             array(
-                'read_only' => true,
+                'attr' => array('readonly' => 'readonly'),
                 'required' => false,
                 'type' => 'phpcr_odm_path',
             )
@@ -379,7 +359,7 @@ class PhpcrOdmTypeGuesserTest extends BaseTestCase
         $type = $element->getType()->getInnerType();
         $this->assertInstanceOf($typeClass, $type);
         foreach ($options as $option => $expected) {
-            $this->assertEquals($expected, $element->getOption($option), "Option '$option' does not have the expected value '$expected'");
+            $this->assertEquals($expected, $element->getOption($option), "Option '$option' does not have the expected value '".serialize($expected)."'");
         }
     }
 }

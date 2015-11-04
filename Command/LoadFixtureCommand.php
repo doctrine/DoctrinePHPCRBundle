@@ -21,18 +21,14 @@
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-
 use Symfony\Component\Console\Helper\DialogHelper;
-use Symfony\Component\Console\Input\InputDefinition;
+use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-
 use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
-
 use Doctrine\Common\DataFixtures\Purger\PHPCRPurger;
-
 use InvalidArgumentException;
 use Doctrine\Bundle\PHPCRBundle\DataFixtures\PHPCRExecutor;
 
@@ -47,7 +43,7 @@ use Doctrine\Bundle\PHPCRBundle\DataFixtures\PHPCRExecutor;
 class LoadFixtureCommand extends ContainerAwareCommand
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -86,7 +82,7 @@ EOT
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -99,7 +95,7 @@ EOT
 
         if ($input->getOption('dm')) {
             $dmName = $input->getOption('dm');
-        } else if($input->getOption('session')) {
+        } elseif ($input->getOption('session')) {
             $dmName = $input->getOption('session');
             trigger_error(
                 'The session attribute for command doctrine:phpcr:fixtures:load is deprecated. Use --dm instead.',
@@ -117,9 +113,20 @@ EOT
         $noInitialize = $input->getOption('no-initialize');
 
         if ($input->isInteractive() && !$input->getOption('append')) {
-            /** @var $dialog DialogHelper */
-            $dialog = $this->getHelperSet()->get('dialog');
-            if (!$dialog->askConfirmation($output, '<question>Careful, database will be purged. Do you want to continue Y/N ?</question>', false)) {
+            $question = '<question>Careful, database will be purged. Do you want to continue Y/N ?</question>';
+            $default = false;
+            if ($this->getHelperSet()->has('question')) {
+                /** @var $questionHelper QuestionHelper */
+                $questionHelper = $this->getHelperSet()->get('question');
+                $question = new ConfirmationQuestion($question, $default);
+                $result = $questionHelper->ask($input, $output, $question, $default);
+            } else {
+                /** @var $dialog DialogHelper */
+                $dialog = $this->getHelperSet()->get('dialog');
+                $result = $dialog->askConfirmation($output, $question, $default);
+            }
+
+            if (!$result) {
                 return 0;
             }
         }
@@ -130,7 +137,7 @@ EOT
         } else {
             $paths = array();
             foreach ($this->getApplication()->getKernel()->getBundles() as $bundle) {
-                $paths[] = $bundle->getPath() . '/DataFixtures/PHPCR';
+                $paths[] = $bundle->getPath().'/DataFixtures/PHPCR';
             }
         }
 
@@ -144,7 +151,7 @@ EOT
         $fixtures = $loader->getFixtures();
         if (!$fixtures) {
             throw new InvalidArgumentException(
-                sprintf('Could not find any fixtures to load in: %s', "\n\n- " . implode("\n- ", $paths))
+                sprintf('Could not find any fixtures to load in: %s', "\n\n- ".implode("\n- ", $paths))
             );
         }
 
@@ -157,8 +164,7 @@ EOT
         }
 
         $executor = new PHPCRExecutor($dm, $purger, $initializerManager);
-        $executor->setLogger(function($message) use ($output)
-        {
+        $executor->setLogger(function ($message) use ($output) {
             $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', $message));
         });
         $executor->execute($fixtures, $input->getOption('append'));

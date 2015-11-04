@@ -21,12 +21,9 @@
 namespace Doctrine\Bundle\PHPCRBundle\DataCollector;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-
 use Jackalope\Transport\Logging\DebugStack;
 use Jackalope\Query\Query;
-
 use PHPCR\Query\QueryInterface;
-
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -182,9 +179,9 @@ class PHPCRDataCollector extends DataCollector
         }
 
         $this->data = array(
-            'calls'     => $calls,
+            'calls' => $calls,
             'connections' => $this->connections,
-            'managers'    => $this->managers,
+            'managers' => $this->managers,
         );
 
         $documents = array();

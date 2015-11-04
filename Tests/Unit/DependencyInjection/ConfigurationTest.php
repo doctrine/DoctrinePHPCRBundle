@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\DependencyInjection;
 
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\DoctrinePHPCRExtension;
@@ -63,15 +62,18 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                                 'jackalope.jackrabbit_expect' => true,
                             ),
                             'url' => 'http://localhost:8080/server/',
-                        ),
-                        'workspace' => 'default',
-                        'username' => 'admin',
-                        'password' => 'admin',
-                        'options' => array(
-                            'jackalope.fetch_depth' => 1,
+                            'backtrace' => false,
+                            ),
+                            'workspace' => 'default',
+                            'username' => 'admin',
+                            'password' => 'admin',
+                            'options' => array(
+                                'jackalope.fetch_depth' => 1,
+                            ),
+                            'admin_username' => null,
+                            'admin_password' => null,
                         ),
                     ),
-                ),
             ),
             'odm' => array(
                 'auto_generate_proxy_classes' => true,
@@ -112,6 +114,12 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                         'repository_factory' => null,
                     ),
                 ),
+                'namespaces' => array(
+                    'translation' => array(
+                        'alias' => 'phpcr_locale',
+                    ),
+                ),
+                'locale_chooser' => null,
             ),
             'jackrabbit_jar' => '/path/to/jackrabbit.jar',
             'dump_max_line_length' => 20,
@@ -129,12 +137,15 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                             'parameters' => array(
                             ),
                             'url' => 'http://a',
+                            'backtrace' => false,
                         ),
                         'workspace' => 'default',
                         'username' => 'admin',
                         'password' => 'admin',
                         'options' => array(
                         ),
+                        'admin_username' => null,
+                        'admin_password' => null,
                     ),
                     'website' => array(
                         'backend' => array(
@@ -144,6 +155,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                             'parameters' => array(
                             ),
                             'url' => 'http://b',
+                            'backtrace' => false,
                             'factory' => null,
                         ),
                         'workspace' => 'website',
@@ -151,6 +163,8 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                         'password' => 'root',
                         'options' => array(
                         ),
+                        'admin_username' => 'admin',
+                        'admin_password' => 'admin',
                     ),
                 ),
             ),
@@ -196,6 +210,12 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                         'configuration_id' => 'sandbox_magnolia.odm_configuration',
                     ),
                 ),
+                'namespaces' => array(
+                    'translation' => array(
+                        'alias' => 'phpcr_locale',
+                    ),
+                ),
+                'locale_chooser' => null,
             ),
             'dump_max_line_length' => 120,
             'manager_registry_service_id' => null,
@@ -210,6 +230,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                             'logging' => false,
                             'profiling' => false,
                             'factory' => null,
+                            'backtrace' => false,
                             'parameters' => array(
                                 'jackalope.factory' => 'Jackalope\Factory',
                                 'jackalope.check_login_on_server' => true,
@@ -221,6 +242,8 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                         'username' => 'admin',
                         'password' => 'admin',
                         'options' => array(),
+                        'admin_username' => null,
+                        'admin_password' => null,
                     ),
                 ),
             ),
@@ -248,7 +271,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
             array(
                 $bc,
                 array('config/bc.php'),
-            )
+            ),
         );
     }
 }

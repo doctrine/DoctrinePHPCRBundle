@@ -1,4 +1,5 @@
 <?php
+
 $container->loadFromExtension('doctrine_phpcr', array(
     'session' => array(
         'sessions' => array(
@@ -20,6 +21,8 @@ $container->loadFromExtension('doctrine_phpcr', array(
                 'workspace' => 'website',
                 'username' => 'root',
                 'password' => 'root',
+                'admin_username' => 'admin',
+                'admin_password' => 'admin',
             ),
         ),
     ),

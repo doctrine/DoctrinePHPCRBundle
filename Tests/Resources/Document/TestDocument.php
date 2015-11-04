@@ -3,7 +3,6 @@
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document;
 
 use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCR;
-
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -54,7 +53,6 @@ class TestDocument
      */
     protected $mixedReferrers;
 
-
     /**
      * @PHPCR\Boolean()
      */
@@ -84,7 +82,6 @@ class TestDocument
      * @PHPCR\Int()
      */
     public $integer;
-
 
     /**
      * @PHPCR\Boolean(multivalue=true, nullable=true)
@@ -159,7 +156,7 @@ class TestDocument
     }
 
     /**
-     * Either define __toString or set property attribute on form mapping
+     * Either define __toString or set property attribute on form mapping.
      */
     public function __toString()
     {

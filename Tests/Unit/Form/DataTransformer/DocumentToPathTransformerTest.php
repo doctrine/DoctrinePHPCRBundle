@@ -15,7 +15,7 @@ class DocumentToPathTransformerTest extends \PHPUnit_Framework_Testcase
             ->disableOriginalConstructor()
             ->getMock();
         $this->transformer = new DocumentToPathTransformer($this->dm);
-        $this->document = new \stdClass;
+        $this->document = new \stdClass();
     }
 
     public function testTransform()

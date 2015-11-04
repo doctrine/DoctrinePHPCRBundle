@@ -57,7 +57,7 @@ class InitializerPass implements CompilerPassInterface
             }
 
             $initializerManagerDef->addMethodCall('addInitializer', array(
-                new Reference($id), $priority
+                new Reference($id), $priority,
             ));
         }
     }

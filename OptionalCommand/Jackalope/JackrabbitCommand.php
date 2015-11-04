@@ -20,15 +20,11 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\OptionalCommand\Jackalope;
 
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Jackalope\Tools\Console\Command\JackrabbitCommand as BaseJackrabbitCommand;
-use Doctrine\Bundle\PHPCRBundle\Command\DoctrineCommandHelper;
 
 /**
  * @author Daniel Barsotti <daniel.barsotti@liip.ch>
@@ -53,7 +49,7 @@ class JackrabbitCommand extends BaseJackrabbitCommand implements ContainerAwareI
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
     {
@@ -61,7 +57,7 @@ class JackrabbitCommand extends BaseJackrabbitCommand implements ContainerAwareI
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -82,7 +78,7 @@ EOF
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

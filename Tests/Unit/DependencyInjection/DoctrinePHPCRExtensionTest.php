@@ -5,15 +5,15 @@ namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\DependencyInjection;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\DoctrinePHPCRExtension;
+use Symfony\Component\DependencyInjection\Reference;
 
 class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
 {
     protected function getContainerExtensions()
     {
         return array(
-            new DoctrinePHPCRExtension()
+            new DoctrinePHPCRExtension(),
         );
     }
 
@@ -21,6 +21,8 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
     {
         parent::setUp();
 
+        $this->container->setParameter('kernel.root_dir', null);
+        $this->container->setParameter('kernel.environment', 'test');
         $this->container->setParameter('kernel.bundles', array());
         $this->container->setParameter('kernel.debug', false);
     }
@@ -53,6 +55,11 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
         ), array_keys($parameters));
 
         $this->assertEquals('doctrine_phpcr.jackalope.repository.factory.jackrabbit', $repositoryFactory->getParent());
+
+        $this->assertTrue($this->container->hasDefinition('doctrine_phpcr.default_session'));
+        $this->assertTrue($this->container->hasDefinition('doctrine_phpcr.jackalope.repository.default'));
+        $this->assertTrue($this->container->hasDefinition('doctrine_phpcr.admin.default_session'));
+        $this->assertTrue($this->container->hasDefinition('doctrine_phpcr.admin.jackalope.repository.default'));
     }
 
     public function testCustomManagerRegistryService()
@@ -71,7 +78,6 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
             'manager_registry_service_id' => 'my_phpcr_registry',
         ));
 
-        /** @var $repositoryFactory DefinitionDecorator */
         $managerRegistry = $this->container->getAlias('doctrine_phpcr');
         $this->assertInstanceOf('\Symfony\Component\DependencyInjection\Alias', $managerRegistry);
         $this->assertEquals('my_phpcr_registry', $managerRegistry);
@@ -99,7 +105,7 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
                         'username' => 'admin',
                         'password' => 'admin',
                     ),
-                )
+                ),
             ),
         ));
 
@@ -157,5 +163,56 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
         $calls = $session->getMethodCalls();
         $this->assertCount(1, $calls);
         $this->assertEquals(array('setSessionOption', array('jackalope.fetch_depth', 2)), current($calls));
+    }
+
+    public function provideLocaleChooser()
+    {
+        return array(
+            array(
+                array(
+                    'odm' => array(
+                        'locales' => array('fr' => array('de', 'en')),
+                    ),
+                ),
+                'doctrine_phpcr.odm.locale_chooser',
+            ),
+            array(
+                array(
+                    'odm' => array(
+                        'locales' => array('fr' => array('de', 'en')),
+                        'locale_chooser' => 'foobar',
+                    ),
+                ),
+                'foobar',
+            ),
+            array(
+                array(
+                    'odm' => array(
+                        'locale_chooser' => 'foobar',
+                    ),
+                ),
+                'foobar',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider provideLocaleChooser
+     */
+    public function testLocales($odmConfig, $expectedChooser)
+    {
+        $this->load(array_merge(array(
+            'session' => array(
+                'backend' => array(
+                    'type' => 'doctrinedbal',
+                ),
+                'workspace' => 'default',
+            ),
+        ), $odmConfig));
+
+        $managerDef = $this->container->getDefinition('doctrine_phpcr.odm.document_manager.abstract');
+        $calls = $managerDef->getMethodCalls();
+        $this->assertCount(1, $calls);
+        $this->assertEquals(array('setLocaleChooserStrategy', array(new Reference($expectedChooser))), current($calls));
     }
 }

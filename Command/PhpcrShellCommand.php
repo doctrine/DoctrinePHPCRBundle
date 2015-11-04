@@ -33,7 +33,7 @@ use PHPCR\Shell\PhpcrShell;
 class PhpcrShellCommand extends ContainerAwareCommand
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -72,13 +72,13 @@ EOT
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if (!class_exists('PHPCR\Shell\Console\Application\SessionApplication')) {
             throw new \InvalidArgumentException(sprintf(
-                'PHPCR-Shell not installed as a dependency. Add the "phpcr/phpcr-shell" to your ' .
+                'PHPCR-Shell not installed as a dependency. Add the "phpcr/phpcr-shell" to your '.
                 'composer.json file to use this command'
             ));
         }

@@ -20,6 +20,7 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -28,16 +29,13 @@ use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
-
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Definition\Processor;
-
 use Symfony\Bridge\Doctrine\DependencyInjection\AbstractDoctrineExtension;
-
 use Doctrine\ODM\PHPCR\Version;
 
 /**
- * PHPCR Extension
+ * PHPCR Extension.
  *
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  * @author Benjamin Eberlei <kontakt@beberlei.de>
@@ -52,7 +50,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
     private $disableProxyWarmer = false;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -85,9 +83,9 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
         if (!empty($config['odm'])) {
             if (empty($this->sessions)) {
-                throw new InvalidArgumentException("You did not configure a session for the document managers");
+                throw new InvalidArgumentException('You did not configure a session for the document managers');
             }
-            $this->odmLoad($config['odm'], $container);
+            $this->loadOdm($config['odm'], $container);
 
             if ($this->disableProxyWarmer) {
                 $container->removeDefinition('doctrine_phpcr.odm.proxy_cache_warmer');
@@ -126,16 +124,27 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                 case 'jackrabbit':
                     if (empty($loaded['jackalope'])) {
                         $this->loader->load('jackalope.xml');
+
+                        // TODO: move the following code block back into the XML file when we drop support for symfony <2.6
+                        $jackalopeTransports = array('prismic', 'doctrinedbal', 'jackrabbit');
+                        foreach ($jackalopeTransports as $transport) {
+                            $factoryServiceId = sprintf('doctrine_phpcr.jackalope.repository.factory.service.%s', $transport);
+                            $factoryService = $container->getDefinition(sprintf('doctrine_phpcr.jackalope.repository.factory.%s', $transport));
+                            if (method_exists($factoryService, 'setFactory')) {
+                                $factoryService->setFactory(array(
+                                    new Reference($factoryServiceId),
+                                    'getRepository',
+                                ));
+                            } else {
+                                $factoryService->setFactoryService($factoryServiceId);
+                                $factoryService->setFactoryMethod('getRepository');
+                            }
+                        }
+
                         $loaded['jackalope'] = true;
                     }
                     $this->loadJackalopeSession($session, $container, $type);
-                    break;
-                case 'midgard2':
-                    if (empty($loaded['midgard2'])) {
-                        $this->loader->load('midgard2.xml');
-                        $loaded['midgard2'] = true;
-                    }
-                    $this->loadMidgard2Session($session, $container);
+                    $this->loadJackalopeSession($session, $container, $type, true);
                     break;
                 default:
                     throw new InvalidArgumentException(sprintf('You set an unsupported transport type "%s" for session "%s"', $type, $name));
@@ -149,14 +158,18 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             return;
         }
 
+        if (empty($sessions[$config['default_session']])) {
+            throw new InvalidConfigurationException(sprintf("Default session is configured to '%s' which does not match any configured session name: %s", $config['default_session'], implode(', ', array_keys($sessions))));
+        }
         $this->defaultSession = $config['default_session'];
         $this->sessions = $sessions;
         $container->setParameter('doctrine_phpcr.default_session', $config['default_session']);
         $container->setAlias('doctrine_phpcr.session', $sessions[$config['default_session']]);
     }
 
-    private function loadJackalopeSession(array $session, ContainerBuilder $container, $type)
+    private function loadJackalopeSession(array $session, ContainerBuilder $container, $type, $admin = false)
     {
+        $serviceNamePrefix = $admin ? '.admin' : '';
         $backendParameters = array();
         switch ($type) {
             case 'doctrinedbal':
@@ -169,7 +182,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                     : 'database_connection'
                 ;
                 $connectionService = new Alias($connectionService, true);
-                $connectionAliasName = sprintf('doctrine_phpcr.jackalope_doctrine_dbal.%s_connection', $session['name']);
+                $connectionAliasName = sprintf('doctrine_phpcr%s.jackalope_doctrine_dbal.%s_connection', $serviceNamePrefix, $session['name']);
                 $container->setAlias($connectionAliasName, $connectionService);
 
                 $backendParameters['jackalope.doctrine_dbal_connection'] = new Reference($connectionAliasName);
@@ -177,11 +190,11 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                     ->getDefinition('doctrine_phpcr.jackalope_doctrine_dbal.schema_listener')
                     ->addTag('doctrine.event_listener', array(
                         'connection' => $connectionName,
-                        'event'      => 'postGenerateSchema',
-                        'lazy'       => true
+                        'event' => 'postGenerateSchema',
+                        'lazy' => true,
                     ))
                 ;
-                if (isset($session['backend']['caches'])) {
+                if (false === $admin && isset($session['backend']['caches'])) {
                     foreach ($session['backend']['caches'] as $key => $cache) {
                         $backendParameters['jackalope.data_caches'][$key] = new Reference($cache);
                     }
@@ -207,7 +220,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         }
 
         if (isset($session['backend']['factory'])) {
-            /**
+            /*
              * If it is a class, pass the name as is, else assume it is
              * a service id and get a reference to it
              */
@@ -224,7 +237,13 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         }
         if (!empty($session['backend']['profiling'])) {
             $profilingLoggerId = 'doctrine_phpcr.logger.profiling.'.$session['name'];
-            $container->setDefinition($profilingLoggerId, new DefinitionDecorator('doctrine_phpcr.logger.profiling'));
+            $profilingLoggerDef = new DefinitionDecorator('doctrine_phpcr.logger.profiling');
+
+            if ($session['backend']['backtrace']) {
+                $profilingLoggerDef->addMethodCall('enableBacktrace');
+            }
+
+            $container->setDefinition($profilingLoggerId, $profilingLoggerDef);
             $profilerLogger = new Reference($profilingLoggerId);
             $container->getDefinition('doctrine_phpcr.data_collector')->addMethodCall('addLogger', array($session['name'], $profilerLogger));
 
@@ -249,100 +268,56 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             $backendParameters['jackalope.logger'] = $logger;
         }
 
+        $repositoryFactory = new DefinitionDecorator('doctrine_phpcr.jackalope.repository.factory.'.$type);
         $factory = $container
-            ->setDefinition(sprintf('doctrine_phpcr.jackalope.repository.%s', $session['name']), new DefinitionDecorator('doctrine_phpcr.jackalope.repository.factory.'.$type))
+            ->setDefinition(sprintf('doctrine_phpcr%s.jackalope.repository.%s', $serviceNamePrefix, $session['name']), $repositoryFactory)
         ;
         $factory->replaceArgument(0, $backendParameters);
 
+        $username = $admin && $session['admin_username'] ? $session['admin_username'] : $session['username'];
+        $password = $admin && $session['admin_password'] ? $session['admin_password'] : $session['password'];
+        $credentials = new DefinitionDecorator('doctrine_phpcr.credentials');
+        $credentialsServiceId = sprintf('doctrine_phpcr%s.%s_credentials', $serviceNamePrefix, $session['name']);
         $container
-            ->setDefinition(sprintf('doctrine_phpcr.%s_credentials', $session['name']), new DefinitionDecorator('doctrine_phpcr.credentials'))
-            ->replaceArgument(0, $session['username'])
-            ->replaceArgument(1, $session['password'])
+            ->setDefinition($credentialsServiceId, $credentials)
+            ->replaceArgument(0, $username)
+            ->replaceArgument(1, $password)
         ;
-        $definition = $container
-            ->setDefinition($session['service_name'], new DefinitionDecorator('doctrine_phpcr.jackalope.session'))
-            ->setFactoryService(sprintf('doctrine_phpcr.jackalope.repository.%s', $session['name']))
-            ->replaceArgument(0, new Reference(sprintf('doctrine_phpcr.%s_credentials', $session['name'])))
-            ->replaceArgument(1, $session['workspace'])
+
+        // TODO: move the following code block back into the XML file when we drop support for symfony <2.6
+        $definition = new DefinitionDecorator('doctrine_phpcr.jackalope.session');
+        $factoryServiceId = sprintf('doctrine_phpcr%s.jackalope.repository.%s', $serviceNamePrefix, $session['name']);
+        if (method_exists($definition, 'setFactory')) {
+            $definition->setFactory(array(
+                new Reference($factoryServiceId),
+                'login',
+            ));
+        } else {
+            $definition->setFactoryService($factoryServiceId);
+            $definition->setFactoryMethod('login');
+        }
+
+        $workspace = $admin ? null : $session['workspace'];
+        $definition
+            ->replaceArgument(0, new Reference($credentialsServiceId))
+            ->replaceArgument(1, $workspace)
         ;
+
+        $serviceName = sprintf('doctrine_phpcr%s.%s_session', $serviceNamePrefix, $session['name']);
+        $container->setDefinition($serviceName, $definition);
+
         foreach ($session['options'] as $key => $value) {
             $definition->addMethodCall('setSessionOption', array($key, $value));
         }
 
-        $eventManagerServiceId = sprintf('doctrine_phpcr.%s_session.event_manager', $session['name']);
+        $eventManagerServiceId = sprintf('doctrine_phpcr%s.%s_session.event_manager', $serviceNamePrefix, $session['name']);
         $container->setDefinition($eventManagerServiceId, new DefinitionDecorator('doctrine_phpcr.session.event_manager'));
     }
 
-    private function loadMidgard2Session(array $session, ContainerBuilder $container)
-    {
-        $parameters = array();
-        if (isset($session['backend']['config'])) {
-            // Starting repository with a Midgard2 INI file
-            $parameters['midgard2.configuration.file'] = $session['backend']['config'];
-        } else if (isset($session['backend']['db_name'])) {
-            // Manually configured Midgard2 session
-            foreach ($session['backend'] as $key => $value) {
-                if (substr($key, 0, 3) !== 'db_') {
-                    continue;
-                }
-                $dbkey = substr($key, 3);
-                $parameters["midgard2.configuration.db.{$dbkey}"] = $value;
-            }
-
-            if (isset($session['backend']['blobdir'])) {
-                $parameters['midgard2.configuration.blobdir'] = $session['backend']['blobdir'];
-            }
-            if (isset($session['backend']['loglevel'])) {
-                $parameters['midgard2.configuration.loglevel'] = $session['backend']['loglevel'];
-            }
-        } else {
-            throw new InvalidArgumentException(
-                sprintf('You set an invalid Midgard2 PHPCR configuration for session "%s". Please provide a "config" or "db_name" key', $session['name'])
-            );
-        }
-
-        $factory = $container
-            ->setDefinition('doctrine_phpcr.midgard2.repository', new DefinitionDecorator('doctrine_phpcr.midgard2.repository.factory'))
-        ;
-        $factory->replaceArgument(0, $parameters);
-
-        $container
-            ->setDefinition(sprintf('doctrine_phpcr.%s_credentials', $session['name']), new DefinitionDecorator('doctrine_phpcr.credentials'))
-            ->replaceArgument(0, $session['username'])
-            ->replaceArgument(1, $session['password'])
-        ;
-
-        $container
-            ->setDefinition($session['service_name'], new DefinitionDecorator('doctrine_phpcr.midgard2.session'))
-            ->replaceArgument(0, new Reference(sprintf('doctrine_phpcr.%s_credentials', $session['name'])))
-            ->replaceArgument(1, $session['workspace'])
-        ;
-    }
-
-    private function odmLoad(array $config, ContainerBuilder $container)
+    private function loadOdm(array $config, ContainerBuilder $container)
     {
         $this->loader->load('odm.xml');
-
-        if (!empty($config['locales'])) {
-            $this->loader->load('odm_multilang.xml');
-
-            foreach ($config['locales'] as $locale => $fallbacks) {
-                if (false !== array_search($locale, $fallbacks)) {
-                    throw new InvalidArgumentException(sprintf('The fallbacks for locale %s contain the locale itself.', $locale));
-                }
-                if (count($fallbacks) !== count(array_unique($fallbacks))) {
-                    throw new InvalidArgumentException(sprintf('Duplicate locale in the fallbacks for locale %s.', $locale));
-                }
-            }
-
-            $container->setParameter('doctrine_phpcr.odm.locales', $config['locales']);
-            $container->setParameter('doctrine_phpcr.odm.allowed_locales', array_keys($config['locales']));
-            $container->setParameter('doctrine_phpcr.odm.default_locale', key($config['locales']));
-            $container->setParameter('doctrine_phpcr.odm.locale_fallback', $config['locale_fallback'] == 'hardcoded' ? null : $config['locale_fallback']);
-
-            $dm = $container->getDefinition('doctrine_phpcr.odm.document_manager.abstract');
-            $dm->addMethodCall('setLocaleChooserStrategy', array(new Reference('doctrine_phpcr.odm.locale_chooser')));
-        }
+        $this->loadOdmLocales($config, $container);
 
         // BC logic to handle DoctrineBridge < 2.6
         if (!method_exists($this, 'fixManagersAutoMappings')) {
@@ -378,7 +353,51 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
         $options = array('auto_generate_proxy_classes', 'proxy_dir', 'proxy_namespace');
         foreach ($options as $key) {
-            $container->setParameter('doctrine_phpcr.odm.' . $key, $config[$key]);
+            $container->setParameter('doctrine_phpcr.odm.'.$key, $config[$key]);
+        }
+
+        if (!$config['namespaces']['translation']['alias']) {
+            throw new InvalidArgumentException(
+                'Translation namespace alias must not be empty'
+            );
+        }
+
+        $container->setParameter('doctrine_phpcr.odm.namespaces.translation.alias', $config['namespaces']['translation']['alias']);
+    }
+
+    private function loadOdmLocales(array $config, ContainerBuilder $container)
+    {
+        $localeChooser = $config['locale_chooser'];
+
+        if (empty($config['locales']) && null === $config['locale_chooser']) {
+            return;
+        }
+
+        if (!empty($config['locales'])) {
+            $this->loader->load('odm_multilang.xml');
+
+            foreach ($config['locales'] as $locale => $fallbacks) {
+                if (false !== array_search($locale, $fallbacks)) {
+                    throw new InvalidArgumentException(sprintf('The fallbacks for locale %s contain the locale itself.', $locale));
+                }
+                if (count($fallbacks) !== count(array_unique($fallbacks))) {
+                    throw new InvalidArgumentException(sprintf('Duplicate locale in the fallbacks for locale %s.', $locale));
+                }
+            }
+
+            $container->setParameter('doctrine_phpcr.odm.locales', $config['locales']);
+            $container->setParameter('doctrine_phpcr.odm.allowed_locales', array_keys($config['locales']));
+            $container->setParameter('doctrine_phpcr.odm.default_locale', key($config['locales']));
+            $container->setParameter('doctrine_phpcr.odm.locale_fallback', $config['locale_fallback'] == 'hardcoded' ? null : $config['locale_fallback']);
+
+            $localeChooser = $localeChooser ?: 'doctrine_phpcr.odm.locale_chooser';
+        }
+
+        // only set the locale chooser if it has been explicitly configured or implicitly
+        // set by configuring the locales node.
+        if (null !== $localeChooser) {
+            $dm = $container->getDefinition('doctrine_phpcr.odm.document_manager.abstract');
+            $dm->addMethodCall('setLocaleChooserStrategy', array(new Reference($localeChooser)));
         }
     }
 
@@ -392,13 +411,13 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
         $methods = array(
             'setMetadataCacheImpl' => array(new Reference(sprintf('doctrine_phpcr.odm.%s_metadata_cache', $documentManager['name']))),
-            'setMetadataDriverImpl' => array(new Reference('doctrine_phpcr.odm.' . $documentManager['name'] . '_metadata_driver'), false),
+            'setMetadataDriverImpl' => array(new Reference('doctrine_phpcr.odm.'.$documentManager['name'].'_metadata_driver'), false),
             'setProxyDir' => array('%doctrine_phpcr.odm.proxy_dir%'),
             'setProxyNamespace' => array('%doctrine_phpcr.odm.proxy_namespace%'),
             'setAutoGenerateProxyClasses' => array('%doctrine_phpcr.odm.auto_generate_proxy_classes%'),
         );
 
-        if (version_compare(Version::VERSION, "1.1.0-DEV") >= 0) {
+        if (version_compare(Version::VERSION, '1.1.0-DEV') >= 0) {
             $methods['setClassMetadataFactoryName'] = array($documentManager['class_metadata_factory_name']);
             $methods['setDefaultRepositoryClassName'] = array($documentManager['default_repository_class']);
 
@@ -418,18 +437,29 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             throw new InvalidArgumentException(sprintf("You have configured a non existent session '%s' for the document manager '%s'", $documentManager['session'], $documentManager['name']));
         }
 
-        $container
+        $documentManagerDefinition = $container
             ->setDefinition($documentManager['service_name'], new DefinitionDecorator('doctrine_phpcr.odm.document_manager.abstract'))
             ->setArguments(array(
                 new Reference(sprintf('doctrine_phpcr.%s_session', $documentManager['session'])),
                 new Reference(sprintf('doctrine_phpcr.odm.%s_configuration', $documentManager['name'])),
-                new Reference(sprintf('doctrine_phpcr.%s_session.event_manager', $documentManager['session']))
-            ))
-        ;
+                new Reference(sprintf('doctrine_phpcr.%s_session.event_manager', $documentManager['session'])),
+            ));
+
+        foreach (array(
+            'child' => 'doctrine_phpcr.odm.translation.strategy.child',
+            'attribute' => 'doctrine_phpcr.odm.translation.strategy.attribute',
+        ) as $name => $strategyTemplateId) {
+            $strategyId = sprintf('doctrine_phpcr.odm.%s.translation.strategy.%s', $documentManager['name'], $name);
+            $strategyDefinition = new DefinitionDecorator($strategyTemplateId);
+            $container->setDefinition($strategyId, $strategyDefinition);
+
+            $strategyDefinition->replaceArgument(0, new Reference($documentManager['service_name']));
+            $documentManagerDefinition->addMethodCall('setTranslationStrategy', array($name, new Reference($strategyId)));
+        }
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getMappingDriverBundleConfigDefaults(array $bundleConfig, \ReflectionClass $bundle, ContainerBuilder $container)
     {
@@ -468,7 +498,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
      * Loads a configured document managers cache drivers.
      *
      * @param array            $documentManager A configured ORM document manager.
-     * @param ContainerBuilder $container     A ContainerBuilder instance
+     * @param ContainerBuilder $container       A ContainerBuilder instance
      */
     protected function loadOdmCacheDrivers(array $documentManager, ContainerBuilder $container)
     {
@@ -476,7 +506,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getObjectManagerElementName($name)
     {
@@ -484,7 +514,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getMappingObjectDefaultName()
     {
@@ -492,7 +522,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getMappingResourceConfigDirectory()
     {
@@ -500,7 +530,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getMappingResourceExtension()
     {
@@ -508,7 +538,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getNamespace()
     {

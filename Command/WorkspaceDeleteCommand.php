@@ -21,11 +21,9 @@
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
 use PHPCR\Util\Console\Command\WorkspaceDeleteCommand as BaseWorkspaceDeleteCommand;
 
 /**
@@ -36,7 +34,7 @@ use PHPCR\Util\Console\Command\WorkspaceDeleteCommand as BaseWorkspaceDeleteComm
 class WorkspaceDeleteCommand extends BaseWorkspaceDeleteCommand
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -49,13 +47,14 @@ class WorkspaceDeleteCommand extends BaseWorkspaceDeleteCommand
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         DoctrineCommandHelper::setApplicationPHPCRSession(
             $this->getApplication(),
-            $input->getOption('session')
+            $input->getOption('session'),
+            true
         );
 
         return parent::execute($input, $output);

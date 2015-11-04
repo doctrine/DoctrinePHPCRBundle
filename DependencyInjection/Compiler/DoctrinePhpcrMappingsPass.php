@@ -31,7 +31,6 @@ use Symfony\Component\DependencyInjection\Reference;
  * NOTE: alias is only supported by Symfony 2.6+ and will be ignored with older versions.
  *
  * @author David Buchmann <mail@davidbu.ch>
- *
  */
 class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
 {
@@ -82,16 +81,16 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
         $locator = new Definition('Doctrine\Common\Persistence\Mapping\Driver\SymfonyFileLocator', $arguments);
         $driver = new Definition('Doctrine\ODM\PHPCR\Mapping\Driver\XmlDriver', array($locator));
 
-        return new DoctrinePhpcrMappingsPass($driver, $namespaces, $managerParameters, $enabledParameter, $aliasMap);
+        return new self($driver, $namespaces, $managerParameters, $enabledParameter, $aliasMap);
     }
 
     /**
-     * @param array  $namespaces          Hashmap of directory path to namespace
+     * @param array    $namespaces        Hashmap of directory path to namespace
      * @param string[] $managerParameters List of parameters that could which object manager name
      *                                    your bundle uses. This compiler pass will automatically
      *                                    append the parameter name for the default entity manager
      *                                    to this list.
-     * @param string $enabledParameter    Service container parameter that must be present to
+     * @param string   $enabledParameter  Service container parameter that must be present to
      *                                    enable the mapping. Set to false to not do any check,
      *                                    optional.
      * @param string[] $aliasMap          Map of alias to namespace.
@@ -102,7 +101,7 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
         $locator = new Definition('Doctrine\Common\Persistence\Mapping\Driver\SymfonyFileLocator', $arguments);
         $driver = new Definition('Doctrine\ODM\PHPCR\Mapping\Driver\YamlDriver', array($locator));
 
-        return new DoctrinePhpcrMappingsPass($driver, $namespaces, $managerParameters, $enabledParameter, $aliasMap);
+        return new self($driver, $namespaces, $managerParameters, $enabledParameter, $aliasMap);
     }
 
     /**
@@ -122,7 +121,7 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
         $locator = new Definition('Doctrine\Common\Persistence\Mapping\Driver\SymfonyFileLocator', $arguments);
         $driver = new Definition('Doctrine\Common\Persistence\Mapping\Driver\PHPDriver', array($locator));
 
-        return new DoctrinePhpcrMappingsPass($driver, $mappings, $managerParameters, $enabledParameter, $aliasMap);
+        return new self($driver, $mappings, $managerParameters, $enabledParameter, $aliasMap);
     }
 
     /**
@@ -142,7 +141,7 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
         $reader = new Reference('doctrine_phpcr.odm.metadata.annotation_reader');
         $driver = new Definition('Doctrine\ODM\PHPCR\Mapping\Driver\AnnotationDriver', array($reader, $directories));
 
-        return new DoctrinePhpcrMappingsPass($driver, $namespaces, $managerParameters, $enabledParameter, $aliasMap);
+        return new self($driver, $namespaces, $managerParameters, $enabledParameter, $aliasMap);
     }
 
     /**
@@ -161,6 +160,6 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
     {
         $driver = new Definition('Doctrine\Common\Persistence\Mapping\Driver\StaticPHPDriver', array($directories));
 
-        return new DoctrinePhpcrMappingsPass($driver, $namespaces, $managerParameters, $enabledParameter, $aliasMap);
+        return new self($driver, $namespaces, $managerParameters, $enabledParameter, $aliasMap);
     }
 }

@@ -21,7 +21,6 @@
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
 use Doctrine\ODM\PHPCR\Tools\Console\Command\RegisterSystemNodeTypesCommand;
-
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -38,7 +37,7 @@ class RepositoryInitCommand extends ContainerAwareCommand
     protected $container;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
     {
@@ -59,7 +58,6 @@ or base paths so the application can work. If phpcr-odm is present, also runs
 the doctrine:phpcr:register-system-node-types command.
 EOT
             );
-        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

@@ -29,7 +29,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 class MigratorMigrateCommand extends ContainerAwareCommand
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -38,7 +38,7 @@ class MigratorMigrateCommand extends ContainerAwareCommand
             ->setDescription('Migrates PHPCR data.')
             ->addArgument('migrator_name', InputArgument::OPTIONAL, 'The name of the alias/service to be used to migrate the data.')
             ->addOption('identifier', null, InputOption::VALUE_OPTIONAL, 'Path or UUID of the node to dump', '/')
-            ->addOption('depth', null, InputOption::VALUE_OPTIONAL, 'Set to a number to limit how deep into the tree to recurse', "-1")
+            ->addOption('depth', null, InputOption::VALUE_OPTIONAL, 'Set to a number to limit how deep into the tree to recurse', '-1')
             ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
             ->setHelp(<<<EOT
 To find the available 'migrators' run this command without an input argument
@@ -63,8 +63,9 @@ EOT
 
         $migratorName = $input->getArgument('migrator_name');
         if (!$migratorName) {
-            $output->write("Available migrators:", true);
+            $output->write('Available migrators:', true);
             $output->write(implode("\n", array_keys($migrators)), true);
+
             return 0;
         }
 
@@ -83,9 +84,9 @@ EOT
         $exitCode = $migrator->migrate($identifier, $depth);
 
         if (0 === $exitCode) {
-            $output->write("Successful", true);
+            $output->write('Successful', true);
         } else {
-            $output->write("Failed!", true);
+            $output->write('Failed!', true);
         }
 
         return $exitCode;

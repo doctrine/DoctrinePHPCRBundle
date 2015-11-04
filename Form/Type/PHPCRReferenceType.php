@@ -4,6 +4,7 @@ namespace Doctrine\Bundle\PHPCRBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\PHPCRNodeToPathTransformer;
 use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\PHPCRNodeToUuidTransformer;
@@ -11,7 +12,7 @@ use PHPCR\SessionInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
- * Form type for PHPCR Node references
+ * Form type for PHPCR Node references.
  *
  * Can use either a UUID or a PATH transformer as specified by
  * the "transfomer_type" option.
@@ -47,6 +48,11 @@ class PHPCRReferenceType extends AbstractType
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $this->configureOptions($resolver);
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'transformer_type' => 'uuid',

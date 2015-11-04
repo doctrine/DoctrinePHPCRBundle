@@ -24,9 +24,10 @@ use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
+use Doctrine\ODM\PHPCR\Translation\Translation;
 
 /**
- * Configuration for the PHPCR extension
+ * Configuration for the PHPCR extension.
  *
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  * @author Benjamin Eberlei <kontakt@beberlei.de>
@@ -68,8 +69,10 @@ class Configuration implements ConfigurationInterface
                             'workspace',
                             'username',
                             'password',
+                            'admin_username',
+                            'admin_password',
                             'backend',
-                            'options'
+                            'options',
                         ) as $key) {
                             if (array_key_exists($key, $v)) {
                                 $session[$key] = $v[$key];
@@ -105,6 +108,8 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('workspace')->isRequired()->cannotBeEmpty()->end()
                     ->scalarNode('username')->defaultNull()->end()
                     ->scalarNode('password')->defaultNull()->end()
+                    ->scalarNode('admin_username')->defaultNull()->end()
+                    ->scalarNode('admin_password')->defaultNull()->end()
                     ->arrayNode('backend')
                         ->addDefaultsIfNotSet()
                         ->beforeNormalization()
@@ -141,11 +146,6 @@ class Configuration implements ConfigurationInterface
                                         break;
                                     case 'doctrinedbal':
                                         break;
-                                    case 'midgard2':
-                                        if (! (isset($v['db_name']) || isset($v['config']))) {
-                                            throw new InvalidConfigurationException('midgard2 backend requires either the db_name or the config argument.');
-                                        }
-                                        break;
                                 }
 
                                 return $v;
@@ -154,13 +154,14 @@ class Configuration implements ConfigurationInterface
                         ->fixXmlConfig('parameter')
                         ->children()
                             ->enumNode('type')
-                                ->values(array('jackrabbit', 'doctrinedbal', 'prismic', 'midgard2'))
+                                ->values(array('jackrabbit', 'doctrinedbal', 'prismic'))
                                 ->defaultValue('jackrabbit')
                             ->end()
                             // all jackalope
                             ->scalarNode('factory')->defaultNull()->end()
                             ->booleanNode('logging')->defaultFalse()->end()
                             ->booleanNode('profiling')->defaultFalse()->end()
+                            ->booleanNode('backtrace')->defaultFalse()->end()
                             ->arrayNode('parameters')
                                 ->useAttributeAsKey('key')
                                 ->prototype('scalar')->end()
@@ -176,16 +177,6 @@ class Configuration implements ConfigurationInterface
                                     ->scalarNode('nodes')->end()
                                 ->end()
                             ->end()
-                            // midgard
-                            ->scalarNode('config')->end()
-                            ->scalarNode('db_type')->end()
-                            ->scalarNode('db_name')->end()
-                            ->scalarNode('db_host')->end()
-                            ->scalarNode('db_port')->end()
-                            ->scalarNode('db_username')->end()
-                            ->scalarNode('db_password')->end()
-                            ->scalarNode('db_init')->end()
-                            ->scalarNode('blobdir')->end()
                         ->end()
                     ->end()
                     ->arrayNode('options')
@@ -217,6 +208,7 @@ class Configuration implements ConfigurationInterface
                                 'locale_fallback' => true,
                                 'locales' => true,
                                 'locale' => true,
+                                'locale_chooser' => true,
                             );
                             $documentManagers = array();
                             foreach ($v as $key => $value) {
@@ -237,9 +229,24 @@ class Configuration implements ConfigurationInterface
                         ->booleanNode('auto_generate_proxy_classes')->defaultFalse()->end()
                         ->scalarNode('proxy_dir')->defaultValue('%kernel.cache_dir%/doctrine/PHPCRProxies')->end()
                         ->scalarNode('proxy_namespace')->defaultValue('PHPCRProxies')->end()
+                        ->scalarNode('locale_chooser')
+                            ->info('Specify custom locale chooser service ID')
+                            ->defaultNull()
+                        ->end()
                         ->enumNode('locale_fallback')
                             ->values(array('hardcoded', 'merge', 'replace'))
                             ->defaultValue('hardcoded')
+                        ->end()
+                        ->arrayNode('namespaces')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->arrayNode('translation')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('alias')->defaultValue(Translation::LOCALE_NAMESPACE)->end()
+                                    ->end()
+                                ->end()
+                            ->end()
                         ->end()
                     ->end()
                     ->fixXmlConfig('document_manager')
@@ -306,7 +313,7 @@ class Configuration implements ConfigurationInterface
                         ->prototype('array')
                             ->beforeNormalization()
                                 ->ifString()
-                                ->then(function($v) { return array('type' => $v); })
+                                ->then(function ($v) { return array('type' => $v); })
                             ->end()
                             ->treatNullLike(array())
                             ->treatFalseLike(array('mapping' => false))
@@ -337,8 +344,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->beforeNormalization()
             ->ifString()
-            ->then(function($v)
-        {
+            ->then(function ($v) {
             return array('type' => $v);
         })
             ->end()

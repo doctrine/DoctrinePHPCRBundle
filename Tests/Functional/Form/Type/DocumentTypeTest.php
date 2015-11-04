@@ -40,7 +40,7 @@ class DocumentTypeTest extends BaseTestCase
     }
 
     /**
-     * Render a form and return the HTML
+     * Render a form and return the HTML.
      */
     private function renderForm(FormBuilderInterface $formBuilder)
     {

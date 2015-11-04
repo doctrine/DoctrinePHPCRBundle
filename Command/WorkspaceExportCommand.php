@@ -21,7 +21,6 @@
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
 use PHPCR\Util\Console\Command\WorkspaceExportCommand as BaseWorkspaceExportCommand;
-
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
@@ -35,7 +34,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class WorkspaceExportCommand extends BaseWorkspaceExportCommand
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -48,7 +47,7 @@ class WorkspaceExportCommand extends BaseWorkspaceExportCommand
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

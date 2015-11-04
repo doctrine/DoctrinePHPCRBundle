@@ -32,25 +32,24 @@ use Doctrine\Bundle\PHPCRBundle\Command\DoctrineCommandHelper;
 class DocumentMigrateClassCommand extends BaseDocumentMigrateClassCommand
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configure()
     {
         parent::configure();
-
 
         $this->addOption('dm', null, InputOption::VALUE_OPTIONAL, 'The document manager to use for this command')
             ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The document manager to use for this command (deprecated, alias for dm)');
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if ($input->getOption('dm')) {
             $dmName = $input->getOption('dm');
-        } else if($input->getOption('session')) {
+        } elseif ($input->getOption('session')) {
             $dmName = $input->getOption('session');
             trigger_error(
                 'The session attribute for command doctrine:phpcr:fixtures:load is deprecated. Use --dm instead.',
@@ -67,4 +66,3 @@ class DocumentMigrateClassCommand extends BaseDocumentMigrateClassCommand
         return parent::execute($input, $output);
     }
 }
-

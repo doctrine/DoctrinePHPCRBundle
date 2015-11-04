@@ -9,11 +9,9 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCR;
 
 /**
@@ -90,7 +88,7 @@ class ReferrerDocument
     }
 
     /**
-     * Either define __toString or set property attribute on form mapping
+     * Either define __toString or set property attribute on form mapping.
      */
     public function __toString()
     {

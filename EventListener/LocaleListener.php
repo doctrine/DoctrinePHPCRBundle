@@ -71,12 +71,11 @@ class LocaleListener implements EventSubscriberInterface
     private $allowedLocales;
 
     /**
-     * The locale chooser to update on each request
+     * The locale chooser to update on each request.
      *
      * @param LocaleChooser $chooser        The locale chooser to update.
      * @param array         $allowedLocales List of locales that are allowed.
      * @param string        $fallback       One of the FALLBACK_* constants.
-     *
      */
     public function __construct(LocaleChooser $chooser, array $allowedLocales, $fallback = self::FALLBACK_MERGE)
     {
@@ -106,12 +105,12 @@ class LocaleListener implements EventSubscriberInterface
         $locale = $event->getRequest()->getLocale();
 
         return in_array($locale, $this->allowedLocales) ?
-            $locale:
+            $locale :
             null;
     }
 
     /**
-     * Handling the request event
+     * Handling the request event.
      *
      * @param GetResponseEvent $event
      */

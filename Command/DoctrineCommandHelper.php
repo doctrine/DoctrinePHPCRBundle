@@ -22,14 +22,11 @@ namespace Doctrine\Bundle\PHPCRBundle\Command;
 
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-
 use Doctrine\ODM\PHPCR\Tools\Console\Helper\DocumentManagerHelper;
 use PHPCR\Util\Console\Helper\PhpcrHelper;
-
 use Jackalope\Tools\Console\Helper\DoctrineDbalHelper;
 use Jackalope\Transport\DoctrineDBAL\Client as DbalClient;
 use Jackalope\Transport\DoctrineDBAL\LoggingClient as DbalLoggingClient;
-use Jackalope\Transport\Jackrabbit\Client as JackrabbitClient;
 use Jackalope\Session as JackalopeSession;
 
 /**
@@ -46,7 +43,7 @@ abstract class DoctrineCommandHelper
      * @param Application $application
      * @param string      $sessionName
      */
-    static public function setApplicationConnection(Application $application, $sessionName)
+    public static function setApplicationConnection(Application $application, $sessionName)
     {
         $connectionService = sprintf('doctrine_phpcr.jackalope_doctrine_dbal.%s_connection', $sessionName);
         $helperSet = $application->getHelperSet();
@@ -58,12 +55,12 @@ abstract class DoctrineCommandHelper
      *
      * @param Application $application
      * @param string      $sessionName
+     * @param bool        $admin
      */
-    static public function setApplicationPHPCRSession(Application $application, $sessionName)
+    public static function setApplicationPHPCRSession(Application $application, $sessionName, $admin = false)
     {
-        /** @var $registry ManagerRegistry */
         $registry = $application->getKernel()->getContainer()->get('doctrine_phpcr');
-        $session = $registry->getConnection($sessionName);
+        $session = $admin ? $registry->getAdminConnection($sessionName) : $registry->getConnection($sessionName);
 
         $helperSet = $application->getHelperSet();
         if (class_exists('Doctrine\ODM\PHPCR\Version')) {
@@ -87,7 +84,7 @@ abstract class DoctrineCommandHelper
      * @param Application $application
      * @param string      $dmName
      */
-    static public function setApplicationDocumentManager(Application $application, $dmName)
+    public static function setApplicationDocumentManager(Application $application, $dmName)
     {
         /** @var $registry ManagerRegistry */
         $registry = $application->getKernel()->getContainer()->get('doctrine_phpcr');

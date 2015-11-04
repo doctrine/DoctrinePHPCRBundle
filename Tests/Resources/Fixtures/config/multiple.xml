@@ -13,6 +13,8 @@
                      workspace="website"
                      username="root"
                      password="root"
+                     admin-username="admin"
+                     admin-password="admin"
             >
                 <backend type="jackrabbit" url="http://b"/>
             </session>
