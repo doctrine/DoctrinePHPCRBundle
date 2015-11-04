@@ -19,8 +19,12 @@ class DocumentTypeTest extends BaseTestCase
      */
     private $referrer;
 
+    private $legacy;
+
     public function setUp()
     {
+        $this->legacy = !method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+
         $this->db('PHPCR')->loadFixtures(array(
             'Doctrine\Bundle\PHPCRBundle\Tests\Resources\DataFixtures\PHPCR\LoadData',
         ));
@@ -36,7 +40,7 @@ class DocumentTypeTest extends BaseTestCase
      */
     private function createFormBuilder($data, $options = array())
     {
-        return $this->container->get('form.factory')->createBuilder('form', $data, $options);
+        return $this->container->get('form.factory')->createBuilder($this->legacy ? 'form' : 'Symfony\Component\Form\Extension\Core\Type\FormType', $data, $options);
     }
 
     /**
@@ -55,7 +59,7 @@ class DocumentTypeTest extends BaseTestCase
         $formBuilder = $this->createFormBuilder($this->referrer);
 
         $formBuilder
-            ->add('single', 'phpcr_document', array(
+            ->add('single', $this->legacy ? 'phpcr_document' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType', array(
                 'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument',
             ))
         ;
@@ -75,7 +79,7 @@ class DocumentTypeTest extends BaseTestCase
         $formBuilder = $this->createFormBuilder($this->referrer);
 
         $formBuilder
-            ->add('single', 'phpcr_document', array(
+            ->add('single', $this->legacy ? 'phpcr_document' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType', array(
                 'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument',
                 'query_builder' => $qb,
             ))

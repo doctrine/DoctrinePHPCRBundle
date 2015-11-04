@@ -28,6 +28,9 @@ class PHPCRReferenceType extends AbstractType
         $this->session = $session;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         switch (strtolower($options['transformer_type'])) {
@@ -47,11 +50,17 @@ class PHPCRReferenceType extends AbstractType
         $builder->addModelTransformer($transformer);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $this->configureOptions($resolver);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
@@ -59,12 +68,26 @@ class PHPCRReferenceType extends AbstractType
         ));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getParent()
     {
-        return 'text';
+        return method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
+    {
+        return $this->getBlockPrefix();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
     {
         return 'phpcr_reference';
     }

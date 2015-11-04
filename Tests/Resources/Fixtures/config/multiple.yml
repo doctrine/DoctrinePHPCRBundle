@@ -5,17 +5,17 @@ doctrine_phpcr:
                 backend:
                     type: jackrabbit
                     url: http://a
-                workspace: "default"
-                username: "admin"
-                password: "admin"
+                workspace: default
+                username: admin
+                password: admin
 
             website:
                 backend:
                     type: jackrabbit
-                    url: "http://b"
+                    url: http://b
                 workspace: website
-                username: "root"
-                password: "root"
+                username: root
+                password: root
                 admin_username: admin
                 admin_password: admin
     odm:

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\DependencyInjection;
+namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\DependencyInjection;
 
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\DoctrinePHPCRExtension;
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Configuration;
