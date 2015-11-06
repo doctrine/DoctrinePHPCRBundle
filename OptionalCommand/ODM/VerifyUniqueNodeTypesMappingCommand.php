@@ -39,12 +39,12 @@ class VerifyUniqueNodeTypesMappingCommand extends BaseVerifyUniqueNodeTypesMappi
         parent::configure();
 
         $this
-            ->setName('doctrine:phpcr:mapping:verify_unique_node_types')
-            ->setDescription('Verify that documents with unique node types are correctly mapped')
+            ->setName('doctrine:phpcr:mapping:verify-unique-node-types')
+            ->setDescription('Verify that documents claiming to have unique node types are truly unique')
             ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
             ->setHelp(<<<EOT
 The <info>%command.name%</info> command checks all mapped PHPCR-ODM documents
-and verifies that any marked as having unique node types are, in fact, unique.
+and verifies that any claiming to use unique node types are truly unique.
 EOT
         );
     }
