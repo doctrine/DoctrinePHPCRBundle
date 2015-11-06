@@ -31,8 +31,9 @@ use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\MigratorPass;
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\InitializerPass;
 use Doctrine\Bundle\PHPCRBundle\OptionalCommand\Jackalope\InitDoctrineDbalCommand;
 use Doctrine\Bundle\PHPCRBundle\OptionalCommand\Jackalope\JackrabbitCommand;
-use Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\InfoDoctrineCommand;
 use Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\DocumentMigrateClassCommand;
+use Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\InfoDoctrineCommand;
+use Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\VerifyUniqueNodeTypesMappingCommand;
 
 class DoctrinePHPCRBundle extends Bundle
 {
@@ -62,8 +63,9 @@ class DoctrinePHPCRBundle extends Bundle
         parent::registerCommands($application);
 
         if (class_exists('Doctrine\ODM\PHPCR\Version')) {
-            $application->add(new InfoDoctrineCommand());
             $application->add(new DocumentMigrateClassCommand());
+            $application->add(new InfoDoctrineCommand());
+            $application->add(new VerifyUniqueNodeTypesMappingCommand());
         }
 
         if (class_exists('\Jackalope\Tools\Console\Command\JackrabbitCommand')) {

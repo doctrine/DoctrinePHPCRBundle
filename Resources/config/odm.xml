@@ -37,6 +37,7 @@
         <parameter key="doctrine_phpcr.odm.metadata.yml.class">Doctrine\Bundle\PHPCRBundle\Mapping\Driver\YamlDriver</parameter>
         <parameter key="doctrine_phpcr.odm.metadata.php.class">Doctrine\Common\Persistence\Mapping\Driver\StaticPHPDriver</parameter>
         <parameter key="doctrine_phpcr.odm.proxy_cache_warmer.class">Symfony\Bridge\Doctrine\CacheWarmer\ProxyCacheWarmer</parameter>
+        <parameter key="doctrine_phpcr.odm.unique_node_type_cache_warmer.class">Doctrine\Bundle\PHPCRBundle\CacheWarmer\UniqueNodeTypeCacheWarmer</parameter>
 
         <!-- validator -->
         <parameter key="doctrine_phpcr.odm.validator.valid_phpcr_odm.class">Doctrine\Bundle\PHPCRBundle\Validator\Constraints\ValidPhpcrOdmValidator</parameter>
@@ -45,6 +46,12 @@
     <services>
 
         <service id="doctrine_phpcr.odm.proxy_cache_warmer" class="%doctrine_phpcr.odm.proxy_cache_warmer.class%"
+                 public="false">
+            <tag name="kernel.cache_warmer"/>
+            <argument type="service" id="doctrine_phpcr"/>
+        </service>
+
+        <service id="doctrine_phpcr.odm.unique_node_type_cache_warmer" class="%doctrine_phpcr.odm.unique_node_type_cache_warmer.class%"
                  public="false">
             <tag name="kernel.cache_warmer"/>
             <argument type="service" id="doctrine_phpcr"/>
