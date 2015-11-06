@@ -20,6 +20,7 @@
 
 namespace Doctrine\Bundle\PHPCRBundle;
 
+use Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\DocumentConvertTranslationCommand;
 use Symfony\Component\DependencyInjection\IntrospectableContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -66,6 +67,7 @@ class DoctrinePHPCRBundle extends Bundle
             $application->add(new DocumentMigrateClassCommand());
             $application->add(new InfoDoctrineCommand());
             $application->add(new VerifyUniqueNodeTypesMappingCommand());
+            $application->add(new DocumentConvertTranslationCommand());
         }
 
         if (class_exists('\Jackalope\Tools\Console\Command\JackrabbitCommand')) {
