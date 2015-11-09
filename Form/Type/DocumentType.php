@@ -34,7 +34,18 @@ class DocumentType extends DoctrineType
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getName()
+    {
+        return $this->getBlockPrefix();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getBlockPrefix()
     {
         return 'phpcr_document';
     }

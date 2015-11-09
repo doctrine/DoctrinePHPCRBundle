@@ -2,10 +2,12 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Functional\Form;
 
+use Doctrine\ODM\PHPCR\DocumentManager;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 use Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument;
 use Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\ReferrerDocument;
+use Symfony\Component\HttpKernel\Kernel;
 
 class PHPCRTypeGuesserTest extends BaseTestCase
 {
@@ -24,8 +26,16 @@ class PHPCRTypeGuesserTest extends BaseTestCase
      */
     private $referrer;
 
+
+    /**
+     * Work with 2.3-2.7 and 3.0 at the same time. drop once we switch to symfony 3.0
+     */
+    private $entryTypeOption;
+
     public function setUp()
     {
+        $this->entryTypeOption = Kernel::VERSION_ID < 20800 ? 'type' : 'entry_type';
+
         $this->db('PHPCR')->loadFixtures(array(
             'Doctrine\Bundle\PHPCRBundle\Tests\Resources\DataFixtures\PHPCR\LoadData',
         ));
@@ -41,7 +51,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
      */
     private function createFormBuilder($data, $options = array())
     {
-        return $this->container->get('form.factory')->createBuilder('form', $data, $options);
+        return $this->container->get('form.factory')->createBuilder(Kernel::VERSION_ID < 20800 ? 'form' : 'Symfony\Component\Form\Extension\Core\Type\FormType', $data, $options);
     }
 
     public function testFields()
@@ -60,7 +70,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('bool'),
-            '\Symfony\Component\Form\Extension\Core\Type\CheckboxType',
+            Kernel::VERSION_ID < 20800 ? 'checkbox' : '\Symfony\Component\Form\Extension\Core\Type\CheckboxType',
             array(
                 'required' => false,
             )
@@ -68,7 +78,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('date'),
-            '\Symfony\Component\Form\Extension\Core\Type\DateTimeType',
+            Kernel::VERSION_ID < 20800 ? 'datetime' : '\Symfony\Component\Form\Extension\Core\Type\DateTimeType',
             array(
                 'required' => true,
             )
@@ -76,7 +86,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('text'),
-            '\Symfony\Component\Form\Extension\Core\Type\TextType',
+            Kernel::VERSION_ID < 20800 ? 'text' : '\Symfony\Component\Form\Extension\Core\Type\TextType',
             array(
                 'required' => true,
             )
@@ -84,7 +94,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('number'),
-            '\Symfony\Component\Form\Extension\Core\Type\NumberType',
+            Kernel::VERSION_ID < 20800 ? 'number' : '\Symfony\Component\Form\Extension\Core\Type\NumberType',
             array(
                 'required' => true,
             )
@@ -92,7 +102,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('integer'),
-            '\Symfony\Component\Form\Extension\Core\Type\IntegerType',
+            Kernel::VERSION_ID < 20800 ? 'integer' : '\Symfony\Component\Form\Extension\Core\Type\IntegerType',
             array(
                 'required' => true,
             )
@@ -100,7 +110,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('long'),
-            '\Symfony\Component\Form\Extension\Core\Type\IntegerType',
+            Kernel::VERSION_ID < 20800 ? 'integer' : '\Symfony\Component\Form\Extension\Core\Type\IntegerType',
             array(
                 'required' => true,
             )
@@ -124,54 +134,54 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('mbool'),
-            '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
+            Kernel::VERSION_ID < 20800 ? 'collection' : '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
             array(
-                'type' => 'checkbox',
+                $this->entryTypeOption => Kernel::VERSION_ID < 20800 ? 'checkbox' : 'Symfony\Component\Form\Extension\Core\Type\CheckboxType',
                 'required' => false,
             )
         );
 
         $this->assertFormType(
             $formBuilder->get('mdate'),
-            '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
+            Kernel::VERSION_ID < 20800 ? 'collection' : '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
             array(
-                'type' => 'datetime',
+                $this->entryTypeOption => Kernel::VERSION_ID < 20800 ? 'datetime' : 'Symfony\Component\Form\Extension\Core\Type\DateTimeType',
                 'required' => false,
             )
         );
 
         $this->assertFormType(
             $formBuilder->get('mtext'),
-            '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
+            Kernel::VERSION_ID < 20800 ? 'collection' : '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
             array(
-                'type' => 'text',
+                $this->entryTypeOption => Kernel::VERSION_ID < 20800 ? 'text' : 'Symfony\Component\Form\Extension\Core\Type\TextType',
                 'required' => false,
             )
         );
 
         $this->assertFormType(
             $formBuilder->get('mnumber'),
-            '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
+            Kernel::VERSION_ID < 20800 ? 'collection' : '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
             array(
-                'type' => 'number',
+                $this->entryTypeOption => Kernel::VERSION_ID < 20800 ? 'number' : 'Symfony\Component\Form\Extension\Core\Type\NumberType',
                 'required' => false,
             )
         );
 
         $this->assertFormType(
             $formBuilder->get('minteger'),
-            '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
+            Kernel::VERSION_ID < 20800 ? 'collection' : '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
             array(
-                'type' => 'integer',
+                $this->entryTypeOption => Kernel::VERSION_ID < 20800 ? 'integer' : 'Symfony\Component\Form\Extension\Core\Type\IntegerType',
                 'required' => false,
             )
         );
 
         $this->assertFormType(
             $formBuilder->get('mlong'),
-            '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
+            Kernel::VERSION_ID < 20800 ? 'collection' : '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
             array(
-                'type' => 'integer',
+                $this->entryTypeOption => Kernel::VERSION_ID < 20800 ? 'integer' : 'Symfony\Component\Form\Extension\Core\Type\IntegerType',
                 'required' => false,
             )
         );
@@ -194,7 +204,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('id'),
-            '\Symfony\Component\Form\Extension\Core\Type\TextType',
+            Kernel::VERSION_ID < 20800 ? 'text' : '\Symfony\Component\Form\Extension\Core\Type\TextType',
             array(
                 'attr' => array('readonly' => 'readonly'),
                 'required' => false,
@@ -203,7 +213,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('parent'),
-            'Doctrine\Bundle\PHPCRBundle\Form\Type\PathType',
+            Kernel::VERSION_ID < 20800 ? 'phpcr_path' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\PathType',
             array(
                 'required' => true,
             )
@@ -211,7 +221,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('nodename'),
-            '\Symfony\Component\Form\Extension\Core\Type\TextType',
+            Kernel::VERSION_ID < 20800 ? 'text' : '\Symfony\Component\Form\Extension\Core\Type\TextType',
             array(
                 'required' => true,
             )
@@ -219,7 +229,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('uuid'),
-            '\Symfony\Component\Form\Extension\Core\Type\TextType',
+            Kernel::VERSION_ID < 20800 ? 'text' : '\Symfony\Component\Form\Extension\Core\Type\TextType',
             array(
                 'attr' => array('readonly' => 'readonly'),
                 'required' => false,
@@ -228,7 +238,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('child'),
-            'Doctrine\Bundle\PHPCRBundle\Form\Type\PathType',
+            Kernel::VERSION_ID < 20800 ? 'phpcr_path' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\PathType',
             array(
                 'attr' => array('readonly' => 'readonly'),
                 'required' => false,
@@ -237,11 +247,11 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('children'),
-            '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
+            Kernel::VERSION_ID < 20800 ? 'collection' : '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
             array(
                 'attr' => array('readonly' => 'readonly'),
                 'required' => false,
-                'type' => 'phpcr_odm_path',
+                $this->entryTypeOption => Kernel::VERSION_ID < 20800 ? 'phpcr_path' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\PathType',
             )
         );
 
@@ -261,7 +271,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('single'),
-            '\Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType',
+            Kernel::VERSION_ID < 20800 ? 'phpcr_odm_document' : '\Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType',
             array(
                 'required' => false,
                 'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\ReferrerDocument',
@@ -270,7 +280,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('documents'),
-            '\Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType',
+            Kernel::VERSION_ID < 20800 ? 'phpcr_odm_document' : '\Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType',
             array(
                 'required' => false,
                 'multiple' => true,
@@ -280,7 +290,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('testDocument'),
-            '\Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType',
+            Kernel::VERSION_ID < 20800 ? 'phpcr_odm_document' : '\Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType',
             array(
                 'required' => false,
                 'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument',
@@ -289,7 +299,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('testDocuments'),
-            '\Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType',
+            Kernel::VERSION_ID < 20800 ? 'phpcr_odm_document' : '\Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType',
             array(
                 'required' => false,
                 'multiple' => true,
@@ -311,7 +321,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('referrers'),
-            '\Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType',
+            Kernel::VERSION_ID < 20800 ? 'phpcr_odm_document' : '\Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType',
             array(
                 'required' => false,
                 'multiple' => true,
@@ -321,11 +331,11 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('mixedReferrers'),
-            '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
+            Kernel::VERSION_ID < 20800 ? 'collection' : '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
             array(
                 'attr' => array('readonly' => 'readonly'),
                 'required' => false,
-                'type' => 'phpcr_odm_path',
+                $this->entryTypeOption => Kernel::VERSION_ID < 20800 ? 'phpcr_path' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\PathType',
             )
         );
 

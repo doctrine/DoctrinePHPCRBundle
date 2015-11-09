@@ -27,6 +27,7 @@ use Symfony\Component\Form\FormTypeGuesserInterface;
 use Symfony\Component\Form\Guess\Guess;
 use Symfony\Component\Form\Guess\TypeGuess;
 use Symfony\Component\Form\Guess\ValueGuess;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * Guesser for Form component using Doctrine phpcr registry and metadata.
@@ -49,10 +50,16 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
 
     private $cache = array();
 
+    /**
+     * Work with 2.3-2.7 and 3.0 at the same time. drop once we switch to symfony 3.0
+     */
+    private $entryTypeOption = 'type';
+
     public function __construct(ManagerRegistry $registry, $typeGuess = array())
     {
         $this->registry = $registry;
         $this->typeGuess = $typeGuess;
+        $this->entryTypeOption = Kernel::VERSION_ID < 20800 ? 'type' : 'entry_type';
     }
 
     /**
@@ -61,7 +68,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
     public function guessType($class, $property)
     {
         if (!$ret = $this->getMetadata($class)) {
-            return new TypeGuess('text', array(), Guess::LOW_CONFIDENCE);
+            return new TypeGuess(Kernel::VERSION_ID < 20800 ? 'text' : 'Symfony\Component\Form\Extension\Core\Type\TextType', array(), Guess::LOW_CONFIDENCE);
         }
 
         /** @var ClassMetadata $metadata */
@@ -73,18 +80,18 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
 
             switch ($mapping['type']) {
                 case 'parent':
-                    return new TypeGuess('phpcr_odm_path', array(), Guess::MEDIUM_CONFIDENCE);
+                    return new TypeGuess(Kernel::VERSION_ID < 20800 ? 'phpcr_odm_path' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\PathType', array(), Guess::MEDIUM_CONFIDENCE);
 
                 case 'mixedreferrers':
                     $options = array(
                         'attr' => array('readonly' => 'readonly'),
-                        'type' => 'phpcr_odm_path',
+                        $this->entryTypeOption => 'Doctrine\Bundle\PHPCRBundle\Form\Type\PathType',
                     );
 
-                    return new TypeGuess('collection', $options, Guess::LOW_CONFIDENCE);
+                    return new TypeGuess(Kernel::VERSION_ID < 20800 ? 'collection' : 'Symfony\Component\Form\Extension\Core\Type\CollectionType', $options, Guess::LOW_CONFIDENCE);
 
                 case 'referrers':
-                    return new TypeGuess('phpcr_document', array(
+                    return new TypeGuess(Kernel::VERSION_ID < 20800 ? 'phpcr_document' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType', array(
                             'class' => $mapping['referringDocument'],
                             'multiple' => true,
                         ),
@@ -100,29 +107,29 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
                         $options['class'] = $mapping['targetDocument'];
                     }
 
-                    return new TypeGuess('phpcr_document', $options, Guess::HIGH_CONFIDENCE);
+                    return new TypeGuess(Kernel::VERSION_ID < 20800 ? 'phpcr_document' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType', $options, Guess::HIGH_CONFIDENCE);
 
                 case 'child':
                     $options = array(
                         'attr' => array('readonly' => 'readonly'),
                     );
 
-                    return new TypeGuess('phpcr_odm_path', $options, Guess::LOW_CONFIDENCE);
+                    return new TypeGuess(Kernel::VERSION_ID < 20800 ? 'phpcr_odm_path' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\PathType', $options, Guess::LOW_CONFIDENCE);
 
                 case 'children':
                     $options = array(
                         'attr' => array('readonly' => 'readonly'),
-                        'type' => 'phpcr_odm_path',
+                        $this->entryTypeOption => Kernel::VERSION_ID < 20800 ? 'phpcr_odm_path' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\PathType',
                     );
 
-                    return new TypeGuess('collection', $options, Guess::LOW_CONFIDENCE);
+                    return new TypeGuess(Kernel::VERSION_ID < 20800 ? 'collection' : 'Symfony\Component\Form\Extension\Core\Type\CollectionType', $options, Guess::LOW_CONFIDENCE);
 
                 default:
                     return;
             }
         }
 
-        $mapping = $metadata->getField($property);
+        $mapping = $metadata->getFieldMapping($property);
 
         if (!empty($mapping['assoc'])) {
             if (isset($this->typeGuess['assoc'])) {
@@ -137,7 +144,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
         $options = array();
         switch ($metadata->getTypeOfField($property)) {
             case 'boolean':
-                $type = 'checkbox';
+                $type = Kernel::VERSION_ID < 20800 ? 'checkbox' : 'Symfony\Component\Form\Extension\Core\Type\CheckboxType';
                 break;
             case 'binary':
                 // the file type only works on documents like the File document,
@@ -147,14 +154,14 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
                 // editing the phpcr node has no meaning
                 return;
             case 'date':
-                $type = 'datetime';
+                $type = Kernel::VERSION_ID < 20800 ? 'datetime' : 'Symfony\Component\Form\Extension\Core\Type\DateTimeType';
                 break;
             case 'double':
-                $type = 'number';
+                $type = Kernel::VERSION_ID < 20800 ? 'number' : 'Symfony\Component\Form\Extension\Core\Type\NumberType';
                 break;
             case 'long':
             case 'integer':
-                $type = 'integer';
+                $type = Kernel::VERSION_ID < 20800 ? 'integer' : 'Symfony\Component\Form\Extension\Core\Type\IntegerType';
                 break;
             case 'string':
                 if ($metadata->isIdentifier($property)
@@ -162,14 +169,14 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
                 ) {
                     $options['attr'] = array('readonly' => 'readonly');
                 }
-                $type = 'text';
+                $type = Kernel::VERSION_ID < 20800 ? 'text' : 'Symfony\Component\Form\Extension\Core\Type\TextType';
                 break;
             case 'nodename':
-                $type = 'text';
+                $type = Kernel::VERSION_ID < 20800 ? 'text' : 'Symfony\Component\Form\Extension\Core\Type\TextType';
                 break;
             case 'locale':
                 $locales = $documentManager->getLocaleChooserStrategy();
-                $type = 'choice';
+                $type = Kernel::VERSION_ID < 20800 ? 'choice' : 'Symfony\Component\Form\Extension\Core\Type\ChoiceType';
                 $options['choices'] = array_combine($locales->getDefaultLocalesOrder(), $locales->getDefaultLocalesOrder());
                 break;
             case 'versionname':
@@ -177,13 +184,13 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
             default:
                 $options['attr'] = array('readonly' => 'readonly');
                 $options['required'] = false;
-                $type = 'text';
+                $type = Kernel::VERSION_ID < 20800 ? 'text' : 'Symfony\Component\Form\Extension\Core\Type\TextType';
                 break;
         }
 
         if (!empty($mapping['multivalue'])) {
-            $options['type'] = $type;
-            $type = 'collection';
+            $options[$this->entryTypeOption] = $type;
+            $type = Kernel::VERSION_ID < 20800 ? 'collection' : 'Symfony\Component\Form\Extension\Core\Type\CollectionType';
         }
 
         if (!empty($mapping['translated'])) {

@@ -16,28 +16,23 @@ use Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\ODM\PHPCR\Document\Generic;
 use Doctrine\ODM\PHPCR\DocumentManager;
 
-class LoadData implements FixtureInterface, DependentFixtureInterface
+class LoadData implements FixtureInterface
 {
-    protected $root;
-
-    public function getDependencies()
-    {
-        return array(
-            'Symfony\Cmf\Component\Testing\DataFixtures\PHPCR\LoadBaseData',
-        );
-    }
-
     /**
      * @param DocumentManager $manager
      */
     public function load(ObjectManager $manager)
     {
-        $this->root = $manager->find(null, '/test');
+        $base = new Generic;
+        $base->setNodename('test');
+        $base->setParentDocument($manager->find(null, '/'));
 
         $doc = new TestDocument();
-        $doc->id = '/test/doc';
+        $doc->parent = $base;
+        $doc->nodename = 'doc';
         $doc->bool = true;
         $doc->date = new \DateTime('2014-01-14');
         $doc->integer = 42;
@@ -48,7 +43,8 @@ class LoadData implements FixtureInterface, DependentFixtureInterface
         $manager->persist($doc);
 
         $doc = new TestDocument();
-        $doc->id = '/test/doc2';
+        $doc->parent = $base;
+        $doc->nodename = 'doc2';
         $doc->bool = true;
         $doc->date = new \DateTime('2014-01-14');
         $doc->integer = 42;
