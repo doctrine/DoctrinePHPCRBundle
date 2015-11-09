@@ -26,9 +26,8 @@ class PHPCRTypeGuesserTest extends BaseTestCase
      */
     private $referrer;
 
-
     /**
-     * Work with 2.3-2.7 and 3.0 at the same time. drop once we switch to symfony 3.0
+     * Work with 2.3-2.7 and 3.0 at the same time. drop once we switch to symfony 3.0.
      */
     private $entryTypeOption;
 

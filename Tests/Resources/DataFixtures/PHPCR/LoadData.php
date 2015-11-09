@@ -15,7 +15,6 @@ use Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\ReferrerDocument;
 use Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\ODM\PHPCR\Document\Generic;
 use Doctrine\ODM\PHPCR\DocumentManager;
 
@@ -26,7 +25,7 @@ class LoadData implements FixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $base = new Generic;
+        $base = new Generic();
         $base->setNodename('test');
         $base->setParentDocument($manager->find(null, '/'));
 

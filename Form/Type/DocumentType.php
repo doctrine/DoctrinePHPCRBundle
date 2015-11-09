@@ -35,7 +35,7 @@ class DocumentType extends DoctrineType
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -43,7 +43,7 @@ class DocumentType extends DoctrineType
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getBlockPrefix()
     {

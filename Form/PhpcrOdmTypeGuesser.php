@@ -51,7 +51,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
     private $cache = array();
 
     /**
-     * Work with 2.3-2.7 and 3.0 at the same time. drop once we switch to symfony 3.0
+     * Work with 2.3-2.7 and 3.0 at the same time. drop once we switch to symfony 3.0.
      */
     private $entryTypeOption = 'type';
 
