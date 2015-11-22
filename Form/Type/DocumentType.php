@@ -19,6 +19,7 @@ namespace Doctrine\Bundle\PHPCRBundle\Form\Type;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Bundle\PHPCRBundle\Form\ChoiceList\PhpcrOdmQueryBuilderLoader;
 use Symfony\Bridge\Doctrine\Form\Type\DoctrineType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DocumentType extends DoctrineType
 {
@@ -32,6 +33,39 @@ class DocumentType extends DoctrineType
             $manager,
             $class
         );
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        parent::configureOptions($resolver);
+//
+//        $resolver->setDefaults(array(
+//            'choice_value' => 'uuid'
+//        ));
+
+//        // Set the "id_reader" option via the normalizer. This option is not
+//        // supposed to be set by the user.
+//        $idReaderNormalizer = function (Options $options) use (&$idReaders) {
+//            $hash = CachingFactoryDecorator::generateHash(array(
+//                $options['em'],
+//                $options['class'],
+//            ));
+//
+//            // The ID reader is a utility that is needed to read the object IDs
+//            // when generating the field values. The callback generating the
+//            // field values has no access to the object manager or the class
+//            // of the field, so we store that information in the reader.
+//            // The reader is cached so that two choice lists for the same class
+//            // (and hence with the same reader) can successfully be cached.
+//            if (!isset($idReaders[$hash])) {
+//                $classMetadata = $options['em']->getClassMetadata($options['class']);
+//                $idReaders[$hash] = new IdReader($options['em'], $classMetadata);
+//            }
+//
+//            return $idReaders[$hash];
+//        };
+//
+//        $resolver->setNormalizer('id_reader', $idReaderNormalizer);
     }
 
     /**

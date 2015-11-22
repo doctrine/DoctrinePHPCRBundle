@@ -77,6 +77,8 @@ class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
      */
     public function getEntitiesByIds($identifier, array $values)
     {
+        //return array_values($this->manager->findMany(null, $values)->toArray());
+
         $values = array_values(array_filter($values, function ($v) {
             return !empty($v);
         }));
