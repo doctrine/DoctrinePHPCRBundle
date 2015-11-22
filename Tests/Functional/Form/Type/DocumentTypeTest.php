@@ -38,7 +38,7 @@ class DocumentTypeTest extends BaseTestCase
     /**
      * @return FormBuilderInterface
      */
-    private function createFormBuilder($data, $options = [])
+    private function createFormBuilder($data, $options = array())
     {
         return $this->container->get('form.factory')->createBuilder($this->legacy ? 'form' : 'Symfony\Component\Form\Extension\Core\Type\FormType', $data, $options);
     }
@@ -51,7 +51,7 @@ class DocumentTypeTest extends BaseTestCase
         $formView = $formBuilder->getForm()->createView();
         $templating = $this->getContainer()->get('templating');
 
-        return $templating->render('::form.html.twig', ['form' => $formView]);
+        return $templating->render('::form.html.twig', array('form' => $formView));
     }
 
     public function testUuid()
@@ -62,10 +62,10 @@ class DocumentTypeTest extends BaseTestCase
         $formBuilder = $this->createFormBuilder($this->referrer);
 
         $formBuilder
-            ->add('single', $this->legacy ? 'phpcr_document' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType', [
+            ->add('single', $this->legacy ? 'phpcr_document' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType', array(
                 'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument',
                 'choice_value' => 'uuid'
-            ])
+            ))
         ;
 
         $form = $formBuilder->getForm();
@@ -87,9 +87,9 @@ class DocumentTypeTest extends BaseTestCase
         $formBuilder = $this->createFormBuilder($this->referrer);
 
         $formBuilder
-            ->add('single', $this->legacy ? 'phpcr_document' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType', [
+            ->add('single', $this->legacy ? 'phpcr_document' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType', array(
                 'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument',
-            ]);
+            ));
 
         $html = $this->renderForm($formBuilder);
         $this->assertContains('<select id="form_single" name="form[single]"', $html);
@@ -105,10 +105,10 @@ class DocumentTypeTest extends BaseTestCase
         $formBuilder = $this->createFormBuilder($this->referrer);
 
         $formBuilder
-            ->add('single', $this->legacy ? 'phpcr_document' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType', [
+            ->add('single', $this->legacy ? 'phpcr_document' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType', array(
                 'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument',
                 'query_builder' => $qb,
-            ]);
+            ));
 
         $html = $this->renderForm($formBuilder);
         $this->assertContains('<select id="form_single" name="form[single]"', $html);
