@@ -4,6 +4,7 @@ namespace Doctrine\Bundle\PHPCRBundle\Form\ChoiceList;
 
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder;
+use PHPCR\Util\UUIDHelper;
 use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityLoaderInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
@@ -95,10 +96,10 @@ class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
         $where = $qb->andWhere()->orX();
 
         foreach ($values as $val) {
-            if ($identifier === 'id') {
-                $where->same($val, $alias);
+            if (UUIDHelper::isUUID($val)) {
+                $where->eq()->field($alias.'.uuid')->literal($val)->end();
             } else {
-                $where->eq()->field($alias . '.' . $identifier)->literal($val)->end();
+                $where->same($val, $alias);
             }
         }
 

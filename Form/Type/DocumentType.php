@@ -16,18 +16,34 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Form\Type;
 
-use Doctrine\Bundle\PHPCRBundle\Form\ChoiceList\IdReader;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Bundle\PHPCRBundle\Form\ChoiceList\PhpcrOdmQueryBuilderLoader;
-use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
-use Symfony\Bridge\Doctrine\Form\Type\DoctrineType;
+use Doctrine\Bundle\PHPCRBundle\Form\ChoiceList\DoctrineChoiceLoader;
 use Symfony\Component\Form\ChoiceList\Factory\CachingFactoryDecorator;
+use Symfony\Component\Form\ChoiceList\Factory\ChoiceListFactoryInterface;
+use Symfony\Component\Form\ChoiceList\Factory\DefaultChoiceListFactory;
+use Symfony\Component\Form\ChoiceList\Factory\PropertyAccessDecorator;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
+
+use Doctrine\Bundle\PHPCRBundle\Form\ChoiceList\PhpcrOdmQueryBuilderLoader;
+use Symfony\Bridge\Doctrine\Form\Type\DoctrineType;
 
 class DocumentType extends DoctrineType
 {
-    private $idReaders = array();
+    private $choiceListFactory;
+
+    /**
+     * @var DoctrineChoiceLoader[]
+     */
+    private $choiceLoaders = array();
+
+    public function __construct(ManagerRegistry $registry, PropertyAccessorInterface $propertyAccessor = null, ChoiceListFactoryInterface $choiceListFactory = null)
+    {
+        parent::__construct($registry, $propertyAccessor, $choiceListFactory);
+        $this->choiceListFactory = $choiceListFactory ?: new PropertyAccessDecorator(new DefaultChoiceListFactory(), $propertyAccessor);
+    }
 
     /**
      * {@inheritdoc}
@@ -45,36 +61,62 @@ class DocumentType extends DoctrineType
     {
         parent::configureOptions($resolver);
 
-        $idReaders =& $this->idReaders;
+        $choiceListFactory = $this->choiceListFactory;
+        $choiceLoaders = &$this->choiceLoaders;
+        $type = $this;
 
-        // Set the "id_reader" option via the normalizer. This option is not
-        // supposed to be set by the user.
-        $idReaderNormalizer = function (Options $options) use (&$idReaders) {
-            $hash = CachingFactoryDecorator::generateHash(array(
-                $options['em'],
-                $options['class'],
-            ));
+        $choiceLoader = function (Options $options) use ($choiceListFactory, &$choiceLoaders, $type) {
 
-            // The ID reader is a utility that is needed to read the object IDs
-            // when generating the field values. The callback generating the
-            // field values has no access to the object manager or the class
-            // of the field, so we store that information in the reader.
-            // The reader is cached so that two choice lists for the same class
-            // (and hence with the same reader) can successfully be cached.
-            if (!isset($idReaders[$hash])) {
-                /** @var ClassMetadata $classMetadata */
-                $classMetadata = $options['em']->getClassMetadata($options['class']);
-                $uuidFieldName = null;
-                if ($classMetadata->referenceable) {
-                    $uuidFieldName = $classMetadata->uuidFieldName;
+            // Unless the choices are given explicitly, load them on demand
+            if (null === $options['choices']) {
+                $hash = null;
+                $qbParts = null;
+
+                // If there is no QueryBuilder we can safely cache DoctrineChoiceLoader,
+                // also if concrete Type can return important QueryBuilder parts to generate
+                // hash key we go for it as well
+                if (!$options['query_builder'] || false !== ($qbParts = $type->getQueryBuilderPartsForCachingHash($options['query_builder']))) {
+                    $hash = CachingFactoryDecorator::generateHash(array(
+                        $options['em'],
+                        $options['class'],
+                        $qbParts,
+                        $options['loader'],
+                    ));
+
+                    if (isset($choiceLoaders[$hash])) {
+                        return $choiceLoaders[$hash];
+                    }
                 }
-                $idReaders[$hash] = new IdReader($options['em'], $classMetadata, $uuidFieldName);
-            }
 
-            return $idReaders[$hash];
+                if ($options['loader']) {
+                    $entityLoader = $options['loader'];
+                } elseif (null !== $options['query_builder']) {
+                    $entityLoader = $type->getLoader($options['em'], $options['query_builder'], $options['class']);
+                } else {
+                    $queryBuilder = $options['em']->getRepository($options['class'])->createQueryBuilder('e');
+                    $entityLoader = $type->getLoader($options['em'], $queryBuilder, $options['class']);
+                }
+
+                $doctrineChoiceLoader = new DoctrineChoiceLoader(
+                    $choiceListFactory,
+                    $options['em'],
+                    $options['class'],
+                    $options['id_reader'],
+                    $entityLoader
+                );
+
+                if ($hash !== null) {
+                    $choiceLoaders[$hash] = $doctrineChoiceLoader;
+                }
+
+                return $doctrineChoiceLoader;
+            }
         };
 
-        $resolver->setNormalizer('id_reader', $idReaderNormalizer);
+
+        $resolver->setDefaults(array(
+            'choice_loader' => $choiceLoader
+        ));
     }
 
     /**
