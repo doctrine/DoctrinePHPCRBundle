@@ -32,10 +32,8 @@ class IdReader extends BaseIdReader
 
     public function getIdValue($object)
     {
-        if ($this->idField !== null) {
-            if ($this->propertyAccessor->isReadable($object, $this->idField)) {
-                return $this->propertyAccessor->getValue($object, $this->idField);
-            }
+        if ($this->idField !== null && $this->propertyAccessor->isReadable($object, $this->idField)) {
+            return $this->propertyAccessor->getValue($object, $this->idField);
         }
 
         return parent::getIdValue($object);

@@ -44,12 +44,8 @@ class DocumentType extends DoctrineType
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
-//
-//        $resolver->setDefaults(array(
-//            'choice_value' => 'uuid'
-//        ));
 
-        $idReaders =& $idReaders;
+        $idReaders =& $this->idReaders;
 
         // Set the "id_reader" option via the normalizer. This option is not
         // supposed to be set by the user.
