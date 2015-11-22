@@ -35,6 +35,22 @@ class PhpcrOdmQueryBuilderLoaderTest extends BaseTestCase
         }
     }
 
+    public function testGetByIdsWithUuid()
+    {
+        $qb = $this->dm->getRepository('Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument')->createQueryBuilder('e');
+        $loader = new PhpcrOdmQueryBuilderLoader($qb, $this->dm);
+
+        $doc = $this->dm->find(null, '/test/doc');
+        $uuids = array($doc->uuid, 'non-existing-uuid');
+
+        $documents = $loader->getEntitiesByIds('uuid', $uuids);
+        $this->assertCount(1, $documents);
+        foreach ($documents as $i => $document) {
+            $this->assertInstanceOf('Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument', $document);
+            $this->assertTrue(in_array($document->uuid, $uuids));
+        }
+    }
+
     public function testGetByIdsNotFound()
     {
         $qb = $this->dm->getRepository('Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument')->createQueryBuilder('e');

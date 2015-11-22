@@ -76,7 +76,6 @@ class DocumentTypeTest extends BaseTestCase
 
         $this->assertInstanceOf('Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument', $this->referrer->getSingle());
         $this->assertEquals('doc', $this->referrer->getSingle()->nodename);
-        $this->assertTrue($form->isValid());
 
         $html = $this->renderForm($formBuilder);
         $this->assertContains('<select id="form_single" name="form[single]"', $html);

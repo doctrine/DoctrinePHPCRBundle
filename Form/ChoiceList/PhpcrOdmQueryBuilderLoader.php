@@ -77,14 +77,12 @@ class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
      */
     public function getEntitiesByIds($identifier, array $values)
     {
-        //return array_values($this->manager->findMany(null, $values)->toArray());
-
         $values = array_values(array_filter($values, function ($v) {
             return !empty($v);
         }));
 
         if (0 == count($values)) {
-            return array();
+            return [];
         }
 
         /* performance: if we could figure out whether the query builder is "
@@ -95,8 +93,13 @@ class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
         $qb = clone $this->queryBuilder;
         $alias = $qb->getPrimaryAlias();
         $where = $qb->andWhere()->orX();
+
         foreach ($values as $val) {
-            $where->same($val, $alias);
+            if ($identifier === 'id') {
+                $where->same($val, $alias);
+            } else {
+                $where->eq()->field($alias . '.' . $identifier)->literal($val)->end();
+            }
         }
 
         return $this->getResult($qb);
