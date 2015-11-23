@@ -26,7 +26,6 @@ use Symfony\Component\Form\ChoiceList\Factory\PropertyAccessDecorator;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-
 use Doctrine\Bundle\PHPCRBundle\Form\ChoiceList\PhpcrOdmQueryBuilderLoader;
 use Symfony\Bridge\Doctrine\Form\Type\DoctrineType;
 
@@ -114,7 +113,6 @@ class DocumentType extends DoctrineType
                 return $doctrineChoiceLoader;
             }
         };
-
 
         $resolver->setDefaults(array(
             'choice_loader' => $choiceLoader,
