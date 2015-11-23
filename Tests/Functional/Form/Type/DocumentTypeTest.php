@@ -64,14 +64,14 @@ class DocumentTypeTest extends BaseTestCase
         $formBuilder
             ->add('single', $this->legacy ? 'phpcr_document' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType', array(
                 'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument',
-                'choice_value' => 'uuid'
+                'choice_value' => 'uuid',
             ))
         ;
 
         $form = $formBuilder->getForm();
 
         $form->submit(array(
-            'single' => $uuid
+            'single' => $uuid,
         ));
 
         $this->assertInstanceOf('Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument', $this->referrer->getSingle());

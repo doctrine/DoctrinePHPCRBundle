@@ -117,7 +117,7 @@ class DocumentType extends DoctrineType
 
 
         $resolver->setDefaults(array(
-            'choice_loader' => $choiceLoader
+            'choice_loader' => $choiceLoader,
         ));
     }
 

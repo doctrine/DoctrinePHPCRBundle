@@ -15,7 +15,8 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 /**
- * DoctrineChoiceLoader
+ * Supports UUIDs as choice values, it will automatically detect them and if the PHPCR document
+ * has a UUID field mapping it will be enabled.
  *
  * @author Steffen Brem <steffenbrem@gmail.com>
  */
@@ -112,7 +113,7 @@ class DoctrineChoiceLoader extends BaseDoctrineChoiceLoader
                             break;
                         }
                     }
-                } else if (isset($objectsById[$id])) {
+                } elseif (isset($objectsById[$id])) {
                     $objects[$i] = $objectsById[$id];
                 }
             }

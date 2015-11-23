@@ -8,8 +8,7 @@ $loader->import(CMF_TEST_CONFIG_DIR.'/phpcr_odm.php');
 
 $config = array(
     'form' => array(
-        'csrf_protection' => false
-    )
+        'csrf_protection' => false,
+    ),
 );
-
 $container->loadFromExtension('framework', $config);
