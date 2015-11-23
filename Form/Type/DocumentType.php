@@ -56,6 +56,12 @@ class DocumentType extends DoctrineType
         );
     }
 
+    /**
+     * We need to overrive the `choice_loader`, so that we can use our own DoctrineChoiceLoader
+     * class that includes support for UUIDs.
+     *
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
@@ -64,7 +70,6 @@ class DocumentType extends DoctrineType
         $choiceLoaders = &$this->choiceLoaders;
         $type = $this;
 
-        // we need to override the default choiceLoader, since we want to use our own class
         $choiceLoader = function (Options $options) use ($choiceListFactory, &$choiceLoaders, $type) {
             // Unless the choices are given explicitly, load them on demand
             if (null === $options['choices']) {
