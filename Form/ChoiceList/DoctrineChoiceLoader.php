@@ -52,20 +52,7 @@ class DoctrineChoiceLoader extends BaseDoctrineChoiceLoader
     private $propertyAccessor;
 
     /**
-     * Creates a new choice loader.
-     *
-     * Optionally, an implementation of {@link EntityLoaderInterface} can be
-     * passed which optimizes the object loading for one of the Doctrine
-     * mapper implementations.
-     *
-     * @param ChoiceListFactoryInterface $factory      The factory for creating
-     *                                                 the loaded choice list
-     * @param ObjectManager              $manager      The object manager
-     * @param string                     $class        The class name of the
-     *                                                 loaded objects
-     * @param IdReader                   $idReader     The reader for the object
-     *                                                 IDs.
-     * @param null|EntityLoaderInterface $objectLoader The objects loader
+     * {@inheritdoc}
      */
     public function __construct(ChoiceListFactoryInterface $factory, ObjectManager $manager, $class, IdReader $idReader = null, EntityLoaderInterface $objectLoader = null)
     {
@@ -96,7 +83,6 @@ class DoctrineChoiceLoader extends BaseDoctrineChoiceLoader
         }
 
         $uuidFieldName = null;
-
         if ($this->classMetadata instanceof PHPCRClassMetadata) {
             if ($this->classMetadata->referenceable) {
                 $uuidFieldName = $this->classMetadata->getUuidFieldName();
@@ -119,7 +105,7 @@ class DoctrineChoiceLoader extends BaseDoctrineChoiceLoader
             }
 
             foreach ($values as $i => $id) {
-                if (UUIDHelper::isUUID($id)) {
+                if (UUIDHelper::isUUID($id) && null !== $uuidFieldName) {
                     foreach ($unorderedObjects as $object) {
                         if ($id === $this->propertyAccessor->getValue($object, $uuidFieldName)) {
                             $objects[$i] = $object;
