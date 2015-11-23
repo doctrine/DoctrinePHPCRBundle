@@ -3,6 +3,7 @@
 namespace Doctrine\Bundle\PHPCRBundle\Form\ChoiceList;
 
 use Doctrine\ODM\PHPCR\DocumentManager;
+use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
 use Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder;
 use PHPCR\Util\UUIDHelper;
 use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityLoaderInterface;
@@ -26,6 +27,11 @@ class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
      * @var QueryBuilder
      */
     private $queryBuilder;
+
+    /**
+     * @var ClassMetadata
+     */
+    private $classMetadata;
 
     /**
      * Construct a PHPCR-ODM Query Builder Loader.
@@ -53,6 +59,13 @@ class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
         $this->manager = $manager;
 
         $this->queryBuilder = $queryBuilder;
+
+        if (null !== $class) {
+            $classMetadata = $this->manager->getClassMetadata($class);
+            if ($classMetadata instanceof ClassMetadata) {
+                $this->classMetadata = $classMetadata;
+            }
+        }
     }
 
     /**
@@ -96,8 +109,8 @@ class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
         $where = $qb->andWhere()->orX();
 
         foreach ($values as $val) {
-            if (UUIDHelper::isUUID($val)) {
-                $where->eq()->field($alias.'.uuid')->literal($val)->end();
+            if (UUIDHelper::isUUID($val) && $this->classMetadata) {
+                $where->eq()->field($alias . '.' . $this->classMetadata->getUuidFieldName())->literal($val)->end();
             } else {
                 $where->same($val, $alias);
             }

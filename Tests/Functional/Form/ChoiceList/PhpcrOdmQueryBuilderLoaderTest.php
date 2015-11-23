@@ -24,8 +24,9 @@ class PhpcrOdmQueryBuilderLoaderTest extends BaseTestCase
 
     public function testGetByIds()
     {
-        $qb = $this->dm->getRepository('Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument')->createQueryBuilder('e');
-        $loader = new PhpcrOdmQueryBuilderLoader($qb, $this->dm);
+        $class = 'Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument';
+        $qb = $this->dm->getRepository($class)->createQueryBuilder('e');
+        $loader = new PhpcrOdmQueryBuilderLoader($qb, $this->dm, $class);
         $ids = array('/test/doc', '/test/doc2', '/test/doc3');
         $documents = $loader->getEntitiesByIds('id', $ids);
         $this->assertCount(2, $documents);
@@ -37,8 +38,9 @@ class PhpcrOdmQueryBuilderLoaderTest extends BaseTestCase
 
     public function testGetByIdsWithUuid()
     {
-        $qb = $this->dm->getRepository('Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument')->createQueryBuilder('e');
-        $loader = new PhpcrOdmQueryBuilderLoader($qb, $this->dm);
+        $class = 'Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument';
+        $qb = $this->dm->getRepository($class)->createQueryBuilder('e');
+        $loader = new PhpcrOdmQueryBuilderLoader($qb, $this->dm, $class);
 
         $doc = $this->dm->find(null, '/test/doc');
         $uuids = array($doc->uuid, 'non-existing-uuid');
@@ -53,17 +55,19 @@ class PhpcrOdmQueryBuilderLoaderTest extends BaseTestCase
 
     public function testGetByIdsNotFound()
     {
-        $qb = $this->dm->getRepository('Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument')->createQueryBuilder('e');
-        $loader = new PhpcrOdmQueryBuilderLoader($qb, $this->dm);
+        $class = 'Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument';
+        $qb = $this->dm->getRepository($class)->createQueryBuilder('e');
+        $loader = new PhpcrOdmQueryBuilderLoader($qb, $this->dm, $class);
         $documents = $loader->getEntitiesByIds('id', array('/foo/bar'));
         $this->assertCount(0, $documents);
     }
 
     public function testGetByIdsFilter()
     {
+        $class = 'Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument';
         $qb = $this->dm->getRepository('Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument')->createQueryBuilder('e');
         $qb->where()->eq()->field('e.text')->literal('thiswillnotmatch');
-        $loader = new PhpcrOdmQueryBuilderLoader($qb, $this->dm);
+        $loader = new PhpcrOdmQueryBuilderLoader($qb, $this->dm, $class);
         $documents = $loader->getEntitiesByIds('id', array('/test/doc'));
         $this->assertCount(0, $documents);
     }
