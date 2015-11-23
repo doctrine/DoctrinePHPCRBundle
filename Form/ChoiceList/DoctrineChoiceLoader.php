@@ -1,44 +1,35 @@
 <?php
-/**
- * (c) Steffen Brem <steffenbrem@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 
 namespace Doctrine\Bundle\PHPCRBundle\Form\ChoiceList;
 
+use Symfony\Bridge\Doctrine\Form\ChoiceList\DoctrineChoiceLoader as BaseDoctrineChoiceLoader;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
+use Doctrine\ODM\PHPCR\Mapping\ClassMetadata as PHPCRClassMetadata;
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use PHPCR\Util\UUIDHelper;
 use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityLoaderInterface;
 use Symfony\Bridge\Doctrine\Form\ChoiceList\IdReader;
 use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\ChoiceList\Factory\ChoiceListFactoryInterface;
-use Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 /**
  * DoctrineChoiceLoader
  *
  * @author Steffen Brem <steffenbrem@gmail.com>
  */
-class DoctrineChoiceLoader implements ChoiceLoaderInterface
+class DoctrineChoiceLoader extends BaseDoctrineChoiceLoader
 {
-    /**
-     * @var ChoiceListFactoryInterface
-     */
-    private $factory;
-
     /**
      * @var ObjectManager
      */
     private $manager;
 
     /**
-     * @var string
+     * @var ClassMetadata
      */
-    private $class;
+    private $classMetadata;
 
     /**
      * @var IdReader
@@ -54,6 +45,11 @@ class DoctrineChoiceLoader implements ChoiceLoaderInterface
      * @var ChoiceListInterface
      */
     private $choiceList;
+
+    /**
+     * @var PropertyAccessor
+     */
+    private $propertyAccessor;
 
     /**
      * Creates a new choice loader.
@@ -73,64 +69,15 @@ class DoctrineChoiceLoader implements ChoiceLoaderInterface
      */
     public function __construct(ChoiceListFactoryInterface $factory, ObjectManager $manager, $class, IdReader $idReader = null, EntityLoaderInterface $objectLoader = null)
     {
+        parent::__construct($factory, $manager, $class, $idReader, $objectLoader);
+
         $classMetadata = $manager->getClassMetadata($class);
 
-        $this->factory = $factory;
         $this->manager = $manager;
-        $this->class = $classMetadata->getName();
+        $this->classMetadata = $classMetadata;
         $this->idReader = $idReader ?: new IdReader($manager, $classMetadata);
         $this->objectLoader = $objectLoader;
-
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function loadChoiceList($value = null)
-    {
-        if ($this->choiceList) {
-            return $this->choiceList;
-        }
-
-        $objects = $this->objectLoader
-            ? $this->objectLoader->getEntities()
-            : $this->manager->getRepository($this->class)->findAll();
-
-        $this->choiceList = $this->factory->createListFromChoices($objects, $value);
-
-        return $this->choiceList;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function loadValuesForChoices(array $choices, $value = null)
-    {
-        // Performance optimization
-        if (empty($choices)) {
-            return array();
-        }
-
-        // Optimize performance for single-field identifiers. We already
-        // know that the IDs are used as values
-
-        // Attention: This optimization does not check choices for existence
-        if (!$this->choiceList && $this->idReader->isSingleId()) {
-            $values = array();
-
-            // Maintain order and indices of the given objects
-            foreach ($choices as $i => $object) {
-                if ($object instanceof $this->class) {
-                    // Make sure to convert to the right format
-                    $values[$i] = (string)$this->idReader->getIdValue($object);
-                }
-            }
-
-            return $values;
-        }
-
-        return $this->loadChoiceList($value)->getValuesForChoices($choices);
     }
 
     /**
@@ -148,13 +95,11 @@ class DoctrineChoiceLoader implements ChoiceLoaderInterface
             return array();
         }
 
-        $classMetadata = $this->manager->getClassMetadata($this->class);
-
         $uuidFieldName = null;
 
-        if ($classMetadata instanceof ClassMetadata) {
-            if ($classMetadata->referenceable) {
-                $uuidFieldName = $classMetadata->getUuidFieldName();
+        if ($this->classMetadata instanceof PHPCRClassMetadata) {
+            if ($this->classMetadata->referenceable) {
+                $uuidFieldName = $this->classMetadata->getUuidFieldName();
             }
         }
 

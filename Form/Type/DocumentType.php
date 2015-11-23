@@ -65,8 +65,8 @@ class DocumentType extends DoctrineType
         $choiceLoaders = &$this->choiceLoaders;
         $type = $this;
 
+        // we need to override the default choiceLoader, since we want to use our own class
         $choiceLoader = function (Options $options) use ($choiceListFactory, &$choiceLoaders, $type) {
-
             // Unless the choices are given explicitly, load them on demand
             if (null === $options['choices']) {
                 $hash = null;
@@ -97,6 +97,8 @@ class DocumentType extends DoctrineType
                     $entityLoader = $type->getLoader($options['em'], $queryBuilder, $options['class']);
                 }
 
+                // this line is different from the original choice loader, we use our own DoctrineChoiceLoader,
+                // were we have our changes to support UUIDs
                 $doctrineChoiceLoader = new DoctrineChoiceLoader(
                     $choiceListFactory,
                     $options['em'],

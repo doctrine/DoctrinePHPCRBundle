@@ -83,7 +83,7 @@ class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
         }));
 
         if (0 == count($values)) {
-            return [];
+            return array();
         }
 
         /* performance: if we could figure out whether the query builder is "

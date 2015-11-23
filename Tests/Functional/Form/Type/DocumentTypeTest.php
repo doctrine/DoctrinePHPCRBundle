@@ -25,9 +25,9 @@ class DocumentTypeTest extends BaseTestCase
     {
         $this->legacy = !method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
 
-        $this->db('PHPCR')->loadFixtures([
+        $this->db('PHPCR')->loadFixtures(array(
             'Doctrine\Bundle\PHPCRBundle\Tests\Resources\DataFixtures\PHPCR\LoadData',
-        ]);
+        ));
         $this->dm = $this->db('PHPCR')->getOm();
         $document = $this->dm->find(null, '/test/doc');
         $this->assertNotNull($document, 'fixture loading not working');
@@ -89,7 +89,8 @@ class DocumentTypeTest extends BaseTestCase
         $formBuilder
             ->add('single', $this->legacy ? 'phpcr_document' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType', array(
                 'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument',
-            ));
+            ))
+        ;
 
         $html = $this->renderForm($formBuilder);
         $this->assertContains('<select id="form_single" name="form[single]"', $html);
