@@ -64,6 +64,14 @@ class ReferrerDocument
     }
 
     /**
+     * @param $doc
+     */
+    public function setSingle($doc)
+    {
+        $this->single = $doc;
+    }
+
+    /**
      * @return mixed
      */
     public function getTestDocument()

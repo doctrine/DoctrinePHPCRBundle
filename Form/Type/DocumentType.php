@@ -16,12 +16,34 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Form\Type;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Bundle\PHPCRBundle\Form\ChoiceList\DoctrineChoiceLoader;
+use Symfony\Component\Form\ChoiceList\Factory\CachingFactoryDecorator;
+use Symfony\Component\Form\ChoiceList\Factory\ChoiceListFactoryInterface;
+use Symfony\Component\Form\ChoiceList\Factory\DefaultChoiceListFactory;
+use Symfony\Component\Form\ChoiceList\Factory\PropertyAccessDecorator;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Doctrine\Bundle\PHPCRBundle\Form\ChoiceList\PhpcrOdmQueryBuilderLoader;
 use Symfony\Bridge\Doctrine\Form\Type\DoctrineType;
 
 class DocumentType extends DoctrineType
 {
+    private $choiceListFactory;
+
+    /**
+     * @var DoctrineChoiceLoader[]
+     */
+    private $choiceLoaders = array();
+
+    public function __construct(ManagerRegistry $registry, PropertyAccessorInterface $propertyAccessor = null, ChoiceListFactoryInterface $choiceListFactory = null)
+    {
+        parent::__construct($registry, $propertyAccessor, $choiceListFactory);
+        $this->choiceListFactory = $choiceListFactory ?: new PropertyAccessDecorator(new DefaultChoiceListFactory(), $propertyAccessor);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -32,6 +54,74 @@ class DocumentType extends DoctrineType
             $manager,
             $class
         );
+    }
+
+    /**
+     * We need to overrive the `choice_loader`, so that we can use our own DoctrineChoiceLoader
+     * class that includes support for UUIDs.
+     *
+     * @param OptionsResolver $resolver
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        parent::configureOptions($resolver);
+
+        $choiceListFactory = $this->choiceListFactory;
+        $choiceLoaders = &$this->choiceLoaders;
+        $type = $this;
+
+        $choiceLoader = function (Options $options) use ($choiceListFactory, &$choiceLoaders, $type) {
+            // Unless the choices are given explicitly, load them on demand
+            if (null === $options['choices']) {
+                $hash = null;
+                $qbParts = null;
+
+                // If there is no QueryBuilder we can safely cache DoctrineChoiceLoader,
+                // also if concrete Type can return important QueryBuilder parts to generate
+                // hash key we go for it as well
+                if (!$options['query_builder'] || false !== ($qbParts = $type->getQueryBuilderPartsForCachingHash($options['query_builder']))) {
+                    $hash = CachingFactoryDecorator::generateHash(array(
+                        $options['em'],
+                        $options['class'],
+                        $qbParts,
+                        $options['loader'],
+                    ));
+
+                    if (isset($choiceLoaders[$hash])) {
+                        return $choiceLoaders[$hash];
+                    }
+                }
+
+                if ($options['loader']) {
+                    $entityLoader = $options['loader'];
+                } elseif (null !== $options['query_builder']) {
+                    $entityLoader = $type->getLoader($options['em'], $options['query_builder'], $options['class']);
+                } else {
+                    $queryBuilder = $options['em']->getRepository($options['class'])->createQueryBuilder('e');
+                    $entityLoader = $type->getLoader($options['em'], $queryBuilder, $options['class']);
+                }
+
+                // this line is different from the original choice loader, we use our own DoctrineChoiceLoader,
+                // were we have our changes to support UUIDs
+                $doctrineChoiceLoader = new DoctrineChoiceLoader(
+                    $choiceListFactory,
+                    $options['em'],
+                    $options['class'],
+                    $options['id_reader'],
+                    $entityLoader
+                );
+
+                if ($hash !== null) {
+                    $choiceLoaders[$hash] = $doctrineChoiceLoader;
+                }
+
+                return $doctrineChoiceLoader;
+            }
+        };
+
+        $resolver->setDefaults(array(
+            'choice_loader' => $choiceLoader,
+        ));
     }
 
     /**

@@ -54,6 +54,34 @@ class DocumentTypeTest extends BaseTestCase
         return $templating->render('::form.html.twig', array('form' => $formView));
     }
 
+    public function testUuid()
+    {
+        $document = $this->dm->find(null, '/test/doc');
+        $uuid = $document->uuid;
+
+        $formBuilder = $this->createFormBuilder($this->referrer);
+
+        $formBuilder
+            ->add('single', $this->legacy ? 'phpcr_document' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType', array(
+                'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument',
+                'choice_value' => 'uuid',
+            ))
+        ;
+
+        $form = $formBuilder->getForm();
+
+        $form->submit(array(
+            'single' => $uuid,
+        ));
+
+        $this->assertInstanceOf('Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument', $this->referrer->getSingle());
+        $this->assertEquals('doc', $this->referrer->getSingle()->nodename);
+
+        $html = $this->renderForm($formBuilder);
+        $this->assertContains('<select id="form_single" name="form[single]"', $html);
+        $this->assertContains(sprintf('<option value="%s"', $uuid), $html);
+    }
+
     public function testUnfiltered()
     {
         $formBuilder = $this->createFormBuilder($this->referrer);
@@ -73,8 +101,7 @@ class DocumentTypeTest extends BaseTestCase
     {
         $qb = $this->dm
             ->getRepository('Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument')
-            ->createQueryBuilder('e')
-        ;
+            ->createQueryBuilder('e');
         $qb->where()->eq()->field('e.text')->literal('thiswillnotmatch');
         $formBuilder = $this->createFormBuilder($this->referrer);
 
@@ -82,8 +109,7 @@ class DocumentTypeTest extends BaseTestCase
             ->add('single', $this->legacy ? 'phpcr_document' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType', array(
                 'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument',
                 'query_builder' => $qb,
-            ))
-        ;
+            ));
 
         $html = $this->renderForm($formBuilder);
         $this->assertContains('<select id="form_single" name="form[single]"', $html);
