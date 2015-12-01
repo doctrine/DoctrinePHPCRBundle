@@ -109,7 +109,7 @@ class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
         $where = $qb->andWhere()->orX();
 
         foreach ($values as $val) {
-            if (UUIDHelper::isUUID($val) && $this->classMetadata) {
+            if ($this->classMetadata && $this->classMetadata->referenceable && UUIDHelper::isUUID($val)) {
                 $where->eq()->field($alias.'.'.$this->classMetadata->getUuidFieldName())->literal($val)->end();
             } else {
                 $where->same($val, $alias);

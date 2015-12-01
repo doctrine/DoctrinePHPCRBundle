@@ -84,10 +84,8 @@ class DoctrineChoiceLoader extends BaseDoctrineChoiceLoader
         }
 
         $uuidFieldName = null;
-        if ($this->classMetadata instanceof PHPCRClassMetadata) {
-            if ($this->classMetadata->referenceable) {
-                $uuidFieldName = $this->classMetadata->getUuidFieldName();
-            }
+        if ($this->classMetadata instanceof PHPCRClassMetadata && $this->classMetadata->referenceable) {
+            $uuidFieldName = $this->classMetadata->getUuidFieldName();
         }
 
         // Optimize performance in case we have an object loader and
@@ -106,7 +104,7 @@ class DoctrineChoiceLoader extends BaseDoctrineChoiceLoader
             }
 
             foreach ($values as $i => $id) {
-                if (UUIDHelper::isUUID($id) && null !== $uuidFieldName) {
+                if (null !== $uuidFieldName && UUIDHelper::isUUID($id)) {
                     foreach ($unorderedObjects as $object) {
                         if ($id === $this->propertyAccessor->getValue($object, $uuidFieldName)) {
                             $objects[$i] = $object;
