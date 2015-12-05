@@ -6,7 +6,6 @@ use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
 use Doctrine\Bundle\PHPCRBundle\Form\Type\PathType;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PathTypeTest extends \PHPUnit_Framework_Testcase
 {
@@ -71,13 +70,5 @@ class PathTypeTest extends \PHPUnit_Framework_Testcase
             }));
 
         $this->type->buildForm($this->builder, array('manager_name' => null));
-    }
-
-    public function testSetDefaultOptions()
-    {
-        $this->optionsResolver->expects($this->once())
-            ->method('setDefaults')
-            ->with(array('manager_name' => null));
-        $this->type->setDefaultOptions($this->optionsResolver);
     }
 }
