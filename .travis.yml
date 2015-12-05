@@ -22,6 +22,7 @@ matrix:
       env: SYMFONY_VERSION=2.7.*
     - php: 7.0
       env: SYMFONY_VERSION=3.0.*
+  fast_finish: true
 
 before_install:
   - composer self-update || true
