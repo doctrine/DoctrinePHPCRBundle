@@ -217,6 +217,7 @@ class Configuration implements ConfigurationInterface
                                 'locale_fallback' => true,
                                 'locales' => true,
                                 'locale' => true,
+                                'default_locale' => true,
                             );
                             $documentManagers = array();
                             foreach ($v as $key => $value) {
@@ -241,6 +242,7 @@ class Configuration implements ConfigurationInterface
                             ->values(array('hardcoded', 'merge', 'replace'))
                             ->defaultValue('hardcoded')
                         ->end()
+                        ->scalarNode('default_locale')->end()
                     ->end()
                     ->fixXmlConfig('document_manager')
                     ->append($this->getOdmDocumentManagersNode())

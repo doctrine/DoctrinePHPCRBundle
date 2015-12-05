@@ -158,4 +158,61 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
         $this->assertCount(1, $calls);
         $this->assertEquals(array('setSessionOption', array('jackalope.fetch_depth', 2)), current($calls));
     }
+
+    public function testOdmDefaultLocaleIsSetToFirstLocaleIfNotSetManually()
+    {
+        $this->container->setParameter('kernel.root_dir', __DIR__);
+        $this->container->setParameter('kernel.environment', 'test');
+        $this->load(array(
+            'session' => array(
+                'backend' => array(
+                    'url' => 'http://localhost',
+                ),
+                'workspace' => 'default',
+                'username' => 'admin',
+                'password' => 'admin',
+
+            ),
+            'odm' => array(
+                'locales' => array(
+                    'en' => array('de', 'fr'),
+                    'de' => array('en', 'fr'),
+                    'fr' => array('en', 'de'),
+                ),
+                'locale_fallback' => 'hardcoded',
+            )
+        ));
+
+        $defaultLocale = $this->container->getParameter('doctrine_phpcr.odm.default_locale');
+        $this->assertEquals('en', $defaultLocale);
+    }
+
+    public function testOdmDefaultLocaleIsSetToDefaultLocaleIfSetManually()
+    {
+        $this->container->setParameter('kernel.root_dir', __DIR__);
+        $this->container->setParameter('kernel.environment', 'test');
+        $this->load(array(
+            'session' => array(
+                'backend' => array(
+                    'url' => 'http://localhost',
+                ),
+                'workspace' => 'default',
+                'username' => 'admin',
+                'password' => 'admin',
+
+            ),
+            'odm' => array(
+                'locales' => array(
+                    'en' => array('de', 'fr'),
+                    'de' => array('en', 'fr'),
+                    'fr' => array('en', 'de'),
+                ),
+                'locale_fallback' => 'hardcoded',
+                'default_locale' =>'fr'
+            )
+        ));
+
+        $defaultLocale = $this->container->getParameter('doctrine_phpcr.odm.default_locale');
+        $this->assertEquals('fr', $defaultLocale);
+    }
 }
