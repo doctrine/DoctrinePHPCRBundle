@@ -12,12 +12,14 @@ env:
 
 sudo: false
 
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+
 matrix:
   include:
     - php: 5.3
       env: SYMFONY_VERSION=2.3.* COMPOSER_FLAGS="--prefer-lowest"
-    - php: 7.0
-      env: SYMFONY_VERSION=2.3.*
     - php: 7.0
       env: SYMFONY_VERSION=2.7.*
     - php: 7.0
@@ -26,8 +28,8 @@ matrix:
 
 before_install:
   - composer self-update || true
-  - sh -c 'if [ "${TRAVIS_PHP_VERSION}" != "hhvm" ]; then echo "memory_limit = -1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi;'
-  - composer require --no-update symfony/symfony:${SYMFONY_VERSION}
+  - if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then echo "memory_limit = -1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi
+  - if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update symfony/symfony=$SYMFONY_VERSION; fi;
   - COMPOSER_ROOT_VERSION=dev-master composer update $COMPOSER_FLAGS --prefer-source --no-interaction
   - vendor/symfony-cmf/testing/bin/travis/phpcr_odm_doctrine_dbal.sh
 
@@ -36,3 +38,4 @@ script: ./vendor/bin/phpunit --coverage-text
 notifications:
   irc: "irc.freenode.org#symfony-cmf"
   email: "symfony-cmf-devs@googlegroups.com"
+
