@@ -68,6 +68,7 @@
                 <fallback>en</fallback>
                 <fallback>de</fallback>
             </locale>
+            <default_locale>fr</default_locale>
         </odm>
 
     </config>
