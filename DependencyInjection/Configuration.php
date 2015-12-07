@@ -209,6 +209,7 @@ class Configuration implements ConfigurationInterface
                                 'locales' => true,
                                 'locale' => true,
                                 'locale_chooser' => true,
+                                'default_locale' => true,
                             );
                             $documentManagers = array();
                             foreach ($v as $key => $value) {
@@ -237,6 +238,7 @@ class Configuration implements ConfigurationInterface
                             ->values(array('hardcoded', 'merge', 'replace'))
                             ->defaultValue('hardcoded')
                         ->end()
+                        ->scalarNode('default_locale')->end()
                         ->arrayNode('namespaces')
                             ->addDefaultsIfNotSet()
                             ->children()
