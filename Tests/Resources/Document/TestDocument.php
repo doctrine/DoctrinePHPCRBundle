@@ -54,62 +54,62 @@ class TestDocument
     protected $mixedReferrers;
 
     /**
-     * @PHPCR\Boolean()
+     * @PHPCR\Field(type="boolean")
      */
     public $bool;
 
     /**
-     * @PHPCR\Date()
+     * @PHPCR\Field(type="date")
      */
     public $date;
 
     /**
-     * @PHPCR\String()
+     * @PHPCR\Field(type="string")
      */
     public $text;
 
     /**
-     * @PHPCR\Double()
+     * @PHPCR\Field(type="double")
      */
     public $number;
 
     /**
-     * @PHPCR\Long()
+     * @PHPCR\Field(type="long")
      */
     public $long;
 
     /**
-     * @PHPCR\Int()
+     * @PHPCR\Field(type="int")
      */
     public $integer;
 
     /**
-     * @PHPCR\Boolean(multivalue=true, nullable=true)
+     * @PHPCR\Field(type="boolean", multivalue=true, nullable=true)
      */
     public $mbool;
 
     /**
-     * @PHPCR\Date(multivalue=true, nullable=true)
+     * @PHPCR\Field(type="date", multivalue=true, nullable=true)
      */
     public $mdate;
 
     /**
-     * @PHPCR\String(multivalue=true, nullable=true)
+     * @PHPCR\Field(type="string", multivalue=true, nullable=true)
      */
     public $mtext;
 
     /**
-     * @PHPCR\Double(multivalue=true, nullable=true)
+     * @PHPCR\Field(type="double", multivalue=true, nullable=true)
      */
     public $mnumber;
 
     /**
-     * @PHPCR\Long(multivalue=true, nullable=true)
+     * @PHPCR\Field(type="long", multivalue=true, nullable=true)
      */
     public $mlong;
 
     /**
-     * @PHPCR\Int(multivalue=true, nullable=true)
+     * @PHPCR\Field(type="int", multivalue=true, nullable=true)
      */
     public $minteger;
 
