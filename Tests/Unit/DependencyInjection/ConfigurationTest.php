@@ -85,7 +85,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                     'fr' => array('en', 'de'),
                 ),
                 'locale_fallback' => 'hardcoded',
-                'default_locale' =>'fr',
+                'default_locale' => 'fr',
                 'default_document_manager' => 'default',
                 'document_managers' => array(
                     'default' => array(

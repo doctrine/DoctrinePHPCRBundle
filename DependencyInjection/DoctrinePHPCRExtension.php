@@ -388,7 +388,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
             $container->setParameter('doctrine_phpcr.odm.locales', $config['locales']);
             $container->setParameter('doctrine_phpcr.odm.allowed_locales', array_keys($config['locales']));
-            if (isset($config['default_locale']) && ! is_null($config['default_locale'])) {
+            if (isset($config['default_locale']) && !is_null($config['default_locale'])) {
                 $defaultLocale = $config['default_locale'];
                 if (!isset($config['locales'][$defaultLocale])) {
                     throw new ConfigurationException('Default locale must be listed in locale list');
