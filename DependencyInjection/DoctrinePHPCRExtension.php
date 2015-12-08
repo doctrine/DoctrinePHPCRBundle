@@ -20,7 +20,6 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\DependencyInjection;
 
-use PHPCR\ConfigurationException;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -391,7 +390,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             if (isset($config['default_locale']) && !is_null($config['default_locale'])) {
                 $defaultLocale = $config['default_locale'];
                 if (!isset($config['locales'][$defaultLocale])) {
-                    throw new ConfigurationException('Default locale must be listed in locale list');
+                    throw new InvalidConfigurationException('Default locale must be listed in locale list');
                 }
             } else {
                 $defaultLocale = key($config['locales']);
