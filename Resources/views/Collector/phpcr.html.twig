@@ -1,50 +1,77 @@
 {% extends 'WebProfilerBundle:Profiler:layout.html.twig' %}
 
 {% block toolbar %}
+    {% set profiler_markup_version = profiler_markup_version|default(1) %}
+
     {% set icon %}
-        <img width="20" height="28" alt="Database" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAcCAYAAABh2p9gAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQRJREFUeNpi/P//PwM1ARMDlcGogZQDlpMnT7pxc3NbA9nhQKxOpL5rQLwJiPeBsI6Ozl+YBOOOHTv+AOllQNwtLS39F2owKYZ/gRq8G4i3ggxEToggWzvc3d2Pk+1lNL4fFAs6ODi8JzdS7mMRVyDVoAMHDsANdAPiOCC+jCQvQKqBQB/BDbwBxK5AHA3E/kB8nKJkA8TMQBwLxaBIKQbi70AvTADSBiSadwFXpCikpKQU8PDwkGTaly9fHFigkaKIJid4584dkiMFFI6jkTJII0WVmpHCAixZQEXWYhDeuXMnyLsVlEQKI45qFBQZ8eRECi4DBaAlDqle/8A48ip6gAADANdQY88Uc0oGAAAAAElFTkSuQmCC" />
-        <span class="sf-toolbar-status{% if 50 < collector.callcount %} sf-toolbar-status-yellow{% endif %}">{{ collector.callcount }}</span>
-        {% if collector.callcount > 0 %}
-            <span class="sf-toolbar-info-piece-additional-detail">in {{ '%0.2f'|format(collector.time * 1000) }} ms</span>
+        {% if profiler_markup_version == 1 %}
+            <img width="20" height="28" alt="Database" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAcCAYAAABh2p9gAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQRJREFUeNpi/P//PwM1ARMDlcGogZQDlpMnT7pxc3NbA9nhQKxOpL5rQLwJiPeBsI6Ozl+YBOOOHTv+AOllQNwtLS39F2owKYZ/gRq8G4i3ggxEToggWzvc3d2Pk+1lNL4fFAs6ODi8JzdS7mMRVyDVoAMHDsANdAPiOCC+jCQvQKqBQB/BDbwBxK5AHA3E/kB8nKJkA8TMQBwLxaBIKQbi70AvTADSBiSadwFXpCikpKQU8PDwkGTaly9fHFigkaKIJid4584dkiMFFI6jkTJII0WVmpHCAixZQEXWYhDeuXMnyLsVlEQKI45qFBQZ8eRECi4DBaAlDqle/8A48ip6gAADANdQY88Uc0oGAAAAAElFTkSuQmCC" />
+            <span class="sf-toolbar-status{% if 50 < collector.callcount %} sf-toolbar-status-yellow{% endif %}">{{ collector.callcount }}</span>
+            {% if collector.callcount > 0 %}
+                <span class="sf-toolbar-info-piece-additional-detail">in {{ '%0.2f'|format(collector.time * 1000) }} ms</span>
+            {% endif %}
+        {% else %}
+            {% if collector.callcount > 0 %}
+                {% set status = collector.callcount > 50 ? 'yellow' %}
+
+                {{ include('@DoctrinePHPCR/Collector/icon.svg') }}
+
+                <span class="sf-toolbar-value">{{ collector.callcount }}</span>
+                <span class="sf-toolbar-info-piece-additional-detail">
+                    <span class="sf-toolbar-label">in</span>
+                    <span class="sf-toolbar-value">{{ '%0.2f'|format(collector.time * 1000) }}</span>
+                    <span class="sf-toolbar-label">ms</span>
+                </span>
+            {% endif %}
         {% endif %}
     {% endset %}
+
     {% set text %}
         <div class="sf-toolbar-info-piece">
             <b>PHPCR Calls</b>
-            <span>{{ collector.callcount }}</span>
+            <span class="sf-toolbar-status">{{ collector.callcount }}</span>
         </div>
         <div class="sf-toolbar-info-piece">
             <b>Call time</b>
             <span>{{ '%0.2f'|format(collector.time * 1000) }} ms</span>
         </div>
     {% endset %}
-    {% include 'WebProfilerBundle:Profiler:toolbar_item.html.twig' with { 'link': profiler_url } %}
+
+    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: profiler_url, status: status|default('') }) }}
 {% endblock %}
 
 {% block menu %}
-<span class="label">
-    <span class="icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAcCAYAAAB/E6/TAAABLUlEQVR42u3TP0vDQBiA8UK/gDiLzi0IhU4OEunk5OQUAhGSOBUCzqWfIKSzX8DRySF0URCcMjWLIJjFD9Cpk/D6HITecEPUuzhIAz8CIdyTP/f2iqI4qaqqDx8l5Ic2uIeP/bquezCokOAFF+oCN3t4gPzSEjc4NEPaCldQbzjELTYW0RJzHDchwwem+ons6ZBpLSJ7nueJC22h0V+FzmwWV0ee59vQNV67CGVZJmEYbkNjfpY6X6I0Qo4/3RMmTdDDspuQVsJvgkP3IdMbIkIjLPBoadG2646iKJI0Ta2wxm6OdnP0/Tk6DYJgHcfxpw21RtscDTDDnaVZ26474GkkSRIrrPEv5sgMTfHe+cA2O6wPH6vOBpYQNALneHb96XTEDI6dzpEZ0VzO0Rf3pP5LMLI4tAAAAABJRU5ErkJggg==" alt="" /></span>
-    <strong>PHPCR</strong>
-    <span class="count">
-        <span>{{ collector.callcount }}</span>
-        <span>{{ '%0.0f'|format(collector.time * 1000) }} ms</span>
-    </span>
-</span>
+    {% set profiler_markup_version = profiler_markup_version|default(1) %}
+
+    {% if profiler_markup_version == 1 %}
+        <span class="label">
+            <span class="icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAcCAYAAAB/E6/TAAABLUlEQVR42u3TP0vDQBiA8UK/gDiLzi0IhU4OEunk5OQUAhGSOBUCzqWfIKSzX8DRySF0URCcMjWLIJjFD9Cpk/D6HITecEPUuzhIAz8CIdyTP/f2iqI4qaqqDx8l5Ic2uIeP/bquezCokOAFF+oCN3t4gPzSEjc4NEPaCldQbzjELTYW0RJzHDchwwem+ons6ZBpLSJ7nueJC22h0V+FzmwWV0ee59vQNV67CGVZJmEYbkNjfpY6X6I0Qo4/3RMmTdDDspuQVsJvgkP3IdMbIkIjLPBoadG2646iKJI0Ta2wxm6OdnP0/Tk6DYJgHcfxpw21RtscDTDDnaVZ26474GkkSRIrrPEv5sgMTfHe+cA2O6wPH6vOBpYQNALneHb96XTEDI6dzpEZ0VzO0Rf3pP5LMLI4tAAAAABJRU5ErkJggg==" alt="" /></span>
+            <strong>PHPCR</strong>
+            <span class="count">
+                <span>{{ collector.callcount }}</span>
+                <span>{{ '%0.0f'|format(collector.time * 1000) }} ms</span>
+            </span>
+        </span>
+    {% else %}
+        <span class="label {{ collector.callcount == 0 ? 'disabled' }}">
+            <span class="icon">{{ include('@DoctrinePHPCR/Collector/icon.svg') }}</span>
+            <strong>PHPCR</strong>
+        </span>
+    {% endif %}
 {% endblock %}
 
 {% block panel %}
-    {{ block('calls') }}
-{% endblock %}
-
-{% block calls %}
     <h2>Calls</h2>
 
     {% for connection, calls in collector.calls %}
-        <h3>Connection <em>{{ connection }}</em></h3>
+        {% if collector.connections|length > 1 %}
+            <h3>Connection <em>{{ connection }}</em></h3>
+        {% endif %}
+
         {% if calls is empty %}
-            <p>
-                <em>No calls.</em>
-            </p>
+            <div class="empty">
+                <p>No calls.</p>
+            </div>
         {% else %}
             <table class="alt" id="callsPlaceholder-{{ loop.index }}">
                 <thead>
@@ -58,19 +85,22 @@
                 {% for i, call in calls %}
                     <tr id="queryNo-{{ i }}-{{ loop.parent.loop.index }}" class="{{ cycle(['odd', 'even'], i) }}">
                         <td>{{ loop.index }}</td>
-                        <td>{{ '%0.2f'|format(call.executionMS * 1000) }}&nbsp;ms</td>
+                        <td class="nowrap">{{ '%0.2f'|format(call.executionMS * 1000) }}&nbsp;ms</td>
                         <td>
-                            <code id="code-{{ i }}-{{ loop.parent.loop.index }}">
-                                {{ call.method|raw }}
-                            </code>
-                            <small>
-                                <strong>Method</strong>: {{ call.method|yaml_encode }} <br />
-                                <strong>Parameters</strong>: {{ call.params|yaml_encode }} <br />
-                                <strong>Environment</strong>: {{ call.env|yaml_encode }} <br />
-                                {% if call.caller is defined %}
-                                    <strong>Callers</strong><ul>{% for caller in call.caller %}<li> - {{ caller }}</li>{% endfor %}</ul>
-                                {% endif %}
-                            </small>
+                            {{ call.method|raw }}<br>
+
+                            <strong class="font-normal text-small">Parameters:</strong>
+                            {{ call.params|yaml_encode }} <br>
+                            <strong class="font-normal text-small">Environment:</strong>
+                            {{ call.env|yaml_encode }} <br>
+                            {% if call.caller is defined %}
+                                <strong class="font-normal text-small">Callers</strong>
+                                <ul>
+                                    {% for caller in call.caller %}
+                                        <li> - {{ caller }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}
@@ -84,9 +114,9 @@
     {% if collector.connections %}
         {% include 'WebProfilerBundle:Profiler:table.html.twig' with {data: collector.connections} only %}
     {% else %}
-        <p>
-            <em>No connections.</em>
-        </p>
+        <div class="empty">
+            <p>No connections.</p>
+        </div>
     {% endif %}
 
     <h2>Document Managers</h2>
@@ -94,24 +124,30 @@
     {% if collector.managers %}
         {% include 'WebProfilerBundle:Profiler:table.html.twig' with {data: collector.managers} only %}
     {% else %}
-        <p>
-            <em>No document managers.</em>
-        </p>
+        <div class="empty">
+            <p>No document managers.</p>
+        </div>
     {% endif %}
 
-    <h2>Mapping</h2>
+    <h2>Document Mapping</h2>
 
     {% for manager, classes in collector.documents %}
-        <h3>Manager <em>{{ manager }}</em></h3>
+        {% if collector.managers|length > 1 %}
+            <h3>Manager <small>{{ manager }}</small></h3>
+        {% endif %}
+
         {% if classes is empty %}
-            <p><em>No loaded documents.</em></p>
+            <div class="empty">
+                <p>No loaded documents.</p>
+            </div>
         {% else %}
             <table>
                 <thead>
-                <tr>
-                    <th scope="col">Class</th>
-                </tr>
+                    <tr>
+                        <th scope="col">Class</th>
+                    </tr>
                 </thead>
+
                 <tbody>
                 {% for class in classes %}
                     <tr>
@@ -122,133 +158,4 @@
             </table>
         {% endif %}
     {% endfor %}
-
-    <script type="text/javascript">//<![CDATA[
-        function explain(link) {
-            "use strict";
-
-            var imgs = link.children,
-                target = link.getAttribute('data-target-id');
-
-            Sfjs.toggle(target, imgs[0], imgs[1])
-                .load(
-                    target,
-                    link.href,
-                    null,
-                    function(xhr, el) {
-                        el.innerHTML = 'An error occurred while loading the details';
-                        Sfjs.removeClass(el, 'loading');
-                    }
-                );
-
-            return false;
-        }
-
-        function expandCall(link) {
-            var sections = link.children,
-                target = link.getAttribute('data-target-id'),
-                targetId = target.replace('code', ''),
-                callsParameters = document.getElementById('original-call' + targetId);
-
-            if (callsParameters.style.display != 'none') {
-                callsParameters.style.display = 'none';
-                document.getElementById('small' + target).style.display = 'inline';
-                document.getElementById('expandParams' + targetId).innerHTML = 'Display runnable call';
-            }
-
-            if (document.getElementById('small' + target).style.display != 'none') {
-                document.getElementById('small' + target).style.display = 'none';
-                document.getElementById(target).style.display = 'inline';
-
-                sections[0].style.display = 'none';
-                sections[1].style.display = 'inline';
-                sections[2].style.display = 'inline';
-            } else {
-                document.getElementById('small' + target).style.display = 'inline';
-                document.getElementById(target).style.display = 'none';
-
-                sections[0].style.display = 'inline';
-                sections[1].style.display = 'none';
-                sections[2].style.display = 'none';
-            }
-
-            return false;
-        }
-
-        function toggleRunnableCall(target) {
-            var targetId = target.getAttribute('target-data-id').replace('original-call', ''),
-                targetElement = document.getElementById(target.getAttribute('target-data-id')),
-                elem;
-
-            if (targetElement.style.display != 'block') {
-                targetElement.style.display = 'block';
-                target.innerHTML = 'Hide runnable call';
-
-                document.getElementById('smallcode' + targetId).style.display = 'none';
-                document.getElementById('code' + targetId).style.display = 'none';
-
-                elem = document.getElementById('code' + targetId).parentElement.children[0];
-
-                elem.children[0].style.display = 'inline';
-                elem.children[1].style.display = 'none';
-                elem.children[2].style.display = 'none';
-
-            } else {
-                targetElement.style.display = 'none';
-                target.innerHTML = 'Display runnable call';
-
-                document.getElementById('smallcode' + targetId).style.display = 'inline';
-            }
-        }
-
-        function sortTable(header, column, targetId) {
-            "use strict";
-
-            var direction = parseInt(header.getAttribute('data-sort-direction')) || 1,
-                items = [],
-                target = document.getElementById(targetId),
-                rows = target.children,
-                headers = header.parentElement.children,
-                i;
-
-            for (i = 0; i < rows.length; ++i) {
-                items.push(rows[i]);
-            }
-
-            for (i = 0; i < headers.length; ++i) {
-                headers[i].removeAttribute('data-sort-direction');
-                if (headers[i].children.length > 0) {
-                    headers[i].children[0].innerHTML = '';
-                }
-            }
-
-            header.setAttribute('data-sort-direction', (-1*direction).toString());
-            header.children[0].innerHTML = direction > 0 ? '&#9650;' : '&#9660;';
-
-            items.sort(function(a, b) {
-                return direction*(parseFloat(a.children[column].innerHTML) - parseFloat(b.children[column].innerHTML));
-            });
-
-            for (i = 0; i < items.length; ++i) {
-                Sfjs.removeClass(items[i], i % 2 ? 'even' : 'odd');
-                Sfjs.addClass(items[i], i % 2 ? 'odd' : 'even');
-                target.appendChild(items[i]);
-            }
-        }
-
-    //]]></script>
-
-    <style>
-        h3 {
-            margin-bottom: 0px;
-        }
-
-        code {
-            display: none;
-        }
-
-        code pre {
-            padding: 5px;
-        }
-    </style>
 {% endblock %}
