@@ -51,7 +51,7 @@
         </service>
 
         <service id="doctrine_phpcr.data_collector" class="%doctrine_phpcr.data_collector.class%" public="false">
-            <tag name="data_collector" template="DoctrinePHPCRBundle:Collector:phpcr" id="phpcr" />
+            <tag name="data_collector" template="DoctrinePHPCRBundle:Collector:phpcr" id="phpcr" priority="247" />
             <argument type="service" id="doctrine_phpcr" />
         </service>
 
