@@ -1,14 +1,7 @@
 language: php
 
 php:
-  - 5.4
-  - 5.5
   - 5.6
-  - 7.0
-  - hhvm
-
-env:
-  - SYMFONY_VERSION="2.8.*"
 
 sudo: false
 
@@ -23,7 +16,7 @@ matrix:
     - php: 7.0
       env: SYMFONY_VERSION=2.7.*
     - php: 7.0
-      env: SYMFONY_VERSION=3.0.*
+      env: SYMFONY_VERSION=2.8.*
   fast_finish: true
 
 before_install:
@@ -32,6 +25,10 @@ before_install:
   - if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update symfony/symfony=$SYMFONY_VERSION; fi;
   - COMPOSER_ROOT_VERSION=dev-master composer update $COMPOSER_FLAGS --prefer-source --no-interaction
   - vendor/symfony-cmf/testing/bin/travis/phpcr_odm_doctrine_dbal.sh
+
+after_install:
+  - cat composer.json
+  - composer show -i
 
 script: ./vendor/bin/phpunit --coverage-text
 
