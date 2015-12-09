@@ -26,13 +26,7 @@ before_install:
   - COMPOSER_ROOT_VERSION=dev-master composer update $COMPOSER_FLAGS --prefer-source --no-interaction
   - vendor/symfony-cmf/testing/bin/travis/phpcr_odm_doctrine_dbal.sh
 
-after_install:
+script:
   - cat composer.json
   - composer show -i
-
-script: ./vendor/bin/phpunit --coverage-text
-
-notifications:
-  irc: "irc.freenode.org#symfony-cmf"
-  email: "symfony-cmf-devs@googlegroups.com"
 
