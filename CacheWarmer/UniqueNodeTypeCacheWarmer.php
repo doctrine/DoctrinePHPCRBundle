@@ -62,8 +62,10 @@ class UniqueNodeTypeCacheWarmer implements CacheWarmerInterface
      */
     public function warmUp($cacheDir)
     {
+        $helper = new UniqueNodeTypeHelper();
+
         foreach ($this->registry->getManagers() as $documentManager) {
-            UniqueNodeTypeHelper::checkNodeTypeMappings($documentManager);
+            $helper->checkNodeTypeMappings($documentManager);
         }
     }
 }
