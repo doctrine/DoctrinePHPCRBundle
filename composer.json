@@ -19,7 +19,7 @@
     "prefer-stable": true,
     "require": {
         "php": "^5.3.9|~7.0",
-        "symfony/framework-bundle": "~2.3|~3.0",
+        "symfony/framework-bundle": "~2.3.27|^2.6.6|~3.0",
         "symfony/doctrine-bridge": "~2.3|~3.0",
         "phpcr/phpcr-implementation": "2.1.*",
         "phpcr/phpcr-utils": "^1.2.7"
@@ -43,8 +43,7 @@
         "burgov/key-value-form-bundle": "to edit assoc multivalue properties. require version 1.0.*"
     },
     "conflict": {
-        "phpcr/phpcr-shell": "<1.0.0-beta1",
-        "symfony/framework-bundle": "<2.3.27|>=2.6.0,<2.6.6"
+        "phpcr/phpcr-shell": "<1.0.0-beta1"
     },
     "autoload": {
         "psr-4": { "Doctrine\\Bundle\\PHPCRBundle\\": "" }
