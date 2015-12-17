@@ -21,6 +21,7 @@
 namespace Doctrine\Bundle\PHPCRBundle;
 
 use Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\DocumentConvertTranslationCommand;
+use Jackalope\Session;
 use Symfony\Component\DependencyInjection\IntrospectableContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -45,6 +46,9 @@ class DoctrinePHPCRBundle extends Bundle
      */
     private $autoloader;
 
+    /**
+     * {@inheritdoc}
+     */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
@@ -78,6 +82,9 @@ class DoctrinePHPCRBundle extends Bundle
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function boot()
     {
         // Register an autoloader for proxies to avoid issues when unserializing them when the ODM is used.
@@ -121,6 +128,9 @@ class DoctrinePHPCRBundle extends Bundle
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function shutdown()
     {
         if (null !== $this->autoloader) {
@@ -128,22 +138,48 @@ class DoctrinePHPCRBundle extends Bundle
             $this->autoloader = null;
         }
 
-        // Clear all document managers to clear references to entities for GC
-        if ($this->container->hasParameter('doctrine_phpcr.odm.document_managers')) {
-            foreach ($this->container->getParameter('doctrine_phpcr.odm.document_managers') as $id) {
-                if (!$this->container instanceof IntrospectableContainerInterface || $this->container->initialized($id)) {
-                    $this->container->get($id)->clear();
-                }
-            }
+        $this->clearDocumentManagers();
+        $this->closeConnections();
+    }
+
+    /**
+     * Clear all document managers to clear references to entities for GC.
+     */
+    private function clearDocumentManagers()
+    {
+        if (!$this->container->hasParameter('doctrine_phpcr.odm.document_managers')) {
+            return;
         }
 
-        // Close all connections to avoid reaching too many connections in the process when booting again later (tests)
-        if ($this->container->hasParameter('doctrine_phpcr.sessions')) {
-            foreach ($this->container->getParameter('doctrine_phpcr.sessions') as $id) {
-                if (!$this->container instanceof IntrospectableContainerInterface || $this->container->initialized($id)) {
-                    $this->container->get($id)->getTransport()->logout();
-                }
+        foreach ($this->container->getParameter('doctrine_phpcr.odm.document_managers') as $id) {
+            if ($this->container instanceof IntrospectableContainerInterface && !$this->container->initialized($id)) {
+                continue;
             }
+
+            $this->container->get($id)->clear();
+        }
+    }
+
+    /**
+     * Close all connections to avoid reaching too many connections in the process when booting again later (tests).
+     */
+    private function closeConnections()
+    {
+        if (!$this->container->hasParameter('doctrine_phpcr.sessions')) {
+            return;
+        }
+
+        foreach ($this->container->getParameter('doctrine_phpcr.sessions') as $id) {
+            if ($this->container instanceof IntrospectableContainerInterface && !$this->container->initialized($id)) {
+                continue;
+            }
+
+            $session = $this->container->get($id);
+            if (!$session instanceof Session) {
+                return;
+            }
+
+            $session->getTransport()->logout();
         }
     }
 }
