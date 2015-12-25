@@ -1,11 +1,17 @@
 Changelog
 =========
 
+1.3.1
+-----
+
+* Reverted jackalope.check_login_on_server depending on kernel.debug because
+  it caused too many chicken and egg problems. That value now defaults to false.
+
 1.2.1
 -----
 
 * Added support for priorities. This fixes a regression whereby the new CMF initializer services would
-  be executed in an arbitry order, causing unresolvable conflicts.
+  be executed in an arbitrary order, causing unresolvable conflicts.
 
 1.2.0-RC1
 ---------
