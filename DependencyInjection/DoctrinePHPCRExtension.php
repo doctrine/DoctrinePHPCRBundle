@@ -212,7 +212,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         $backendParameters += $session['backend']['parameters'];
         // only set this default here when we know we are jackalope
         if (!isset($backendParameters['jackalope.check_login_on_server'])) {
-            $backendParameters['jackalope.check_login_on_server'] = $container->getParameter('kernel.debug');
+            $backendParameters['jackalope.check_login_on_server'] = false;
         }
 
         if ('doctrinedbal' === $type && $backendParameters['jackalope.check_login_on_server']) {
