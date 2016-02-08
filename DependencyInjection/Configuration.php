@@ -166,6 +166,10 @@ class Configuration implements ConfigurationInterface
                                 ->useAttributeAsKey('key')
                                 ->prototype('scalar')->end()
                             ->end()
+                            ->arrayNode('curl_options')
+                                ->useAttributeAsKey('key')
+                                ->prototype('scalar')->end()
+                            ->end()
 
                             // jackrabbit
                             ->scalarNode('url')->end()

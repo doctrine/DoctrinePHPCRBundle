@@ -65,7 +65,7 @@ class JackrabbitCommand extends BaseJackrabbitCommand implements ContainerAwareI
 
         $this
             ->setName('doctrine:phpcr:jackrabbit')
-            ->setHelp(<<<EOF
+            ->setHelp(<<<'EOF'
 The <info>doctrine:phpcr:jackrabbit</info> command allows to have a minimal control on the Jackrabbit server from within a
 Symfony 2 command.
 

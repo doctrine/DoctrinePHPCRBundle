@@ -56,7 +56,7 @@ class LoadFixtureCommand extends ContainerAwareCommand
             ->addOption('no-initialize', null, InputOption::VALUE_NONE, 'Do not run the repository initializers after purging the repository.')
             ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The document manager to use for this command (deprecated, alias for dm)')
             ->addOption('dm', null, InputOption::VALUE_OPTIONAL, 'The document manager to use for this command')
-            ->setHelp(<<<EOT
+            ->setHelp(<<<'EOT'
 The <info>doctrine:phpcr:fixtures:load</info> command loads data fixtures from
 your bundles DataFixtures/PHPCR directory:
 

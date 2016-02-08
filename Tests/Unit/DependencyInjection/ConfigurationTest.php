@@ -61,6 +61,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                                 'jackalope.default_header' => 'X-ID: %serverid%',
                                 'jackalope.jackrabbit_expect' => true,
                             ),
+                            'curl_options' => array(),
                             'url' => 'http://localhost:8080/server/',
                             'backtrace' => false,
                             ),
@@ -137,6 +138,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                             'factory' => null,
                             'parameters' => array(
                             ),
+                            'curl_options' => array(),
                             'url' => 'http://a',
                             'backtrace' => false,
                         ),
@@ -155,6 +157,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                             'profiling' => false,
                             'parameters' => array(
                             ),
+                            'curl_options' => array(),
                             'url' => 'http://b',
                             'backtrace' => false,
                             'factory' => null,
@@ -238,6 +241,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                                 'jackalope.disable_stream_wrapper' => true,
                                 'jackalope.disable_transactions' => true,
                             ),
+                            'curl_options' => array(),
                         ),
                         'workspace' => 'default',
                         'username' => 'admin',

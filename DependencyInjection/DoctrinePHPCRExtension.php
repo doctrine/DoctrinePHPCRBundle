@@ -20,19 +20,19 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\DependencyInjection;
 
+use Doctrine\ODM\PHPCR\Version;
+use Symfony\Bridge\Doctrine\DependencyInjection\AbstractDoctrineExtension;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
+use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
-use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Config\Definition\Processor;
-use Symfony\Bridge\Doctrine\DependencyInjection\AbstractDoctrineExtension;
-use Doctrine\ODM\PHPCR\Version;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * PHPCR Extension.
@@ -210,6 +210,18 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
         // pipe additional parameters unchanged to jackalope
         $backendParameters += $session['backend']['parameters'];
+        if (array_key_exists('curl_options', $session['backend']) && count($session['backend']['curl_options'])) {
+            $curlOptions = array();
+            foreach ($session['backend']['curl_options'] as $option => $value) {
+                if (!is_int($option)) {
+                    $option = constant($option);
+                }
+
+                $curlOptions[$option] = $value;
+            }
+            $backendParameters['jackalope.jackrabbit_curl_options'] = $curlOptions;
+        }
+
         // only set this default here when we know we are jackalope
         if (!isset($backendParameters['jackalope.check_login_on_server'])) {
             $backendParameters['jackalope.check_login_on_server'] = false;
