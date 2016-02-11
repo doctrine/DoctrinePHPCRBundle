@@ -52,7 +52,7 @@ class RepositoryInitCommand extends ContainerAwareCommand
             ->setName('doctrine:phpcr:repository:init')
             ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
             ->setDescription('Initialize the PHPCR repository.')
-            ->setHelp(<<<EOT
+            ->setHelp(<<<'EOT'
 Run all initializers tagged with doctrine_phpcr.initializer to create documents
 or base paths so the application can work. If phpcr-odm is present, also runs
 the doctrine:phpcr:register-system-node-types command.

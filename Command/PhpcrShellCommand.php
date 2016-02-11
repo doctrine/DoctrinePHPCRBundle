@@ -41,7 +41,7 @@ class PhpcrShellCommand extends ContainerAwareCommand
         $this->addArgument('cmd', InputArgument::IS_ARRAY);
         $this->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command');
         $this->setDescription('Proxy for an embedded PHPCR Shell. Commands should be quoted');
-        $this->setHelp(<<<EOT
+        $this->setHelp(<<<'EOT'
 This command will send commands to an embedded PHPCR shell. For it to work you
 will need to have the phpcr-shell dependency installed.
 

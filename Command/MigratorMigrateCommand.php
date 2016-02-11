@@ -40,7 +40,7 @@ class MigratorMigrateCommand extends ContainerAwareCommand
             ->addOption('identifier', null, InputOption::VALUE_OPTIONAL, 'Path or UUID of the node to dump', '/')
             ->addOption('depth', null, InputOption::VALUE_OPTIONAL, 'Set to a number to limit how deep into the tree to recurse', '-1')
             ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
-            ->setHelp(<<<EOT
+            ->setHelp(<<<'EOT'
 To find the available 'migrators' run this command without an input argument
 EOT
             )
