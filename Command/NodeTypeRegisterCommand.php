@@ -38,7 +38,7 @@ class NodeTypeRegisterCommand extends BaseRegisterNodeTypesCommand
     protected function configure()
     {
         parent::configure();
-        $newHelp = <<<EOT
+        $newHelp = <<<'EOT'
 
 
 If no cnd-files are specified, the command will automatically try and find node files in the
