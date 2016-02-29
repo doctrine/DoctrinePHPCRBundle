@@ -20,6 +20,7 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\DependencyInjection;
 
+use Doctrine\Bundle\PHPCRBundle\EventListener\LocaleListener;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -239,8 +240,8 @@ class Configuration implements ConfigurationInterface
                             ->defaultNull()
                         ->end()
                         ->enumNode('locale_fallback')
-                            ->values(array('hardcoded', 'merge', 'replace'))
-                            ->defaultValue('hardcoded')
+                            ->values(array(LocaleListener::FALLBACK_HARDCODED, LocaleListener::FALLBACK_MERGE, LocaleListener::FALLBACK_REPLACE))
+                            ->defaultValue(LocaleListener::FALLBACK_MERGE)
                         ->end()
                         ->scalarNode('default_locale')->end()
                         ->arrayNode('namespaces')

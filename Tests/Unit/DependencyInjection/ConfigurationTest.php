@@ -178,7 +178,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                 'proxy_namespace' => 'PHPCRProxies',
                 'locales' => array(
                 ),
-                'locale_fallback' => 'hardcoded',
+                'locale_fallback' => 'merge',
                 'document_managers' => array(
                     'default' => array(
                         'auto_mapping' => false,
