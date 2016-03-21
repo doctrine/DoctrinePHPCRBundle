@@ -39,7 +39,7 @@ class ReferenceManyCollectionToArrayTransformer implements DataTransformerInterf
      */
     public function __construct(DocumentManager $dm, $referencedClass, $key = self::KEY_UUID)
     {
-        trigger_error('This is deprecated in favor of phpcr_document. If you think this is an error, please contact us and explain. We where not able to figure out what this type is good for.', E_USER_DEPRECATED);
+        trigger_error('This is deprecated in favor of phpcr_document. If you think this is an error, please contact us and explain. We were not able to figure out what this type is good for.', E_USER_DEPRECATED);
 
         $this->dm = $dm;
         $this->referencedClass = $referencedClass;
