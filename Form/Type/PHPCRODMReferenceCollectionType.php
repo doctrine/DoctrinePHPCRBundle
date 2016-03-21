@@ -72,7 +72,7 @@ class PHPCRODMReferenceCollectionType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        trigger_error('This form type is deprecated in favor of phpcr_document. If you think this is an error, please contact us and explain. We where not able to figure out what this type is good for.', E_USER_DEPRECATED);
+        trigger_error('This form type is deprecated in favor of phpcr_document. If you think this is an error, please contact us and explain. We were not able to figure out what this type is good for.', E_USER_DEPRECATED);
 
         $transformer = new ReferenceManyCollectionToArrayTransformer($this->dm, $options['referenced_class'], $options['key']);
         $builder->addModelTransformer($transformer);
