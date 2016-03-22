@@ -1,43 +1,43 @@
 {% extends 'WebProfilerBundle:Profiler:layout.html.twig' %}
 
 {% block toolbar %}
-    {% set profiler_markup_version = profiler_markup_version|default(1) %}
+    {% if collector.callcount > 0 %}
+        {% set profiler_markup_version = profiler_markup_version|default(1) %}
 
-    {% set icon %}
-        {% if profiler_markup_version == 1 %}
-            <img width="20" height="28" alt="Database" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAcCAYAAABh2p9gAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQRJREFUeNpi/P//PwM1ARMDlcGogZQDlpMnT7pxc3NbA9nhQKxOpL5rQLwJiPeBsI6Ozl+YBOOOHTv+AOllQNwtLS39F2owKYZ/gRq8G4i3ggxEToggWzvc3d2Pk+1lNL4fFAs6ODi8JzdS7mMRVyDVoAMHDsANdAPiOCC+jCQvQKqBQB/BDbwBxK5AHA3E/kB8nKJkA8TMQBwLxaBIKQbi70AvTADSBiSadwFXpCikpKQU8PDwkGTaly9fHFigkaKIJid4584dkiMFFI6jkTJII0WVmpHCAixZQEXWYhDeuXMnyLsVlEQKI45qFBQZ8eRECi4DBaAlDqle/8A48ip6gAADANdQY88Uc0oGAAAAAElFTkSuQmCC" />
-            <span class="sf-toolbar-status{% if 50 < collector.callcount %} sf-toolbar-status-yellow{% endif %}">{{ collector.callcount }}</span>
-            {% if collector.callcount > 0 %}
-                <span class="sf-toolbar-info-piece-additional-detail">in {{ '%0.2f'|format(collector.time * 1000) }} ms</span>
+        {% set icon %}
+            {% if profiler_markup_version == 1 %}
+                <img width="20" height="28" alt="Database" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAcCAYAAABh2p9gAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQRJREFUeNpi/P//PwM1ARMDlcGogZQDlpMnT7pxc3NbA9nhQKxOpL5rQLwJiPeBsI6Ozl+YBOOOHTv+AOllQNwtLS39F2owKYZ/gRq8G4i3ggxEToggWzvc3d2Pk+1lNL4fFAs6ODi8JzdS7mMRVyDVoAMHDsANdAPiOCC+jCQvQKqBQB/BDbwBxK5AHA3E/kB8nKJkA8TMQBwLxaBIKQbi70AvTADSBiSadwFXpCikpKQU8PDwkGTaly9fHFigkaKIJid4584dkiMFFI6jkTJII0WVmpHCAixZQEXWYhDeuXMnyLsVlEQKI45qFBQZ8eRECi4DBaAlDqle/8A48ip6gAADANdQY88Uc0oGAAAAAElFTkSuQmCC" />
+                <span class="sf-toolbar-status{% if 50 < collector.callcount %} sf-toolbar-status-yellow{% endif %}">{{ collector.callcount }}</span>
+                {% if collector.callcount > 0 %}
+                    <span class="sf-toolbar-info-piece-additional-detail">in {{ '%0.2f'|format(collector.time * 1000) }} ms</span>
+                {% endif %}
+            {% else %}
+                    {% set status = collector.callcount > 50 ? 'yellow' %}
+
+                    {{ include('@DoctrinePHPCR/Collector/icon.svg') }}
+
+                    <span class="sf-toolbar-value">{{ collector.callcount }}</span>
+                    <span class="sf-toolbar-info-piece-additional-detail">
+                        <span class="sf-toolbar-label">in</span>
+                        <span class="sf-toolbar-value">{{ '%0.2f'|format(collector.time * 1000) }}</span>
+                        <span class="sf-toolbar-label">ms</span>
+                    </span>
             {% endif %}
-        {% else %}
-            {% if collector.callcount > 0 %}
-                {% set status = collector.callcount > 50 ? 'yellow' %}
+        {% endset %}
 
-                {{ include('@DoctrinePHPCR/Collector/icon.svg') }}
+        {% set text %}
+            <div class="sf-toolbar-info-piece">
+                <b>PHPCR Calls</b>
+                <span class="sf-toolbar-status">{{ collector.callcount }}</span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b>Call time</b>
+                <span>{{ '%0.2f'|format(collector.time * 1000) }} ms</span>
+            </div>
+        {% endset %}
 
-                <span class="sf-toolbar-value">{{ collector.callcount }}</span>
-                <span class="sf-toolbar-info-piece-additional-detail">
-                    <span class="sf-toolbar-label">in</span>
-                    <span class="sf-toolbar-value">{{ '%0.2f'|format(collector.time * 1000) }}</span>
-                    <span class="sf-toolbar-label">ms</span>
-                </span>
-            {% endif %}
-        {% endif %}
-    {% endset %}
-
-    {% set text %}
-        <div class="sf-toolbar-info-piece">
-            <b>PHPCR Calls</b>
-            <span class="sf-toolbar-status">{{ collector.callcount }}</span>
-        </div>
-        <div class="sf-toolbar-info-piece">
-            <b>Call time</b>
-            <span>{{ '%0.2f'|format(collector.time * 1000) }} ms</span>
-        </div>
-    {% endset %}
-
-    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: profiler_url, status: status|default('') }) }}
+        {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: profiler_url, status: status|default('') }) }}
+    {% endif %}
 {% endblock %}
 
 {% block menu %}
