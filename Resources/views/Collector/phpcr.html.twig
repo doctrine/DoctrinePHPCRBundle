@@ -6,7 +6,7 @@
 
         {% set icon %}
             {% if profiler_markup_version == 1 %}
-                <img width="20" height="28" alt="Database" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAcCAYAAABh2p9gAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQRJREFUeNpi/P//PwM1ARMDlcGogZQDlpMnT7pxc3NbA9nhQKxOpL5rQLwJiPeBsI6Ozl+YBOOOHTv+AOllQNwtLS39F2owKYZ/gRq8G4i3ggxEToggWzvc3d2Pk+1lNL4fFAs6ODi8JzdS7mMRVyDVoAMHDsANdAPiOCC+jCQvQKqBQB/BDbwBxK5AHA3E/kB8nKJkA8TMQBwLxaBIKQbi70AvTADSBiSadwFXpCikpKQU8PDwkGTaly9fHFigkaKIJid4584dkiMFFI6jkTJII0WVmpHCAixZQEXWYhDeuXMnyLsVlEQKI45qFBQZ8eRECi4DBaAlDqle/8A48ip6gAADANdQY88Uc0oGAAAAAElFTkSuQmCC" />
+                <img width="20" height="28" alt="Database" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAN5JREFUeNpiZAACe3v7+UAqgYF0kHjw4MEFyAJMUFqBgTyAoY+JgcqABUo3AvEHIBYgQe8DIF6ALsiISzUwXN9DLQBZpAgMqw9QcZA3z2OxvBGopgGflwWQaAO0cMPmE3uahiE2sAHmZaBXDiCJX0CSQwYTsYYhMIzWkxA5jWiWoboQaJgDkAogwYcHgfgATdMhuoEXoJgY8AHddYTS4XqkSAkk14XIABSW4DCFhi3FBlIlDNHDCEYTG65Y0yEoa9WjFU0foGnuAjk5JQFHYXuRGJfSJQwfEAhTvAAgwAArLzncFel3VAAAAABJRU5ErkJggg==" />
                 <span class="sf-toolbar-status{% if 50 < collector.callcount %} sf-toolbar-status-yellow{% endif %}">{{ collector.callcount }}</span>
                 {% if collector.callcount > 0 %}
                     <span class="sf-toolbar-info-piece-additional-detail">in {{ '%0.2f'|format(collector.time * 1000) }} ms</span>
