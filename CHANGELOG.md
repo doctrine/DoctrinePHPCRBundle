@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.3.3
+-----
+
+* Since version 1.3.0 `LocaleListener` has treated the `locale_fallback` strategy 'hardcoded' as 'merge', this is now 
+  rectified so and the default behaviour is now 'merge'
+
 1.3.2
 -----
 
