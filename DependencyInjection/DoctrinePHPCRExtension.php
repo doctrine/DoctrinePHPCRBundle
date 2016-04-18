@@ -408,7 +408,6 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                 $defaultLocale = key($config['locales']);
             }
             $container->setParameter('doctrine_phpcr.odm.default_locale', $defaultLocale);
-            $container->setParameter('doctrine_phpcr.odm.default_locale', key($config['locales']));
             $container->setParameter('doctrine_phpcr.odm.locale_fallback', $config['locale_fallback']);
 
             $localeChooser = $localeChooser ?: 'doctrine_phpcr.odm.locale_chooser';

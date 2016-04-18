@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.3.4
+-----
+
+* Fixed bug with `default_locale` option in configuration.
+
 1.3.3
 -----
 
