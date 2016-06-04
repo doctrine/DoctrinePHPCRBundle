@@ -59,7 +59,9 @@ class Configuration implements ConfigurationInterface
             ->children()
             ->arrayNode('session')
                 ->beforeNormalization()
-                    ->ifTrue(function ($v) { return !is_array($v) || (is_array($v) && !array_key_exists('sessions', $v) && !array_key_exists('session', $v)); })
+                    ->ifTrue(function ($v) {
+                        return !is_array($v) || (is_array($v) && !array_key_exists('sessions', $v) && !array_key_exists('session', $v));
+                    })
                     ->then(function ($v) {
                         if (!is_array($v)) {
                             $v = array();
@@ -201,7 +203,9 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->arrayNode('odm')
                     ->beforeNormalization()
-                        ->ifTrue(function ($v) { return null === $v || (is_array($v) && !array_key_exists('document_managers', $v) && !array_key_exists('document_manager', $v)); })
+                        ->ifTrue(function ($v) {
+                            return null === $v || (is_array($v) && !array_key_exists('document_managers', $v) && !array_key_exists('document_manager', $v));
+                        })
                         ->then(function ($v) {
                             $v = (array) $v;
                             // Key that should not be rewritten to the connection config
@@ -320,7 +324,9 @@ class Configuration implements ConfigurationInterface
                         ->prototype('array')
                             ->beforeNormalization()
                                 ->ifString()
-                                ->then(function ($v) { return array('type' => $v); })
+                                ->then(function ($v) {
+                                    return array('type' => $v);
+                                })
                             ->end()
                             ->treatNullLike(array())
                             ->treatFalseLike(array('mapping' => false))
@@ -352,8 +358,8 @@ class Configuration implements ConfigurationInterface
             ->beforeNormalization()
             ->ifString()
             ->then(function ($v) {
-            return array('type' => $v);
-        })
+                return array('type' => $v);
+            })
             ->end()
             ->children()
             ->scalarNode('type')->defaultValue('array')->end()
