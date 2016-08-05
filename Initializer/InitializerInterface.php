@@ -23,7 +23,7 @@ namespace Doctrine\Bundle\PHPCRBundle\Initializer;
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
 
 /**
- * Interface for intiializers.
+ * Interface for initializers.
  *
  * @author David Buchmann <mail@davidbu.ch>
  */
