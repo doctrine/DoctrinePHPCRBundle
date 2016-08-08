@@ -78,6 +78,6 @@ EOT
             $output->writeln($message);
         });
 
-        $initializerManager->initialize();
+        $initializerManager->initialize($input->getOption('session'));
     }
 }
