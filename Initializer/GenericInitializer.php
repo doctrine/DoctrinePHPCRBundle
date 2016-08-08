@@ -36,7 +36,7 @@ use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
  *
  * @author David Buchmann <mail@davidbu.ch>
  */
-class GenericInitializer implements InitializerInterface
+class GenericInitializer implements InitializerInterface, SessionAwareInitializerInterface
 {
     /**
      * Name for this initializer.
@@ -57,11 +57,17 @@ class GenericInitializer implements InitializerInterface
      * @var array
      */
     protected $basePaths;
+    /**
+     * Name of the session in which this initializer should run.
+     *
+     * @var string
+     */
+    protected $sessionName;
 
     /**
      * @param array       $basePaths a list of base paths to create if not existing
      * @param string|null $cnd       node type and namespace definitions in cnd
-     *                               format, pass null to not create any node types.
+     *                               format, pass null to not create any node types
      */
     public function __construct($name, array $basePaths, $cnd = null)
     {
@@ -75,7 +81,7 @@ class GenericInitializer implements InitializerInterface
      */
     public function init(ManagerRegistry $registry)
     {
-        $session = $registry->getConnection();
+        $session = $registry->getConnection($this->sessionName);
 
         if ($this->cnd) {
             $this->registerCnd($session, $this->cnd);
@@ -88,6 +94,11 @@ class GenericInitializer implements InitializerInterface
     public function getName()
     {
         return $this->name;
+    }
+
+    public function setSessionName($sessionName)
+    {
+        $this->sessionName = $sessionName;
     }
 
     protected function registerCnd(SessionInterface $session, $cnd)

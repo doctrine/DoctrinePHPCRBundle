@@ -1,6 +1,12 @@
 Changelog
 =========
 
+(unreleased)
+------------
+
+* Added support for `session` parameter in repository initializers with the new `SessionAwareInitializerInterface`.
+  GenericInitializer now implements this new interface.
+
 1.3.4
 -----
 
