@@ -78,13 +78,22 @@ class InitializerManager
     /**
      * Iterate over the registered initializers and execute each of them.
      */
-    public function initialize()
+    public function initialize($sessionName = null)
     {
         $loggingClosure = $this->loggingClosure;
 
         foreach ($this->getInitializers() as $initializer) {
             if ($loggingClosure) {
                 $loggingClosure(sprintf('<info>Executing initializer:</info> %s', $initializer->getName()));
+            }
+
+            // handle specified session if present
+            if ($sessionName) {
+                if (in_array('Doctrine\Bundle\PHPCRBundle\Initializer\SessionAwareInitializerInterface', class_implements($initializer))) {
+                    $initializer->setSessionName($sessionName);
+                } elseif ($loggingClosure) {
+                    $loggingClosure(sprintf('<comment>Initializer "%s" does not implement SessionAwareInitializerInterface, "session" parameter will be ommitted.</comment>', $initializer->getName()));
+                }
             }
 
             $initializer->init($this->registry);
