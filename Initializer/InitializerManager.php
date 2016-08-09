@@ -91,7 +91,7 @@ class InitializerManager
             if ($sessionName) {
                 if (in_array('Doctrine\Bundle\PHPCRBundle\Initializer\SessionAwareInitializerInterface', class_implements($initializer))) {
                     $initializer->setSessionName($sessionName);
-                } else if ($loggingClosure) {
+                } elseif ($loggingClosure) {
                     $loggingClosure(sprintf('<comment>Initializer "%s" does not implement SessionAwareInitializerInterface, "session" parameter will be ommitted.</comment>', $initializer->getName()));
                 }
             }

@@ -67,7 +67,7 @@ class GenericInitializer implements InitializerInterface, SessionAwareInitialize
     /**
      * @param array       $basePaths a list of base paths to create if not existing
      * @param string|null $cnd       node type and namespace definitions in cnd
-     *                               format, pass null to not create any node types.
+     *                               format, pass null to not create any node types
      */
     public function __construct($name, array $basePaths, $cnd = null)
     {
