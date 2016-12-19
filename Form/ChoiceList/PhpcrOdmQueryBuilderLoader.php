@@ -58,7 +58,7 @@ class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
      * Returns an array of documents that are valid choices in the
      * corresponding choice list.
      *
-     * @return array The documents.
+     * @return array the documents
      */
     public function getEntities()
     {
@@ -71,9 +71,9 @@ class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
      * @param string $identifier The identifier field of the object. This method
      *                           is not applicable for fields with multiple
      *                           identifiers.
-     * @param array  $values     The values of the identifiers.
+     * @param array  $values     the values of the identifiers
      *
-     * @return array The entities.
+     * @return array the entities
      */
     public function getEntitiesByIds($identifier, array $values)
     {

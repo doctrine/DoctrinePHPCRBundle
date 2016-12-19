@@ -44,7 +44,7 @@ class DocumentToPathTransformerTest extends \PHPUnit_Framework_Testcase
     }
 
     /**
-     * @expectedException Symfony\Component\Form\Exception\TransformationFailedException
+     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
      */
     public function testReverseTransformNotFound()
     {

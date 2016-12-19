@@ -42,7 +42,6 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
                 'workspace' => 'default',
                 'username' => 'admin',
                 'password' => 'admin',
-
             ),
         ));
 

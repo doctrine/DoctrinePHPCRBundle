@@ -51,7 +51,7 @@ class DocumentMigrateClassCommand extends BaseDocumentMigrateClassCommand
             $dmName = $input->getOption('dm');
         } elseif ($input->getOption('session')) {
             $dmName = $input->getOption('session');
-            trigger_error(
+            @trigger_error(
                 'The session attribute for command doctrine:phpcr:fixtures:load is deprecated. Use --dm instead.',
                 E_USER_DEPRECATED
             );

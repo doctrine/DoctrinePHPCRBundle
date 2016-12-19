@@ -26,7 +26,7 @@ class PHPCRNodeToPathTransformerTest extends \PHPUnit_Framework_Testcase
     }
 
     /**
-     * @expectedException Symfony\Component\Form\Exception\UnexpectedTypeException
+     * @expectedException \Symfony\Component\Form\Exception\UnexpectedTypeException
      */
     public function testTransformWrongType()
     {

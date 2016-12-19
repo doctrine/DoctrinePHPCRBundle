@@ -37,7 +37,7 @@ class PHPCRExecutor extends BasePHPCRExecutor
     /**
      * Construct new fixtures loader instance.
      *
-     * @param DocumentManager $dm DocumentManager instance used for persistence.
+     * @param DocumentManager $dm documentManager instance used for persistence
      */
     public function __construct(
         DocumentManager $dm,

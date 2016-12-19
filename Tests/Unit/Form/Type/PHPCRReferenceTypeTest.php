@@ -44,7 +44,7 @@ class PHPCRReferenceTypeTest extends \PHPUnit_Framework_Testcase
     }
 
     /**
-     * @expectedException Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      */
     public function testInvalidType()
     {
