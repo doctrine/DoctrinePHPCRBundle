@@ -38,8 +38,8 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      * You should not directly instantiate this class but use one of the
      * factory methods.
      *
-     * @param Definition|Reference $driver            Driver DI definition or reference.
-     * @param array                $namespaces        List of namespaces handled by $driver.
+     * @param Definition|Reference $driver            driver DI definition or reference
+     * @param array                $namespaces        list of namespaces handled by $driver
      * @param string[]             $managerParameters List of container parameters that could hold
      *                                                the manager name.
      *                                                doctrine_phpcr.odm.default_document_manager
@@ -47,7 +47,7 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      * @param bool                 $enabledParameter  Service container parameter that must be
      *                                                present to enable the mapping. Set to false
      *                                                to not do any check, optional.
-     * @param array                $aliasMap          Map of alias to namespace.
+     * @param array                $aliasMap          map of alias to namespace
      */
     public function __construct($driver, array $namespaces, array $managerParameters, $enabledParameter = false, array $aliasMap = array())
     {
@@ -73,7 +73,7 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      * @param string   $enabledParameter  Service container parameter that must be present to
      *                                    enable the mapping. Set to false to not do any check,
      *                                    optional.
-     * @param string[] $aliasMap          Map of alias to namespace.
+     * @param string[] $aliasMap          map of alias to namespace
      */
     public static function createXmlMappingDriver(array $namespaces, array $managerParameters = array(), $enabledParameter = false, array $aliasMap = array())
     {
@@ -93,7 +93,7 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      * @param string   $enabledParameter  Service container parameter that must be present to
      *                                    enable the mapping. Set to false to not do any check,
      *                                    optional.
-     * @param string[] $aliasMap          Map of alias to namespace.
+     * @param string[] $aliasMap          map of alias to namespace
      */
     public static function createYamlMappingDriver(array $namespaces, array $managerParameters = array(), $enabledParameter = false, array $aliasMap = array())
     {
@@ -113,7 +113,7 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      * @param string   $enabledParameter  Service container parameter that must be present to
      *                                    enable the mapping. Set to false to not do any check,
      *                                    optional.
-     * @param string[] $aliasMap          Map of alias to namespace.
+     * @param string[] $aliasMap          map of alias to namespace
      */
     public static function createPhpMappingDriver(array $mappings, array $managerParameters = array(), $enabledParameter = false, array $aliasMap = array())
     {
@@ -134,7 +134,7 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      * @param string   $enabledParameter  Service container parameter that must be present to
      *                                    enable the mapping. Set to false to not do any check,
      *                                    optional.
-     * @param string[] $aliasMap          Map of alias to namespace.
+     * @param string[] $aliasMap          map of alias to namespace
      */
     public static function createAnnotationMappingDriver(array $namespaces, array $directories, array $managerParameters = array(), $enabledParameter = false, array $aliasMap = array())
     {
@@ -154,7 +154,7 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      * @param string   $enabledParameter  Service container parameter that must be present to
      *                                    enable the mapping. Set to false to not do any check,
      *                                    optional.
-     * @param string[] $aliasMap          Map of alias to namespace.
+     * @param string[] $aliasMap          map of alias to namespace
      */
     public static function createStaticPhpMappingDriver(array $namespaces, array $directories, array $managerParameters = array(), $enabledParameter = false, array $aliasMap = array())
     {

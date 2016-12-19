@@ -87,7 +87,7 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if ($input->getOption('name')) {
-            trigger_error(
+            @trigger_error(
                 'The name attribute for command doctrine:phpcr:fixtures:load is deprecated. It was never used.',
                 E_USER_DEPRECATED
             );
@@ -97,7 +97,7 @@ EOT
             $dmName = $input->getOption('dm');
         } elseif ($input->getOption('session')) {
             $dmName = $input->getOption('session');
-            trigger_error(
+            @trigger_error(
                 'The session attribute for command doctrine:phpcr:fixtures:load is deprecated. Use --dm instead.',
                 E_USER_DEPRECATED
             );

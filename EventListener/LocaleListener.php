@@ -59,7 +59,7 @@ class LocaleListener implements EventSubscriberInterface
     /**
      * Whether to update the locale chooser to update the allowed languages.
      *
-     * @var string|null One of the FALLBACK_ constants or empty.
+     * @var string|null one of the FALLBACK_ constants or empty
      */
     private $fallback = null;
 
@@ -73,9 +73,9 @@ class LocaleListener implements EventSubscriberInterface
     /**
      * The locale chooser to update on each request.
      *
-     * @param LocaleChooser $chooser        The locale chooser to update.
-     * @param array         $allowedLocales List of locales that are allowed.
-     * @param string        $fallback       One of the FALLBACK_* constants.
+     * @param LocaleChooser $chooser        the locale chooser to update
+     * @param array         $allowedLocales list of locales that are allowed
+     * @param string        $fallback       one of the FALLBACK_* constants
      */
     public function __construct(LocaleChooser $chooser, array $allowedLocales, $fallback = self::FALLBACK_MERGE)
     {

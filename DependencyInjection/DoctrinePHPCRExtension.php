@@ -517,7 +517,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
     /**
      * Loads a configured document managers cache drivers.
      *
-     * @param array            $documentManager A configured ORM document manager.
+     * @param array            $documentManager a configured ORM document manager
      * @param ContainerBuilder $container       A ContainerBuilder instance
      */
     protected function loadOdmCacheDrivers(array $documentManager, ContainerBuilder $container)
