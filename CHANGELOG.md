@@ -4,6 +4,8 @@ Changelog
 (unreleased)
 ------------
 
+* Added connection parameter to RepositorySchema, so that the DBAL configuration applies. This will affect
+  you if you configured connection options for DBAL, but will not affect already created tables.
 * Added support for `session` parameter in repository initializers with the new `SessionAwareInitializerInterface`.
   GenericInitializer now implements this new interface.
 
