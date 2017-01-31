@@ -51,7 +51,10 @@
         <service id="doctrine_phpcr.jackalope_doctrine_dbal.schema"
                  class="%doctrine_phpcr.jackalope_doctrine_dbal.repository_schema.class%"
                  public="false"
-        />
+        >
+            <argument type="collection"/>
+            <argument type="service" id="doctrine.dbal.default_connection"/>
+        </service>
 
         <service id="doctrine_phpcr.jackalope_doctrine_dbal.schema_listener"
                  class="%doctrine_phpcr.jackalope_doctrine_dbal.schema_listener.class%">
