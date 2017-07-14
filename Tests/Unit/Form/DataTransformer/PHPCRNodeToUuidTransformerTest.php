@@ -3,7 +3,6 @@
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\Form\DataTransformer;
 
 use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\PHPCRNodeToUuidTransformer;
-use Jackalope\Node;
 
 class PHPCRNodeToUuidTransformerTest extends \PHPUnit_Framework_Testcase
 {

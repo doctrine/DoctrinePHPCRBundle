@@ -26,6 +26,7 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
@@ -249,7 +250,9 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         }
         if (!empty($session['backend']['profiling'])) {
             $profilingLoggerId = 'doctrine_phpcr.logger.profiling.'.$session['name'];
-            $profilingLoggerDef = new DefinitionDecorator('doctrine_phpcr.logger.profiling');
+            $profilingLoggerDef = class_exists('\Symfony\Component\DependencyInjection\ChildDefinition')
+                ? new ChildDefinition('doctrine_phpcr.logger.profiling')
+                : new DefinitionDecorator('doctrine_phpcr.logger.profiling');
 
             if ($session['backend']['backtrace']) {
                 $profilingLoggerDef->addMethodCall('enableBacktrace');
@@ -260,10 +263,15 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             $container->getDefinition('doctrine_phpcr.data_collector')->addMethodCall('addLogger', array($session['name'], $profilerLogger));
 
             $stopWatchLoggerId = 'doctrine_phpcr.logger.stop_watch.'.$session['name'];
-            $container->setDefinition($stopWatchLoggerId, new DefinitionDecorator('doctrine_phpcr.logger.stop_watch'));
+            $stopWatchLoggerDefinition = class_exists('\Symfony\Component\DependencyInjection\ChildDefinition')
+                ? new ChildDefinition('doctrine_phpcr.logger.stop_watch')
+                : new DefinitionDecorator('doctrine_phpcr.logger.stop_watch');
+            $container->setDefinition($stopWatchLoggerId, $stopWatchLoggerDefinition);
             $stopWatchLogger = new Reference($stopWatchLoggerId);
 
-            $chainLogger = new DefinitionDecorator('doctrine_phpcr.logger.chain');
+            $chainLogger = class_exists('\Symfony\Component\DependencyInjection\ChildDefinition')
+                ? new ChildDefinition('doctrine_phpcr.logger.chain')
+                : new DefinitionDecorator('doctrine_phpcr.logger.chain');
             $chainLogger->addMethodCall('addLogger', array($profilerLogger));
             $chainLogger->addMethodCall('addLogger', array($stopWatchLogger));
 
@@ -280,7 +288,9 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             $backendParameters['jackalope.logger'] = $logger;
         }
 
-        $repositoryFactory = new DefinitionDecorator('doctrine_phpcr.jackalope.repository.factory.'.$type);
+        $repositoryFactory = class_exists('\Symfony\Component\DependencyInjection\ChildDefinition')
+            ? new ChildDefinition('doctrine_phpcr.jackalope.repository.factory.'.$type)
+            : new DefinitionDecorator('doctrine_phpcr.jackalope.repository.factory.'.$type);
         $factory = $container
             ->setDefinition(sprintf('doctrine_phpcr%s.jackalope.repository.%s', $serviceNamePrefix, $session['name']), $repositoryFactory)
         ;
@@ -288,7 +298,9 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
         $username = $admin && $session['admin_username'] ? $session['admin_username'] : $session['username'];
         $password = $admin && $session['admin_password'] ? $session['admin_password'] : $session['password'];
-        $credentials = new DefinitionDecorator('doctrine_phpcr.credentials');
+        $credentials = class_exists('\Symfony\Component\DependencyInjection\ChildDefinition')
+            ? new ChildDefinition('doctrine_phpcr.credentials')
+            : new DefinitionDecorator('doctrine_phpcr.credentials');
         $credentialsServiceId = sprintf('doctrine_phpcr%s.%s_credentials', $serviceNamePrefix, $session['name']);
         $container
             ->setDefinition($credentialsServiceId, $credentials)
@@ -297,7 +309,9 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         ;
 
         // TODO: move the following code block back into the XML file when we drop support for symfony <2.6
-        $definition = new DefinitionDecorator('doctrine_phpcr.jackalope.session');
+        $definition = class_exists('\Symfony\Component\DependencyInjection\ChildDefinition')
+            ? new ChildDefinition('doctrine_phpcr.jackalope.session')
+            : new DefinitionDecorator('doctrine_phpcr.jackalope.session');
         $factoryServiceId = sprintf('doctrine_phpcr%s.jackalope.repository.%s', $serviceNamePrefix, $session['name']);
         if (method_exists($definition, 'setFactory')) {
             $definition->setFactory(array(
@@ -323,7 +337,10 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         }
 
         $eventManagerServiceId = sprintf('doctrine_phpcr%s.%s_session.event_manager', $serviceNamePrefix, $session['name']);
-        $container->setDefinition($eventManagerServiceId, new DefinitionDecorator('doctrine_phpcr.session.event_manager'));
+        $eventManagerDefinition = class_exists('\Symfony\Component\DependencyInjection\ChildDefinition')
+            ? new ChildDefinition('doctrine_phpcr.session.event_manager')
+            : new DefinitionDecorator('doctrine_phpcr.session.event_manager');
+        $container->setDefinition($eventManagerServiceId, $eventManagerDefinition);
     }
 
     private function loadOdm(array $config, ContainerBuilder $container)
@@ -424,7 +441,10 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
     private function loadOdmDocumentManager(array $documentManager, ContainerBuilder $container)
     {
         $odmConfigDefTemplate = empty($documentManager['configuration_id']) ? 'doctrine_phpcr.odm.configuration' : $documentManager['configuration_id'];
-        $odmConfigDef = $container->setDefinition(sprintf('doctrine_phpcr.odm.%s_configuration', $documentManager['name']), new DefinitionDecorator($odmConfigDefTemplate));
+        $odmConfigDefDefinition = class_exists('\Symfony\Component\DependencyInjection\ChildDefinition')
+            ? new ChildDefinition($odmConfigDefTemplate)
+            : new DefinitionDecorator($odmConfigDefTemplate);
+        $odmConfigDef = $container->setDefinition(sprintf('doctrine_phpcr.odm.%s_configuration', $documentManager['name']), $odmConfigDefDefinition);
 
         $this->loadOdmDocumentManagerMappingInformation($documentManager, $odmConfigDef, $container);
         $this->loadOdmCacheDrivers($documentManager, $container);
@@ -457,8 +477,11 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             throw new InvalidArgumentException(sprintf("You have configured a non existent session '%s' for the document manager '%s'", $documentManager['session'], $documentManager['name']));
         }
 
+        $abstractDocumentManagerDefinition = class_exists('\Symfony\Component\DependencyInjection\ChildDefinition')
+            ? new ChildDefinition('doctrine_phpcr.odm.document_manager.abstract')
+            : new DefinitionDecorator('doctrine_phpcr.odm.document_manager.abstract');
         $documentManagerDefinition = $container
-            ->setDefinition($documentManager['service_name'], new DefinitionDecorator('doctrine_phpcr.odm.document_manager.abstract'))
+            ->setDefinition($documentManager['service_name'], $abstractDocumentManagerDefinition)
             ->setArguments(array(
                 new Reference(sprintf('doctrine_phpcr.%s_session', $documentManager['session'])),
                 new Reference(sprintf('doctrine_phpcr.odm.%s_configuration', $documentManager['name'])),
@@ -470,7 +493,9 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             'attribute' => 'doctrine_phpcr.odm.translation.strategy.attribute',
         ) as $name => $strategyTemplateId) {
             $strategyId = sprintf('doctrine_phpcr.odm.%s.translation.strategy.%s', $documentManager['name'], $name);
-            $strategyDefinition = new DefinitionDecorator($strategyTemplateId);
+            $strategyDefinition = class_exists('\Symfony\Component\DependencyInjection\ChildDefinition')
+                ? new ChildDefinition($strategyTemplateId)
+                : new DefinitionDecorator($strategyTemplateId);
             $container->setDefinition($strategyId, $strategyDefinition);
 
             $strategyDefinition->replaceArgument(0, new Reference($documentManager['service_name']));
