@@ -51,6 +51,13 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
     private $disableProxyWarmer = false;
 
     /**
+     * Whether the schema listener service has been loaded already.
+     *
+     * This is done the first time a session with jackalope-doctrine-dbal is encountered.
+     */
+    private $dbalSchemaListenerLoaded = false;
+
+    /**
      * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
@@ -186,7 +193,10 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                 $connectionAliasName = sprintf('doctrine_phpcr%s.jackalope_doctrine_dbal.%s_connection', $serviceNamePrefix, $session['name']);
                 $container->setAlias($connectionAliasName, $connectionService);
 
-                $backendParameters['jackalope.doctrine_dbal_connection'] = new Reference($connectionAliasName);
+                if (!$this->dbalSchemaListenerLoaded) {
+                    $this->loader->load('jackalope_doctrine_dbal.xml');
+                    $this->dbalSchemaListenerLoaded = true;
+                }
                 $container
                     ->getDefinition('doctrine_phpcr.jackalope_doctrine_dbal.schema_listener')
                     ->addTag('doctrine.event_listener', array(
@@ -195,6 +205,8 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                         'lazy' => true,
                     ))
                 ;
+
+                $backendParameters['jackalope.doctrine_dbal_connection'] = new Reference($connectionAliasName);
                 if (false === $admin && isset($session['backend']['caches'])) {
                     foreach ($session['backend']['caches'] as $key => $cache) {
                         $backendParameters['jackalope.data_caches'][$key] = new Reference($cache);
