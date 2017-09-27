@@ -2,6 +2,7 @@ language: php
 
 php:
   - 7.1
+  - 7.2
 
 sudo: false
 
@@ -17,9 +18,9 @@ matrix:
   include:
     - php: 7.1
       env: SYMFONY_VERSION=2.8.* COMPOSER_FLAGS="--prefer-lowest" SYMFONY_DEPRECATIONS_HELPER=weak
-    - php: 7.1
+    - php: 7.2
       env: SYMFONY_VERSION=2.8.*
-    - php: 7.1
+    - php: 7.2
       env: SYMFONY_VERSION=3.3.*
     - php: 7.1
       env: SYMFONY_VERSION=3.4.*
