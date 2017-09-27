@@ -141,11 +141,13 @@ class Configuration implements ConfigurationInterface
                                         if (!isset($v['url'])) {
                                             throw new InvalidConfigurationException('prismic backend requires the url argument.');
                                         }
+
                                         break;
                                     case 'jackrabbit':
                                         if (!isset($v['url'])) {
                                             throw new InvalidConfigurationException('jackrabbit backend requires the url argument.');
                                         }
+
                                         break;
                                     case 'doctrinedbal':
                                         break;
