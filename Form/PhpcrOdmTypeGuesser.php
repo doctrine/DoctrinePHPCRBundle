@@ -150,6 +150,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
         switch ($metadata->getTypeOfField($property)) {
             case 'boolean':
                 $type = $this->legacy ? 'checkbox' : 'Symfony\Component\Form\Extension\Core\Type\CheckboxType';
+
                 break;
             case 'binary':
                 // the file type only works on documents like the File document,
@@ -160,13 +161,16 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
                 return;
             case 'date':
                 $type = $this->legacy ? 'datetime' : 'Symfony\Component\Form\Extension\Core\Type\DateTimeType';
+
                 break;
             case 'double':
                 $type = $this->legacy ? 'number' : 'Symfony\Component\Form\Extension\Core\Type\NumberType';
+
                 break;
             case 'long':
             case 'integer':
                 $type = $this->legacy ? 'integer' : 'Symfony\Component\Form\Extension\Core\Type\IntegerType';
+
                 break;
             case 'string':
                 if ($metadata->isIdentifier($property)
@@ -175,14 +179,17 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
                     $options['attr'] = array('readonly' => 'readonly');
                 }
                 $type = $this->legacy ? 'text' : 'Symfony\Component\Form\Extension\Core\Type\TextType';
+
                 break;
             case 'nodename':
                 $type = $this->legacy ? 'text' : 'Symfony\Component\Form\Extension\Core\Type\TextType';
+
                 break;
             case 'locale':
                 $locales = $documentManager->getLocaleChooserStrategy();
                 $type = $this->legacy ? 'choice' : 'Symfony\Component\Form\Extension\Core\Type\ChoiceType';
                 $options['choices'] = array_combine($locales->getDefaultLocalesOrder(), $locales->getDefaultLocalesOrder());
+
                 break;
             case 'versionname':
             case 'versioncreated':
@@ -190,6 +197,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
                 $options['attr'] = array('readonly' => 'readonly');
                 $options['required'] = false;
                 $type = $this->legacy ? 'text' : 'Symfony\Component\Form\Extension\Core\Type\TextType';
+
                 break;
         }
 

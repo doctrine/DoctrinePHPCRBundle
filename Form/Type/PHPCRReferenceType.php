@@ -36,9 +36,11 @@ class PHPCRReferenceType extends AbstractType
         switch (strtolower($options['transformer_type'])) {
             case 'uuid':
                 $transformer = new PHPCRNodeToUuidTransformer($this->session);
+
                 break;
             case 'path':
                 $transformer = new PHPCRNodeToPathTransformer($this->session);
+
                 break;
             default:
                 throw new InvalidConfigurationException(sprintf('

@@ -86,9 +86,11 @@ class LocaleListener implements EventSubscriberInterface
             case self::FALLBACK_REPLACE:
             case self::FALLBACK_HARDCODED:
                 $this->fallback = $fallback;
+
                 break;
             default:
                 $this->fallback = self::FALLBACK_MERGE;
+
                 break;
         }
     }

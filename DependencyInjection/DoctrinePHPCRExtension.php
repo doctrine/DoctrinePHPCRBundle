@@ -153,6 +153,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                     }
                     $this->loadJackalopeSession($session, $container, $type);
                     $this->loadJackalopeSession($session, $container, $type, true);
+
                     break;
                 default:
                     throw new InvalidArgumentException(sprintf('You set an unsupported transport type "%s" for session "%s"', $type, $name));
@@ -212,12 +213,15 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                         $backendParameters['jackalope.data_caches'][$key] = new Reference($cache);
                     }
                 }
+
                 break;
             case 'prismic':
                 $backendParameters['jackalope.prismic_uri'] = $session['backend']['url'];
+
                 break;
             case 'jackrabbit':
                 $backendParameters['jackalope.jackrabbit_uri'] = $session['backend']['url'];
+
                 break;
         }
 
