@@ -130,9 +130,11 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
 
         if (!empty($mapping['assoc'])) {
             if (isset($this->typeGuess['assoc'])) {
-                list($type, $options) = each($this->typeGuess['assoc']);
-
-                return new TypeGuess($type, $options, Guess::MEDIUM_CONFIDENCE);
+                return new TypeGuess(
+                    key($this->typeGuess['assoc']),
+                    current($this->typeGuess['assoc']),
+                    Guess::MEDIUM_CONFIDENCE
+                );
             }
 
             return;
