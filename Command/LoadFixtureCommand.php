@@ -135,7 +135,9 @@ EOT
         if ($dirOrFile) {
             $paths = is_array($dirOrFile) ? $dirOrFile : array($dirOrFile);
         } else {
-            $paths = array();
+            /** @var $kernel \Symfony\Component\HttpKernel\KernelInterface */
+            $kernel = $this->getApplication()->getKernel();
+            $paths = array($kernel->getRootDir().'/DataFixtures/PHPCR');
             foreach ($this->getApplication()->getKernel()->getBundles() as $bundle) {
                 $paths[] = $bundle->getPath().'/DataFixtures/PHPCR';
             }
