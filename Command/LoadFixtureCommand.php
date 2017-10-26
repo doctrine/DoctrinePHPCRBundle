@@ -31,6 +31,7 @@ use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
 use Doctrine\Common\DataFixtures\Purger\PHPCRPurger;
 use InvalidArgumentException;
 use Doctrine\Bundle\PHPCRBundle\DataFixtures\PHPCRExecutor;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Command to load PHPCR-ODM fixtures.
@@ -135,8 +136,10 @@ EOT
         if ($dirOrFile) {
             $paths = is_array($dirOrFile) ? $dirOrFile : array($dirOrFile);
         } else {
-            $paths = array();
-            foreach ($this->getApplication()->getKernel()->getBundles() as $bundle) {
+            /** @var $kernel KernelInterface */
+            $kernel = $this->getApplication()->getKernel();
+            $paths = array($kernel->getRootDir().'/DataFixtures/PHPCR');
+            foreach ($kernel->getBundles() as $bundle) {
                 $paths[] = $bundle->getPath().'/DataFixtures/PHPCR';
             }
         }
