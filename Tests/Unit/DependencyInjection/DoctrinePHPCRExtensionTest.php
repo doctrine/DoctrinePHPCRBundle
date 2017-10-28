@@ -57,6 +57,7 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
         $this->assertEquals('doctrine_phpcr.jackalope.repository.factory.jackrabbit', $repositoryFactory->getParent());
 
         $this->assertTrue($this->container->hasDefinition('doctrine_phpcr.default_session'));
+        $this->assertTrue($this->container->getDefinition('doctrine_phpcr.default_session')->isPublic());
         $this->assertTrue($this->container->hasDefinition('doctrine_phpcr.jackalope.repository.default'));
         $this->assertTrue($this->container->hasDefinition('doctrine_phpcr.admin.default_session'));
         $this->assertTrue($this->container->hasDefinition('doctrine_phpcr.admin.jackalope.repository.default'));
@@ -81,6 +82,7 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
         $managerRegistry = $this->container->getAlias('doctrine_phpcr');
         $this->assertInstanceOf('\Symfony\Component\DependencyInjection\Alias', $managerRegistry);
         $this->assertEquals('my_phpcr_registry', $managerRegistry);
+        $this->assertTrue($managerRegistry->isPublic());
     }
 
     public function testJackrabbitSessions()
@@ -214,5 +216,6 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
         $calls = $managerDef->getMethodCalls();
         $this->assertCount(1, $calls);
         $this->assertEquals(array('setLocaleChooserStrategy', array(new Reference($expectedChooser))), current($calls));
+        $this->assertTrue($managerDef->isPublic());
     }
 }

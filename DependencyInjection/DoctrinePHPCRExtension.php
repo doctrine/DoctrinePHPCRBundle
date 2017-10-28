@@ -70,7 +70,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         $this->loader->load('phpcr.xml');
 
         if (!empty($config['manager_registry_service_id'])) {
-            $container->setAlias('doctrine_phpcr', new Alias($config['manager_registry_service_id']));
+            $container->setAlias('doctrine_phpcr', new Alias($config['manager_registry_service_id'], true));
         }
 
         $parameters = array(
@@ -174,6 +174,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         $this->sessions = $sessions;
         $container->setParameter('doctrine_phpcr.default_session', $config['default_session']);
         $container->setAlias('doctrine_phpcr.session', $sessions[$config['default_session']]);
+        $container->getAlias('doctrine_phpcr.session')->setPublic(true);
     }
 
     private function loadJackalopeSession(array $session, ContainerBuilder $container, $type, $admin = false)
@@ -186,13 +187,13 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                     ? $session['backend']['connection']
                     : null
                 ;
-                $connectionService = $connectionName
+                $connectionAliasName = $connectionName
                     ? sprintf('doctrine.dbal.%s_connection', $connectionName)
                     : 'database_connection'
                 ;
-                $connectionService = new Alias($connectionService, true);
+                $connectionAlias = new Alias($connectionAliasName, true);
                 $connectionAliasName = sprintf('doctrine_phpcr%s.jackalope_doctrine_dbal.%s_connection', $serviceNamePrefix, $session['name']);
-                $container->setAlias($connectionAliasName, $connectionService);
+                $container->setAlias($connectionAliasName, $connectionAlias);
 
                 if (!$this->dbalSchemaListenerLoaded) {
                     $this->loader->load('jackalope_doctrine_dbal.xml');
@@ -346,7 +347,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         ;
 
         $serviceName = sprintf('doctrine_phpcr%s.%s_session', $serviceNamePrefix, $session['name']);
-        $container->setDefinition($serviceName, $definition);
+        $container->setDefinition($serviceName, $definition)->setPublic(true);
 
         foreach ($session['options'] as $key => $value) {
             $definition->addMethodCall('setSessionOption', array($key, $value));
@@ -502,7 +503,8 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                 new Reference(sprintf('doctrine_phpcr.%s_session', $documentManager['session'])),
                 new Reference(sprintf('doctrine_phpcr.odm.%s_configuration', $documentManager['name'])),
                 new Reference(sprintf('doctrine_phpcr.%s_session.event_manager', $documentManager['session'])),
-            ));
+            ))
+            ->setPublic(true);
 
         foreach (array(
             'child' => 'doctrine_phpcr.odm.translation.strategy.child',
