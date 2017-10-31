@@ -44,7 +44,7 @@ class ReferenceManyCollectionToArrayTransformer implements DataTransformerInterf
         $this->dm = $dm;
         $this->referencedClass = $referencedClass;
 
-        if (!($key === self::KEY_UUID || $key === self::KEY_PATH)) {
+        if (!(self::KEY_UUID === $key || self::KEY_PATH === $key)) {
             throw new \InvalidArgumentException(sprintf(
                 'Key must be either KEY_UUID or KEY_PATH. Received "%s"',
                 $key
@@ -62,7 +62,7 @@ class ReferenceManyCollectionToArrayTransformer implements DataTransformerInterf
         $arr = array();
 
         foreach ($collection as $item) {
-            $arr[] = ($this->key === self::KEY_UUID) ? $item->getNode()->getIdentifier() : $item->getPath();
+            $arr[] = (self::KEY_UUID === $this->key) ? $item->getNode()->getIdentifier() : $item->getPath();
         }
 
         return $arr;
