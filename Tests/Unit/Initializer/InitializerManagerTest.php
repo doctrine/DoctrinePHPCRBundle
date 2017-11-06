@@ -3,8 +3,9 @@
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\Initializer;
 
 use Doctrine\Bundle\PHPCRBundle\Initializer\InitializerManager;
+use PHPUnit\Framework\TestCase;
 
-class InitializerManagerTest extends \PHPUnit_Framework_TestCase
+class InitializerManagerTest extends TestCase
 {
     public function setUp()
     {

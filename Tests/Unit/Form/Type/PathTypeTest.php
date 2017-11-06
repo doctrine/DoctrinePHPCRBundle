@@ -5,9 +5,10 @@ namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\Form\Type;
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
 use Doctrine\Bundle\PHPCRBundle\Form\Type\PathType;
 use Doctrine\ODM\PHPCR\DocumentManager;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormBuilder;
 
-class PathTypeTest extends \PHPUnit_Framework_Testcase
+class PathTypeTest extends Testcase
 {
     /**
      * @var ManagerRegistry|\PHPUnit_Framework_MockObject_MockObject

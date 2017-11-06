@@ -3,8 +3,9 @@
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\Form\DataTransformer;
 
 use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\PHPCRNodeToPathTransformer;
+use PHPUnit\Framework\TestCase;
 
-class PHPCRNodeToPathTransformerTest extends \PHPUnit_Framework_Testcase
+class PHPCRNodeToPathTransformerTest extends Testcase
 {
     public function setUp()
     {
