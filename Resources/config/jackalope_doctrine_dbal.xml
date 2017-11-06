@@ -4,15 +4,10 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="doctrine_phpcr.jackalope_doctrine_dbal.schema_listener.class">Doctrine\Bundle\PHPCRBundle\EventListener\JackalopeDoctrineDbalSchemaListener</parameter>
-        <parameter key="doctrine_phpcr.jackalope_doctrine_dbal.repository_schema.class">Jackalope\Transport\DoctrineDBAL\RepositorySchema</parameter>
-    </parameters>
-
     <services>
 
         <service id="doctrine_phpcr.jackalope_doctrine_dbal.schema"
-                 class="%doctrine_phpcr.jackalope_doctrine_dbal.repository_schema.class%"
+                 class="Jackalope\Transport\DoctrineDBAL\RepositorySchema"
                  public="false"
         >
             <argument type="collection"/>
@@ -20,7 +15,7 @@
         </service>
 
         <service id="doctrine_phpcr.jackalope_doctrine_dbal.schema_listener"
-                 class="%doctrine_phpcr.jackalope_doctrine_dbal.schema_listener.class%">
+                 class="Doctrine\Bundle\PHPCRBundle\EventListener\JackalopeDoctrineDbalSchemaListener">
             <argument type="service" id="doctrine_phpcr.jackalope_doctrine_dbal.schema" />
         </service>
 
