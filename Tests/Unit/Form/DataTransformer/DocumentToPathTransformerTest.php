@@ -3,8 +3,9 @@
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\Form\DataTransformer;
 
 use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\DocumentToPathTransformer;
+use PHPUnit\Framework\TestCase;
 
-class DocumentToPathTransformerTest extends \PHPUnit_Framework_Testcase
+class DocumentToPathTransformerTest extends Testcase
 {
     public function setUp()
     {

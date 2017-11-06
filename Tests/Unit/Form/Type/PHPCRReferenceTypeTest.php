@@ -3,8 +3,9 @@
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\Form\DataTransformer;
 
 use Doctrine\Bundle\PHPCRBundle\Form\Type\PHPCRReferenceType;
+use PHPUnit\Framework\TestCase;
 
-class PHPCRReferenceTypeTest extends \PHPUnit_Framework_Testcase
+class PHPCRReferenceTypeTest extends Testcase
 {
     public function setUp()
     {

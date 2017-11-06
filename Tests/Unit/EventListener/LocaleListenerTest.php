@@ -3,8 +3,9 @@
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\EventListener\LocaleListenerTest;
 
 use Doctrine\Bundle\PHPCRBundle\EventListener\LocaleListener;
+use PHPUnit\Framework\TestCase;
 
-class LocaleListenerTest extends \PHPUnit_Framework_TestCase
+class LocaleListenerTest extends TestCase
 {
     private $chooser;
     private $responseEvent;

@@ -3,8 +3,9 @@
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\Initializer;
 
 use Doctrine\Bundle\PHPCRBundle\Initializer\GenericInitializer;
+use PHPUnit\Framework\TestCase;
 
-class GenericInitializerTest extends \PHPUnit_Framework_TestCase
+class GenericInitializerTest extends TestCase
 {
     protected $registry;
 
