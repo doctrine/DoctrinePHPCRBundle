@@ -1,6 +1,6 @@
 <?php
 
-namespace Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document;
+namespace Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document;
 
 use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCR;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -42,7 +42,7 @@ class TestDocument
 
     /**
      * @PHPCR\Referrers(
-     *     referringDocument="Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\ReferrerDocument",
+     *     referringDocument="Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\ReferrerDocument",
      *     referencedBy="documents"
      * )
      */
