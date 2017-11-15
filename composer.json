@@ -28,7 +28,7 @@
         "phpunit/phpunit": "^4.8.36",
         "phpunit/php-code-coverage": "~2.2",
         "symfony/form": "^2.8|^3.3|^4.0",
-        "doctrine/phpcr-odm": "^2.0",
+        "doctrine/phpcr-odm": "^1.1|^2.0",
         "symfony-cmf/testing": "^2.1@dev",
         "matthiasnoback/symfony-dependency-injection-test": "~0.7",
         "sllh/php-cs-fixer-styleci-bridge": "~1.1"
