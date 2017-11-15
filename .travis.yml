@@ -10,6 +10,8 @@ cache:
     - $HOME/.composer/cache/files
 
 matrix:
+  global:
+    - KERNEL_CLASS=Symfony\Cmf\Bundle\RoutingAutoBundle\Tests\Fixtures\App\Kernel
   include:
     - php: 7.1
       env: SYMFONY_VERSION=2.8.* COMPOSER_FLAGS="--prefer-lowest" SYMFONY_DEPRECATIONS_HELPER=weak
