@@ -19,8 +19,8 @@
     "prefer-stable": true,
     "require": {
         "php": "^7.1",
-        "symfony/framework-bundle": "^2.8.0|^3.3.0",
-        "symfony/doctrine-bridge": "^2.8.0|^3.3.0",
+        "symfony/framework-bundle": "^2.8.0|^3.3.0|^4.0",
+        "symfony/doctrine-bridge": "^2.8.0|^3.3.0|^4.0",
         "phpcr/phpcr-implementation": "2.1.*",
         "phpcr/phpcr-utils": "^1.2.7"
     },
