@@ -11,7 +11,7 @@ cache:
 
 env:
   global:
-    - SYMFONY_DEPRECATIONS_HELPER=0
+    - SYMFONY_DEPRECATIONS_HELPER=13 # just the phpunit deprecations
     - KERNEL_CLASS=Doctrine\\Bundle\\PHPCRBundle\\Tests\\Fixtures\\App\\Kernel
 
 matrix:
