@@ -9,9 +9,12 @@ cache:
   directories:
     - $HOME/.composer/cache/files
 
-matrix:
+env:
   global:
+    - SYMFONY_DEPRECATIONS_HELPER=0
     - KERNEL_CLASS=Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Kernel
+
+matrix:
   include:
     - php: 7.1
       env: SYMFONY_VERSION=2.8.* COMPOSER_FLAGS="--prefer-lowest" SYMFONY_DEPRECATIONS_HELPER=weak
