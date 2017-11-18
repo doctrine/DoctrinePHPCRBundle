@@ -25,12 +25,11 @@
         "phpcr/phpcr-utils": "^1.2.7"
     },
     "require-dev": {
-        "phpunit/phpunit": "^4.8.36",
-        "phpunit/php-code-coverage": "~2.2",
+        "phpunit/phpunit": "^5.7",
         "symfony/form": "^2.8|^3.3|^4.0",
         "doctrine/phpcr-odm": "^1.4|^2.0",
         "symfony-cmf/testing": "^2.1@dev",
-        "matthiasnoback/symfony-dependency-injection-test": "~0.7",
+        "matthiasnoback/symfony-dependency-injection-test": "^1.1",
         "sllh/php-cs-fixer-styleci-bridge": "~1.1",
         "symfony/security-bundle": "^2.8|^3.3|^4.0",
         "symfony/twig-bundle": "^2.8|^3.3|^4.0",
