@@ -33,7 +33,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
     public function testSupports($expectedConfiguration, array $files)
     {
         $formats = array_map(function ($path) {
-            return __DIR__ . '/../../Fixtures/fixtures/' .$path;
+            return __DIR__.'/../../Fixtures/fixtures/'.$path;
         }, $files);
 
         foreach ($formats as $format) {
