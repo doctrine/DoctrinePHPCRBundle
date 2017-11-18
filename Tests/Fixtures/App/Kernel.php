@@ -16,6 +16,6 @@ class Kernel extends TestKernel
 
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $loader->load(__DIR__ . '/config/config.php');
+        $loader->load(__DIR__.'/config/config.php');
     }
 }
