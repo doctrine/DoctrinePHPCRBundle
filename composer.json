@@ -29,7 +29,7 @@
         "phpunit/php-code-coverage": "~2.2",
         "symfony/form": "^2.8|^3.3|^4.0",
         "doctrine/phpcr-odm": "^1.4|^2.0",
-        "symfony-cmf/testing": "^2.1@dev",
+        "symfony-cmf/testing": "dev-allow_symfony_4.0",
         "matthiasnoback/symfony-dependency-injection-test": "~0.7",
         "sllh/php-cs-fixer-styleci-bridge": "~1.1",
         "symfony/security-bundle": "^2.8|^3.3|^4.0",
