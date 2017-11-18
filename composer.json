@@ -31,7 +31,14 @@
         "doctrine/phpcr-odm": "^1.1|^2.0",
         "symfony-cmf/testing": "^2.1@dev",
         "matthiasnoback/symfony-dependency-injection-test": "~0.7",
-        "sllh/php-cs-fixer-styleci-bridge": "~1.1"
+        "sllh/php-cs-fixer-styleci-bridge": "~1.1",
+        "symfony/security-bundle": "^2.8|^3.3|^4.0",
+        "symfony/twig-bundle": "^2.8|^3.3|^4.0",
+        "symfony/translation": "^2.8|^3.3|^4.0",
+        "symfony/validator": "^2.8|^3.3|^4.0",
+        "symfony/asset": "^2.8|^3.3|^4.0",
+        "symfony/templating": "^2.8|^3.3|^4.0",
+        "symfony/browser-kit": "^2.8|^3.3|^4.0"
     },
     "suggest": {
         "phpcr/phpcr-shell": "If you want native access to PHPCR-Shell to manage the PHPCR repository",
