@@ -15,8 +15,6 @@
             "email": "kontakt@beberlei.de"
         }
     ],
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "require": {
         "php": "^7.1",
         "symfony/framework-bundle": "^2.8|^3.3|^4.0",
