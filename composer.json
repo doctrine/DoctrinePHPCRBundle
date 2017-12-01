@@ -49,7 +49,10 @@
         "phpcr/phpcr-shell": "<1.0.0-beta1"
     },
     "autoload": {
-        "psr-4": { "Doctrine\\Bundle\\PHPCRBundle\\": "" }
+        "psr-4": { "Doctrine\\Bundle\\PHPCRBundle\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Doctrine\\Bundle\\PHPCRBundle\\Tests\\": "tests/" }
     },
     "extra": {
         "branch-alias": {
