@@ -516,7 +516,6 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                 : new DefinitionDecorator($strategyTemplateId);
             $container->setDefinition($strategyId, $strategyDefinition);
 
-            $strategyDefinition->replaceArgument(0, new Reference($documentManager['service_name']));
             $documentManagerDefinition->addMethodCall('setTranslationStrategy', array($name, new Reference($strategyId)));
         }
     }
