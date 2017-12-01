@@ -20,8 +20,7 @@
         "symfony/framework-bundle": "^2.8 || ^3.3 || ^4.0",
         "symfony/doctrine-bridge": "^2.8 || ^3.3 || ^4.0",
         "phpcr/phpcr-implementation": "2.1.*",
-        "phpcr/phpcr-utils": "^1.2.7",
-        "symfony/symfony": "^4.0"
+        "phpcr/phpcr-utils": "^1.2.7"
     },
     "require-dev": {
         "phpunit/phpunit": "^5.6",
@@ -56,6 +55,5 @@
         "branch-alias": {
             "dev-master": "2.0-dev"
         }
-    },
-    "minimum-stability": "dev"
+    }
 }
