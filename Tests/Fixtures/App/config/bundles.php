@@ -1,5 +1,5 @@
 <?php
 
 return [
-   \Doctrine\Bundle\PHPCRBundle\DoctrinePHPCRBundle::class => ['all']
+   \Doctrine\Bundle\PHPCRBundle\DoctrinePHPCRBundle::class => ['all'],
 ];
