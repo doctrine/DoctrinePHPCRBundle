@@ -20,7 +20,7 @@ class PathType extends AbstractType
 
     public function getParent()
     {
-        return method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text';
+        return method_exists(AbstractType::class, 'getBlockPrefix') ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text';
     }
 
     /**

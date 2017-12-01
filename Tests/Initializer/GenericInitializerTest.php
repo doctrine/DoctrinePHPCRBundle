@@ -3,6 +3,11 @@
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\Initializer;
 
 use Doctrine\Bundle\PHPCRBundle\Initializer\GenericInitializer;
+use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
+use Jackalope\Node;
+use Jackalope\NodeType\NodeTypeManager;
+use PHPCR\SessionInterface;
+use PHPCR\WorkspaceInterface;
 use PHPUnit\Framework\TestCase;
 
 class GenericInitializerTest extends TestCase
@@ -11,18 +16,12 @@ class GenericInitializerTest extends TestCase
 
     public function setUp()
     {
-        $this->registry = $this->getMockBuilder(
-            'Doctrine\Bundle\PHPCRBundle\ManagerRegistry'
-        )->disableOriginalConstructor()->getMock();
+        $this->registry = $this->createMock(ManagerRegistry::class);
 
-        $this->session = $this->getMock('PHPCR\SessionInterface');
-        $this->workspace = $this->getMock('PHPCR\WorkspaceInterface');
-        $this->nodeTypeManager = $this->getMockBuilder(
-            'Jackalope\NodeType\NodeTypeManager'
-        )->disableOriginalConstructor()->getMock();
-        $this->node = $this->getMockBuilder(
-            'Jackalope\Node'
-        )->disableOriginalConstructor()->getMock();
+        $this->session = $this->createMock(SessionInterface::class);
+        $this->workspace = $this->createMock(WorkspaceInterface::class);
+        $this->nodeTypeManager = $this->createMock(NodeTypeManager::class);
+        $this->node = $this->createMock(Node::class);
     }
 
     public function provideInitializer()

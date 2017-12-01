@@ -2,30 +2,38 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\Initializer;
 
+use Doctrine\Bundle\PHPCRBundle\Initializer\InitializerInterface;
 use Doctrine\Bundle\PHPCRBundle\Initializer\InitializerManager;
+use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
 use PHPUnit\Framework\TestCase;
 
 class InitializerManagerTest extends TestCase
 {
+    /**
+     * @var ManagerRegistry|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $registry;
+
     public function setUp()
     {
-        $this->registry = $this->getMockBuilder(
-            'Doctrine\Bundle\PHPCRBundle\ManagerRegistry'
-        )->disableOriginalConstructor()->getMock();
+        $this->registry = $this->createMock(ManagerRegistry::class);
 
         $this->initializerManager = new InitializerManager($this->registry);
 
-        $this->initializer1 = $this->getMockBuilder(
-            'Doctrine\Bundle\PHPCRBundle\Initializer\InitializerInterface'
-        )->setMockClassName('TestInitializerOne')->getMock();
+        $this->initializer1 = $this
+            ->getMockBuilder(InitializerInterface::class)
+            ->setMockClassName('TestInitializerOne')
+            ->getMock();
 
-        $this->initializer2 = $this->getMockBuilder(
-            'Doctrine\Bundle\PHPCRBundle\Initializer\InitializerInterface'
-        )->setMockClassName('TestInitializerTwo')->getMock();
+        $this->initializer2 = $this
+            ->getMockBuilder(InitializerInterface::class)
+            ->setMockClassName('TestInitializerTwo')
+            ->getMock();
 
-        $this->initializer3 = $this->getMockBuilder(
-            'Doctrine\Bundle\PHPCRBundle\Initializer\InitializerInterface'
-        )->setMockClassName('TestInitializerTwo')->getMock();
+        $this->initializer3 = $this
+            ->getMockBuilder(InitializerInterface::class)
+            ->setMockClassName('TestInitializerTwo')
+            ->getMock();
     }
 
     public function provideInitialize()

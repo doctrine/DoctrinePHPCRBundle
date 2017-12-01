@@ -21,6 +21,7 @@
 namespace Doctrine\Bundle\PHPCRBundle;
 
 use Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\DocumentConvertTranslationCommand;
+use Doctrine\ODM\PHPCR\Version;
 use Jackalope\Session;
 use Symfony\Component\DependencyInjection\IntrospectableContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -55,7 +56,7 @@ class DoctrinePHPCRBundle extends Bundle
 
         $container->addCompilerPass(new MigratorPass());
         $container->addCompilerPass(new InitializerPass());
-        if (class_exists('Doctrine\ODM\PHPCR\Version')) {
+        if (class_exists(Version::class)) {
             $container->addCompilerPass(new RegisterEventListenersAndSubscribersPass('doctrine_phpcr.sessions', 'doctrine_phpcr.%s_session.event_manager', 'doctrine_phpcr'), PassConfig::TYPE_BEFORE_OPTIMIZATION);
         }
     }
@@ -67,7 +68,7 @@ class DoctrinePHPCRBundle extends Bundle
     {
         parent::registerCommands($application);
 
-        if (class_exists('Doctrine\ODM\PHPCR\Version')) {
+        if (class_exists(Version::class)) {
             $application->add(new DocumentMigrateClassCommand());
             $application->add(new InfoDoctrineCommand());
             $application->add(new VerifyUniqueNodeTypesMappingCommand());

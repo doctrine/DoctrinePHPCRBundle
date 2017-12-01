@@ -20,9 +20,19 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Form;
 
+use Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType;
+use Doctrine\Bundle\PHPCRBundle\Form\Type\PathType;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormTypeGuesserInterface;
 use Symfony\Component\Form\Guess\Guess;
 use Symfony\Component\Form\Guess\TypeGuess;
@@ -63,7 +73,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
     {
         $this->registry = $registry;
         $this->typeGuess = $typeGuess;
-        $this->legacy = !method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+        $this->legacy = !method_exists(AbstractType::class, 'getBlockPrefix');
         $this->entryTypeOption = $this->legacy ? 'type' : 'entry_type';
     }
 
@@ -73,7 +83,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
     public function guessType($class, $property)
     {
         if (!$ret = $this->getMetadata($class)) {
-            return new TypeGuess($this->legacy ? 'text' : 'Symfony\Component\Form\Extension\Core\Type\TextType', array(), Guess::LOW_CONFIDENCE);
+            return new TypeGuess($this->legacy ? 'text' : TextType::class, array(), Guess::LOW_CONFIDENCE);
         }
 
         /** @var ClassMetadata $metadata */
@@ -85,15 +95,15 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
 
             switch ($mapping['type']) {
                 case 'parent':
-                    return new TypeGuess($this->legacy ? 'phpcr_odm_path' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\PathType', array(), Guess::MEDIUM_CONFIDENCE);
+                    return new TypeGuess($this->legacy ? 'phpcr_odm_path' : PathType::class, array(), Guess::MEDIUM_CONFIDENCE);
 
                 case 'mixedreferrers':
                     $options = array(
                         'attr' => array('readonly' => 'readonly'),
-                        $this->entryTypeOption => $this->legacy ? 'phpcr_odm_path' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\PathType',
+                        $this->entryTypeOption => $this->legacy ? 'phpcr_odm_path' : PathType::class,
                     );
 
-                    return new TypeGuess($this->legacy ? 'collection' : 'Symfony\Component\Form\Extension\Core\Type\CollectionType', $options, Guess::LOW_CONFIDENCE);
+                    return new TypeGuess($this->legacy ? 'collection' : CollectionType::class, $options, Guess::LOW_CONFIDENCE);
 
                 case 'referrers':
                     return new TypeGuess($this->legacy ? 'phpcr_document' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType', array(
@@ -112,22 +122,22 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
                         $options['class'] = $mapping['targetDocument'];
                     }
 
-                    return new TypeGuess($this->legacy ? 'phpcr_document' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType', $options, Guess::HIGH_CONFIDENCE);
+                    return new TypeGuess($this->legacy ? 'phpcr_document' : DocumentType::class, $options, Guess::HIGH_CONFIDENCE);
 
                 case 'child':
                     $options = array(
                         'attr' => array('readonly' => 'readonly'),
                     );
 
-                    return new TypeGuess($this->legacy ? 'phpcr_odm_path' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\PathType', $options, Guess::LOW_CONFIDENCE);
+                    return new TypeGuess($this->legacy ? 'phpcr_odm_path' : PathType::class, $options, Guess::LOW_CONFIDENCE);
 
                 case 'children':
                     $options = array(
                         'attr' => array('readonly' => 'readonly'),
-                        $this->entryTypeOption => $this->legacy ? 'phpcr_odm_path' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\PathType',
+                        $this->entryTypeOption => $this->legacy ? 'phpcr_odm_path' : PathType::class,
                     );
 
-                    return new TypeGuess($this->legacy ? 'collection' : 'Symfony\Component\Form\Extension\Core\Type\CollectionType', $options, Guess::LOW_CONFIDENCE);
+                    return new TypeGuess($this->legacy ? 'collection' : CollectionType::class, $options, Guess::LOW_CONFIDENCE);
 
                 default:
                     return;
@@ -149,7 +159,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
         $options = array();
         switch ($metadata->getTypeOfField($property)) {
             case 'boolean':
-                $type = $this->legacy ? 'checkbox' : 'Symfony\Component\Form\Extension\Core\Type\CheckboxType';
+                $type = $this->legacy ? 'checkbox' : CheckboxType::class;
 
                 break;
             case 'binary':
@@ -160,16 +170,16 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
                 // editing the phpcr node has no meaning
                 return;
             case 'date':
-                $type = $this->legacy ? 'datetime' : 'Symfony\Component\Form\Extension\Core\Type\DateTimeType';
+                $type = $this->legacy ? 'datetime' : DateTimeType::class;
 
                 break;
             case 'double':
-                $type = $this->legacy ? 'number' : 'Symfony\Component\Form\Extension\Core\Type\NumberType';
+                $type = $this->legacy ? 'number' : NumberType::class;
 
                 break;
             case 'long':
             case 'integer':
-                $type = $this->legacy ? 'integer' : 'Symfony\Component\Form\Extension\Core\Type\IntegerType';
+                $type = $this->legacy ? 'integer' : IntegerType::class;
 
                 break;
             case 'string':
@@ -178,16 +188,16 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
                 ) {
                     $options['attr'] = array('readonly' => 'readonly');
                 }
-                $type = $this->legacy ? 'text' : 'Symfony\Component\Form\Extension\Core\Type\TextType';
+                $type = $this->legacy ? 'text' : TextType::class;
 
                 break;
             case 'nodename':
-                $type = $this->legacy ? 'text' : 'Symfony\Component\Form\Extension\Core\Type\TextType';
+                $type = $this->legacy ? 'text' : TextType::class;
 
                 break;
             case 'locale':
                 $locales = $documentManager->getLocaleChooserStrategy();
-                $type = $this->legacy ? 'choice' : 'Symfony\Component\Form\Extension\Core\Type\ChoiceType';
+                $type = $this->legacy ? 'choice' : ChoiceType::class;
                 $options['choices'] = array_combine($locales->getDefaultLocalesOrder(), $locales->getDefaultLocalesOrder());
 
                 break;
@@ -196,14 +206,14 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
             default:
                 $options['attr'] = array('readonly' => 'readonly');
                 $options['required'] = false;
-                $type = $this->legacy ? 'text' : 'Symfony\Component\Form\Extension\Core\Type\TextType';
+                $type = $this->legacy ? 'text' : TextType::class;
 
                 break;
         }
 
         if (!empty($mapping['multivalue'])) {
             $options[$this->entryTypeOption] = $type;
-            $type = $this->legacy ? 'collection' : 'Symfony\Component\Form\Extension\Core\Type\CollectionType';
+            $type = $this->legacy ? 'collection' : CollectionType::class;
         }
 
         if (!empty($mapping['translated'])) {

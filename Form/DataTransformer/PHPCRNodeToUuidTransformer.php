@@ -32,7 +32,7 @@ class PHPCRNodeToUuidTransformer implements DataTransformerInterface
         }
 
         if (!$node instanceof NodeInterface) {
-            throw new UnexpectedTypeException($node, 'PHPCR\NodeInterface');
+            throw new UnexpectedTypeException($node, NodeInterface::class);
         }
 
         return $node->getIdentifier();

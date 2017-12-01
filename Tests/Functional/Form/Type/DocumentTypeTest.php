@@ -2,9 +2,14 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Functional\Form\Type;
 
+use Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType;
+use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\DataFixtures\PHPCR\LoadData;
 use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\ReferrerDocument;
+use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class DocumentTypeTest extends BaseTestCase
@@ -23,11 +28,9 @@ class DocumentTypeTest extends BaseTestCase
 
     public function setUp()
     {
-        $this->legacy = !method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+        $this->legacy = !method_exists(AbstractType::class, 'getBlockPrefix');
 
-        $this->db('PHPCR')->loadFixtures(array(
-            'Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\DataFixtures\PHPCR\LoadData',
-        ));
+        $this->db('PHPCR')->loadFixtures(array(LoadData::class));
         $this->dm = $this->db('PHPCR')->getOm();
         $document = $this->dm->find(null, '/test/doc');
         $this->assertNotNull($document, 'fixture loading not working');
@@ -40,7 +43,7 @@ class DocumentTypeTest extends BaseTestCase
      */
     private function createFormBuilder($data, $options = array())
     {
-        return $this->container->get('form.factory')->createBuilder($this->legacy ? 'form' : 'Symfony\Component\Form\Extension\Core\Type\FormType', $data, $options);
+        return $this->container->get('form.factory')->createBuilder($this->legacy ? 'form' : FormType::class, $data, $options);
     }
 
     /**
@@ -59,8 +62,8 @@ class DocumentTypeTest extends BaseTestCase
         $formBuilder = $this->createFormBuilder($this->referrer);
 
         $formBuilder
-            ->add('single', $this->legacy ? 'phpcr_document' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType', array(
-                'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument',
+            ->add('single', $this->legacy ? 'phpcr_document' : DocumentType::class, array(
+                'class' => TestDocument::class,
             ))
         ;
 
@@ -72,15 +75,15 @@ class DocumentTypeTest extends BaseTestCase
     public function testFiltered()
     {
         $qb = $this->dm
-            ->getRepository('Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument')
+            ->getRepository(TestDocument::class)
             ->createQueryBuilder('e')
         ;
         $qb->where()->eq()->field('e.text')->literal('thiswillnotmatch');
         $formBuilder = $this->createFormBuilder($this->referrer);
 
         $formBuilder
-            ->add('single', $this->legacy ? 'phpcr_document' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType', array(
-                'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument',
+            ->add('single', $this->legacy ? 'phpcr_document' : DocumentType::class, array(
+                'class' => TestDocument::class,
                 'query_builder' => $qb,
             ))
         ;

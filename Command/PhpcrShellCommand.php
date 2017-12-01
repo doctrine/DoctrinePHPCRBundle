@@ -25,6 +25,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use PHPCR\Shell\Console\Application\SessionApplication;
 use PHPCR\Shell\PhpcrShell;
 
 /**
@@ -76,7 +77,7 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (!class_exists('PHPCR\Shell\Console\Application\SessionApplication')) {
+        if (!class_exists(SessionApplication::class)) {
             throw new \InvalidArgumentException(sprintf(
                 'PHPCR-Shell not installed as a dependency. Add the "phpcr/phpcr-shell" to your '.
                 'composer.json file to use this command'

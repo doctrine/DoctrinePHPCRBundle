@@ -20,6 +20,7 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
+use Doctrine\ODM\PHPCR\Version;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Doctrine\ODM\PHPCR\Tools\Console\Helper\DocumentManagerHelper;
@@ -63,7 +64,7 @@ abstract class DoctrineCommandHelper
         $session = $admin ? $registry->getAdminConnection($sessionName) : $registry->getConnection($sessionName);
 
         $helperSet = $application->getHelperSet();
-        if (class_exists('Doctrine\ODM\PHPCR\Version')) {
+        if (class_exists(Version::class)) {
             $helperSet->set(new DocumentManagerHelper($session));
         } else {
             $helperSet->set(new PhpcrHelper($session));

@@ -2,11 +2,13 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\Form\Type;
 
+use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\DocumentToPathTransformer;
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
 use Doctrine\Bundle\PHPCRBundle\Form\Type\PathType;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PathTypeTest extends Testcase
 {
@@ -37,18 +39,12 @@ class PathTypeTest extends Testcase
 
     public function setUp()
     {
-        $this->reg = $this->getMockBuilder('Doctrine\Bundle\PHPCRBundle\ManagerRegistry')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->reg = $this->createMock(ManagerRegistry::class);
 
-        $this->dm = $this->getMockBuilder('Doctrine\ODM\PHPCR\DocumentManager')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->dm = $this->createMock(DocumentManager::class);
 
-        $this->builder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->optionsResolver = $this->getMock('Symfony\Component\OptionsResolver\OptionsResolver');
+        $this->builder = $this->createMock(FormBuilder::class);
+        $this->optionsResolver = $this->createMock(OptionsResolver::class);
         $this->type = new PathType($this->reg);
     }
 
@@ -63,7 +59,7 @@ class PathTypeTest extends Testcase
             ->method('addModelTransformer')
             ->will($this->returnCallback(function ($transformer) use ($test) {
                 $test->assertInstanceOf(
-                    'Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\DocumentToPathTransformer',
+                    DocumentToPathTransformer::class,
                     $transformer
                 );
 

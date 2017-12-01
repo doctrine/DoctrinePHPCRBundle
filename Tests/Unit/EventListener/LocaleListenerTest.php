@@ -3,7 +3,10 @@
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\EventListener\LocaleListenerTest;
 
 use Doctrine\Bundle\PHPCRBundle\EventListener\LocaleListener;
+use Doctrine\ODM\PHPCR\Translation\LocaleChooser\LocaleChooser;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 class LocaleListenerTest extends TestCase
 {
@@ -14,25 +17,9 @@ class LocaleListenerTest extends TestCase
 
     private function setUpTestOnKernelRequest()
     {
-        $this->chooser = $this
-            ->getMockBuilder(
-                'Doctrine\ODM\PHPCR\Translation\LocaleChooser\LocaleChooser'
-            )
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->responseEvent = $this
-            ->getMockBuilder('Symfony\Component\HttpKernel\Event\GetResponseEvent')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->request = $this
-            ->getMockBuilder(
-                'Symfony\Component\HttpFoundation\Request'
-            )
-            ->disableOriginalConstructor()
-            ->getMock();
-
+        $this->chooser = $this->createMock(LocaleChooser::class);
+        $this->responseEvent = $this->createMock(GetResponseEvent::class);
+        $this->request = $this->createMock(Request::class);
         $this->allowedLocales = array('fr', 'en', 'de');
     }
 
