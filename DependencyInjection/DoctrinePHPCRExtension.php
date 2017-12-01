@@ -68,6 +68,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         $this->loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         $this->loader->load('phpcr.xml');
+        $this->loader->load('commands.xml');
 
         if (!empty($config['manager_registry_service_id'])) {
             $container->setAlias('doctrine_phpcr', new Alias($config['manager_registry_service_id'], true));

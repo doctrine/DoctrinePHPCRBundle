@@ -12,6 +12,8 @@ class Kernel extends TestKernel
         $this->requireBundleSets(array(
             'default', 'phpcr_odm',
         ));
+
+        $this->registerConfiguredBundles();
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader)
