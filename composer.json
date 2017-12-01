@@ -26,7 +26,7 @@
         "phpunit/phpunit": "^5.6",
         "symfony/form": "^2.8 || ^3.3 || ^4.0",
         "doctrine/phpcr-odm": "^1.4 || ^2.0",
-        "symfony-cmf/testing": "dev-master-dev-kit",
+        "symfony-cmf/testing": "^2.1@dev",
         "matthiasnoback/symfony-dependency-injection-test": "^1.1",
         "symfony/security-bundle": "^2.8 || ^3.3 || ^4.0",
         "symfony/twig-bundle": "^2.8 || ^3.3 || ^4.0",
