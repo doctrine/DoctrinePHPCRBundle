@@ -514,8 +514,10 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             $strategyDefinition = class_exists('\Symfony\Component\DependencyInjection\ChildDefinition')
                 ? new ChildDefinition($strategyTemplateId)
                 : new DefinitionDecorator($strategyTemplateId);
+            $strategyDefinition->setPublic(true);
             $container->setDefinition($strategyId, $strategyDefinition);
 
+            $strategyDefinition->replaceArgument(0, new Reference($documentManager['service_name']));
             $documentManagerDefinition->addMethodCall('setTranslationStrategy', array($name, new Reference($strategyId)));
         }
     }
