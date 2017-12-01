@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document;
+namespace Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCR;
@@ -35,12 +35,12 @@ class ReferrerDocument
     protected $documents;
 
     /**
-     * @PHPCR\ReferenceOne(targetDocument="Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument")
+     * @PHPCR\ReferenceOne(targetDocument="Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument")
      */
     protected $testDocument;
 
     /**
-     * @PHPCR\ReferenceMany(targetDocument="Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument")
+     * @PHPCR\ReferenceMany(targetDocument="Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument")
      */
     protected $testDocuments;
 

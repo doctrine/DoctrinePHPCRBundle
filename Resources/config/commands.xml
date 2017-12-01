@@ -1,0 +1,61 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="Doctrine\Bundle\PHPCRBundle\Command\WorkspaceQueryCommand" class="Doctrine\Bundle\PHPCRBundle\Command\WorkspaceQueryCommand">
+            <tag name="console.command"/>
+        </service>
+        <service id="Doctrine\Bundle\PHPCRBundle\Command\MigratorMigrateCommand" class="Doctrine\Bundle\PHPCRBundle\Command\MigratorMigrateCommand">
+            <tag name="console.command"/>
+        </service>
+        <service id="Doctrine\Bundle\PHPCRBundle\Command\NodeDumpCommand" class="Doctrine\Bundle\PHPCRBundle\Command\NodeDumpCommand">
+            <tag name="console.command"/>
+        </service>
+        <service id="Doctrine\Bundle\PHPCRBundle\Command\NodeMoveCommand" class="Doctrine\Bundle\PHPCRBundle\Command\NodeMoveCommand">
+            <tag name="console.command"/>
+        </service>
+        <service id="Doctrine\Bundle\PHPCRBundle\Command\NodeRemoveCommand" class="Doctrine\Bundle\PHPCRBundle\Command\NodeRemoveCommand">
+            <tag name="console.command"/>
+        </service>
+        <service id="Doctrine\Bundle\PHPCRBundle\Command\NodesUpdateCommand" class="Doctrine\Bundle\PHPCRBundle\Command\NodesUpdateCommand">
+            <tag name="console.command"/>
+        </service>
+        <service id="Doctrine\Bundle\PHPCRBundle\Command\NodeTouchCommand" class="Doctrine\Bundle\PHPCRBundle\Command\NodeTouchCommand">
+            <tag name="console.command"/>
+        </service>
+        <service id="Doctrine\Bundle\PHPCRBundle\Command\NodeTypeListCommand" class="Doctrine\Bundle\PHPCRBundle\Command\NodeTypeListCommand">
+            <tag name="console.command"/>
+        </service>
+        <service id="Doctrine\Bundle\PHPCRBundle\Command\NodeTypeRegisterCommand" class="Doctrine\Bundle\PHPCRBundle\Command\NodeTypeRegisterCommand">
+            <tag name="console.command"/>
+        </service>
+        <service id="Doctrine\Bundle\PHPCRBundle\Command\PhpcrShellCommand" class="Doctrine\Bundle\PHPCRBundle\Command\PhpcrShellCommand">
+            <tag name="console.command"/>
+        </service>
+        <service id="Doctrine\Bundle\PHPCRBundle\Command\RepositoryInitCommand" class="Doctrine\Bundle\PHPCRBundle\Command\RepositoryInitCommand">
+            <tag name="console.command"/>
+        </service>
+        <service id="Doctrine\Bundle\PHPCRBundle\Command\WorkspaceCreateCommand" class="Doctrine\Bundle\PHPCRBundle\Command\WorkspaceCreateCommand">
+            <tag name="console.command"/>
+        </service>
+        <service id="Doctrine\Bundle\PHPCRBundle\Command\WorkspaceDeleteCommand" class="Doctrine\Bundle\PHPCRBundle\Command\WorkspaceDeleteCommand">
+            <tag name="console.command"/>
+        </service>
+        <service id="Doctrine\Bundle\PHPCRBundle\Command\WorkspaceExportCommand" class="Doctrine\Bundle\PHPCRBundle\Command\WorkspaceExportCommand">
+            <tag name="console.command"/>
+        </service>
+        <service id="Doctrine\Bundle\PHPCRBundle\Command\WorkspaceImportCommand" class="Doctrine\Bundle\PHPCRBundle\Command\WorkspaceImportCommand">
+            <tag name="console.command"/>
+        </service>
+        <service id="Doctrine\Bundle\PHPCRBundle\Command\WorkspaceListCommand" class="Doctrine\Bundle\PHPCRBundle\Command\WorkspaceListCommand">
+            <tag name="console.command"/>
+        </service>
+        <service id="Doctrine\Bundle\PHPCRBundle\Command\WorkspacePurgeCommand" class="Doctrine\Bundle\PHPCRBundle\Command\WorkspacePurgeCommand">
+            <tag name="console.command"/>
+        </service>
+    </services>
+
+</container>

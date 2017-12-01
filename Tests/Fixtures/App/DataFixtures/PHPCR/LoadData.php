@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Doctrine\Bundle\PHPCRBundle\Tests\Resources\DataFixtures\PHPCR;
+namespace Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\DataFixtures\PHPCR;
 
-use Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\ReferrerDocument;
-use Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument;
+use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\ReferrerDocument;
+use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ODM\PHPCR\Document\Generic;

@@ -5,8 +5,8 @@ namespace Doctrine\Bundle\PHPCRBundle\Tests\Functional\Form;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
-use Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument;
-use Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\ReferrerDocument;
+use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument;
+use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\ReferrerDocument;
 
 class PHPCRTypeGuesserTest extends BaseTestCase
 {
@@ -41,7 +41,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
         $this->entryTypeOption = $this->legacy ? 'type' : 'entry_type';
 
         $this->db('PHPCR')->loadFixtures(array(
-            'Doctrine\Bundle\PHPCRBundle\Tests\Resources\DataFixtures\PHPCR\LoadData',
+            'Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\DataFixtures\PHPCR\LoadData',
         ));
         $this->dm = $this->db('PHPCR')->getOm();
         $this->document = $this->dm->find(null, '/test/doc');
@@ -267,8 +267,8 @@ class PHPCRTypeGuesserTest extends BaseTestCase
         $formBuilder = $this->createFormBuilder($this->referrer);
 
         $formBuilder
-            ->add('single', null, array('class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\ReferrerDocument'))
-            ->add('documents', null, array('class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\ReferrerDocument'))
+            ->add('single', null, array('class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\ReferrerDocument'))
+            ->add('documents', null, array('class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\ReferrerDocument'))
             ->add('testDocument')
             ->add('testDocuments')
         ;
@@ -278,7 +278,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             '\Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType',
             array(
                 'required' => false,
-                'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\ReferrerDocument',
+                'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\ReferrerDocument',
             )
         );
 
@@ -288,7 +288,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             array(
                 'required' => false,
                 'multiple' => true,
-                'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\ReferrerDocument',
+                'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\ReferrerDocument',
             )
         );
 
@@ -297,7 +297,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             '\Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType',
             array(
                 'required' => false,
-                'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument',
+                'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument',
             )
         );
 
@@ -307,7 +307,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             array(
                 'required' => false,
                 'multiple' => true,
-                'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument',
+                'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument',
             )
         );
 
@@ -329,7 +329,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             array(
                 'required' => false,
                 'multiple' => true,
-                'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\ReferrerDocument',
+                'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\ReferrerDocument',
             )
         );
 

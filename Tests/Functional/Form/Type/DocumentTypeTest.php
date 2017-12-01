@@ -2,7 +2,7 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Functional\Form\Type;
 
-use Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\ReferrerDocument;
+use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\ReferrerDocument;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -26,7 +26,7 @@ class DocumentTypeTest extends BaseTestCase
         $this->legacy = !method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
 
         $this->db('PHPCR')->loadFixtures(array(
-            'Doctrine\Bundle\PHPCRBundle\Tests\Resources\DataFixtures\PHPCR\LoadData',
+            'Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\DataFixtures\PHPCR\LoadData',
         ));
         $this->dm = $this->db('PHPCR')->getOm();
         $document = $this->dm->find(null, '/test/doc');
@@ -60,7 +60,7 @@ class DocumentTypeTest extends BaseTestCase
 
         $formBuilder
             ->add('single', $this->legacy ? 'phpcr_document' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType', array(
-                'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument',
+                'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument',
             ))
         ;
 
@@ -72,7 +72,7 @@ class DocumentTypeTest extends BaseTestCase
     public function testFiltered()
     {
         $qb = $this->dm
-            ->getRepository('Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument')
+            ->getRepository('Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument')
             ->createQueryBuilder('e')
         ;
         $qb->where()->eq()->field('e.text')->literal('thiswillnotmatch');
@@ -80,7 +80,7 @@ class DocumentTypeTest extends BaseTestCase
 
         $formBuilder
             ->add('single', $this->legacy ? 'phpcr_document' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType', array(
-                'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Resources\Document\TestDocument',
+                'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument',
                 'query_builder' => $qb,
             ))
         ;
