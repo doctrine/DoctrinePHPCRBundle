@@ -2,7 +2,18 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Functional\Form;
 
+use Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType;
+use Doctrine\Bundle\PHPCRBundle\Form\Type\PathType;
+use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\DataFixtures\PHPCR\LoadData;
 use Doctrine\ODM\PHPCR\DocumentManager;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument;
@@ -37,12 +48,10 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
     public function setUp()
     {
-        $this->legacy = !method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+        $this->legacy = !method_exists(AbstractType::class, 'getBlockPrefix');
         $this->entryTypeOption = $this->legacy ? 'type' : 'entry_type';
 
-        $this->db('PHPCR')->loadFixtures(array(
-            'Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\DataFixtures\PHPCR\LoadData',
-        ));
+        $this->db('PHPCR')->loadFixtures(array(LoadData::class));
         $this->dm = $this->db('PHPCR')->getOm();
         $this->document = $this->dm->find(null, '/test/doc');
         $this->assertNotNull($this->document, 'fixture loading not working');
@@ -55,7 +64,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
      */
     private function createFormBuilder($data, $options = array())
     {
-        return $this->container->get('form.factory')->createBuilder($this->legacy ? 'form' : 'Symfony\Component\Form\Extension\Core\Type\FormType', $data, $options);
+        return $this->container->get('form.factory')->createBuilder($this->legacy ? 'form' : FormType::class, $data, $options);
     }
 
     public function testFields()
@@ -74,7 +83,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('bool'),
-            '\Symfony\Component\Form\Extension\Core\Type\CheckboxType',
+            CheckboxType::class,
             array(
                 'required' => false,
             )
@@ -82,7 +91,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('date'),
-            '\Symfony\Component\Form\Extension\Core\Type\DateTimeType',
+            DateTimeType::class,
             array(
                 'required' => true,
             )
@@ -90,7 +99,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('text'),
-            '\Symfony\Component\Form\Extension\Core\Type\TextType',
+            TextType::class,
             array(
                 'required' => true,
             )
@@ -98,7 +107,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('number'),
-            '\Symfony\Component\Form\Extension\Core\Type\NumberType',
+            NumberType::class,
             array(
                 'required' => true,
             )
@@ -106,7 +115,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('integer'),
-            '\Symfony\Component\Form\Extension\Core\Type\IntegerType',
+            IntegerType::class,
             array(
                 'required' => true,
             )
@@ -114,7 +123,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('long'),
-            '\Symfony\Component\Form\Extension\Core\Type\IntegerType',
+            IntegerType::class,
             array(
                 'required' => true,
             )
@@ -138,54 +147,54 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('mbool'),
-            '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
+            CollectionType::class,
             array(
-                $this->entryTypeOption => $this->legacy ? 'checkbox' : 'Symfony\Component\Form\Extension\Core\Type\CheckboxType',
+                $this->entryTypeOption => $this->legacy ? 'checkbox' : CheckboxType::class,
                 'required' => false,
             )
         );
 
         $this->assertFormType(
             $formBuilder->get('mdate'),
-            '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
+            CollectionType::class,
             array(
-                $this->entryTypeOption => $this->legacy ? 'datetime' : 'Symfony\Component\Form\Extension\Core\Type\DateTimeType',
+                $this->entryTypeOption => $this->legacy ? 'datetime' : DateTimeType::class,
                 'required' => false,
             )
         );
 
         $this->assertFormType(
             $formBuilder->get('mtext'),
-            '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
+            CollectionType::class,
             array(
-                $this->entryTypeOption => $this->legacy ? 'text' : 'Symfony\Component\Form\Extension\Core\Type\TextType',
+                $this->entryTypeOption => $this->legacy ? 'text' : TextType::class,
                 'required' => false,
             )
         );
 
         $this->assertFormType(
             $formBuilder->get('mnumber'),
-            '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
+            CollectionType::class,
             array(
-                $this->entryTypeOption => $this->legacy ? 'number' : 'Symfony\Component\Form\Extension\Core\Type\NumberType',
+                $this->entryTypeOption => $this->legacy ? 'number' : NumberType::class,
                 'required' => false,
             )
         );
 
         $this->assertFormType(
             $formBuilder->get('minteger'),
-            '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
+            CollectionType::class,
             array(
-                $this->entryTypeOption => $this->legacy ? 'integer' : 'Symfony\Component\Form\Extension\Core\Type\IntegerType',
+                $this->entryTypeOption => $this->legacy ? 'integer' : IntegerType::class,
                 'required' => false,
             )
         );
 
         $this->assertFormType(
             $formBuilder->get('mlong'),
-            '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
+            CollectionType::class,
             array(
-                $this->entryTypeOption => $this->legacy ? 'integer' : 'Symfony\Component\Form\Extension\Core\Type\IntegerType',
+                $this->entryTypeOption => $this->legacy ? 'integer' : IntegerType::class,
                 'required' => false,
             )
         );
@@ -208,7 +217,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('id'),
-            '\Symfony\Component\Form\Extension\Core\Type\TextType',
+            TextType::class,
             array(
                 'attr' => array('readonly' => 'readonly'),
                 'required' => false,
@@ -217,7 +226,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('parent'),
-            'Doctrine\Bundle\PHPCRBundle\Form\Type\PathType',
+            PathType::class,
             array(
                 'required' => true,
             )
@@ -225,7 +234,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('nodename'),
-            '\Symfony\Component\Form\Extension\Core\Type\TextType',
+            TextType::class,
             array(
                 'required' => true,
             )
@@ -233,7 +242,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('uuid'),
-            '\Symfony\Component\Form\Extension\Core\Type\TextType',
+            TextType::class,
             array(
                 'attr' => array('readonly' => 'readonly'),
                 'required' => false,
@@ -242,7 +251,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('child'),
-            'Doctrine\Bundle\PHPCRBundle\Form\Type\PathType',
+            PathType::class,
             array(
                 'attr' => array('readonly' => 'readonly'),
                 'required' => false,
@@ -251,11 +260,11 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('children'),
-            '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
+            CollectionType::class,
             array(
                 'attr' => array('readonly' => 'readonly'),
                 'required' => false,
-                $this->entryTypeOption => $this->legacy ? 'phpcr_odm_path' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\PathType',
+                $this->entryTypeOption => $this->legacy ? 'phpcr_odm_path' : PathType::class,
             )
         );
 
@@ -267,34 +276,34 @@ class PHPCRTypeGuesserTest extends BaseTestCase
         $formBuilder = $this->createFormBuilder($this->referrer);
 
         $formBuilder
-            ->add('single', null, array('class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\ReferrerDocument'))
-            ->add('documents', null, array('class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\ReferrerDocument'))
+            ->add('single', null, array('class' => ReferrerDocument::class))
+            ->add('documents', null, array('class' => ReferrerDocument::class))
             ->add('testDocument')
             ->add('testDocuments')
         ;
 
         $this->assertFormType(
             $formBuilder->get('single'),
-            '\Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType',
+            DocumentType::class,
             array(
                 'required' => false,
-                'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\ReferrerDocument',
+                'class' => ReferrerDocument::class,
             )
         );
 
         $this->assertFormType(
             $formBuilder->get('documents'),
-            '\Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType',
+            DocumentType::class,
             array(
                 'required' => false,
                 'multiple' => true,
-                'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\ReferrerDocument',
+                'class' => ReferrerDocument::class,
             )
         );
 
         $this->assertFormType(
             $formBuilder->get('testDocument'),
-            '\Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType',
+            DocumentType::class,
             array(
                 'required' => false,
                 'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument',
@@ -303,7 +312,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('testDocuments'),
-            '\Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType',
+            DocumentType::class,
             array(
                 'required' => false,
                 'multiple' => true,
@@ -325,17 +334,17 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $this->assertFormType(
             $formBuilder->get('referrers'),
-            '\Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType',
+            DocumentType::class,
             array(
                 'required' => false,
                 'multiple' => true,
-                'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\ReferrerDocument',
+                'class' => ReferrerDocument::class,
             )
         );
 
         $this->assertFormType(
             $formBuilder->get('mixedReferrers'),
-            '\Symfony\Component\Form\Extension\Core\Type\CollectionType',
+            CollectionType::class,
             array(
                 'attr' => array('readonly' => 'readonly'),
                 'required' => false,

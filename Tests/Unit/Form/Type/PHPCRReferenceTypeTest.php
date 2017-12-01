@@ -2,27 +2,29 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\Form\DataTransformer;
 
+use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\PHPCRNodeToPathTransformer;
+use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\PHPCRNodeToUuidTransformer;
 use Doctrine\Bundle\PHPCRBundle\Form\Type\PHPCRReferenceType;
+use PHPCR\SessionInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Form\FormBuilder;
 
 class PHPCRReferenceTypeTest extends Testcase
 {
     public function setUp()
     {
-        $this->session = $this->getMock('PHPCR\SessionInterface');
+        $this->session = $this->createMock(SessionInterface::class);
 
         // hmm, phpunit won't mock a traversable interface so mocking the concrete class
-        $this->builder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->builder = $this->createMock(FormBuilder::class);
         $this->type = new PHPCRReferenceType($this->session);
     }
 
     public function provideTypes()
     {
         return array(
-            array('uuid', 'Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\PHPCRNodeToUuidTransformer'),
-            array('path', 'Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\PHPCRNodeToPathTransformer'),
+            array('uuid', PHPCRNodeToUuidTransformer::class),
+            array('path', PHPCRNodeToPathTransformer::class),
         );
     }
 

@@ -13,6 +13,8 @@ namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\DependencyInjection;
 
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\DoctrinePHPCRExtension;
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Configuration;
+use Doctrine\ODM\PHPCR\DocumentRepository;
+use Doctrine\ODM\PHPCR\Mapping\ClassMetadataFactory;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionConfigurationTestCase;
 
 class ConfigurationTest extends AbstractExtensionConfigurationTestCase
@@ -111,8 +113,8 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                             'id' => null,
                             'namespace' => null,
                         ),
-                        'class_metadata_factory_name' => 'Doctrine\ODM\PHPCR\Mapping\ClassMetadataFactory',
-                        'default_repository_class' => 'Doctrine\ODM\PHPCR\DocumentRepository',
+                        'class_metadata_factory_name' => ClassMetadataFactory::class,
+                        'default_repository_class' => DocumentRepository::class,
                         'repository_factory' => null,
                     ),
                 ),
@@ -191,8 +193,8 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                             'type' => 'array',
                             'namespace' => null,
                         ),
-                        'class_metadata_factory_name' => 'Doctrine\ODM\PHPCR\Mapping\ClassMetadataFactory',
-                        'default_repository_class' => 'Doctrine\ODM\PHPCR\DocumentRepository',
+                        'class_metadata_factory_name' => ClassMetadataFactory::class,
+                        'default_repository_class' => DocumentRepository::class,
                         'repository_factory' => null,
                         'session' => 'default',
                     ),
@@ -207,8 +209,8 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                             'type' => 'array',
                             'namespace' => null,
                         ),
-                        'class_metadata_factory_name' => 'Doctrine\ODM\PHPCR\Mapping\ClassMetadataFactory',
-                        'default_repository_class' => 'Doctrine\ODM\PHPCR\DocumentRepository',
+                        'class_metadata_factory_name' => ClassMetadataFactory::class,
+                        'default_repository_class' => DocumentRepository::class,
                         'repository_factory' => null,
                         'session' => 'website',
                         'configuration_id' => 'sandbox_magnolia.odm_configuration',

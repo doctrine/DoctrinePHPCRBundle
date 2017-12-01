@@ -3,17 +3,32 @@
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\Form\DataTransformer;
 
 use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\PHPCRNodeToPathTransformer;
+use Jackalope\Node;
+use PHPCR\SessionInterface;
 use PHPUnit\Framework\TestCase;
 
 class PHPCRNodeToPathTransformerTest extends Testcase
 {
+    /**
+     * @var SessionInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $session;
+
+    /**
+     * @var PHPCRNodeToPathTransformer|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $transformer;
+
+    /**
+     * @var Node|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $node;
+
     public function setUp()
     {
-        $this->session = $this->getMock('PHPCR\SessionInterface');
+        $this->session = $this->createMock(SessionInterface::class);
         $this->transformer = new PHPCRNodeToPathTransformer($this->session);
-        $this->node = $this->getMockBuilder('Jackalope\Node')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->node = $this->createMock(Node::class);
     }
 
     public function testTransform()

@@ -3,6 +3,7 @@
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\DependencyInjection;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
+use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\DoctrinePHPCRExtension;
@@ -80,7 +81,7 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
         ));
 
         $managerRegistry = $this->container->getAlias('doctrine_phpcr');
-        $this->assertInstanceOf('\Symfony\Component\DependencyInjection\Alias', $managerRegistry);
+        $this->assertInstanceOf(Alias::class, $managerRegistry);
         $this->assertEquals('my_phpcr_registry', $managerRegistry);
         $this->assertTrue($managerRegistry->isPublic());
     }
@@ -156,7 +157,7 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
         ), array_keys($parameters));
 
         $this->assertEquals('my_factory', (string) $parameters['jackalope.factory']);
-        $this->assertInstanceOf('Symfony\Component\DependencyInjection\Reference', $parameters['jackalope.factory']);
+        $this->assertInstanceOf(Reference::class, $parameters['jackalope.factory']);
 
         $this->assertEquals('doctrine_phpcr.jackalope.repository.factory.doctrinedbal', $repositoryFactory->getParent());
 

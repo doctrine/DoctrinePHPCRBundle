@@ -2,6 +2,7 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Form\ChoiceList;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityLoaderInterface;
@@ -38,14 +39,17 @@ class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
         // If a query builder was passed, it must be a closure or QueryBuilder
         // instance
         if (!($queryBuilder instanceof QueryBuilder || $queryBuilder instanceof \Closure)) {
-            throw new UnexpectedTypeException($queryBuilder, 'Doctrine\Common\Persistence\ObjectManager or \Closure');
+            throw new UnexpectedTypeException($queryBuilder, ObjectManager::class.' or \Closure');
         }
 
         if ($queryBuilder instanceof \Closure) {
+            if (null === $manager) {
+                throw new \InvalidArgumentException('Can not use a closure for the query builder when no document manager has been specified');
+            }
             $queryBuilder = $queryBuilder($manager->getRepository($class));
 
             if (!$queryBuilder instanceof QueryBuilder) {
-                throw new UnexpectedTypeException($queryBuilder, 'Doctrine\Common\Persistence\ObjectManager');
+                throw new UnexpectedTypeException($queryBuilder, ObjectManager::class);
             }
         }
 
