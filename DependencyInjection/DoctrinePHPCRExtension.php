@@ -515,7 +515,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             $strategyDefinition = class_exists('\Symfony\Component\DependencyInjection\ChildDefinition')
                 ? new ChildDefinition($strategyTemplateId)
                 : new DefinitionDecorator($strategyTemplateId);
-            $strategyDefinition->setPublic(true);
+            $strategyDefinition->setPublic(true); // workaround for https://github.com/symfony/symfony/pull/25247 until symfony 4.0.1 is released
             $container->setDefinition($strategyId, $strategyDefinition);
 
             $strategyDefinition->replaceArgument(0, new Reference($documentManager['service_name']));
