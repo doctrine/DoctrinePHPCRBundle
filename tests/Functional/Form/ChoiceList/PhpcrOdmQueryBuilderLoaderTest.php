@@ -31,7 +31,7 @@ class PhpcrOdmQueryBuilderLoaderTest extends BaseTestCase
         $this->assertCount(2, $documents);
         foreach ($documents as $i => $document) {
             $this->assertInstanceOf(TestDocument::class, $document);
-            $this->assertTrue(in_array($document->id, $ids));
+            $this->assertContains($document->id, $ids);
         }
     }
 
