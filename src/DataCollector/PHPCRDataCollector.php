@@ -204,4 +204,14 @@ class PHPCRDataCollector extends DataCollector
     {
         return $this->data['documents'];
     }
+
+    public function reset()
+    {
+        $this->data = array();
+
+        foreach ($this->loggers as $logger) {
+            $logger->queries = array();
+            $logger->currentQuery = 0;
+        }
+    }
 }
