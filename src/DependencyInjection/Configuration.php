@@ -82,7 +82,7 @@ class Configuration implements ConfigurationInterface
                                 unset($v[$key]);
                             }
                         }
-                        $v['default_session'] = isset($v['default_session']) ? (string) $v['default_session'] : 'default';
+                        $v['default_session'] = (string) ($v['default_session'] ?? 'default');
                         $v['sessions'] = array($v['default_session'] => $session);
 
                         return $v;
@@ -230,7 +230,7 @@ class Configuration implements ConfigurationInterface
                                 $documentManagers[$key] = $v[$key];
                                 unset($v[$key]);
                             }
-                            $v['default_document_manager'] = isset($v['default_document_manager']) ? (string) $v['default_document_manager'] : 'default';
+                            $v['default_document_manager'] = (string) ($v['default_document_manager'] ?? 'default');
                             $v['document_managers'] = array($v['default_document_manager'] => $documentManagers);
 
                             return $v;
