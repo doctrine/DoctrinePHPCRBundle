@@ -69,7 +69,7 @@ EOT
             return 0;
         }
 
-        $id = isset($migrators[$migratorName]) ? $migrators[$migratorName] : null;
+        $id = $migrators[$migratorName] ?? null;
         if (!$id || !$container->has($id)) {
             throw new \InvalidArgumentException("Wrong value '$migratorName' for migrator_name argument.\nAvailable migrators:\n".implode("\n", array_keys($migrators)));
         }

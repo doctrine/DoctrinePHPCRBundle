@@ -35,7 +35,7 @@ class MigratorPass implements CompilerPassInterface
     {
         $migrators = array();
         foreach ($container->findTaggedServiceIds('doctrine_phpcr.migrator') as $id => $attributes) {
-            $alias = isset($attributes[0]['alias']) ? $attributes[0]['alias'] : null;
+            $alias = $attributes[0]['alias'] ?? null;
             $migrators[$alias] = $id;
         }
 
