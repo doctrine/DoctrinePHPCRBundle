@@ -5,6 +5,9 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
+        <service id="Doctrine\Bundle\PHPCRBundle\Command\LoadFixtureCommand" class="Doctrine\Bundle\PHPCRBundle\Command\LoadFixtureCommand">
+            <tag name="console.command"/>
+        </service>
         <service id="Doctrine\Bundle\PHPCRBundle\Command\WorkspaceQueryCommand" class="Doctrine\Bundle\PHPCRBundle\Command\WorkspaceQueryCommand">
             <tag name="console.command"/>
         </service>
