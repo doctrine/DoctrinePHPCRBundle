@@ -16,6 +16,9 @@
         </service>
         <service id="Doctrine\Bundle\PHPCRBundle\Command\NodeDumpCommand" class="Doctrine\Bundle\PHPCRBundle\Command\NodeDumpCommand">
             <tag name="console.command"/>
+            <call method="setConsoleDumper">
+                <argument type="service" id="doctrine_phpcr.console_dumper" />
+            </call>
         </service>
         <service id="Doctrine\Bundle\PHPCRBundle\Command\NodeMoveCommand" class="Doctrine\Bundle\PHPCRBundle\Command\NodeMoveCommand">
             <tag name="console.command"/>
