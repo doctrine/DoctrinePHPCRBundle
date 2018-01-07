@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Doctrine\Bundle\PHPCRBundle\EventListener;
 
 use Doctrine\ODM\PHPCR\Translation\LocaleChooser\LocaleChooser;

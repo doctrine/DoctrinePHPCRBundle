@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Doctrine\Bundle\PHPCRBundle\DependencyInjection;
 
 use Doctrine\ODM\PHPCR\Document\Generic;
@@ -28,10 +27,14 @@ use Symfony\Component\DependencyInjection\Reference;
 class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 {
     private $defaultSession;
+
     private $sessions = array();
+
     private $bundleDirs = array();
+
     /** @var XmlFileLoader */
     private $loader;
+
     private $disableProxyWarmer = false;
 
     /**

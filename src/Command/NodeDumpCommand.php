@@ -1,9 +1,9 @@
 <?php
 
-
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
 use PHPCR\Util\Console\Command\NodeDumpCommand as BaseDumpCommand;
+use PHPCR\Util\Console\Helper\PhpcrConsoleDumperHelper;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,6 +22,8 @@ class NodeDumpCommand extends BaseDumpCommand implements ContainerAwareInterface
      */
     private $container;
 
+    private $consoleDumper;
+
     protected function getContainer()
     {
         if (null === $this->container) {
@@ -37,6 +39,11 @@ class NodeDumpCommand extends BaseDumpCommand implements ContainerAwareInterface
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
+    }
+
+    public function setConsoleDumper(PhpcrConsoleDumperHelper $consoleDumper)
+    {
+        $this->consoleDumper = $consoleDumper;
     }
 
     /**
@@ -63,7 +70,7 @@ class NodeDumpCommand extends BaseDumpCommand implements ContainerAwareInterface
             $input->getOption('session')
         );
         $helperSet = $application->getHelperSet();
-        $helperSet->set($this->getContainer()->get('doctrine_phpcr.console_dumper'));
+        $helperSet->set($this->consoleDumper);
 
         if (!$input->getParameterOption('max_line_length')
             && $this->getContainer()->hasParameter('doctrine_phpcr.dump_max_line_length')

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM;
 
 use Doctrine\Bundle\PHPCRBundle\Command\DoctrineCommandHelper;

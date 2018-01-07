@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Doctrine\Bundle\PHPCRBundle;
 
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;

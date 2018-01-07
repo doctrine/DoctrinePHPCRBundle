@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Doctrine\Bundle\PHPCRBundle\CacheWarmer;
 
 use Doctrine\Common\Persistence\ManagerRegistry;

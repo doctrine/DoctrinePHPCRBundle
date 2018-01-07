@@ -11,8 +11,11 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 class LocaleListenerTest extends TestCase
 {
     private $chooser;
+
     private $responseEvent;
+
     private $request;
+
     private $allowedLocales;
 
     private function setUpTestOnKernelRequest()

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Doctrine\Bundle\PHPCRBundle\Mapping\Driver;
 
 use Doctrine\ODM\PHPCR\Mapping\Driver\YamlDriver as BaseYamlDriver;

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler;
 
 use Symfony\Bridge\Doctrine\DependencyInjection\CompilerPass\RegisterMappingsPass;

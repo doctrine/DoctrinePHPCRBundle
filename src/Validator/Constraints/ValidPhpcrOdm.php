@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Doctrine\Bundle\PHPCRBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
@@ -15,6 +14,7 @@ use Symfony\Component\Validator\Constraint;
 class ValidPhpcrOdm extends Constraint
 {
     public $message = 'This value should not be blank.';
+
     public $service = 'doctrine_phpcr.odm.validator.valid_phpcr_odm';
 
     /**

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Doctrine\Bundle\PHPCRBundle\Form;
 
 use Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType;

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Doctrine\Bundle\PHPCRBundle\EventListener;
 
 use Jackalope\Transport\DoctrineDBAL\RepositorySchema;
