@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Doctrine\Bundle\PHPCRBundle\DataFixtures;
 
 use Doctrine\ODM\PHPCR\DocumentManager;

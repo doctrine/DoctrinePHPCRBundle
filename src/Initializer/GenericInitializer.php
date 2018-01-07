@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Doctrine\Bundle\PHPCRBundle\Initializer;
 
 use PHPCR\Util\NodeHelper;
@@ -34,12 +33,14 @@ class GenericInitializer implements InitializerInterface, SessionAwareInitialize
      * @var string
      */
     protected $cnd;
+
     /**
      * List of base paths to create.
      *
      * @var array
      */
     protected $basePaths;
+
     /**
      * Name of the session in which this initializer should run.
      *

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Doctrine\Bundle\PHPCRBundle\DataCollector;
 
 use Symfony\Component\Stopwatch\Stopwatch;

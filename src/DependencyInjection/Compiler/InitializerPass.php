@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;

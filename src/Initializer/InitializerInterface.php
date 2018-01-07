@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Doctrine\Bundle\PHPCRBundle\Initializer;
 
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;

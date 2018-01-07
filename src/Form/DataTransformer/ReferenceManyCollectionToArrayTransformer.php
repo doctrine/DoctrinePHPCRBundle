@@ -13,6 +13,7 @@ use Doctrine\ODM\PHPCR\DocumentManager;
 class ReferenceManyCollectionToArrayTransformer implements DataTransformerInterface
 {
     const KEY_PATH = 'path';
+
     const KEY_UUID = 'uuid';
 
     /**

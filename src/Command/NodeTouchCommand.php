@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
 use PHPCR\Util\Console\Command\NodeTouchCommand as BaseNodeTouchCommand;

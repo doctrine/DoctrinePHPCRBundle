@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Doctrine\Bundle\PHPCRBundle\OptionalCommand\Jackalope;
 
 use Symfony\Component\Console\Input\InputInterface;

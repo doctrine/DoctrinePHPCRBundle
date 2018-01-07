@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Doctrine\Bundle\PHPCRBundle\DependencyInjection;
 
 use Doctrine\Bundle\PHPCRBundle\EventListener\LocaleListener;

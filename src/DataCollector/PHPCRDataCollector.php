@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Doctrine\Bundle\PHPCRBundle\DataCollector;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -20,8 +19,11 @@ use Symfony\Component\HttpFoundation\Response;
 class PHPCRDataCollector extends DataCollector
 {
     private $registry;
+
     private $connections;
+
     private $managers;
+
     private $loggers = array();
 
     public function __construct(ManagerRegistry $registry)

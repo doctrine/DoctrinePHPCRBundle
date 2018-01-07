@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Doctrine\Bundle\PHPCRBundle\Migrator;
 
 use PHPCR\SessionInterface;

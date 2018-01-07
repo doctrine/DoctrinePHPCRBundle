@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Doctrine\Bundle\PHPCRBundle;
 
 use Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\DocumentConvertTranslationCommand;

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM;
 
 use Symfony\Component\Console\Input\InputOption;

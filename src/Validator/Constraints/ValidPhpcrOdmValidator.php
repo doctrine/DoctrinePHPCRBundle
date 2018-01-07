@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Doctrine\Bundle\PHPCRBundle\Validator\Constraints;
 
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
