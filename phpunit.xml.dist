@@ -6,7 +6,7 @@
 
     <testsuites>
         <testsuite name="Symfony DoctrinePHPCRBundle Test Suite">
-            <directory>./Tests</directory>
+            <directory>./tests</directory>
         </testsuite>
     </testsuites>
 
