@@ -46,7 +46,8 @@
         "burgov/key-value-form-bundle": "to edit assoc multivalue properties. require version 1.0.*"
     },
     "conflict": {
-        "phpcr/phpcr-shell": "<1.0.0-beta1"
+        "phpcr/phpcr-shell": "<1.0.0-beta1",
+        "jackalope/jackalope": "< 1.3.1"
     },
     "autoload": {
         "psr-4": { "Doctrine\\Bundle\\PHPCRBundle\\": "src/" }
