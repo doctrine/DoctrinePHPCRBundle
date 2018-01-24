@@ -2,17 +2,17 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
+use Doctrine\Bundle\PHPCRBundle\DataFixtures\PHPCRExecutor;
+use Doctrine\Common\DataFixtures\Purger\PHPCRPurger;
+use InvalidArgumentException;
+use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Helper\QuestionHelper;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
-use Doctrine\Common\DataFixtures\Purger\PHPCRPurger;
-use InvalidArgumentException;
-use Doctrine\Bundle\PHPCRBundle\DataFixtures\PHPCRExecutor;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -116,11 +116,11 @@ EOT
 
         $dirOrFile = $input->getOption('fixtures');
         if ($dirOrFile) {
-            $paths = is_array($dirOrFile) ? $dirOrFile : array($dirOrFile);
+            $paths = is_array($dirOrFile) ? $dirOrFile : [$dirOrFile];
         } else {
             /** @var $kernel KernelInterface */
             $kernel = $this->getApplication()->getKernel();
-            $paths = array($kernel->getRootDir().'/DataFixtures/PHPCR');
+            $paths = [$kernel->getRootDir().'/DataFixtures/PHPCR'];
             foreach ($kernel->getBundles() as $bundle) {
                 $paths[] = $bundle->getPath().'/DataFixtures/PHPCR';
             }

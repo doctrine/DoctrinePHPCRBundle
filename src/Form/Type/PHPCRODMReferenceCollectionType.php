@@ -2,12 +2,12 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Form\Type;
 
+use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\ReferenceManyCollectionToArrayTransformer;
+use Doctrine\ODM\PHPCR\DocumentManager;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\FormBuilderInterface;
-use Doctrine\ODM\PHPCR\DocumentManager;
-use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\ReferenceManyCollectionToArrayTransformer;
 
 /**
  * A type to handle a list of references as simple choice.
@@ -53,18 +53,18 @@ class PHPCRODMReferenceCollectionType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(array('referenced_class'));
+        $resolver->setRequired(['referenced_class']);
 
         if (method_exists($resolver, 'setDefined')) {
             $resolver->setDefined('key');
         } else {
             // todo: remove when Symfony <2.6 support is dropped
-            $resolver->setOptional(array('key'));
+            $resolver->setOptional(['key']);
         }
 
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'key' => ReferenceManyCollectionToArrayTransformer::KEY_UUID,
-        ));
+        ]);
     }
 
     /**

@@ -2,8 +2,8 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Form\DataTransformer;
 
-use PHPCR\SessionInterface;
 use PHPCR\NodeInterface;
+use PHPCR\SessionInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 

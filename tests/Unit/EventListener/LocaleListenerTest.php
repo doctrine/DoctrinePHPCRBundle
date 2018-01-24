@@ -23,7 +23,7 @@ class LocaleListenerTest extends TestCase
         $this->chooser = $this->createMock(LocaleChooser::class);
         $this->responseEvent = $this->createMock(GetResponseEvent::class);
         $this->request = $this->createMock(Request::class);
-        $this->allowedLocales = array('fr', 'en', 'de');
+        $this->allowedLocales = ['fr', 'en', 'de'];
     }
 
     public function testOnKernelRequestWithFallbackHardcoded()
@@ -76,11 +76,11 @@ class LocaleListenerTest extends TestCase
 
         $this->request->expects($this->once())
             ->method('getLanguages')
-            ->will($this->returnValue(array('it', 'fr_FR', 'fr_CA', 'en_GB')));
+            ->will($this->returnValue(['it', 'fr_FR', 'fr_CA', 'en_GB']));
 
         $this->chooser->expects($this->once())
             ->method('setFallbackLocales')
-            ->with('en', array('fr', 'en'), false);
+            ->with('en', ['fr', 'en'], false);
 
         $localeListener->onKernelRequest($this->responseEvent);
     }
@@ -109,11 +109,11 @@ class LocaleListenerTest extends TestCase
 
         $this->request->expects($this->once())
             ->method('getLanguages')
-            ->will($this->returnValue(array('it', 'fr_FR', 'fr_CA', 'en_GB')));
+            ->will($this->returnValue(['it', 'fr_FR', 'fr_CA', 'en_GB']));
 
         $this->chooser->expects($this->once())
             ->method('setFallbackLocales')
-            ->with('en', array('fr', 'en'), true);
+            ->with('en', ['fr', 'en'], true);
 
         $localeListener->onKernelRequest($this->responseEvent);
     }

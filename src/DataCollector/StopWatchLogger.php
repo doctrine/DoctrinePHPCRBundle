@@ -2,8 +2,8 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\DataCollector;
 
-use Symfony\Component\Stopwatch\Stopwatch;
 use Jackalope\Transport\Logging\LoggerInterface;
+use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
  * Logger.

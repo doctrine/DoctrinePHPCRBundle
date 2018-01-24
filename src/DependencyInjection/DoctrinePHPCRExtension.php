@@ -28,9 +28,9 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 {
     private $defaultSession;
 
-    private $sessions = array();
+    private $sessions = [];
 
-    private $bundleDirs = array();
+    private $bundleDirs = [];
 
     /** @var XmlFileLoader */
     private $loader;
@@ -61,11 +61,11 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             $container->setAlias('doctrine_phpcr', new Alias($config['manager_registry_service_id'], true));
         }
 
-        $parameters = array(
+        $parameters = [
             'workspace_dir',
             'jackrabbit_jar',
             'dump_max_line_length',
-        );
+        ];
 
         foreach ($parameters as $param) {
             if (isset($config[$param])) {
@@ -92,11 +92,11 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
     private function loadTypeGuess($config, ContainerBuilder $container)
     {
-        $types = array();
+        $types = [];
 
         $bundles = $container->getParameter('kernel.bundles');
         if (isset($bundles['BurgovKeyValueFormBundle'])) {
-            $types['assoc'] = array('burgov_key_value' => array('value_type' => 'text'));
+            $types['assoc'] = ['burgov_key_value' => ['value_type' => 'text']];
         }
 
         $container->setParameter('doctrine_phpcr.form.type_guess', $types);
@@ -104,7 +104,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
     private function sessionLoad($config, ContainerBuilder $container)
     {
-        $sessions = $loaded = array();
+        $sessions = $loaded = [];
         foreach ($config['sessions'] as $name => $session) {
             if (empty($config['default_session'])) {
                 $config['default_session'] = $name;
@@ -122,15 +122,15 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                         $this->loader->load('jackalope.xml');
 
                         // TODO: move the following code block back into the XML file when we drop support for symfony <2.6
-                        $jackalopeTransports = array('prismic', 'doctrinedbal', 'jackrabbit');
+                        $jackalopeTransports = ['prismic', 'doctrinedbal', 'jackrabbit'];
                         foreach ($jackalopeTransports as $transport) {
                             $factoryServiceId = sprintf('doctrine_phpcr.jackalope.repository.factory.service.%s', $transport);
                             $factoryService = $container->getDefinition(sprintf('doctrine_phpcr.jackalope.repository.factory.%s', $transport));
                             if (method_exists($factoryService, 'setFactory')) {
-                                $factoryService->setFactory(array(
+                                $factoryService->setFactory([
                                     new Reference($factoryServiceId),
                                     'getRepository',
-                                ));
+                                ]);
                             } else {
                                 $factoryService->setFactoryService($factoryServiceId);
                                 $factoryService->setFactoryMethod('getRepository');
@@ -168,7 +168,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
     private function loadJackalopeSession(array $session, ContainerBuilder $container, $type, $admin = false)
     {
         $serviceNamePrefix = $admin ? '.admin' : '';
-        $backendParameters = array();
+        $backendParameters = [];
         switch ($type) {
             case 'doctrinedbal':
                 $connectionName = !empty($session['backend']['connection'])
@@ -189,11 +189,11 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                 }
                 $container
                     ->getDefinition('doctrine_phpcr.jackalope_doctrine_dbal.schema_listener')
-                    ->addTag('doctrine.event_listener', array(
+                    ->addTag('doctrine.event_listener', [
                         'connection' => $connectionName,
                         'event' => 'postGenerateSchema',
                         'lazy' => true,
-                    ))
+                    ])
                 ;
 
                 $backendParameters['jackalope.doctrine_dbal_connection'] = new Reference($connectionAliasName);
@@ -217,7 +217,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         // pipe additional parameters unchanged to jackalope
         $backendParameters += $session['backend']['parameters'];
         if (array_key_exists('curl_options', $session['backend']) && count($session['backend']['curl_options'])) {
-            $curlOptions = array();
+            $curlOptions = [];
             foreach ($session['backend']['curl_options'] as $option => $value) {
                 if (!is_int($option)) {
                     $option = constant($option);
@@ -265,7 +265,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
             $container->setDefinition($profilingLoggerId, $profilingLoggerDef);
             $profilerLogger = new Reference($profilingLoggerId);
-            $container->getDefinition('doctrine_phpcr.data_collector')->addMethodCall('addLogger', array($session['name'], $profilerLogger));
+            $container->getDefinition('doctrine_phpcr.data_collector')->addMethodCall('addLogger', [$session['name'], $profilerLogger]);
 
             $stopWatchLoggerId = 'doctrine_phpcr.logger.stop_watch.'.$session['name'];
             $stopWatchLoggerDefinition = class_exists(ChildDefinition::class)
@@ -277,11 +277,11 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             $chainLogger = class_exists(ChildDefinition::class)
                 ? new ChildDefinition('doctrine_phpcr.logger.chain')
                 : new DefinitionDecorator('doctrine_phpcr.logger.chain');
-            $chainLogger->addMethodCall('addLogger', array($profilerLogger));
-            $chainLogger->addMethodCall('addLogger', array($stopWatchLogger));
+            $chainLogger->addMethodCall('addLogger', [$profilerLogger]);
+            $chainLogger->addMethodCall('addLogger', [$stopWatchLogger]);
 
             if (null !== $logger) {
-                $chainLogger->addMethodCall('addLogger', array($logger));
+                $chainLogger->addMethodCall('addLogger', [$logger]);
             }
 
             $loggerId = 'doctrine_phpcr.logger.chain.'.$session['name'];
@@ -319,10 +319,10 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             : new DefinitionDecorator('doctrine_phpcr.jackalope.session');
         $factoryServiceId = sprintf('doctrine_phpcr%s.jackalope.repository.%s', $serviceNamePrefix, $session['name']);
         if (method_exists($definition, 'setFactory')) {
-            $definition->setFactory(array(
+            $definition->setFactory([
                 new Reference($factoryServiceId),
                 'login',
-            ));
+            ]);
         } else {
             $definition->setFactoryService($factoryServiceId);
             $definition->setFactoryMethod('login');
@@ -338,7 +338,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         $container->setDefinition($serviceName, $definition)->setPublic(true);
 
         foreach ($session['options'] as $key => $value) {
-            $definition->addMethodCall('setSessionOption', array($key, $value));
+            $definition->addMethodCall('setSessionOption', [$key, $value]);
         }
 
         $eventManagerServiceId = sprintf('doctrine_phpcr%s.%s_session.event_manager', $serviceNamePrefix, $session['name']);
@@ -364,7 +364,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             $config['document_managers'] = $this->fixManagersAutoMappings($config['document_managers'], $container->getParameter('kernel.bundles'));
         }
 
-        $documentManagers = array();
+        $documentManagers = [];
         foreach ($config['document_managers'] as $name => $documentManager) {
             if (empty($config['default_document_manager'])) {
                 $config['default_document_manager'] = $name;
@@ -385,7 +385,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         $container->setParameter('doctrine_phpcr.odm.default_document_manager', $config['default_document_manager']);
         $container->setAlias('doctrine_phpcr.odm.document_manager', $documentManagers[$config['default_document_manager']]);
 
-        $options = array('auto_generate_proxy_classes', 'proxy_dir', 'proxy_namespace');
+        $options = ['auto_generate_proxy_classes', 'proxy_dir', 'proxy_namespace'];
         foreach ($options as $key) {
             $container->setParameter('doctrine_phpcr.odm.'.$key, $config[$key]);
         }
@@ -439,7 +439,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         // set by configuring the locales node.
         if (null !== $localeChooser) {
             $dm = $container->getDefinition('doctrine_phpcr.odm.document_manager.abstract');
-            $dm->addMethodCall('setLocaleChooserStrategy', array(new Reference($localeChooser)));
+            $dm->addMethodCall('setLocaleChooserStrategy', [new Reference($localeChooser)]);
         }
     }
 
@@ -454,20 +454,20 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         $this->loadOdmDocumentManagerMappingInformation($documentManager, $odmConfigDef, $container);
         $this->loadOdmCacheDrivers($documentManager, $container);
 
-        $methods = array(
-            'setMetadataCacheImpl' => array(new Reference(sprintf('doctrine_phpcr.odm.%s_metadata_cache', $documentManager['name']))),
-            'setMetadataDriverImpl' => array(new Reference('doctrine_phpcr.odm.'.$documentManager['name'].'_metadata_driver'), false),
-            'setProxyDir' => array('%doctrine_phpcr.odm.proxy_dir%'),
-            'setProxyNamespace' => array('%doctrine_phpcr.odm.proxy_namespace%'),
-            'setAutoGenerateProxyClasses' => array('%doctrine_phpcr.odm.auto_generate_proxy_classes%'),
-        );
+        $methods = [
+            'setMetadataCacheImpl' => [new Reference(sprintf('doctrine_phpcr.odm.%s_metadata_cache', $documentManager['name']))],
+            'setMetadataDriverImpl' => [new Reference('doctrine_phpcr.odm.'.$documentManager['name'].'_metadata_driver'), false],
+            'setProxyDir' => ['%doctrine_phpcr.odm.proxy_dir%'],
+            'setProxyNamespace' => ['%doctrine_phpcr.odm.proxy_namespace%'],
+            'setAutoGenerateProxyClasses' => ['%doctrine_phpcr.odm.auto_generate_proxy_classes%'],
+        ];
 
         if (version_compare(Version::VERSION, '1.1.0-DEV') >= 0) {
-            $methods['setClassMetadataFactoryName'] = array($documentManager['class_metadata_factory_name']);
-            $methods['setDefaultRepositoryClassName'] = array($documentManager['default_repository_class']);
+            $methods['setClassMetadataFactoryName'] = [$documentManager['class_metadata_factory_name']];
+            $methods['setDefaultRepositoryClassName'] = [$documentManager['default_repository_class']];
 
             if ($documentManager['repository_factory']) {
-                $methods['setRepositoryFactory'] = array(new Reference($documentManager['repository_factory']));
+                $methods['setRepositoryFactory'] = [new Reference($documentManager['repository_factory'])];
             }
         }
         foreach ($methods as $method => $args) {
@@ -487,17 +487,17 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             : new DefinitionDecorator('doctrine_phpcr.odm.document_manager.abstract');
         $documentManagerDefinition = $container
             ->setDefinition($documentManager['service_name'], $abstractDocumentManagerDefinition)
-            ->setArguments(array(
+            ->setArguments([
                 new Reference(sprintf('doctrine_phpcr.%s_session', $documentManager['session'])),
                 new Reference(sprintf('doctrine_phpcr.odm.%s_configuration', $documentManager['name'])),
                 new Reference(sprintf('doctrine_phpcr.%s_session.event_manager', $documentManager['session'])),
-            ))
+            ])
             ->setPublic(true);
 
-        foreach (array(
+        foreach ([
             'child' => 'doctrine_phpcr.odm.translation.strategy.child',
             'attribute' => 'doctrine_phpcr.odm.translation.strategy.attribute',
-        ) as $name => $strategyTemplateId) {
+        ] as $name => $strategyTemplateId) {
             $strategyId = sprintf('doctrine_phpcr.odm.%s.translation.strategy.%s', $documentManager['name'], $name);
             $strategyDefinition = class_exists(ChildDefinition::class)
                 ? new ChildDefinition($strategyTemplateId)
@@ -506,7 +506,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             $container->setDefinition($strategyId, $strategyDefinition);
 
             $strategyDefinition->replaceArgument(0, new Reference($documentManager['service_name']));
-            $documentManagerDefinition->addMethodCall('setTranslationStrategy', array($name, new Reference($strategyId)));
+            $documentManagerDefinition->addMethodCall('setTranslationStrategy', [$name, new Reference($strategyId)]);
         }
     }
 
@@ -523,9 +523,9 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
     protected function loadOdmDocumentManagerMappingInformation(array $documentManager, Definition $odmConfig, ContainerBuilder $container)
     {
         // reset state of drivers and alias map. They are only used by this methods and children.
-        $this->drivers = array();
-        $this->aliasMap = array();
-        $this->bundleDirs = array();
+        $this->drivers = [];
+        $this->aliasMap = [];
+        $this->bundleDirs = [];
 
         if (!class_exists(Generic::class)) {
             throw new \RuntimeException('PHPCR ODM is activated in the config but does not seem loadable.');
@@ -533,17 +533,17 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
         $class = new \ReflectionClass(Generic::class);
 
-        $documentManager['mappings']['__PHPCRODM__'] = array(
+        $documentManager['mappings']['__PHPCRODM__'] = [
             'dir' => dirname($class->getFileName()),
             'type' => 'annotation',
             'prefix' => 'Doctrine\ODM\PHPCR\Document',
             'is_bundle' => false,
             'mapping' => true,
-        );
+        ];
         $this->loadMappingInformation($documentManager, $container);
         $this->registerMappingDrivers($documentManager, $container);
 
-        $odmConfig->addMethodCall('setDocumentNamespaces', array($this->aliasMap));
+        $odmConfig->addMethodCall('setDocumentNamespaces', [$this->aliasMap]);
     }
 
     /**

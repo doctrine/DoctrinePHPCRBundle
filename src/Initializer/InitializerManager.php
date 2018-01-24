@@ -14,7 +14,7 @@ class InitializerManager
     /**
      * @var InitializerInterface[]
      */
-    protected $initializers = array();
+    protected $initializers = [];
 
     /**
      * @var ManagerRegistry
@@ -50,11 +50,11 @@ class InitializerManager
     public function addInitializer(InitializerInterface $initializer, $priority = 0)
     {
         if (empty($this->initializers[$priority])) {
-            $this->initializers[$priority] = array();
+            $this->initializers[$priority] = [];
         }
 
         $this->initializers[$priority][] = $initializer;
-        $this->sortedInitializers = array();
+        $this->sortedInitializers = [];
     }
 
     /**
@@ -104,7 +104,7 @@ class InitializerManager
      */
     private function sortInitializers()
     {
-        $sortedInitializers = array();
+        $sortedInitializers = [];
         krsort($this->initializers);
 
         foreach ($this->initializers as $initializers) {

@@ -37,9 +37,9 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
      *
      * guessed form types
      */
-    private $typeGuess = array();
+    private $typeGuess = [];
 
-    private $cache = array();
+    private $cache = [];
 
     /**
      * Work with 2.3-2.7 and 3.0 at the same time. drop once we switch to symfony 3.0.
@@ -51,7 +51,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
      */
     private $entryTypeOption = 'type';
 
-    public function __construct(ManagerRegistry $registry, $typeGuess = array())
+    public function __construct(ManagerRegistry $registry, $typeGuess = [])
     {
         $this->registry = $registry;
         $this->typeGuess = $typeGuess;
@@ -65,7 +65,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
     public function guessType($class, $property)
     {
         if (!$ret = $this->getMetadata($class)) {
-            return new TypeGuess($this->legacy ? 'text' : TextType::class, array(), Guess::LOW_CONFIDENCE);
+            return new TypeGuess($this->legacy ? 'text' : TextType::class, [], Guess::LOW_CONFIDENCE);
         }
 
         /** @var ClassMetadata $metadata */
@@ -77,29 +77,29 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
 
             switch ($mapping['type']) {
                 case 'parent':
-                    return new TypeGuess($this->legacy ? 'phpcr_odm_path' : PathType::class, array(), Guess::MEDIUM_CONFIDENCE);
+                    return new TypeGuess($this->legacy ? 'phpcr_odm_path' : PathType::class, [], Guess::MEDIUM_CONFIDENCE);
 
                 case 'mixedreferrers':
-                    $options = array(
-                        'attr' => array('readonly' => 'readonly'),
+                    $options = [
+                        'attr' => ['readonly' => 'readonly'],
                         $this->entryTypeOption => $this->legacy ? 'phpcr_odm_path' : PathType::class,
-                    );
+                    ];
 
                     return new TypeGuess($this->legacy ? 'collection' : CollectionType::class, $options, Guess::LOW_CONFIDENCE);
 
                 case 'referrers':
-                    return new TypeGuess($this->legacy ? 'phpcr_document' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType', array(
+                    return new TypeGuess($this->legacy ? 'phpcr_document' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType', [
                             'class' => $mapping['referringDocument'],
                             'multiple' => true,
-                        ),
+                        ],
                         Guess::HIGH_CONFIDENCE
                     );
 
                 case ClassMetadata::MANY_TO_MANY:
                 case ClassMetadata::MANY_TO_ONE:
-                    $options = array(
+                    $options = [
                         'multiple' => $metadata->isCollectionValuedAssociation($property),
-                    );
+                    ];
                     if (isset($mapping['targetDocument'])) {
                         $options['class'] = $mapping['targetDocument'];
                     }
@@ -107,17 +107,17 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
                     return new TypeGuess($this->legacy ? 'phpcr_document' : DocumentType::class, $options, Guess::HIGH_CONFIDENCE);
 
                 case 'child':
-                    $options = array(
-                        'attr' => array('readonly' => 'readonly'),
-                    );
+                    $options = [
+                        'attr' => ['readonly' => 'readonly'],
+                    ];
 
                     return new TypeGuess($this->legacy ? 'phpcr_odm_path' : PathType::class, $options, Guess::LOW_CONFIDENCE);
 
                 case 'children':
-                    $options = array(
-                        'attr' => array('readonly' => 'readonly'),
+                    $options = [
+                        'attr' => ['readonly' => 'readonly'],
                         $this->entryTypeOption => $this->legacy ? 'phpcr_odm_path' : PathType::class,
-                    );
+                    ];
 
                     return new TypeGuess($this->legacy ? 'collection' : CollectionType::class, $options, Guess::LOW_CONFIDENCE);
 
@@ -138,7 +138,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
             return;
         }
 
-        $options = array();
+        $options = [];
         switch ($metadata->getTypeOfField($property)) {
             case 'boolean':
                 $type = $this->legacy ? 'checkbox' : CheckboxType::class;
@@ -168,7 +168,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
                 if ($metadata->isIdentifier($property)
                     || $metadata->isUuid($property)
                 ) {
-                    $options['attr'] = array('readonly' => 'readonly');
+                    $options['attr'] = ['readonly' => 'readonly'];
                 }
                 $type = $this->legacy ? 'text' : TextType::class;
 
@@ -186,7 +186,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
             case 'versionname':
             case 'versioncreated':
             default:
-                $options['attr'] = array('readonly' => 'readonly');
+                $options['attr'] = ['readonly' => 'readonly'];
                 $options['required'] = false;
                 $type = $this->legacy ? 'text' : TextType::class;
 
@@ -199,7 +199,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
         }
 
         if (!empty($mapping['translated'])) {
-            $options['attr'] = array('class' => 'translated');
+            $options['attr'] = ['class' => 'translated'];
         }
 
         return new TypeGuess($type, $options, Guess::HIGH_CONFIDENCE);
@@ -280,7 +280,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
 
         $manager = $this->registry->getManagerForClass($class);
         if ($manager) {
-            return $this->cache[$class] = array($manager->getClassMetadata($class), $manager);
+            return $this->cache[$class] = [$manager->getClassMetadata($class), $manager];
         }
 
         return $this->cache[$class] = null;

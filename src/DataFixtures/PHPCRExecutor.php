@@ -2,10 +2,10 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\DataFixtures;
 
-use Doctrine\ODM\PHPCR\DocumentManager;
-use Doctrine\Common\DataFixtures\Purger\PHPCRPurger;
 use Doctrine\Bundle\PHPCRBundle\Initializer\InitializerManager;
 use Doctrine\Common\DataFixtures\Executor\PHPCRExecutor as BasePHPCRExecutor;
+use Doctrine\Common\DataFixtures\Purger\PHPCRPurger;
+use Doctrine\ODM\PHPCR\DocumentManager;
 
 /**
  * Class responsible for executing data fixtures.

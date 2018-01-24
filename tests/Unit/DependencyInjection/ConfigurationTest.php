@@ -2,8 +2,8 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\DependencyInjection;
 
-use Doctrine\Bundle\PHPCRBundle\DependencyInjection\DoctrinePHPCRExtension;
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Configuration;
+use Doctrine\Bundle\PHPCRBundle\DependencyInjection\DoctrinePHPCRExtension;
 use Doctrine\ODM\PHPCR\DocumentRepository;
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadataFactory;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionConfigurationTestCase;
@@ -30,72 +30,72 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
         }, $files);
 
         foreach ($formats as $format) {
-            $this->assertProcessedConfigurationEquals($expectedConfiguration, array($format));
+            $this->assertProcessedConfigurationEquals($expectedConfiguration, [$format]);
         }
     }
 
     public function configurations()
     {
-        $singleConfiguration = array(
-            'session' => array(
+        $singleConfiguration = [
+            'session' => [
                 'default_session' => 'default',
-                'sessions' => array(
-                    'default' => array(
-                        'backend' => array(
+                'sessions' => [
+                    'default' => [
+                        'backend' => [
                             'type' => 'jackrabbit',
                             'logging' => true,
                             'profiling' => true,
                             'factory' => null,
-                            'parameters' => array(
+                            'parameters' => [
                                 'jackalope.factory' => 'Jackalope\Factory',
                                 'jackalope.check_login_on_server' => false,
                                 'jackalope.disable_stream_wrapper' => false,
                                 'jackalope.auto_lastmodified' => true,
                                 'jackalope.default_header' => 'X-ID: %serverid%',
                                 'jackalope.jackrabbit_expect' => true,
-                            ),
-                            'curl_options' => array(),
+                            ],
+                            'curl_options' => [],
                             'url' => 'http://localhost:8080/server/',
                             'backtrace' => false,
-                            ),
+                            ],
                             'workspace' => 'default',
                             'username' => 'admin',
                             'password' => 'admin',
-                            'options' => array(
+                            'options' => [
                                 'jackalope.fetch_depth' => 1,
-                            ),
+                            ],
                             'admin_username' => null,
                             'admin_password' => null,
-                        ),
-                    ),
-            ),
-            'odm' => array(
+                        ],
+                    ],
+            ],
+            'odm' => [
                 'auto_generate_proxy_classes' => true,
                 'proxy_dir' => '/doctrine/PHPCRProxies',
                 'proxy_namespace' => 'PHPCRProxies',
-                'locales' => array(
-                    'en' => array('de', 'fr'),
-                    'de' => array('en', 'fr'),
-                    'fr' => array('en', 'de'),
-                ),
+                'locales' => [
+                    'en' => ['de', 'fr'],
+                    'de' => ['en', 'fr'],
+                    'fr' => ['en', 'de'],
+                ],
                 'locale_fallback' => 'hardcoded',
                 'default_locale' => 'fr',
                 'default_document_manager' => 'default',
-                'document_managers' => array(
-                    'default' => array(
+                'document_managers' => [
+                    'default' => [
                         'configuration_id' => null,
                         'auto_mapping' => true,
-                        'mappings' => array(
-                            'test' => array(
+                        'mappings' => [
+                            'test' => [
                                 'mapping' => true,
                                 'type' => null,
                                 'dir' => null,
                                 'alias' => null,
                                 'prefix' => null,
                                 'is_bundle' => true,
-                            ),
-                        ),
-                        'metadata_cache_driver' => array(
+                            ],
+                        ],
+                        'metadata_cache_driver' => [
                             'type' => 'array',
                             'host' => null,
                             'port' => null,
@@ -103,173 +103,173 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                             'class' => null,
                             'id' => null,
                             'namespace' => null,
-                        ),
+                        ],
                         'class_metadata_factory_name' => ClassMetadataFactory::class,
                         'default_repository_class' => DocumentRepository::class,
                         'repository_factory' => null,
-                    ),
-                ),
-                'namespaces' => array(
-                    'translation' => array(
+                    ],
+                ],
+                'namespaces' => [
+                    'translation' => [
                         'alias' => 'phpcr_locale',
-                    ),
-                ),
+                    ],
+                ],
                 'locale_chooser' => null,
-            ),
+            ],
             'jackrabbit_jar' => '/path/to/jackrabbit.jar',
             'dump_max_line_length' => 20,
             'manager_registry_service_id' => 'my_phpcr_registry',
-        );
-        $multipleConfiguration = array(
-            'session' => array(
-                'sessions' => array(
-                    'default' => array(
-                        'backend' => array(
+        ];
+        $multipleConfiguration = [
+            'session' => [
+                'sessions' => [
+                    'default' => [
+                        'backend' => [
                             'type' => 'jackrabbit',
                             'logging' => false,
                             'profiling' => false,
                             'factory' => null,
-                            'parameters' => array(
-                            ),
-                            'curl_options' => array(),
+                            'parameters' => [
+                            ],
+                            'curl_options' => [],
                             'url' => 'http://a',
                             'backtrace' => false,
-                        ),
+                        ],
                         'workspace' => 'default',
                         'username' => 'admin',
                         'password' => 'admin',
-                        'options' => array(
-                        ),
+                        'options' => [
+                        ],
                         'admin_username' => null,
                         'admin_password' => null,
-                    ),
-                    'website' => array(
-                        'backend' => array(
+                    ],
+                    'website' => [
+                        'backend' => [
                             'type' => 'jackrabbit',
                             'logging' => false,
                             'profiling' => false,
-                            'parameters' => array(
-                            ),
-                            'curl_options' => array(),
+                            'parameters' => [
+                            ],
+                            'curl_options' => [],
                             'url' => 'http://b',
                             'backtrace' => false,
                             'factory' => null,
-                        ),
+                        ],
                         'workspace' => 'website',
                         'username' => 'root',
                         'password' => 'root',
-                        'options' => array(
-                        ),
+                        'options' => [
+                        ],
                         'admin_username' => 'admin',
                         'admin_password' => 'admin',
-                    ),
-                ),
-            ),
-            'odm' => array(
+                    ],
+                ],
+            ],
+            'odm' => [
                 'auto_generate_proxy_classes' => true,
                 'proxy_dir' => '%kernel.cache_dir%/doctrine/PHPCRProxies',
                 'proxy_namespace' => 'PHPCRProxies',
-                'locales' => array(
-                ),
+                'locales' => [
+                ],
                 'locale_fallback' => 'merge',
-                'document_managers' => array(
-                    'default' => array(
+                'document_managers' => [
+                    'default' => [
                         'auto_mapping' => false,
-                        'mappings' => array(
-                            'SandboxMainBundle' => array(
+                        'mappings' => [
+                            'SandboxMainBundle' => [
                                 'mapping' => true,
-                            ),
-                        ),
-                        'metadata_cache_driver' => array(
+                            ],
+                        ],
+                        'metadata_cache_driver' => [
                             'type' => 'array',
                             'namespace' => null,
-                        ),
+                        ],
                         'class_metadata_factory_name' => ClassMetadataFactory::class,
                         'default_repository_class' => DocumentRepository::class,
                         'repository_factory' => null,
                         'session' => 'default',
-                    ),
-                    'website' => array(
+                    ],
+                    'website' => [
                         'auto_mapping' => false,
-                        'mappings' => array(
-                            'SandboxMagnoliaBundle' => array(
+                        'mappings' => [
+                            'SandboxMagnoliaBundle' => [
                                 'mapping' => true,
-                            ),
-                        ),
-                        'metadata_cache_driver' => array(
+                            ],
+                        ],
+                        'metadata_cache_driver' => [
                             'type' => 'array',
                             'namespace' => null,
-                        ),
+                        ],
                         'class_metadata_factory_name' => ClassMetadataFactory::class,
                         'default_repository_class' => DocumentRepository::class,
                         'repository_factory' => null,
                         'session' => 'website',
                         'configuration_id' => 'sandbox_magnolia.odm_configuration',
-                    ),
-                ),
-                'namespaces' => array(
-                    'translation' => array(
+                    ],
+                ],
+                'namespaces' => [
+                    'translation' => [
                         'alias' => 'phpcr_locale',
-                    ),
-                ),
+                    ],
+                ],
                 'locale_chooser' => null,
-            ),
+            ],
             'dump_max_line_length' => 120,
             'manager_registry_service_id' => null,
-        );
-        $bc = array(
-            'session' => array(
+        ];
+        $bc = [
+            'session' => [
                 'default_session' => 'default',
-                'sessions' => array(
-                    'default' => array(
-                        'backend' => array(
+                'sessions' => [
+                    'default' => [
+                        'backend' => [
                             'type' => 'doctrinedbal',
                             'logging' => false,
                             'profiling' => false,
                             'factory' => null,
                             'backtrace' => false,
-                            'parameters' => array(
+                            'parameters' => [
                                 'jackalope.factory' => 'Jackalope\Factory',
                                 'jackalope.check_login_on_server' => true,
                                 'jackalope.disable_stream_wrapper' => true,
                                 'jackalope.disable_transactions' => true,
-                            ),
-                            'curl_options' => array(),
-                        ),
+                            ],
+                            'curl_options' => [],
+                        ],
                         'workspace' => 'default',
                         'username' => 'admin',
                         'password' => 'admin',
-                        'options' => array(),
+                        'options' => [],
                         'admin_username' => null,
                         'admin_password' => null,
-                    ),
-                ),
-            ),
+                    ],
+                ],
+            ],
             'dump_max_line_length' => 120,
             'manager_registry_service_id' => null,
-        );
+        ];
 
-        return array(
-            array(
+        return [
+            [
                 $singleConfiguration,
-                array(
+                [
                     'config/single.yml',
                     'config/single.xml',
                     'config/single.php',
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 $multipleConfiguration,
-                array(
+                [
                     'config/multiple.yml',
                     'config/multiple.xml',
                     'config/multiple.php',
-                ),
-            ),
-            array(
+                ],
+            ],
+            [
                 $bc,
-                array('config/bc.php'),
-            ),
-        );
+                ['config/bc.php'],
+            ],
+        ];
     }
 }

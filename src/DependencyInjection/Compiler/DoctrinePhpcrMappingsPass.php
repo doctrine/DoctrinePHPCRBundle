@@ -31,7 +31,7 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      *                                                to not do any check, optional.
      * @param array                $aliasMap          map of alias to namespace
      */
-    public function __construct($driver, array $namespaces, array $managerParameters, $enabledParameter = false, array $aliasMap = array())
+    public function __construct($driver, array $namespaces, array $managerParameters, $enabledParameter = false, array $aliasMap = [])
     {
         $managerParameters[] = 'doctrine_phpcr.odm.default_document_manager';
         parent::__construct(
@@ -57,11 +57,11 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      *                                    optional.
      * @param string[] $aliasMap          map of alias to namespace
      */
-    public static function createXmlMappingDriver(array $namespaces, array $managerParameters = array(), $enabledParameter = false, array $aliasMap = array())
+    public static function createXmlMappingDriver(array $namespaces, array $managerParameters = [], $enabledParameter = false, array $aliasMap = [])
     {
-        $arguments = array($namespaces, '.phpcr.xml');
+        $arguments = [$namespaces, '.phpcr.xml'];
         $locator = new Definition('Doctrine\Common\Persistence\Mapping\Driver\SymfonyFileLocator', $arguments);
-        $driver = new Definition('Doctrine\ODM\PHPCR\Mapping\Driver\XmlDriver', array($locator));
+        $driver = new Definition('Doctrine\ODM\PHPCR\Mapping\Driver\XmlDriver', [$locator]);
 
         return new self($driver, $namespaces, $managerParameters, $enabledParameter, $aliasMap);
     }
@@ -77,11 +77,11 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      *                                    optional.
      * @param string[] $aliasMap          map of alias to namespace
      */
-    public static function createYamlMappingDriver(array $namespaces, array $managerParameters = array(), $enabledParameter = false, array $aliasMap = array())
+    public static function createYamlMappingDriver(array $namespaces, array $managerParameters = [], $enabledParameter = false, array $aliasMap = [])
     {
-        $arguments = array($namespaces, '.phpcr.yml');
+        $arguments = [$namespaces, '.phpcr.yml'];
         $locator = new Definition('Doctrine\Common\Persistence\Mapping\Driver\SymfonyFileLocator', $arguments);
-        $driver = new Definition('Doctrine\ODM\PHPCR\Mapping\Driver\YamlDriver', array($locator));
+        $driver = new Definition('Doctrine\ODM\PHPCR\Mapping\Driver\YamlDriver', [$locator]);
 
         return new self($driver, $namespaces, $managerParameters, $enabledParameter, $aliasMap);
     }
@@ -97,11 +97,11 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      *                                    optional.
      * @param string[] $aliasMap          map of alias to namespace
      */
-    public static function createPhpMappingDriver(array $mappings, array $managerParameters = array(), $enabledParameter = false, array $aliasMap = array())
+    public static function createPhpMappingDriver(array $mappings, array $managerParameters = [], $enabledParameter = false, array $aliasMap = [])
     {
-        $arguments = array($mappings, '.php');
+        $arguments = [$mappings, '.php'];
         $locator = new Definition('Doctrine\Common\Persistence\Mapping\Driver\SymfonyFileLocator', $arguments);
-        $driver = new Definition('Doctrine\Common\Persistence\Mapping\Driver\PHPDriver', array($locator));
+        $driver = new Definition('Doctrine\Common\Persistence\Mapping\Driver\PHPDriver', [$locator]);
 
         return new self($driver, $mappings, $managerParameters, $enabledParameter, $aliasMap);
     }
@@ -118,10 +118,10 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      *                                    optional.
      * @param string[] $aliasMap          map of alias to namespace
      */
-    public static function createAnnotationMappingDriver(array $namespaces, array $directories, array $managerParameters = array(), $enabledParameter = false, array $aliasMap = array())
+    public static function createAnnotationMappingDriver(array $namespaces, array $directories, array $managerParameters = [], $enabledParameter = false, array $aliasMap = [])
     {
         $reader = new Reference('doctrine_phpcr.odm.metadata.annotation_reader');
-        $driver = new Definition('Doctrine\ODM\PHPCR\Mapping\Driver\AnnotationDriver', array($reader, $directories));
+        $driver = new Definition('Doctrine\ODM\PHPCR\Mapping\Driver\AnnotationDriver', [$reader, $directories]);
 
         return new self($driver, $namespaces, $managerParameters, $enabledParameter, $aliasMap);
     }
@@ -138,9 +138,9 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      *                                    optional.
      * @param string[] $aliasMap          map of alias to namespace
      */
-    public static function createStaticPhpMappingDriver(array $namespaces, array $directories, array $managerParameters = array(), $enabledParameter = false, array $aliasMap = array())
+    public static function createStaticPhpMappingDriver(array $namespaces, array $directories, array $managerParameters = [], $enabledParameter = false, array $aliasMap = [])
     {
-        $driver = new Definition('Doctrine\Common\Persistence\Mapping\Driver\StaticPHPDriver', array($directories));
+        $driver = new Definition('Doctrine\Common\Persistence\Mapping\Driver\StaticPHPDriver', [$directories]);
 
         return new self($driver, $namespaces, $managerParameters, $enabledParameter, $aliasMap);
     }

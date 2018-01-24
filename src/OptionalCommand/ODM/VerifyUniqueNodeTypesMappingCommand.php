@@ -4,8 +4,8 @@ namespace Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM;
 
 use Doctrine\Bundle\PHPCRBundle\Command\DoctrineCommandHelper;
 use Doctrine\ODM\PHPCR\Tools\Console\Command\VerifyUniqueNodeTypesMappingCommand as BaseVerifyUniqueNodeTypesMappingCommand;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**

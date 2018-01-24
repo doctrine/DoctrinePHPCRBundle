@@ -2,15 +2,15 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
-use Doctrine\ODM\PHPCR\Version;
-use Symfony\Bridge\Doctrine\ManagerRegistry;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Doctrine\ODM\PHPCR\Tools\Console\Helper\DocumentManagerHelper;
-use PHPCR\Util\Console\Helper\PhpcrHelper;
+use Doctrine\ODM\PHPCR\Version;
+use Jackalope\Session as JackalopeSession;
 use Jackalope\Tools\Console\Helper\DoctrineDbalHelper;
 use Jackalope\Transport\DoctrineDBAL\Client as DbalClient;
 use Jackalope\Transport\DoctrineDBAL\LoggingClient as DbalLoggingClient;
-use Jackalope\Session as JackalopeSession;
+use PHPCR\Util\Console\Helper\PhpcrHelper;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 
 /**
  * Provides helper methods to configure doctrine PHPCR-ODM commands

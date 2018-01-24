@@ -9,9 +9,9 @@ class Kernel extends TestKernel
 {
     public function configure()
     {
-        $this->requireBundleSets(array(
+        $this->requireBundleSets([
             'default', 'phpcr_odm',
-        ));
+        ]);
 
         $this->registerConfiguredBundles();
     }

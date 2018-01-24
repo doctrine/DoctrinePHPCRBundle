@@ -3,11 +3,11 @@
 namespace Doctrine\Bundle\PHPCRBundle\DependencyInjection;
 
 use Doctrine\Bundle\PHPCRBundle\EventListener\LocaleListener;
+use Doctrine\ODM\PHPCR\Translation\Translation;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
-use Doctrine\ODM\PHPCR\Translation\Translation;
 
 /**
  * Configuration for the PHPCR extension.
@@ -46,11 +46,11 @@ class Configuration implements ConfigurationInterface
                     })
                     ->then(function ($v) {
                         if (!is_array($v)) {
-                            $v = array();
+                            $v = [];
                         }
 
-                        $session = array();
-                        foreach (array(
+                        $session = [];
+                        foreach ([
                             'workspace',
                             'username',
                             'password',
@@ -58,14 +58,14 @@ class Configuration implements ConfigurationInterface
                             'admin_password',
                             'backend',
                             'options',
-                        ) as $key) {
+                        ] as $key) {
                             if (array_key_exists($key, $v)) {
                                 $session[$key] = $v[$key];
                                 unset($v[$key]);
                             }
                         }
                         $v['default_session'] = (string) ($v['default_session'] ?? 'default');
-                        $v['sessions'] = array($v['default_session'] => $session);
+                        $v['sessions'] = [$v['default_session'] => $session];
 
                         return $v;
                     })
@@ -100,11 +100,11 @@ class Configuration implements ConfigurationInterface
                         ->beforeNormalization()
                             ->ifArray()
                             ->then(function ($v) {
-                                $map = array(
+                                $map = [
                                     'check_login_on_server' => 'jackalope.check_login_on_server',
                                     'disable_stream_wrapper' => 'jackalope.disable_stream_wrapper',
                                     'disable_transactions' => 'jackalope.disable_transactions',
-                                );
+                                ];
                                 foreach ($map as $key => $jackalope) {
                                     if (isset($v[$key])) {
                                         $v['parameters'][$jackalope] = $v[$key];
@@ -141,7 +141,7 @@ class Configuration implements ConfigurationInterface
                         ->fixXmlConfig('parameter')
                         ->children()
                             ->enumNode('type')
-                                ->values(array('jackrabbit', 'doctrinedbal', 'prismic'))
+                                ->values(['jackrabbit', 'doctrinedbal', 'prismic'])
                                 ->defaultValue('jackrabbit')
                             ->end()
                             // all jackalope
@@ -193,7 +193,7 @@ class Configuration implements ConfigurationInterface
                         ->then(function ($v) {
                             $v = (array) $v;
                             // Key that should not be rewritten to the connection config
-                            $excludedKeys = array(
+                            $excludedKeys = [
                                 'default_document_manager' => true,
                                 'auto_generate_proxy_classes' => true,
                                 'proxy_dir' => true,
@@ -203,8 +203,8 @@ class Configuration implements ConfigurationInterface
                                 'locale' => true,
                                 'locale_chooser' => true,
                                 'default_locale' => true,
-                            );
-                            $documentManagers = array();
+                            ];
+                            $documentManagers = [];
                             foreach ($v as $key => $value) {
                                 if (isset($excludedKeys[$key])) {
                                     continue;
@@ -213,7 +213,7 @@ class Configuration implements ConfigurationInterface
                                 unset($v[$key]);
                             }
                             $v['default_document_manager'] = (string) ($v['default_document_manager'] ?? 'default');
-                            $v['document_managers'] = array($v['default_document_manager'] => $documentManagers);
+                            $v['document_managers'] = [$v['default_document_manager'] => $documentManagers];
 
                             return $v;
                         })
@@ -228,7 +228,7 @@ class Configuration implements ConfigurationInterface
                             ->defaultNull()
                         ->end()
                         ->enumNode('locale_fallback')
-                            ->values(array(LocaleListener::FALLBACK_HARDCODED, LocaleListener::FALLBACK_MERGE, LocaleListener::FALLBACK_REPLACE))
+                            ->values([LocaleListener::FALLBACK_HARDCODED, LocaleListener::FALLBACK_MERGE, LocaleListener::FALLBACK_REPLACE])
                             ->defaultValue(LocaleListener::FALLBACK_MERGE)
                         ->end()
                         ->scalarNode('default_locale')->end()
@@ -268,7 +268,7 @@ class Configuration implements ConfigurationInterface
                         return isset($v['fallback']);
                     })
                     ->then(function ($v) {
-                        $fallbackLocales = array();
+                        $fallbackLocales = [];
                         foreach ($v['fallback'] as $fallback) {
                             $fallbackLocales[] = $fallback;
                         }
@@ -311,11 +311,11 @@ class Configuration implements ConfigurationInterface
                             ->beforeNormalization()
                                 ->ifString()
                                 ->then(function ($v) {
-                                    return array('type' => $v);
+                                    return ['type' => $v];
                                 })
                             ->end()
-                            ->treatNullLike(array())
-                            ->treatFalseLike(array('mapping' => false))
+                            ->treatNullLike([])
+                            ->treatFalseLike(['mapping' => false])
                             ->performNoDeepMerging()
                             ->children()
                                 ->scalarNode('mapping')->defaultValue(true)->end()
@@ -344,7 +344,7 @@ class Configuration implements ConfigurationInterface
             ->beforeNormalization()
             ->ifString()
             ->then(function ($v) {
-                return array('type' => $v);
+                return ['type' => $v];
             })
             ->end()
             ->children()
