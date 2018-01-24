@@ -2,10 +2,10 @@
 
 namespace Doctrine\Bundle\PHPCRBundle;
 
+use Doctrine\ODM\PHPCR\PHPCRException;
+use Symfony\Bridge\Doctrine\ManagerRegistry as BaseManagerRegistry;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Bridge\Doctrine\ManagerRegistry as BaseManagerRegistry;
-use Doctrine\ODM\PHPCR\PHPCRException;
 
 /**
  * Symfony aware manager registry.

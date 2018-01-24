@@ -17,7 +17,7 @@ class PhpcrOdmQueryBuilderLoaderTest extends BaseTestCase
 
     public function setUp()
     {
-        $this->db('PHPCR')->loadFixtures(array(LoadData::class));
+        $this->db('PHPCR')->loadFixtures([LoadData::class]);
 
         $this->dm = $this->getContainer()->get('doctrine_phpcr.odm.default_document_manager');
     }
@@ -26,7 +26,7 @@ class PhpcrOdmQueryBuilderLoaderTest extends BaseTestCase
     {
         $qb = $this->dm->getRepository(TestDocument::class)->createQueryBuilder('e');
         $loader = new PhpcrOdmQueryBuilderLoader($qb, $this->dm);
-        $ids = array('/test/doc', '/test/doc2', '/test/doc3');
+        $ids = ['/test/doc', '/test/doc2', '/test/doc3'];
         $documents = $loader->getEntitiesByIds('id', $ids);
         $this->assertCount(2, $documents);
         foreach ($documents as $i => $document) {
@@ -39,7 +39,7 @@ class PhpcrOdmQueryBuilderLoaderTest extends BaseTestCase
     {
         $qb = $this->dm->getRepository(TestDocument::class)->createQueryBuilder('e');
         $loader = new PhpcrOdmQueryBuilderLoader($qb, $this->dm);
-        $documents = $loader->getEntitiesByIds('id', array('/foo/bar'));
+        $documents = $loader->getEntitiesByIds('id', ['/foo/bar']);
         $this->assertCount(0, $documents);
     }
 
@@ -48,7 +48,7 @@ class PhpcrOdmQueryBuilderLoaderTest extends BaseTestCase
         $qb = $this->dm->getRepository(TestDocument::class)->createQueryBuilder('e');
         $qb->where()->eq()->field('e.text')->literal('thiswillnotmatch');
         $loader = new PhpcrOdmQueryBuilderLoader($qb, $this->dm);
-        $documents = $loader->getEntitiesByIds('id', array('/test/doc'));
+        $documents = $loader->getEntitiesByIds('id', ['/test/doc']);
         $this->assertCount(0, $documents);
     }
 }

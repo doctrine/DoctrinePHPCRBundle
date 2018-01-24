@@ -53,7 +53,7 @@ EOT;
         if (0 === count($definitions)) {
             $bundles = $application->getKernel()->getBundles();
 
-            $candidatePaths = array();
+            $candidatePaths = [];
             foreach ($bundles as $bundle) {
                 $candidatePath = sprintf('%s/%s', $bundle->getPath(), self::BUNDLE_NT_PATH);
 

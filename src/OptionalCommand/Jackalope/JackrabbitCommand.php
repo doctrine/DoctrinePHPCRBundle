@@ -2,11 +2,11 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\OptionalCommand\Jackalope;
 
+use Jackalope\Tools\Console\Command\JackrabbitCommand as BaseJackrabbitCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Jackalope\Tools\Console\Command\JackrabbitCommand as BaseJackrabbitCommand;
 
 /**
  * @author Daniel Barsotti <daniel.barsotti@liip.ch>

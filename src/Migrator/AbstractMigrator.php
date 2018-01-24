@@ -2,9 +2,9 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Migrator;
 
-use Symfony\Component\Console\Output\OutputInterface;
 use PHPCR\SessionInterface;
 use PHPCR\Util\TraversingItemVisitor;
+use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class AbstractMigrator extends TraversingItemVisitor implements MigratorInterface
 {

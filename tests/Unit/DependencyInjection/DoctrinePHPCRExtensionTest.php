@@ -2,10 +2,10 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\DependencyInjection;
 
+use Doctrine\Bundle\PHPCRBundle\DependencyInjection\DoctrinePHPCRExtension;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
-use Doctrine\Bundle\PHPCRBundle\DependencyInjection\DoctrinePHPCRExtension;
 use Symfony\Component\DependencyInjection\Reference;
 
 class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase

@@ -2,23 +2,23 @@
 
 namespace Doctrine\Bundle\PHPCRBundle;
 
-use Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\DocumentConvertTranslationCommand;
-use Doctrine\ODM\PHPCR\Version;
-use Jackalope\Session;
-use Symfony\Component\DependencyInjection\IntrospectableContainerInterface;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\Compiler\PassConfig;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Console\Application;
-use Symfony\Bridge\Doctrine\DependencyInjection\CompilerPass\RegisterEventListenersAndSubscribersPass;
-use Doctrine\Common\Util\ClassUtils;
-use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\MigratorPass;
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\InitializerPass;
+use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\MigratorPass;
 use Doctrine\Bundle\PHPCRBundle\OptionalCommand\Jackalope\InitDoctrineDbalCommand;
 use Doctrine\Bundle\PHPCRBundle\OptionalCommand\Jackalope\JackrabbitCommand;
+use Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\DocumentConvertTranslationCommand;
 use Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\DocumentMigrateClassCommand;
 use Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\InfoDoctrineCommand;
 use Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\VerifyUniqueNodeTypesMappingCommand;
+use Doctrine\Common\Util\ClassUtils;
+use Doctrine\ODM\PHPCR\Version;
+use Jackalope\Session;
+use Symfony\Bridge\Doctrine\DependencyInjection\CompilerPass\RegisterEventListenersAndSubscribersPass;
+use Symfony\Component\Console\Application;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\IntrospectableContainerInterface;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class DoctrinePHPCRBundle extends Bundle
 {
@@ -92,8 +92,8 @@ class DoctrinePHPCRBundle extends Bundle
                                 $classes = $dm->getMetadataFactory()->getAllMetadata();
 
                                 foreach ($classes as $classMetadata) {
-                                    if ($classMetadata->name == $originalClassName) {
-                                        $dm->getProxyFactory()->generateProxyClasses(array($classMetadata));
+                                    if ($classMetadata->name === $originalClassName) {
+                                        $dm->getProxyFactory()->generateProxyClasses([$classMetadata]);
                                     }
                                 }
                             }

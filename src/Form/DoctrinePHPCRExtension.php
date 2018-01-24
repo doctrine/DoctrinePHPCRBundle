@@ -11,8 +11,8 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Form;
 
-use Symfony\Component\Form\AbstractExtension;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Component\Form\AbstractExtension;
 
 class DoctrinePHPCRExtension extends AbstractExtension
 {
@@ -25,9 +25,9 @@ class DoctrinePHPCRExtension extends AbstractExtension
 
     protected function loadTypes()
     {
-        return array(
+        return [
             new Type\DocumentType($this->registry),
-        );
+        ];
     }
 
     protected function loadTypeGuesser()

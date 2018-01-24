@@ -30,7 +30,7 @@ class DocumentTypeTest extends BaseTestCase
     {
         $this->legacy = !method_exists(AbstractType::class, 'getBlockPrefix');
 
-        $this->db('PHPCR')->loadFixtures(array(LoadData::class));
+        $this->db('PHPCR')->loadFixtures([LoadData::class]);
         $this->dm = $this->db('PHPCR')->getOm();
         $document = $this->dm->find(null, '/test/doc');
         $this->assertNotNull($document, 'fixture loading not working');
@@ -41,7 +41,7 @@ class DocumentTypeTest extends BaseTestCase
     /**
      * @return FormBuilderInterface
      */
-    private function createFormBuilder($data, $options = array())
+    private function createFormBuilder($data, $options = [])
     {
         return $this->container->get('form.factory')->createBuilder($this->legacy ? 'form' : FormType::class, $data, $options);
     }
@@ -54,7 +54,7 @@ class DocumentTypeTest extends BaseTestCase
         $formView = $formBuilder->getForm()->createView();
         $templating = $this->getContainer()->get('templating');
 
-        return $templating->render('::form.html.twig', array('form' => $formView));
+        return $templating->render('::form.html.twig', ['form' => $formView]);
     }
 
     public function testUnfiltered()
@@ -62,9 +62,9 @@ class DocumentTypeTest extends BaseTestCase
         $formBuilder = $this->createFormBuilder($this->referrer);
 
         $formBuilder
-            ->add('single', $this->legacy ? 'phpcr_document' : DocumentType::class, array(
+            ->add('single', $this->legacy ? 'phpcr_document' : DocumentType::class, [
                 'class' => TestDocument::class,
-            ))
+            ])
         ;
 
         $html = $this->renderForm($formBuilder);
@@ -82,10 +82,10 @@ class DocumentTypeTest extends BaseTestCase
         $formBuilder = $this->createFormBuilder($this->referrer);
 
         $formBuilder
-            ->add('single', $this->legacy ? 'phpcr_document' : DocumentType::class, array(
+            ->add('single', $this->legacy ? 'phpcr_document' : DocumentType::class, [
                 'class' => TestDocument::class,
                 'query_builder' => $qb,
-            ))
+            ])
         ;
 
         $html = $this->renderForm($formBuilder);

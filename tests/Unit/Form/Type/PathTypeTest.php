@@ -3,8 +3,8 @@
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\Form\Type;
 
 use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\DocumentToPathTransformer;
-use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
 use Doctrine\Bundle\PHPCRBundle\Form\Type\PathType;
+use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormBuilder;
@@ -66,6 +66,6 @@ class PathTypeTest extends Testcase
                 return;
             }));
 
-        $this->type->buildForm($this->builder, array('manager_name' => null));
+        $this->type->buildForm($this->builder, ['manager_name' => null]);
     }
 }

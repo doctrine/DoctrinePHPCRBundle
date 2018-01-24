@@ -2,8 +2,8 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document;
 
-use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCR;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCR;
 
 /**
  * @PHPCR\Document(referenceable=true)
