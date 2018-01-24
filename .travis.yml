@@ -13,6 +13,7 @@ cache:
 env:
   global:
     - KERNEL_CLASS=Doctrine\\Bundle\\PHPCRBundle\\Tests\\Fixtures\\App\\Kernel
+    - SYMFONY_DEPRECATIONS_HELPER=weak_vendors
 
 matrix:
   include:
