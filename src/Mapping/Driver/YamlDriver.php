@@ -2,8 +2,8 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Mapping\Driver;
 
-use Doctrine\ODM\PHPCR\Mapping\Driver\YamlDriver as BaseYamlDriver;
 use Doctrine\Common\Persistence\Mapping\Driver\SymfonyFileLocator;
+use Doctrine\ODM\PHPCR\Mapping\Driver\YamlDriver as BaseYamlDriver;
 
 /**
  * YamlDriver that additionally looks for mapping information in a global file.

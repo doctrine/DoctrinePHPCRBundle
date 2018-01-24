@@ -38,40 +38,40 @@ class InitializerManagerTest extends TestCase
 
     public function provideInitialize()
     {
-        return array(
-            array(
-                array(
-                    array('initializer1', 0),
-                    array('initializer2', 0),
-                    array('initializer3', 0),
-                ),
-                array('initializer1', 'initializer2', 'initializer3'),
-            ),
-            array(
-                array(
-                    array('initializer1', null),
-                    array('initializer2', null),
-                    array('initializer3', null),
-                ),
-                array('initializer1', 'initializer2', 'initializer3'),
-            ),
-            array(
-                array(
-                    array('initializer3', 0),
-                    array('initializer1', 0),
-                    array('initializer2', 0),
-                ),
-                array('initializer3', 'initializer1', 'initializer2'),
-            ),
-            array(
-                array(
-                    array('initializer3', 100),
-                    array('initializer1', -100),
-                    array('initializer2', 0),
-                ),
-                array('initializer3', 'initializer2', 'initializer1'),
-            ),
-        );
+        return [
+            [
+                [
+                    ['initializer1', 0],
+                    ['initializer2', 0],
+                    ['initializer3', 0],
+                ],
+                ['initializer1', 'initializer2', 'initializer3'],
+            ],
+            [
+                [
+                    ['initializer1', null],
+                    ['initializer2', null],
+                    ['initializer3', null],
+                ],
+                ['initializer1', 'initializer2', 'initializer3'],
+            ],
+            [
+                [
+                    ['initializer3', 0],
+                    ['initializer1', 0],
+                    ['initializer2', 0],
+                ],
+                ['initializer3', 'initializer1', 'initializer2'],
+            ],
+            [
+                [
+                    ['initializer3', 100],
+                    ['initializer1', -100],
+                    ['initializer2', 0],
+                ],
+                ['initializer3', 'initializer2', 'initializer1'],
+            ],
+        ];
     }
 
     /**
@@ -99,7 +99,7 @@ class InitializerManagerTest extends TestCase
             }
         }
 
-        $log = array();
+        $log = [];
         $this->initializerManager->setLoggingClosure(function ($message) use (&$log) {
             $log[] = $message;
         });

@@ -26,13 +26,13 @@ class GenericInitializerTest extends TestCase
 
     public function provideInitializer()
     {
-        return array(
-            array(
-                'test_init', array(
+        return [
+            [
+                'test_init', [
                     'foo/bar/1', 'foobar/2',
-                ), 'this is CND',
-            ),
-        );
+                ], 'this is CND',
+            ],
+        ];
     }
 
     /**

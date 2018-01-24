@@ -2,9 +2,9 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Form\DataTransformer;
 
-use Symfony\Component\Form\DataTransformerInterface;
-use Doctrine\ODM\PHPCR\ReferenceManyCollection;
 use Doctrine\ODM\PHPCR\DocumentManager;
+use Doctrine\ODM\PHPCR\ReferenceManyCollection;
+use Symfony\Component\Form\DataTransformerInterface;
 
 /**
  * @deprecated This is only used by the deprecated PHPCRODMReferenceCollectionType.
@@ -60,7 +60,7 @@ class ReferenceManyCollectionToArrayTransformer implements DataTransformerInterf
      */
     public function transform($collection)
     {
-        $arr = array();
+        $arr = [];
 
         foreach ($collection as $item) {
             $arr[] = (self::KEY_UUID === $this->key) ? $item->getNode()->getIdentifier() : $item->getPath();

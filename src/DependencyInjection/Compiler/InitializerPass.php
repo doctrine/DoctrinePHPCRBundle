@@ -2,8 +2,8 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -32,9 +32,9 @@ class InitializerPass implements CompilerPassInterface
                 $priority = $attributes[0]['priority'];
             }
 
-            $initializerManagerDef->addMethodCall('addInitializer', array(
+            $initializerManagerDef->addMethodCall('addInitializer', [
                 new Reference($id), $priority,
-            ));
+            ]);
         }
     }
 }

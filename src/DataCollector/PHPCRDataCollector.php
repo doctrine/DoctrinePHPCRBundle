@@ -3,12 +3,12 @@
 namespace Doctrine\Bundle\PHPCRBundle\DataCollector;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Jackalope\Transport\Logging\DebugStack;
 use Jackalope\Query\Query;
+use Jackalope\Transport\Logging\DebugStack;
 use PHPCR\Query\QueryInterface;
-use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 /**
  * PHPCRDataCollector.
@@ -24,7 +24,7 @@ class PHPCRDataCollector extends DataCollector
 
     private $managers;
 
-    private $loggers = array();
+    private $loggers = [];
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -119,10 +119,10 @@ class PHPCRDataCollector extends DataCollector
     {
         if (is_object($var)) {
             if ($var instanceof QueryInterface) {
-                $query = array(
+                $query = [
                     'querystring' => $var->getStatement(),
                     'language' => $var->getLanguage(),
-                );
+                ];
                 if ($var instanceof Query) {
                     $query['limit'] = $var->getLimit();
                     $query['offset'] = $var->getOffset();
@@ -131,11 +131,11 @@ class PHPCRDataCollector extends DataCollector
                 return $query;
             }
 
-            return array(sprintf('Object(%s)', get_class($var)), false);
+            return [sprintf('Object(%s)', get_class($var)), false];
         }
 
         if (is_array($var)) {
-            $a = array();
+            $a = [];
             $original = true;
             foreach ($var as $k => $v) {
                 list($value, $orig) = $this->sanitizeParam($v);
@@ -143,14 +143,14 @@ class PHPCRDataCollector extends DataCollector
                 $a[$k] = $value;
             }
 
-            return array($a, $original);
+            return [$a, $original];
         }
 
         if (is_resource($var)) {
-            return array(sprintf('Resource(%s)', get_resource_type($var)), false);
+            return [sprintf('Resource(%s)', get_resource_type($var)), false];
         }
 
-        return array($var, true);
+        return [$var, true];
     }
 
     /**
@@ -158,21 +158,21 @@ class PHPCRDataCollector extends DataCollector
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
-        $calls = array();
+        $calls = [];
         foreach ($this->loggers as $name => $logger) {
             $calls[$name] = $this->sanitizeCalls($logger->calls);
         }
 
-        $this->data = array(
+        $this->data = [
             'calls' => $calls,
             'connections' => $this->connections,
             'managers' => $this->managers,
-        );
+        ];
 
-        $documents = array();
+        $documents = [];
 
         foreach ($this->registry->getManagers() as $name => $em) {
-            $documents[$name] = array();
+            $documents[$name] = [];
             /** @var $factory \Doctrine\ODM\PHPCR\Mapping\ClassMetadataFactory */
             $factory = $em->getMetadataFactory();
 
@@ -192,10 +192,10 @@ class PHPCRDataCollector extends DataCollector
 
     public function reset()
     {
-        $this->data = array();
+        $this->data = [];
 
         foreach ($this->loggers as $logger) {
-            $logger->queries = array();
+            $logger->queries = [];
             $logger->currentQuery = 0;
         }
     }

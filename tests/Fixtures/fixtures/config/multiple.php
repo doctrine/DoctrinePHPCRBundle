@@ -1,47 +1,47 @@
 <?php
 
-$container->loadFromExtension('doctrine_phpcr', array(
-    'session' => array(
-        'sessions' => array(
-            'default' => array(
-                'backend' => array(
+$container->loadFromExtension('doctrine_phpcr', [
+    'session' => [
+        'sessions' => [
+            'default' => [
+                'backend' => [
                     'type' => 'jackrabbit',
                     'url' => 'http://a',
-                ),
+                ],
                 'workspace' => 'default',
                 'username' => 'admin',
                 'password' => 'admin',
-            ),
-            'website' => array(
-                'backend' => array(
+            ],
+            'website' => [
+                'backend' => [
                     'type' => 'jackrabbit',
                     'url' => 'http://b',
                     'factory' => null,
-                ),
+                ],
                 'workspace' => 'website',
                 'username' => 'root',
                 'password' => 'root',
                 'admin_username' => 'admin',
                 'admin_password' => 'admin',
-            ),
-        ),
-    ),
-    'odm' => array(
+            ],
+        ],
+    ],
+    'odm' => [
         'auto_generate_proxy_classes' => true,
-        'document_managers' => array(
-            'default' => array(
+        'document_managers' => [
+            'default' => [
                 'session' => 'default',
-                'mappings' => array(
+                'mappings' => [
                     'SandboxMainBundle' => null,
-                ),
-            ),
-            'website' => array(
+                ],
+            ],
+            'website' => [
                 'session' => 'website',
                 'configuration_id' => 'sandbox_magnolia.odm_configuration',
-                'mappings' => array(
+                'mappings' => [
                     'SandboxMagnoliaBundle' => null,
-                ),
-            ),
-        ),
-    ),
-));
+                ],
+            ],
+        ],
+    ],
+]);

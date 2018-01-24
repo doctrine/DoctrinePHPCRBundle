@@ -2,9 +2,9 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Initializer;
 
-use PHPCR\Util\NodeHelper;
-use PHPCR\SessionInterface;
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
+use PHPCR\SessionInterface;
+use PHPCR\Util\NodeHelper;
 
 /**
  * In most cases, this initializer should be usable as is by bundles.

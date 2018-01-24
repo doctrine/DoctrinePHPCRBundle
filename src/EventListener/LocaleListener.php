@@ -4,8 +4,8 @@ namespace Doctrine\Bundle\PHPCRBundle\EventListener;
 
 use Doctrine\ODM\PHPCR\Translation\LocaleChooser\LocaleChooser;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * A listener to tell the locale chooser the request locale.
@@ -108,14 +108,14 @@ class LocaleListener implements EventSubscriberInterface
 
         $this->chooser->setLocale($locale);
 
-        if (self::FALLBACK_HARDCODED == $this->fallback) {
+        if (self::FALLBACK_HARDCODED === $this->fallback) {
             return;
         }
 
         // expand language list to include base locales
         // copy-pasted from Request::getPreferredLanguage
         $preferredLanguages = $request->getLanguages();
-        $extendedPreferredLanguages = array();
+        $extendedPreferredLanguages = [];
         foreach ($preferredLanguages as $language) {
             $extendedPreferredLanguages[] = $language;
             if (false !== $position = strpos($language, '_')) {
@@ -126,7 +126,7 @@ class LocaleListener implements EventSubscriberInterface
             }
         }
         $order = array_intersect($this->allowedLocales, $extendedPreferredLanguages);
-        $this->chooser->setFallbackLocales($locale, $order, self::FALLBACK_REPLACE == $this->fallback);
+        $this->chooser->setFallbackLocales($locale, $order, self::FALLBACK_REPLACE === $this->fallback);
     }
 
     /**
@@ -136,8 +136,8 @@ class LocaleListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            KernelEvents::REQUEST => array(array('onKernelRequest', 1)),
-        );
+        return [
+            KernelEvents::REQUEST => [['onKernelRequest', 1]],
+        ];
     }
 }

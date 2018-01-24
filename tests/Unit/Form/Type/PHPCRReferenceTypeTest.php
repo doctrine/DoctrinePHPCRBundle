@@ -22,10 +22,10 @@ class PHPCRReferenceTypeTest extends Testcase
 
     public function provideTypes()
     {
-        return array(
-            array('uuid', PHPCRNodeToUuidTransformer::class),
-            array('path', PHPCRNodeToPathTransformer::class),
-        );
+        return [
+            ['uuid', PHPCRNodeToUuidTransformer::class],
+            ['path', PHPCRNodeToPathTransformer::class],
+        ];
     }
 
     /**
@@ -41,7 +41,7 @@ class PHPCRReferenceTypeTest extends Testcase
 
                 return;
             }));
-        $this->type->buildForm($this->builder, array('transformer_type' => $transformerType));
+        $this->type->buildForm($this->builder, ['transformer_type' => $transformerType]);
 
         $this->assertEquals($transformerFqn, $type);
     }
@@ -51,6 +51,6 @@ class PHPCRReferenceTypeTest extends Testcase
      */
     public function testInvalidType()
     {
-        $this->type->buildForm($this->builder, array('transformer_type' => 'asdasd'));
+        $this->type->buildForm($this->builder, ['transformer_type' => 'asdasd']);
     }
 }

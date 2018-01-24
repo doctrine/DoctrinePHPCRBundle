@@ -2,8 +2,8 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Form\DataTransformer;
 
-use Symfony\Component\Form\DataTransformerInterface;
 use Doctrine\ODM\PHPCR\DocumentManager;
+use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class DocumentToPathTransformer implements DataTransformerInterface
