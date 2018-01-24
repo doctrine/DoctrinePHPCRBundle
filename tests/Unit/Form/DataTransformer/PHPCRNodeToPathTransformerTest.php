@@ -35,8 +35,10 @@ class PHPCRNodeToPathTransformerTest extends Testcase
     {
         $this->node->expects($this->once())
             ->method('getPath')
-            ->will($this->returnValue('/asd'));
+            ->willReturn('/asd');
+
         $res = $this->transformer->transform($this->node);
+
         $this->assertEquals('/asd', $res);
     }
 
@@ -53,9 +55,10 @@ class PHPCRNodeToPathTransformerTest extends Testcase
         $this->session->expects($this->once())
             ->method('getNode')
             ->with('/asd')
-            ->will($this->returnValue($this->node));
+            ->willReturn($this->node);
 
         $res = $this->transformer->reverseTransform('/asd');
+
         $this->assertSame($this->node, $res);
     }
 
@@ -63,13 +66,23 @@ class PHPCRNodeToPathTransformerTest extends Testcase
     {
         $this->session->expects($this->never())
             ->method('getNode');
+
         $res = $this->transformer->reverseTransform('');
+
         $this->assertNull($res);
     }
 
+    /**
+     * Check the transformer does not hide the exception thrown by PHPCR.
+     */
     public function testReverseTransformNotFound()
     {
-        // nothing to test, the PHPCR session will throw an
-        // ItemNotFoundException
+        $this->session->expects($this->once())
+            ->method('getNode')
+            ->with('/not/existing/node')
+            ->will($this->throwException(new \Exception()));
+
+        $this->expectException(\Exception::class);
+        $this->transformer->reverseTransform('/not/existing/node');
     }
 }

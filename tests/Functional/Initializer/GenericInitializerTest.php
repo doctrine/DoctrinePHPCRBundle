@@ -3,7 +3,6 @@
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Functional\Initializer;
 
 use Doctrine\Bundle\PHPCRBundle\Initializer\GenericInitializer;
-use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 
 /**
@@ -12,15 +11,25 @@ use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 class GenericInitializerTest extends BaseTestCase
 {
     /**
-     * Test what happens when two initializers try to create the same base path.
+     * Check the initializer idempotency.
      */
-    public function testInitializerTwice()
+    public function testIdempotency()
     {
-        $initializer = new GenericInitializer('test', array('/test/path'));
-        /** @var ManagerRegistry $registry */
+        $initializer = new GenericInitializer('test', ['/test/path']);
         $registry = $this->getContainer()->get('doctrine_phpcr');
+        $dm = $registry->getManager();
+
+        // The first run should create a node.
+        $this->assertNull($dm->find(null, '/test/path'));
+
         $initializer->init($registry);
+        $node = $dm->find(null, '/test/path');
+        $this->assertNotNull($node);
+
+        // The second run should not modify the existing node.
         $initializer->init($registry);
+        $this->assertSame($node, $dm->find(null, '/test/path'));
+
         $registry->getConnection()->save();
     }
 }

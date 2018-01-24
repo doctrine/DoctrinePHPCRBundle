@@ -40,4 +40,3 @@ script: ./vendor/bin/phpunit --coverage-text
 notifications:
   irc: "irc.freenode.org#symfony-cmf"
   email: "symfony-cmf-devs@googlegroups.com"
-
