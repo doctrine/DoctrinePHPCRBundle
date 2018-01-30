@@ -1,4 +1,4 @@
-{% extends 'WebProfilerBundle:Profiler:layout.html.twig' %}
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
 
 {% block toolbar %}
     {% if collector.callcount > 0 %}
@@ -112,7 +112,7 @@
     <h2>Database Connections</h2>
 
     {% if collector.connections %}
-        {% include 'WebProfilerBundle:Profiler:table.html.twig' with {data: collector.connections} only %}
+        {% include '@WebProfiler/Profiler/table.html.twig' with {data: collector.connections} only %}
     {% else %}
         <div class="empty">
             <p>No connections.</p>
@@ -122,7 +122,7 @@
     <h2>Document Managers</h2>
 
     {% if collector.managers %}
-        {% include 'WebProfilerBundle:Profiler:table.html.twig' with {data: collector.managers} only %}
+        {% include '@WebProfiler/Profiler/table.html.twig' with {data: collector.managers} only %}
     {% else %}
         <div class="empty">
             <p>No document managers.</p>
