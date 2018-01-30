@@ -48,7 +48,7 @@
         <service id="doctrine_phpcr.data_collector"
                  class="Doctrine\Bundle\PHPCRBundle\DataCollector\PHPCRDataCollector"
                  public="false">
-            <tag name="data_collector" template="DoctrinePHPCR/Collector/phpcr" id="phpcr" priority="247" />
+            <tag name="data_collector" template="@DoctrinePHPCR/Collector/phpcr" id="phpcr" priority="247" />
             <argument type="service" id="doctrine_phpcr" />
         </service>
 
