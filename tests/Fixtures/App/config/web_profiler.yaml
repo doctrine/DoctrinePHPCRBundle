@@ -1,0 +1,14 @@
+framework:
+    profiler:
+        enabled: true
+        collect: false  # Prevents slowing down the tests. The profiler needs
+                        # to be enabled selectively for each functional test.
+        only_exceptions: false
+
+web_profiler:
+    toolbar: true
+
+doctrine_phpcr:
+    session:
+        backend:
+            profiling: true
