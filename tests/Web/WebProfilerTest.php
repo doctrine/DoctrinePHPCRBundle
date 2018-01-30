@@ -20,7 +20,12 @@ class WebProfilerTest extends BaseTestCase
     {
         $client = $this->getClient();
         $client->enableProfiler();
-        $client->catchExceptions(false);
+
+        if (\method_exists($client, 'catchExceptions')) {
+            // Before Symfony 3.4, the exceptions were not caught
+            // TODO: Remove the condition once Symfony 3.3 is no more supported
+            $client->catchExceptions(false);
+        }
 
         $client->request('GET', '/phpcr_request');
         $this->assertResponseSuccess($client->getResponse());
