@@ -20,4 +20,8 @@
             </exclude>
         </whitelist>
     </filter>
+
+    <php>
+        <server name="KERNEL_CLASS" value="Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Kernel"/>
+    </php>
 </phpunit>
