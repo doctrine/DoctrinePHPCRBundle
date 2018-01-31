@@ -1,4 +1,5 @@
 {% extends '@WebProfiler/Profiler/layout.html.twig' %}
+{% import _self as phpcr %}
 
 {% block toolbar %}
     {% if collector.callcount > 0 %}
@@ -110,24 +111,10 @@
     {% endfor %}
 
     <h2>Database Connections</h2>
-
-    {% if collector.connections %}
-        {% include '@WebProfiler/Profiler/table.html.twig' with {data: collector.connections} only %}
-    {% else %}
-        <div class="empty">
-            <p>No connections.</p>
-        </div>
-    {% endif %}
+    {{ phpcr.key_value_table(collector.connections, "Name", "Service", "No connections") }}
 
     <h2>Document Managers</h2>
-
-    {% if collector.managers %}
-        {% include '@WebProfiler/Profiler/table.html.twig' with {data: collector.managers} only %}
-    {% else %}
-        <div class="empty">
-            <p>No document managers.</p>
-        </div>
-    {% endif %}
+    {{ phpcr.key_value_table(collector.managers, "Name", "Service", "No document managers") }}
 
     <h2>Document Mapping</h2>
 
@@ -159,3 +146,29 @@
         {% endif %}
     {% endfor %}
 {% endblock %}
+
+{# Display a flat associative array as an HTML table #}
+{% macro key_value_table(rows, key_label, value_label, empty_message) %}
+    {% if rows %}
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col" >{{ key_label|default("Key")}}</th>
+                    <th scope="col" >{{ value_label|default("Value")}}</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for key, value in rows %}
+                <tr>
+                    <th scope="row" >{{ key }}</th>
+                    <td>{{ value }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="empty">
+            <p>{{ empty_message|default("No data") }}.</p>
+        </div>
+    {% endif %}
+{% endmacro %}
