@@ -1,0 +1,4 @@
+phpcr_request:
+    path: /phpcr_request
+    defaults:
+        _controller: Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Controller\TestController::phpcrRequest
