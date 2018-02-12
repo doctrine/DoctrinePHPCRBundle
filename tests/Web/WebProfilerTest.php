@@ -2,7 +2,7 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Web\DataCollector;
 
-use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
+use Doctrine\Bundle\PHPCRBundle\Tests\Functional\BaseTestCase;
 
 /**
  * Tests the Data Collector by running the Web Profiler.
@@ -18,7 +18,7 @@ class WebProfilerTest extends BaseTestCase
      */
     public function testRun(string $uri)
     {
-        $client = $this->getClient();
+        $client = self::createClient();
         $client->enableProfiler();
 
         if (\method_exists($client, 'catchExceptions')) {

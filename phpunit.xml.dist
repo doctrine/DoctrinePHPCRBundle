@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit
     colors="true"
-    bootstrap="vendor/symfony-cmf/testing/bootstrap/bootstrap.php"
+    bootstrap="vendor/autoload.php"
 >
 
     <testsuites>
@@ -22,6 +22,7 @@
     </filter>
 
     <php>
+        <!-- ignored until we drop symfony 2 support and remove BaseTestCase::getKernelClass -->
         <server name="KERNEL_CLASS" value="Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Kernel"/>
     </php>
 </phpunit>

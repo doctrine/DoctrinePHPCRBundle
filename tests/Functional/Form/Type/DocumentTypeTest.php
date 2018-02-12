@@ -6,16 +6,17 @@ use Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType;
 use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\DataFixtures\PHPCR\LoadData;
 use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\ReferrerDocument;
 use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument;
-use Doctrine\ODM\PHPCR\DocumentManager;
-use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
+use Doctrine\Bundle\PHPCRBundle\Tests\Functional\BaseTestCase;
+use Doctrine\ODM\PHPCR\DocumentManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Twig\Environment;
 
 class DocumentTypeTest extends BaseTestCase
 {
     /**
-     * @var DocumentManager
+     * @var DocumentManagerInterface
      */
     private $dm;
 
@@ -24,14 +25,18 @@ class DocumentTypeTest extends BaseTestCase
      */
     private $referrer;
 
+    /**
+     * @var bool whether we are dealing with legacy symfony form component that uses alias instead of class name for form types
+     */
     private $legacy;
 
     public function setUp()
     {
         $this->legacy = !method_exists(AbstractType::class, 'getBlockPrefix');
 
-        $this->db('PHPCR')->loadFixtures([LoadData::class]);
-        $this->dm = $this->db('PHPCR')->getOm();
+        $repositoryManager = $this->getRepositoryManager();
+        $repositoryManager->loadFixtures([LoadData::class]);
+        $this->dm = $repositoryManager->getDocumentManager();
         $document = $this->dm->find(null, '/test/doc');
         $this->assertNotNull($document, 'fixture loading not working');
         $this->referrer = $this->dm->find(null, '/test/ref');
@@ -43,7 +48,7 @@ class DocumentTypeTest extends BaseTestCase
      */
     private function createFormBuilder($data, $options = [])
     {
-        return $this->container->get('form.factory')->createBuilder($this->legacy ? 'form' : FormType::class, $data, $options);
+        return self::$kernel->getContainer()->get('form.factory')->createBuilder($this->legacy ? 'form' : FormType::class, $data, $options);
     }
 
     /**
@@ -52,9 +57,10 @@ class DocumentTypeTest extends BaseTestCase
     private function renderForm(FormBuilderInterface $formBuilder)
     {
         $formView = $formBuilder->getForm()->createView();
-        $templating = $this->getContainer()->get('templating');
+        /** @var Environment $twig */
+        $twig = self::$kernel->getContainer()->get('twig');
 
-        return $templating->render('::form.html.twig', ['form' => $formView]);
+        return $twig->render('form.html.twig', ['form' => $formView]);
     }
 
     public function testUnfiltered()

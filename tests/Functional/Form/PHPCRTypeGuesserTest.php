@@ -7,8 +7,8 @@ use Doctrine\Bundle\PHPCRBundle\Form\Type\PathType;
 use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\DataFixtures\PHPCR\LoadData;
 use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\ReferrerDocument;
 use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument;
+use Doctrine\Bundle\PHPCRBundle\Tests\Functional\BaseTestCase;
 use Doctrine\ODM\PHPCR\DocumentManager;
-use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Twig\Environment;
 
 class PHPCRTypeGuesserTest extends BaseTestCase
 {
@@ -51,8 +52,10 @@ class PHPCRTypeGuesserTest extends BaseTestCase
         $this->legacy = !method_exists(AbstractType::class, 'getBlockPrefix');
         $this->entryTypeOption = $this->legacy ? 'type' : 'entry_type';
 
-        $this->db('PHPCR')->loadFixtures([LoadData::class]);
-        $this->dm = $this->db('PHPCR')->getOm();
+        self::createClient();
+        $repositoryManager = $this->getRepositoryManager();
+        $repositoryManager->loadFixtures([LoadData::class]);
+        $this->dm = $repositoryManager->getDocumentManager();
         $this->document = $this->dm->find(null, '/test/doc');
         $this->assertNotNull($this->document, 'fixture loading not working');
         $this->referrer = $this->dm->find(null, '/test/ref');
@@ -64,7 +67,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
      */
     private function createFormBuilder($data, $options = [])
     {
-        return $this->container->get('form.factory')->createBuilder($this->legacy ? 'form' : FormType::class, $data, $options);
+        return self::$kernel->getContainer()->get('form.factory')->createBuilder($this->legacy ? 'form' : FormType::class, $data, $options);
     }
 
     public function testFields()
@@ -306,7 +309,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             DocumentType::class,
             [
                 'required' => false,
-                'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument',
+                'class' => TestDocument::class,
             ]
         );
 
@@ -316,7 +319,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             [
                 'required' => false,
                 'multiple' => true,
-                'class' => 'Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument',
+                'class' => TestDocument::class,
             ]
         );
 
@@ -348,7 +351,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             [
                 'attr' => ['readonly' => 'readonly'],
                 'required' => false,
-                $this->entryTypeOption => $this->legacy ? 'phpcr_odm_path' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\PathType',
+                $this->entryTypeOption => $this->legacy ? 'phpcr_odm_path' : PathType::class,
             ]
         );
 
@@ -364,8 +367,9 @@ class PHPCRTypeGuesserTest extends BaseTestCase
     private function renderForm(FormBuilderInterface $formBuilder)
     {
         $formView = $formBuilder->getForm()->createView();
-        $templating = $this->getContainer()->get('templating');
-        $templating->render('::form.html.twig', ['form' => $formView]);
+        /** @var Environment $twig */
+        $twig = self::$kernel->getContainer()->get('twig');
+        $twig->render('form.html.twig', ['form' => $formView]);
     }
 
     /**

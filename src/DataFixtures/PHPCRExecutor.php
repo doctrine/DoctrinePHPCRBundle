@@ -5,7 +5,7 @@ namespace Doctrine\Bundle\PHPCRBundle\DataFixtures;
 use Doctrine\Bundle\PHPCRBundle\Initializer\InitializerManager;
 use Doctrine\Common\DataFixtures\Executor\PHPCRExecutor as BasePHPCRExecutor;
 use Doctrine\Common\DataFixtures\Purger\PHPCRPurger;
-use Doctrine\ODM\PHPCR\DocumentManager;
+use Doctrine\ODM\PHPCR\DocumentManagerInterface;
 
 /**
  * Class responsible for executing data fixtures.
@@ -14,15 +14,10 @@ use Doctrine\ODM\PHPCR\DocumentManager;
  */
 class PHPCRExecutor extends BasePHPCRExecutor
 {
-    protected $initializerManager;
+    private $initializerManager;
 
-    /**
-     * Construct new fixtures loader instance.
-     *
-     * @param DocumentManager $dm manager instance used for persisting the fixtures
-     */
     public function __construct(
-        DocumentManager $dm,
+        DocumentManagerInterface $dm,
         PHPCRPurger $purger = null,
         InitializerManager $initializerManager = null
     ) {
