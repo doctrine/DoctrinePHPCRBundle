@@ -1,0 +1,23 @@
+#!/usr/bin/env php
+<?php
+
+use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Kernel;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Debug\Debug;
+
+require __DIR__.'/../../../../vendor/autoload.php';
+
+$input = new ArgvInput();
+$env = $input->getParameterOption(array('--env', '-e'), getenv('SYMFONY_ENV') ?: 'dev');
+$debug = getenv('SYMFONY_DEBUG') !== '0' && !$input->hasParameterOption(array('--no-debug', '')) && $env !== 'prod';
+
+if ($debug) {
+    Debug::enable();
+}
+
+// must be placed after setting $env, because it's used in bootstrapping the
+// kernel
+$kernel = new Kernel($env, $debug);
+$application = new Application($kernel);
+$application->run($input);

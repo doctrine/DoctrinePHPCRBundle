@@ -2,18 +2,29 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App;
 
-use Symfony\Cmf\Component\Testing\HttpKernel\TestKernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\HttpKernel\Kernel as HttpKernel;
 
-class Kernel extends TestKernel
+class Kernel extends HttpKernel
 {
-    public function configure()
+    public function getCacheDir()
     {
-        $this->requireBundleSets([
-            'default', 'phpcr_odm',
-        ]);
+        return __DIR__.'/var/cache/'.$this->environment;
+    }
 
-        $this->registerConfiguredBundles();
+    public function getLogDir()
+    {
+        return __DIR__.'/var/log';
+    }
+
+    public function registerBundles()
+    {
+        $contents = require __DIR__.'/config/bundles.php';
+        foreach ($contents as $class => $envs) {
+            if (isset($envs['all']) || isset($envs[$this->environment])) {
+                yield new $class();
+            }
+        }
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader)

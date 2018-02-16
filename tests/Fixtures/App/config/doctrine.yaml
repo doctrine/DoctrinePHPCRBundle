@@ -1,0 +1,29 @@
+doctrine:
+    dbal:
+        driver: pdo_sqlite
+        path: "%kernel.root_dir%/var/cache/app.sqlite"
+        charset: UTF8
+
+doctrine_phpcr:
+    session:
+        backend:
+            type: doctrinedbal
+            parameters:
+                jackalope.check_login_on_server: false
+        workspace: default
+        username: admin
+        password: admin
+
+    odm:
+        auto_mapping: true,
+        auto_generate_proxy_classes: "%kernel.debug%"
+        locales:
+            en: [de, fr]
+            de: [en, fr]
+            fr: [en, de]
+        mappings:
+            test_additional:
+                type: annotation
+                prefix: Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document
+                dir: "%kernel.root_dir%/Document"
+                is_bundle: false
