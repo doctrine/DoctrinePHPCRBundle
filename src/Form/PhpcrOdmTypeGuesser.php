@@ -88,7 +88,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
                     return new TypeGuess($this->legacy ? 'collection' : CollectionType::class, $options, Guess::LOW_CONFIDENCE);
 
                 case 'referrers':
-                    return new TypeGuess($this->legacy ? 'phpcr_document' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType', [
+                    return new TypeGuess($this->legacy ? 'phpcr_document' : DocumentType::class, [
                             'class' => $mapping['referringDocument'],
                             'multiple' => true,
                         ],

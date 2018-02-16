@@ -32,7 +32,7 @@ class RepositoryInitCommand extends ContainerAwareCommand
 
         $this
             ->setName('doctrine:phpcr:repository:init')
-            ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
+            ->addOption('session', null, InputOption::VALUE_REQUIRED, 'The session to use for this command')
             ->setDescription('Initialize the PHPCR repository.')
             ->setHelp(<<<'EOT'
 Run all initializers tagged with doctrine_phpcr.initializer to create documents
@@ -44,7 +44,7 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (class_exists('Doctrine\ODM\PHPCR\Tools\Console\Command\RegisterSystemNodeTypesCommand')) {
+        if (class_exists(RegisterSystemNodeTypesCommand::class)) {
             DoctrineCommandHelper::setApplicationPHPCRSession(
                 $this->getApplication(),
                 $input->getOption('session')

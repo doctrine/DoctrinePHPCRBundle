@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class PathType extends AbstractType
 {
@@ -20,7 +21,7 @@ class PathType extends AbstractType
 
     public function getParent()
     {
-        return method_exists(AbstractType::class, 'getBlockPrefix') ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text';
+        return method_exists(AbstractType::class, 'getBlockPrefix') ? TextType::class : 'text';
     }
 
     /**
@@ -46,6 +47,11 @@ class PathType extends AbstractType
         $builder->addModelTransformer($transformer);
     }
 
+    /**
+     * BC for Symfony 2.8
+     *
+     * {@inheritdoc}
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $this->configureOptions($resolver);

@@ -1,5 +1,7 @@
 <?php
 
+use Jackalope\Factory;
+
 $container->loadFromExtension('doctrine_phpcr', [
     'session' => [
         'backend' => [
@@ -9,7 +11,7 @@ $container->loadFromExtension('doctrine_phpcr', [
             'profiling' => true,
             'factory' => null,
             'parameters' => [
-                'jackalope.factory' => 'Jackalope\Factory',
+                'jackalope.factory' => Factory::class,
                 'jackalope.check_login_on_server' => false,
                 'jackalope.disable_stream_wrapper' => false,
                 'jackalope.auto_lastmodified' => true,

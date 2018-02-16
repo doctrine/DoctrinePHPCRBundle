@@ -3,6 +3,8 @@
 namespace Doctrine\Bundle\PHPCRBundle\DataCollector;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
+use Doctrine\ODM\PHPCR\Mapping\ClassMetadataFactory;
 use Jackalope\Query\Query;
 use Jackalope\Transport\Logging\DebugStack;
 use PHPCR\Query\QueryInterface;
@@ -173,10 +175,10 @@ class PHPCRDataCollector extends DataCollector
 
         foreach ($this->registry->getManagers() as $name => $em) {
             $documents[$name] = [];
-            /** @var $factory \Doctrine\ODM\PHPCR\Mapping\ClassMetadataFactory */
+            /** @var $factory ClassMetadataFactory */
             $factory = $em->getMetadataFactory();
 
-            /** @var $class \Doctrine\ODM\PHPCR\Mapping\ClassMetadata */
+            /** @var $class ClassMetadata */
             foreach ($factory->getLoadedMetadata() as $class) {
                 $documents[$name][] = $class->getName();
             }

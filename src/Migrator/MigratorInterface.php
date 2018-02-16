@@ -7,10 +7,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 interface MigratorInterface
 {
-    /**
-     * @param \PHPCR\SessionInterface                           $session
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
-     */
     public function init(SessionInterface $session, OutputInterface $output);
 
     /**

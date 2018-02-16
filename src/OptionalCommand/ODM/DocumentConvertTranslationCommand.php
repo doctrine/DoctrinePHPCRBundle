@@ -23,7 +23,7 @@ class DocumentConvertTranslationCommand extends BaseDocumentConvertTranslationCo
         parent::configure();
 
         $this
-            ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The document manager to use for this command.', null)
+            ->addOption('session', null, InputOption::VALUE_REQUIRED, 'The document manager to use for this command.', null)
             ->setHelp($this->getHelp().<<<'EOT'
 
 If you are using multiple document managers you can pick your choice with the

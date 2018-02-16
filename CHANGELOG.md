@@ -1,6 +1,14 @@
 Changelog
 =========
 
+2.0.0 (unreleased)
+------------------
+
+* Removed deprecated `PHPCRODMReferenceCollectionType` and `ReferenceManyCollectionToArrayTransformer`.
+* Dropped deprecated option session (use dm instead) and unused option name from command `doctrine:phpcr:fixtures:load`
+* Dropped deprecated option session (use dm instead) from command `doctrine:phpcr:document:migrate-class`
+* Made all command options required - omit the option completely when you don't need to set anything
+
 1.3.9
 -----
 

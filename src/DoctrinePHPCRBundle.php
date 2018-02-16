@@ -57,10 +57,10 @@ class DoctrinePHPCRBundle extends Bundle
             $application->add(new DocumentConvertTranslationCommand());
         }
 
-        if (class_exists('\Jackalope\Tools\Console\Command\JackrabbitCommand')) {
+        if (class_exists(JackrabbitCommand::class)) {
             $application->add(new JackrabbitCommand());
         }
-        if (class_exists('\Jackalope\Tools\Console\Command\InitDoctrineDbalCommand')) {
+        if (class_exists(InitDoctrineDbalCommand::class)) {
             $application->add(new InitDoctrineDbalCommand());
         }
     }

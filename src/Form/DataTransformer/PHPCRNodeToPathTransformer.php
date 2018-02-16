@@ -2,6 +2,7 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Form\DataTransformer;
 
+use PHPCR\ItemNotFoundException;
 use PHPCR\NodeInterface;
 use PHPCR\SessionInterface;
 use Symfony\Component\Form\DataTransformerInterface;
@@ -19,11 +20,11 @@ class PHPCRNodeToPathTransformer implements DataTransformerInterface
     /**
      * Transform a node into a path.
      *
-     * @param \PHPCR\NodeInterface|null $node
+     * @param NodeInterface|null $node
      *
      * @return string|null the path to the node or null if $node is null
      *
-     * @throws UnexpectedTypeException if given value is not a \PHPCR\NodeInterface
+     * @throws UnexpectedTypeException if given value is not a NodeInterface
      */
     public function transform($node)
     {
@@ -43,9 +44,9 @@ class PHPCRNodeToPathTransformer implements DataTransformerInterface
      *
      * @param string $path phpcr path
      *
-     * @return \PHPCR\NodeInterface|null returns the node or null if $path is empty
+     * @return NodeInterface|null returns the node or null if $path is empty
      *
-     * @throws \PHPCR\ItemNotFoundException if node for a non-empty $path is not found
+     * @throws ItemNotFoundException if node for a non-empty $path is not found
      */
     public function reverseTransform($path)
     {

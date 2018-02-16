@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
  * Form type for PHPCR Node references.
@@ -53,6 +54,8 @@ class PHPCRReferenceType extends AbstractType
     }
 
     /**
+     * BC for Symfony 2.8
+     *
      * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
@@ -75,7 +78,7 @@ class PHPCRReferenceType extends AbstractType
      */
     public function getParent()
     {
-        return method_exists(AbstractType::class, 'getBlockPrefix') ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text';
+        return method_exists(AbstractType::class, 'getBlockPrefix') ? TextType::class : 'text';
     }
 
     /**

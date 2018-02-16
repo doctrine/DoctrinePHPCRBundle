@@ -24,7 +24,7 @@ class WorkspaceExportCommand extends BaseWorkspaceExportCommand
 
         $this
             ->setName('doctrine:phpcr:workspace:export')
-            ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
+            ->addOption('session', null, InputOption::VALUE_REQUIRED, 'The session to use for this command')
         ;
     }
 
