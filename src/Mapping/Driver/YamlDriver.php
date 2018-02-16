@@ -13,7 +13,7 @@ use Doctrine\ODM\PHPCR\Mapping\Driver\YamlDriver as BaseYamlDriver;
  */
 class YamlDriver extends BaseYamlDriver
 {
-    const DEFAULT_FILE_EXTENSION = '.phpcr.yml';
+    private const DEFAULT_FILE_EXTENSION = '.phpcr.yml';
 
     /**
      * {@inheritdoc}

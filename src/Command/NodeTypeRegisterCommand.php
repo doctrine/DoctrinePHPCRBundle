@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class NodeTypeRegisterCommand extends BaseRegisterNodeTypesCommand
 {
-    const BUNDLE_NT_PATH = 'Resources/config/phpcr-node-types';
+    private const BUNDLE_NT_PATH = 'Resources/config/phpcr-node-types';
 
     /**
      * {@inheritdoc}

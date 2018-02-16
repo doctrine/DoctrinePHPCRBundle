@@ -21,17 +21,17 @@ class LocaleListener implements EventSubscriberInterface
     /**
      * Append locales not in request header but in configured fallback.
      */
-    const FALLBACK_MERGE = 'merge';
+    public const FALLBACK_MERGE = 'merge';
 
     /**
      * Only use locales from request.
      */
-    const FALLBACK_REPLACE = 'replace';
+    public const FALLBACK_REPLACE = 'replace';
 
     /**
      * Do not look into request.
      */
-    const FALLBACK_HARDCODED = 'hardcoded';
+    public const FALLBACK_HARDCODED = 'hardcoded';
 
     /**
      * @var LocaleChooser
