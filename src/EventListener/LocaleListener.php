@@ -21,17 +21,17 @@ class LocaleListener implements EventSubscriberInterface
     /**
      * Append locales not in request header but in configured fallback.
      */
-    const FALLBACK_MERGE = 'merge';
+    public const FALLBACK_MERGE = 'merge';
 
     /**
      * Only use locales from request.
      */
-    const FALLBACK_REPLACE = 'replace';
+    public const FALLBACK_REPLACE = 'replace';
 
     /**
      * Do not look into request.
      */
-    const FALLBACK_HARDCODED = 'hardcoded';
+    public const FALLBACK_HARDCODED = 'hardcoded';
 
     /**
      * @var LocaleChooser
@@ -53,9 +53,7 @@ class LocaleListener implements EventSubscriberInterface
     private $allowedLocales;
 
     /**
-     * The locale chooser to update on each request.
-     *
-     * @param LocaleChooser $chooser        the locale chooser to update
+     * @param LocaleChooser $chooser        the listener will update this choose with the request locale
      * @param array         $allowedLocales list of locales that are allowed
      * @param string        $fallback       one of the FALLBACK_* constants
      */

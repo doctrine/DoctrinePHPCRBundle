@@ -14,7 +14,7 @@ abstract class AbstractMigrator extends TraversingItemVisitor implements Migrato
     protected $session;
 
     /*
-     * @var Symfony\Component\Console\Output\OutputInterface
+     * @var OutputInterface
      */
     protected $output;
 

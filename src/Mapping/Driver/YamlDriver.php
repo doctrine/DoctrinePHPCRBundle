@@ -13,12 +13,12 @@ use Doctrine\ODM\PHPCR\Mapping\Driver\YamlDriver as BaseYamlDriver;
  */
 class YamlDriver extends BaseYamlDriver
 {
-    const DEFAULT_FILE_EXTENSION = '.phpcr.yml';
+    private const DEFAULT_FILE_EXTENSION = '.phpcr.yml';
 
     /**
      * {@inheritdoc}
      */
-    public function __construct($prefixes, $fileExtension = self::DEFAULT_FILE_EXTENSION)
+    public function __construct($prefixes, string $fileExtension = self::DEFAULT_FILE_EXTENSION)
     {
         $locator = new SymfonyFileLocator((array) $prefixes, $fileExtension);
         parent::__construct($locator, $fileExtension);

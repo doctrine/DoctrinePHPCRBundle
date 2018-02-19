@@ -13,12 +13,12 @@ use Doctrine\ODM\PHPCR\Mapping\Driver\XmlDriver as BaseXmlDriver;
  */
 class XmlDriver extends BaseXmlDriver
 {
-    const DEFAULT_FILE_EXTENSION = '.phpcr.xml';
+    private const DEFAULT_FILE_EXTENSION = '.phpcr.xml';
 
     /**
      * {@inheritdoc}
      */
-    public function __construct($prefixes, $fileExtension = self::DEFAULT_FILE_EXTENSION)
+    public function __construct($prefixes, string $fileExtension = self::DEFAULT_FILE_EXTENSION)
     {
         $locator = new SymfonyFileLocator((array) $prefixes, $fileExtension);
         parent::__construct($locator, $fileExtension);

@@ -2,6 +2,7 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Form\DataTransformer;
 
+use PHPCR\ItemNotFoundException;
 use PHPCR\NodeInterface;
 use PHPCR\SessionInterface;
 use Symfony\Component\Form\DataTransformerInterface;
@@ -9,7 +10,7 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 class PHPCRNodeToUuidTransformer implements DataTransformerInterface
 {
-    protected $session;
+    private $session;
 
     public function __construct(SessionInterface $session)
     {
@@ -19,11 +20,11 @@ class PHPCRNodeToUuidTransformer implements DataTransformerInterface
     /**
      * Transform a node into a uuid.
      *
-     * @param \PHPCR\NodeInterface|null $node
+     * @param NodeInterface|null $node
      *
      * @return string|null the uuid to the node or null if $node is null
      *
-     * @throws UnexpectedTypeException if given value is not a PHPCR\NodeInterface
+     * @throws UnexpectedTypeException if given value is not a NodeInterface
      */
     public function transform($node)
     {
@@ -43,9 +44,9 @@ class PHPCRNodeToUuidTransformer implements DataTransformerInterface
      *
      * @param string $id uuid
      *
-     * @return \PHPCR\NodeInterface|null returns the node or null if the $id is empty
+     * @return NodeInterface|null returns the node or null if the $id is empty
      *
-     * @throws \PHPCR\ItemNotFoundException if node for a non-empty $id is not found
+     * @throws ItemNotFoundException if node for a non-empty $id is not found
      */
     public function reverseTransform($id)
     {

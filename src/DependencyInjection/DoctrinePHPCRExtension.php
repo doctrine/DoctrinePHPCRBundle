@@ -19,22 +19,34 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * PHPCR Extension.
- *
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 {
+    /**
+     * @var string
+     */
     private $defaultSession;
 
+    /**
+     * @var string[]
+     */
     private $sessions = [];
 
+    /**
+     * @var string[]
+     */
     private $bundleDirs = [];
 
-    /** @var XmlFileLoader */
+    /**
+     * @var XmlFileLoader
+     */
     private $loader;
 
+    /**
+     * @var bool
+     */
     private $disableProxyWarmer = false;
 
     /**
@@ -50,7 +62,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
     public function load(array $configs, ContainerBuilder $container)
     {
         $processor = new Processor();
-        $configuration = new Configuration($container->getParameter('kernel.debug'));
+        $configuration = new Configuration();
         $config = $processor->processConfiguration($configuration, $configs);
         $this->loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
@@ -411,7 +423,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             $this->loader->load('odm_multilang.xml');
 
             foreach ($config['locales'] as $locale => $fallbacks) {
-                if (false !== array_search($locale, $fallbacks)) {
+                if (in_array($locale, $fallbacks)) {
                     throw new InvalidArgumentException(sprintf('The fallbacks for locale %s contain the locale itself.', $locale));
                 }
                 if (count($fallbacks) !== count(array_unique($fallbacks))) {
@@ -520,7 +532,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         return parent::getMappingDriverBundleConfigDefaults($bundleConfig, $bundle, $container);
     }
 
-    protected function loadOdmDocumentManagerMappingInformation(array $documentManager, Definition $odmConfig, ContainerBuilder $container)
+    private function loadOdmDocumentManagerMappingInformation(array $documentManager, Definition $odmConfig, ContainerBuilder $container)
     {
         // reset state of drivers and alias map. They are only used by this methods and children.
         $this->drivers = [];
@@ -552,7 +564,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
      * @param array            $documentManager a configured ORM document manager
      * @param ContainerBuilder $container       A ContainerBuilder instance
      */
-    protected function loadOdmCacheDrivers(array $documentManager, ContainerBuilder $container)
+    private function loadOdmCacheDrivers(array $documentManager, ContainerBuilder $container)
     {
         $this->loadObjectManagerCacheDriver($documentManager, $container, 'metadata_cache');
     }

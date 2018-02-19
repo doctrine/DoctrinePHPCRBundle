@@ -19,9 +19,9 @@ class MigratorMigrateCommand extends ContainerAwareCommand
             ->setName('doctrine:phpcr:migrator:migrate')
             ->setDescription('Migrates PHPCR data.')
             ->addArgument('migrator_name', InputArgument::OPTIONAL, 'The name of the alias/service to be used to migrate the data.')
-            ->addOption('identifier', null, InputOption::VALUE_OPTIONAL, 'Path or UUID of the node to dump', '/')
-            ->addOption('depth', null, InputOption::VALUE_OPTIONAL, 'Set to a number to limit how deep into the tree to recurse', '-1')
-            ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
+            ->addOption('identifier', null, InputOption::VALUE_REQUIRED, 'Path or UUID of the node to migrate', '/')
+            ->addOption('depth', null, InputOption::VALUE_REQUIRED, 'Set to a number to limit how deep into the tree to recurse', '-1')
+            ->addOption('session', null, InputOption::VALUE_REQUIRED, 'The session to use for this command')
             ->setHelp(<<<'EOT'
 To find the available 'migrators' run this command without an input argument
 EOT

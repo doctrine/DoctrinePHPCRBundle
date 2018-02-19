@@ -3,6 +3,8 @@
 namespace Doctrine\Bundle\PHPCRBundle\DependencyInjection;
 
 use Doctrine\Bundle\PHPCRBundle\EventListener\LocaleListener;
+use Doctrine\ODM\PHPCR\DocumentRepository;
+use Doctrine\ODM\PHPCR\Mapping\ClassMetadataFactory;
 use Doctrine\ODM\PHPCR\Translation\Translation;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -239,7 +241,7 @@ class Configuration implements ConfigurationInterface
                                     ->addDefaultsIfNotSet()
                                     ->children()
                                         ->scalarNode('alias')
-                                            ->defaultValue(class_exists('Doctrine\ODM\PHPCR\Translation\Translation') ? Translation::LOCALE_NAMESPACE : null)
+                                            ->defaultValue(class_exists(Translation::class) ? Translation::LOCALE_NAMESPACE : null)
                                         ->end()
                                     ->end()
                                 ->end()
@@ -298,9 +300,9 @@ class Configuration implements ConfigurationInterface
                 ->children()
                     ->scalarNode('session')->end()
                     ->scalarNode('configuration_id')->end()
-                    ->scalarNode('class_metadata_factory_name')->defaultValue('Doctrine\ODM\PHPCR\Mapping\ClassMetadataFactory')->end()
+                    ->scalarNode('class_metadata_factory_name')->defaultValue(ClassMetadataFactory::class)->end()
                     ->scalarNode('auto_mapping')->defaultFalse()->end()
-                    ->scalarNode('default_repository_class')->defaultValue('Doctrine\ODM\PHPCR\DocumentRepository')->end()
+                    ->scalarNode('default_repository_class')->defaultValue(DocumentRepository::class)->end()
                     ->scalarNode('repository_factory')->defaultNull()->end()
                 ->end()
                 ->fixXmlConfig('mapping')

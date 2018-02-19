@@ -16,7 +16,7 @@ use Symfony\Component\Form\AbstractExtension;
 
 class DoctrinePHPCRExtension extends AbstractExtension
 {
-    protected $registry;
+    private $registry;
 
     public function __construct(ManagerRegistry $registry)
     {

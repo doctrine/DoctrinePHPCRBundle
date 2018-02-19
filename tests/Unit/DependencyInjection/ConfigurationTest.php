@@ -6,6 +6,7 @@ use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Configuration;
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\DoctrinePHPCRExtension;
 use Doctrine\ODM\PHPCR\DocumentRepository;
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadataFactory;
+use Jackalope\Factory;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionConfigurationTestCase;
 
 class ConfigurationTest extends AbstractExtensionConfigurationTestCase
@@ -47,7 +48,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                             'profiling' => true,
                             'factory' => null,
                             'parameters' => [
-                                'jackalope.factory' => 'Jackalope\Factory',
+                                'jackalope.factory' => Factory::class,
                                 'jackalope.check_login_on_server' => false,
                                 'jackalope.disable_stream_wrapper' => false,
                                 'jackalope.auto_lastmodified' => true,
@@ -229,7 +230,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                             'factory' => null,
                             'backtrace' => false,
                             'parameters' => [
-                                'jackalope.factory' => 'Jackalope\Factory',
+                                'jackalope.factory' => Factory::class,
                                 'jackalope.check_login_on_server' => true,
                                 'jackalope.disable_stream_wrapper' => true,
                                 'jackalope.disable_transactions' => true,

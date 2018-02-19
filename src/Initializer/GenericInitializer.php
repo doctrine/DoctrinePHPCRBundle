@@ -7,7 +7,7 @@ use PHPCR\SessionInterface;
 use PHPCR\Util\NodeHelper;
 
 /**
- * In most cases, this initializer should be usable as is by bundles.
+ * Initializer to create node types and create nt:unstructured nodes at the specified paths.
  *
  * The node types will be created first, in case extending classes want to
  * create nodes of those types. To not create any node types, pass null
@@ -25,46 +25,43 @@ class GenericInitializer implements InitializerInterface, SessionAwareInitialize
      *
      * @var string
      */
-    protected $name;
+    private $name;
 
     /**
-     * The cnd definition.
-     *
      * @var string
      */
-    protected $cnd;
+    private $cnd;
 
     /**
      * List of base paths to create.
      *
      * @var array
      */
-    protected $basePaths;
+    private $basePaths;
 
     /**
      * Name of the session in which this initializer should run.
      *
      * @var string
      */
-    protected $sessionName;
+    private $sessionName;
 
     /**
+     * @param string      $name      name to identify this initializer instance
      * @param array       $basePaths a list of base paths to create if not existing
      * @param string|null $cnd       node type and namespace definitions in cnd
      *                               format, pass null to not create any node types
      */
-    public function __construct($name, array $basePaths, $cnd = null)
+    public function __construct(string $name, array $basePaths, string $cnd = null)
     {
         $this->cnd = $cnd;
         $this->basePaths = $basePaths;
         $this->name = $name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function init(ManagerRegistry $registry)
     {
+        /** @var SessionInterface $session */
         $session = $registry->getConnection($this->sessionName);
 
         if ($this->cnd) {

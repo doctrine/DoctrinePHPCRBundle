@@ -23,7 +23,7 @@ class NodesUpdateCommand extends BaseNodesUpdateCommand
 
         $this
             ->setName('doctrine:phpcr:nodes:update')
-            ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
+            ->addOption('session', null, InputOption::VALUE_REQUIRED, 'The session to use for this command')
         ;
     }
 

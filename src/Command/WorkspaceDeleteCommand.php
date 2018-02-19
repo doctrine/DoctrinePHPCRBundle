@@ -3,7 +3,6 @@
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
 use PHPCR\Util\Console\Command\WorkspaceDeleteCommand as BaseWorkspaceDeleteCommand;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -24,7 +23,7 @@ class WorkspaceDeleteCommand extends BaseWorkspaceDeleteCommand
 
         $this
             ->setName('doctrine:phpcr:workspace:delete')
-            ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
+            ->addOption('session', null, InputOption::VALUE_REQUIRED, 'The session to use for this command')
         ;
     }
 

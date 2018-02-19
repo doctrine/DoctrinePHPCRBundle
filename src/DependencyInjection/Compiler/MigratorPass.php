@@ -10,9 +10,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class MigratorPass implements CompilerPassInterface
 {
-    /**
-     * @param ContainerBuilder $container
-     */
     public function process(ContainerBuilder $container)
     {
         $migrators = [];

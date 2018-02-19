@@ -20,7 +20,7 @@ class InitDoctrineDbalCommand extends BaseInitDoctrineDbalCommand
 
         $this
             ->setName('doctrine:phpcr:init:dbal')
-            ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
+            ->addOption('session', null, InputOption::VALUE_REQUIRED, 'The session to use for this command')
         ;
     }
 

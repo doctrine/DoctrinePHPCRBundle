@@ -23,7 +23,7 @@ class WorkspaceQueryCommand extends BaseWorkspaceQueryCommand
 
         $this
             ->setName('doctrine:phpcr:workspace:query')
-            ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
+            ->addOption('session', null, InputOption::VALUE_REQUIRED, 'The session to use for this command')
         ;
     }
 

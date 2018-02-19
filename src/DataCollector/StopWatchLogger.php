@@ -6,20 +6,16 @@ use Jackalope\Transport\Logging\LoggerInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
- * Logger.
- *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  */
 class StopWatchLogger implements LoggerInterface
 {
-    protected $stopwatch;
-
     /**
-     * Constructor.
-     *
-     * @param Stopwatch $stopwatch A Stopwatch instance
+     * @var Stopwatch
      */
+    private $stopwatch;
+
     public function __construct(Stopwatch $stopwatch = null)
     {
         $this->stopwatch = $stopwatch;

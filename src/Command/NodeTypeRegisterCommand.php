@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class NodeTypeRegisterCommand extends BaseRegisterNodeTypesCommand
 {
-    const BUNDLE_NT_PATH = 'Resources/config/phpcr-node-types';
+    private const BUNDLE_NT_PATH = 'Resources/config/phpcr-node-types';
 
     /**
      * {@inheritdoc}
@@ -30,7 +30,7 @@ EOT;
 
         $this
             ->setName('doctrine:phpcr:node-type:register')
-            ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
+            ->addOption('session', null, InputOption::VALUE_REQUIRED, 'The session to use for this command')
             ->setHelp($help)
         ;
     }

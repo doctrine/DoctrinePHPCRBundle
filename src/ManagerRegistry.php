@@ -65,7 +65,7 @@ class ManagerRegistry extends BaseManagerRegistry
     /**
      * Get the admin connection associated to the connection.
      *
-     * @param null $name
+     * @param string $name
      *
      * @return object
      */

@@ -3,7 +3,6 @@
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
 use PHPCR\Util\Console\Command\WorkspacePurgeCommand as BaseWorkspacePurgeCommand;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -24,7 +23,7 @@ class WorkspacePurgeCommand extends BaseWorkspacePurgeCommand
 
         $this
             ->setName('doctrine:phpcr:workspace:purge')
-            ->addOption('session', null, InputOption::VALUE_OPTIONAL, 'The session to use for this command')
+            ->addOption('session', null, InputOption::VALUE_REQUIRED, 'The session to use for this command')
         ;
     }
 

@@ -8,7 +8,10 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class DocumentToPathTransformer implements DataTransformerInterface
 {
-    protected $dm;
+    /**
+     * @var DocumentManager
+     */
+    private $dm;
 
     public function __construct(DocumentManager $dm)
     {
@@ -28,9 +31,7 @@ class DocumentToPathTransformer implements DataTransformerInterface
             return;
         }
 
-        $path = $this->dm->getUnitOfWork()->getDocumentId($document);
-
-        return $path;
+        return $this->dm->getUnitOfWork()->getDocumentId($document);
     }
 
     /**

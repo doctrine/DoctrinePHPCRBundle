@@ -13,9 +13,6 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class InitializerPass implements CompilerPassInterface
 {
-    /**
-     * @param ContainerBuilder $container
-     */
     public function process(ContainerBuilder $container)
     {
         if (!$container->hasDefinition('doctrine_phpcr.initializer_manager')) {

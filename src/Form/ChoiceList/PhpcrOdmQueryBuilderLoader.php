@@ -20,21 +20,16 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
 {
     /**
-     * Contains the query builder that builds the query for fetching the
-     * entities.
+     * Contains the query builder that builds the query for fetching the entities.
      *
      * @var QueryBuilder
      */
     private $queryBuilder;
 
     /**
-     * Construct a PHPCR-ODM Query Builder Loader.
-     *
      * @param QueryBuilder|\Closure $queryBuilder
-     * @param DocumentManager       $manager
-     * @param string                $class
      */
-    public function __construct($queryBuilder, DocumentManager $manager = null, $class = null)
+    public function __construct($queryBuilder, DocumentManager $manager = null, string $class = null)
     {
         // If a query builder was passed, it must be a closure or QueryBuilder
         // instance
@@ -89,8 +84,8 @@ class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
             return [];
         }
 
-        /* performance: if we could figure out whether the query builder is "
-         * empty" (that is only checking for the class) we could optimize this
+        /* performance: if we could figure out whether the query builder is
+         * "empty" (that is only checking for the class) we could optimize this
          * to a $this->dm->findMany(null, $values)
          */
 
@@ -105,13 +100,13 @@ class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
     }
 
     /**
-     * Evaluate the query and clean the result.
+     * Run the query and return a consecutive array.
      *
      * @param QueryBuilder $qb
      *
      * @return array list of result documents
      */
-    private function getResult(QueryBuilder $qb)
+    private function getResult(QueryBuilder $qb): array
     {
         return array_values($qb->getQuery()->execute()->toArray());
     }

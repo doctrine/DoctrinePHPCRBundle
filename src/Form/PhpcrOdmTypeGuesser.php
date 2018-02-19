@@ -21,7 +21,7 @@ use Symfony\Component\Form\Guess\TypeGuess;
 use Symfony\Component\Form\Guess\ValueGuess;
 
 /**
- * Guesser for Form component using Doctrine phpcr registry and metadata.
+ * Guesser for Form component using Doctrine PHPCR registry and metadata.
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
@@ -88,7 +88,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
                     return new TypeGuess($this->legacy ? 'collection' : CollectionType::class, $options, Guess::LOW_CONFIDENCE);
 
                 case 'referrers':
-                    return new TypeGuess($this->legacy ? 'phpcr_document' : 'Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType', [
+                    return new TypeGuess($this->legacy ? 'phpcr_document' : DocumentType::class, [
                             'class' => $mapping['referringDocument'],
                             'multiple' => true,
                         ],
@@ -212,7 +212,6 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
      */
     public function guessMaxLength($class, $property)
     {
-        return;
     }
 
     /**
@@ -220,7 +219,6 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
      */
     public function guessMinLength($class, $property)
     {
-        return;
     }
 
     /**
@@ -262,8 +260,6 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
 
             return new ValueGuess(false, Guess::LOW_CONFIDENCE);
         }
-
-        return;
     }
 
     /**
@@ -271,10 +267,9 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
      */
     public function guessPattern($class, $property)
     {
-        return;
     }
 
-    protected function getMetadata($class)
+    private function getMetadata($class): ?array
     {
         if (array_key_exists($class, $this->cache)) {
             return $this->cache[$class];

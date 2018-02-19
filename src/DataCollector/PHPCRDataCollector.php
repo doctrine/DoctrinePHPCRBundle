@@ -3,6 +3,8 @@
 namespace Doctrine\Bundle\PHPCRBundle\DataCollector;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
+use Doctrine\ODM\PHPCR\Mapping\ClassMetadataFactory;
 use Jackalope\Query\Query;
 use Jackalope\Transport\Logging\DebugStack;
 use PHPCR\Query\QueryInterface;
@@ -11,19 +13,29 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 /**
- * PHPCRDataCollector.
- *
  * @author Christophe Coevoet <stof@notk.org>
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  */
 class PHPCRDataCollector extends DataCollector
 {
+    /**
+     * @var ManagerRegistry
+     */
     private $registry;
 
+    /**
+     * @var string[]
+     */
     private $connections;
 
+    /**
+     * @var string[]
+     */
     private $managers;
 
+    /**
+     * @var DebugStack[]
+     */
     private $loggers = [];
 
     public function __construct(ManagerRegistry $registry)
@@ -112,10 +124,8 @@ class PHPCRDataCollector extends DataCollector
      * value to explain the call).
      *
      * @param mixed $var
-     *
-     * @return array
      */
-    private function sanitizeParam($var)
+    private function sanitizeParam($var): array
     {
         if (is_object($var)) {
             if ($var instanceof QueryInterface) {
@@ -173,10 +183,10 @@ class PHPCRDataCollector extends DataCollector
 
         foreach ($this->registry->getManagers() as $name => $em) {
             $documents[$name] = [];
-            /** @var $factory \Doctrine\ODM\PHPCR\Mapping\ClassMetadataFactory */
+            /** @var $factory ClassMetadataFactory */
             $factory = $em->getMetadataFactory();
 
-            /** @var $class \Doctrine\ODM\PHPCR\Mapping\ClassMetadata */
+            /** @var $class ClassMetadata */
             foreach ($factory->getLoadedMetadata() as $class) {
                 $documents[$name][] = $class->getName();
             }
