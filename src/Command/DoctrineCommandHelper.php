@@ -33,7 +33,7 @@ abstract class DoctrineCommandHelper
     /**
      * Prepare the DBAL connection and the PHPCR session.
      */
-    public static function setApplicationPHPCRSession(Application $application, string $sessionName, bool $admin = false)
+    public static function setApplicationPHPCRSession(Application $application, string $sessionName = null, bool $admin = false)
     {
         $registry = $application->getKernel()->getContainer()->get('doctrine_phpcr');
         $session = $admin ? $registry->getAdminConnection($sessionName) : $registry->getConnection($sessionName);
