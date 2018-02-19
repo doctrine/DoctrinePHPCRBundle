@@ -13,8 +13,8 @@ use Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\VerifyUniqueNodeTypesMapping
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ODM\PHPCR\Version;
 use Jackalope\Session;
-use Jackalope\Tools\Console\Command\JackrabbitCommand as BaseJackrabbitCommand;
 use Jackalope\Tools\Console\Command\InitDoctrineDbalCommand as BaseInitDoctrineDbalCommand;
+use Jackalope\Tools\Console\Command\JackrabbitCommand as BaseJackrabbitCommand;
 use Symfony\Bridge\Doctrine\DependencyInjection\CompilerPass\RegisterEventListenersAndSubscribersPass;
 use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;

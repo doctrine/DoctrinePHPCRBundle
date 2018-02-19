@@ -6,8 +6,8 @@ use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Configuration;
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\DoctrinePHPCRExtension;
 use Doctrine\ODM\PHPCR\DocumentRepository;
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadataFactory;
-use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionConfigurationTestCase;
 use Jackalope\Factory;
+use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionConfigurationTestCase;
 
 class ConfigurationTest extends AbstractExtensionConfigurationTestCase
 {

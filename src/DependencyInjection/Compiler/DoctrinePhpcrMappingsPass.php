@@ -2,15 +2,15 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler;
 
+use Doctrine\Common\Persistence\Mapping\Driver\PHPDriver;
+use Doctrine\Common\Persistence\Mapping\Driver\StaticPHPDriver;
+use Doctrine\Common\Persistence\Mapping\Driver\SymfonyFileLocator;
+use Doctrine\ODM\PHPCR\Mapping\Driver\AnnotationDriver;
+use Doctrine\ODM\PHPCR\Mapping\Driver\XmlDriver;
+use Doctrine\ODM\PHPCR\Mapping\Driver\YamlDriver;
 use Symfony\Bridge\Doctrine\DependencyInjection\CompilerPass\RegisterMappingsPass;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
-use Doctrine\ODM\PHPCR\Mapping\Driver\XmlDriver;
-use Doctrine\Common\Persistence\Mapping\Driver\SymfonyFileLocator;
-use Doctrine\ODM\PHPCR\Mapping\Driver\YamlDriver;
-use Doctrine\Common\Persistence\Mapping\Driver\PHPDriver;
-use Doctrine\ODM\PHPCR\Mapping\Driver\AnnotationDriver;
-use Doctrine\Common\Persistence\Mapping\Driver\StaticPHPDriver;
 
 /**
  * Class for Symfony bundles to configure mappings for model classes not in the
@@ -69,7 +69,7 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
         array $managerParameters = [],
         $enabledParameter = false,
         array $aliasMap = []
-    ): DoctrinePhpcrMappingsPass {
+    ): self {
         $arguments = [$namespaces, '.phpcr.xml'];
         $locator = new Definition(SymfonyFileLocator::class, $arguments);
         $driver = new Definition(XmlDriver::class, [$locator]);
@@ -95,7 +95,7 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
         array $managerParameters = [],
         $enabledParameter = false,
         array $aliasMap = []
-    ): DoctrinePhpcrMappingsPass {
+    ): self {
         $arguments = [$namespaces, '.phpcr.yml'];
         $locator = new Definition(SymfonyFileLocator::class, $arguments);
         $driver = new Definition(YamlDriver::class, [$locator]);
@@ -121,7 +121,7 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
         array $managerParameters = [],
         $enabledParameter = false,
         array $aliasMap = []
-    ): DoctrinePhpcrMappingsPass {
+    ): self {
         $arguments = [$mappings, '.php'];
         $locator = new Definition(SymfonyFileLocator::class, $arguments);
         $driver = new Definition(PHPDriver::class, [$locator]);
@@ -149,7 +149,7 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
         array $managerParameters = [],
         $enabledParameter = false,
         array $aliasMap = []
-    ): DoctrinePhpcrMappingsPass {
+    ): self {
         $reader = new Reference('doctrine_phpcr.odm.metadata.annotation_reader');
         $driver = new Definition(AnnotationDriver::class, [$reader, $directories]);
 
@@ -176,7 +176,7 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
         array $managerParameters = [],
         $enabledParameter = false,
         array $aliasMap = []
-    ): DoctrinePhpcrMappingsPass {
+    ): self {
         $driver = new Definition(StaticPHPDriver::class, [$directories]);
 
         return new self($driver, $namespaces, $managerParameters, $enabledParameter, $aliasMap);
