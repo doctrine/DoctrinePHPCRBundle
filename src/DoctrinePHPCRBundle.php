@@ -13,6 +13,8 @@ use Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\VerifyUniqueNodeTypesMapping
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ODM\PHPCR\Version;
 use Jackalope\Session;
+use Jackalope\Tools\Console\Command\JackrabbitCommand as BaseJackrabbitCommand;
+use Jackalope\Tools\Console\Command\InitDoctrineDbalCommand as BaseInitDoctrineDbalCommand;
 use Symfony\Bridge\Doctrine\DependencyInjection\CompilerPass\RegisterEventListenersAndSubscribersPass;
 use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -57,10 +59,10 @@ class DoctrinePHPCRBundle extends Bundle
             $application->add(new DocumentConvertTranslationCommand());
         }
 
-        if (class_exists(JackrabbitCommand::class)) {
+        if (class_exists(BaseJackrabbitCommand::class)) {
             $application->add(new JackrabbitCommand());
         }
-        if (class_exists(InitDoctrineDbalCommand::class)) {
+        if (class_exists(BaseInitDoctrineDbalCommand::class)) {
             $application->add(new InitDoctrineDbalCommand());
         }
     }
