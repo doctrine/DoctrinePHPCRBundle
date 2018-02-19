@@ -12,7 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class PathType extends AbstractType
 {
-    protected $registry;
+    private $registry;
 
     public function __construct(ManagerRegistry $registry)
     {

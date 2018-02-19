@@ -22,6 +22,9 @@ class NodeDumpCommand extends BaseDumpCommand implements ContainerAwareInterface
      */
     private $container;
 
+    /**
+     * @var PhpcrConsoleDumperHelper
+     */
     private $consoleDumper;
 
     protected function getContainer()

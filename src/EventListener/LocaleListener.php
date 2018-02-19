@@ -53,9 +53,7 @@ class LocaleListener implements EventSubscriberInterface
     private $allowedLocales;
 
     /**
-     * The locale chooser to update on each request.
-     *
-     * @param LocaleChooser $chooser        the locale chooser to update
+     * @param LocaleChooser $chooser        the listener will update this choose with the request locale
      * @param array         $allowedLocales list of locales that are allowed
      * @param string        $fallback       one of the FALLBACK_* constants
      */

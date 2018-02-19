@@ -15,8 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 /**
  * Form type for PHPCR Node references.
  *
- * Can use either a UUID or a PATH transformer as specified by
- * the "transfomer_type" option.
+ * Can use either a UUID or a PATH transformer as specified by the "transfomer_type" option.
  *
  * @author Daniel Leech <daniel@dantleech.com>
  */

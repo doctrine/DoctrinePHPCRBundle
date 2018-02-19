@@ -3,18 +3,19 @@
 namespace Doctrine\Bundle\PHPCRBundle\Validator\Constraints;
 
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
+use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 
 /**
- * Valid PHPCR ODM Validator checks if a document has an identifier or a parent and a name.
+ * Validator to check if a document has mappings for either an identifier or both a parent and a name.
  *
  * @author Emmanuel Vella <vella.emmanuel@gmail.com>
  */
 class ValidPhpcrOdmValidator extends ConstraintValidator
 {
-    protected $registry;
+    private $registry;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -34,6 +35,7 @@ class ValidPhpcrOdmValidator extends ConstraintValidator
             throw new ConstraintDefinitionException('This document is not managed by the PHPCR ODM.');
         }
 
+        /** @var ClassMetadata $class */
         $class = $dm->getClassMetadata($className);
 
         if ($class->getFieldValue($document, $class->identifier)) {

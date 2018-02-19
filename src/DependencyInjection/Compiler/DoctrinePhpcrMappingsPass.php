@@ -23,8 +23,7 @@ use Doctrine\Common\Persistence\Mapping\Driver\StaticPHPDriver;
 class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
 {
     /**
-     * You should not directly instantiate this class but use one of the
-     * factory methods.
+     * You should not directly instantiate this class but use one of the factory methods.
      *
      * @param Definition|Reference $driver            driver DI definition or reference
      * @param array                $namespaces        list of namespaces handled by $driver
@@ -65,8 +64,12 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      *
      * @return DoctrinePhpcrMappingsPass
      */
-    public static function createXmlMappingDriver(array $namespaces, array $managerParameters = [], $enabledParameter = false, array $aliasMap = [])
-    {
+    public static function createXmlMappingDriver(
+        array $namespaces,
+        array $managerParameters = [],
+        $enabledParameter = false,
+        array $aliasMap = []
+    ): DoctrinePhpcrMappingsPass {
         $arguments = [$namespaces, '.phpcr.xml'];
         $locator = new Definition(SymfonyFileLocator::class, $arguments);
         $driver = new Definition(XmlDriver::class, [$locator]);
@@ -87,8 +90,12 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      *
      * @return DoctrinePhpcrMappingsPass
      */
-    public static function createYamlMappingDriver(array $namespaces, array $managerParameters = [], $enabledParameter = false, array $aliasMap = [])
-    {
+    public static function createYamlMappingDriver(
+        array $namespaces,
+        array $managerParameters = [],
+        $enabledParameter = false,
+        array $aliasMap = []
+    ): DoctrinePhpcrMappingsPass {
         $arguments = [$namespaces, '.phpcr.yml'];
         $locator = new Definition(SymfonyFileLocator::class, $arguments);
         $driver = new Definition(YamlDriver::class, [$locator]);
@@ -109,8 +116,12 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      *
      * @return DoctrinePhpcrMappingsPass
      */
-    public static function createPhpMappingDriver(array $mappings, array $managerParameters = [], $enabledParameter = false, array $aliasMap = [])
-    {
+    public static function createPhpMappingDriver(
+        array $mappings,
+        array $managerParameters = [],
+        $enabledParameter = false,
+        array $aliasMap = []
+    ): DoctrinePhpcrMappingsPass {
         $arguments = [$mappings, '.php'];
         $locator = new Definition(SymfonyFileLocator::class, $arguments);
         $driver = new Definition(PHPDriver::class, [$locator]);
@@ -132,8 +143,13 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      *
      * @return DoctrinePhpcrMappingsPass
      */
-    public static function createAnnotationMappingDriver(array $namespaces, array $directories, array $managerParameters = [], $enabledParameter = false, array $aliasMap = [])
-    {
+    public static function createAnnotationMappingDriver(
+        array $namespaces,
+        array $directories,
+        array $managerParameters = [],
+        $enabledParameter = false,
+        array $aliasMap = []
+    ): DoctrinePhpcrMappingsPass {
         $reader = new Reference('doctrine_phpcr.odm.metadata.annotation_reader');
         $driver = new Definition(AnnotationDriver::class, [$reader, $directories]);
 
@@ -154,8 +170,13 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      *
      * @return DoctrinePhpcrMappingsPass
      */
-    public static function createStaticPhpMappingDriver(array $namespaces, array $directories, array $managerParameters = [], $enabledParameter = false, array $aliasMap = [])
-    {
+    public static function createStaticPhpMappingDriver(
+        array $namespaces,
+        array $directories,
+        array $managerParameters = [],
+        $enabledParameter = false,
+        array $aliasMap = []
+    ): DoctrinePhpcrMappingsPass {
         $driver = new Definition(StaticPHPDriver::class, [$directories]);
 
         return new self($driver, $namespaces, $managerParameters, $enabledParameter, $aliasMap);

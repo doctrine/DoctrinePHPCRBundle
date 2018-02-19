@@ -5,7 +5,7 @@ namespace Doctrine\Bundle\PHPCRBundle\Initializer;
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
 
 /**
- * Service which is used to aggregate and execute the initializers.
+ * Aggregates and executes initializers.
  *
  * @author Daniel Leech <daniel@dantleech.com>
  */
@@ -14,40 +14,35 @@ class InitializerManager
     /**
      * @var InitializerInterface[]
      */
-    protected $initializers = [];
+    private $initializers = [];
 
     /**
      * @var ManagerRegistry
      */
-    protected $registry;
+    private $registry;
 
     /**
      * @var \Closure
      */
-    protected $loggingClosure = null;
+    private $loggingClosure = null;
 
     public function __construct(ManagerRegistry $registry)
     {
         $this->registry = $registry;
     }
 
-    /**
-     * Set a logging closure for use, for example, from a
-     * console command.
-     *
-     * @param \Closure $closure
-     */
     public function setLoggingClosure(\Closure $closure = null)
     {
         $this->loggingClosure = $closure;
     }
 
     /**
-     * Add an initializer.
+     * Add an initializer to this manager at the specified priority.
      *
      * @param InitializerInterface $initializer
+     * @param int                  $priority    The higher the number, the earlier the initializer is executed
      */
-    public function addInitializer(InitializerInterface $initializer, $priority = 0)
+    public function addInitializer(InitializerInterface $initializer, int $priority = 0)
     {
         if (empty($this->initializers[$priority])) {
             $this->initializers[$priority] = [];
@@ -87,7 +82,7 @@ class InitializerManager
      *
      * @return InitializerInterface[]
      */
-    private function getInitializers()
+    private function getInitializers(): array
     {
         if (empty($this->sortedInitializers)) {
             $this->sortedInitializers = $this->sortInitializers();
@@ -98,11 +93,12 @@ class InitializerManager
 
     /**
      * Sort initializers by priority.
+     *
      * The highest priority number is the highest priority (reverse sorting).
      *
      * @return InitializerInterface[]
      */
-    private function sortInitializers()
+    private function sortInitializers(): array
     {
         $sortedInitializers = [];
         krsort($this->initializers);

@@ -3,9 +3,7 @@
 namespace Doctrine\Bundle\PHPCRBundle\Initializer;
 
 /**
- * Interface for session aware intiializers.
- * Handles running initializer in specified session
- * instead of the default one.
+ * Handles running initializer in specified session instead of the default one.
  *
  * @author michalpolko <michalpolko@o2.pl>
  */

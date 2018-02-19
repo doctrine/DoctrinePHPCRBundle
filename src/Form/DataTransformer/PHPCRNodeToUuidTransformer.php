@@ -10,7 +10,7 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 class PHPCRNodeToUuidTransformer implements DataTransformerInterface
 {
-    protected $session;
+    private $session;
 
     public function __construct(SessionInterface $session)
     {

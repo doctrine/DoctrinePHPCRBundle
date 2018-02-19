@@ -10,13 +10,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Command to collect init operations from any interested bundles. If phpcr-odm
- * is present also executes RegisterSystemNodeTypesCommand.
+ * Command to collect init operations from any interested bundles.
+ *
+ * If phpcr-odm is present, this also executes RegisterSystemNodeTypesCommand.
  */
 class RepositoryInitCommand extends ContainerAwareCommand
 {
-    /** @var ContainerInterface */
-    protected $container;
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
 
     /**
      * {@inheritdoc}

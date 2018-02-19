@@ -21,7 +21,7 @@ use Symfony\Component\Form\Guess\TypeGuess;
 use Symfony\Component\Form\Guess\ValueGuess;
 
 /**
- * Guesser for Form component using Doctrine phpcr registry and metadata.
+ * Guesser for Form component using Doctrine PHPCR registry and metadata.
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
@@ -274,7 +274,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
         return;
     }
 
-    protected function getMetadata($class)
+    private function getMetadata($class): ?array
     {
         if (array_key_exists($class, $this->cache)) {
             return $this->cache[$class];

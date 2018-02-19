@@ -13,19 +13,29 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 /**
- * PHPCRDataCollector.
- *
  * @author Christophe Coevoet <stof@notk.org>
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  */
 class PHPCRDataCollector extends DataCollector
 {
+    /**
+     * @var ManagerRegistry
+     */
     private $registry;
 
+    /**
+     * @var string[]
+     */
     private $connections;
 
+    /**
+     * @var string[]
+     */
     private $managers;
 
+    /**
+     * @var DebugStack[]
+     */
     private $loggers = [];
 
     public function __construct(ManagerRegistry $registry)
@@ -114,10 +124,8 @@ class PHPCRDataCollector extends DataCollector
      * value to explain the call).
      *
      * @param mixed $var
-     *
-     * @return array
      */
-    private function sanitizeParam($var)
+    private function sanitizeParam($var): array
     {
         if (is_object($var)) {
             if ($var instanceof QueryInterface) {

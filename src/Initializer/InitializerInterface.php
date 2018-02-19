@@ -5,16 +5,16 @@ namespace Doctrine\Bundle\PHPCRBundle\Initializer;
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
 
 /**
- * Interface for initializers.
+ * An initializer creates base paths and/or adds default documents to a newly
+ * created repository.
  *
  * @author David Buchmann <mail@davidbu.ch>
  */
 interface InitializerInterface
 {
     /**
-     * This method should be used to establish the requisite
-     * structure needed by the application or bundle of the
-     * content repository.
+     * This method should be used to establish the requisite structure needed
+     * by the application or bundle of the content repository.
      *
      * @param ManagerRegistry $registry
      */
