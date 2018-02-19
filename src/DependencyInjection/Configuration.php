@@ -3,13 +3,13 @@
 namespace Doctrine\Bundle\PHPCRBundle\DependencyInjection;
 
 use Doctrine\Bundle\PHPCRBundle\EventListener\LocaleListener;
+use Doctrine\ODM\PHPCR\DocumentRepository;
+use Doctrine\ODM\PHPCR\Mapping\ClassMetadataFactory;
 use Doctrine\ODM\PHPCR\Translation\Translation;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
-use Doctrine\ODM\PHPCR\Mapping\ClassMetadataFactory;
-use Doctrine\ODM\PHPCR\DocumentRepository;
 
 /**
  * Configuration for the PHPCR extension.

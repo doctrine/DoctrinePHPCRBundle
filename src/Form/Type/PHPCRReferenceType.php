@@ -7,10 +7,10 @@ use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\PHPCRNodeToUuidTransformer;
 use PHPCR\SessionInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
  * Form type for PHPCR Node references.
@@ -53,7 +53,7 @@ class PHPCRReferenceType extends AbstractType
     }
 
     /**
-     * BC for Symfony 2.8
+     * BC for Symfony 2.8.
      *
      * {@inheritdoc}
      */
