@@ -212,7 +212,6 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
      */
     public function guessMaxLength($class, $property)
     {
-        return;
     }
 
     /**
@@ -220,7 +219,6 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
      */
     public function guessMinLength($class, $property)
     {
-        return;
     }
 
     /**
@@ -262,8 +260,6 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
 
             return new ValueGuess(false, Guess::LOW_CONFIDENCE);
         }
-
-        return;
     }
 
     /**
@@ -271,7 +267,6 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
      */
     public function guessPattern($class, $property)
     {
-        return;
     }
 
     private function getMetadata($class): ?array

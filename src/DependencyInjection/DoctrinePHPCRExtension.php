@@ -24,15 +24,29 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 {
+    /**
+     * @var string
+     */
     private $defaultSession;
 
+    /**
+     * @var string[]
+     */
     private $sessions = [];
 
+    /**
+     * @var string[]
+     */
     private $bundleDirs = [];
 
-    /** @var XmlFileLoader */
+    /**
+     * @var XmlFileLoader
+     */
     private $loader;
 
+    /**
+     * @var bool
+     */
     private $disableProxyWarmer = false;
 
     /**
@@ -409,7 +423,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             $this->loader->load('odm_multilang.xml');
 
             foreach ($config['locales'] as $locale => $fallbacks) {
-                if (false !== array_search($locale, $fallbacks)) {
+                if (in_array($locale, $fallbacks)) {
                     throw new InvalidArgumentException(sprintf('The fallbacks for locale %s contain the locale itself.', $locale));
                 }
                 if (count($fallbacks) !== count(array_unique($fallbacks))) {

@@ -83,7 +83,7 @@ EOT
                 /** @var $questionHelper QuestionHelper */
                 $questionHelper = $this->getHelperSet()->get('question');
                 $question = new ConfirmationQuestion($question, $default);
-                $result = $questionHelper->ask($input, $output, $question, $default);
+                $result = $questionHelper->ask($input, $output, $question);
             } else {
                 /** @var $dialog DialogHelper */
                 $dialog = $this->getHelperSet()->get('dialog');
