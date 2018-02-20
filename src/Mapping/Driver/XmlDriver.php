@@ -13,7 +13,7 @@ use Doctrine\ODM\PHPCR\Mapping\Driver\XmlDriver as BaseXmlDriver;
  */
 class XmlDriver extends BaseXmlDriver
 {
-    private const DEFAULT_FILE_EXTENSION = '.phpcr.xml';
+    const DEFAULT_FILE_EXTENSION = '.phpcr.xml';
 
     /**
      * {@inheritdoc}
