@@ -57,7 +57,7 @@ abstract class DoctrineCommandHelper
     /**
      * Select which document manager should be used.
      */
-    public static function setApplicationDocumentManager(Application $application, string $dmName)
+    public static function setApplicationDocumentManager(Application $application, ?string $dmName)
     {
         /** @var $registry ManagerRegistry */
         $registry = $application->getKernel()->getContainer()->get('doctrine_phpcr');
