@@ -552,6 +552,13 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             'is_bundle' => false,
             'mapping' => true,
         ];
+        $documentManager['mappings']['__App__'] = [
+            'dir' => dirname($container->getParameter('kernel.root_dir').'/Document'),
+            'type' => 'annotation',
+            'prefix' => 'App\Document',
+            'is_bundle' => false,
+            'mapping' => true,
+        ];
         $this->loadMappingInformation($documentManager, $container);
         $this->registerMappingDrivers($documentManager, $container);
 
