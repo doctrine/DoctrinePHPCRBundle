@@ -73,7 +73,7 @@
         <service id="form.type.phpcr.reference"
                  class="Doctrine\Bundle\PHPCRBundle\Form\Type\PHPCRReferenceType">
             <tag name="form.type" alias="phpcr_reference"/>
-            <argument type="service" id="doctrine_phpcr.session"/>
+            <argument type="service" id="doctrine_phpcr.session" on-invalid="null"/>
         </service>
 
         <service id="doctrine_phpcr.console_dumper"
