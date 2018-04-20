@@ -13,6 +13,7 @@
         <service id="doctrine_phpcr.jackalope.repository.factory.jackrabbit"
                  class="Jackalope\Repository"
         >
+            <factory service="doctrine_phpcr.jackalope.repository.factory.service.jackrabbit" method="getRepository"/>
             <argument type="collection"/>
         </service>
 
@@ -22,6 +23,7 @@
         <service id="doctrine_phpcr.jackalope.repository.factory.doctrinedbal"
                  class="Jackalope\Repository"
         >
+            <factory service="doctrine_phpcr.jackalope.repository.factory.service.doctrinedbal" method="getRepository"/>
             <argument type="collection" />
         </service>
 
@@ -32,6 +34,7 @@
         <service id="doctrine_phpcr.jackalope.repository.factory.prismic"
                  class="Jackalope\Repository"
                 >
+            <factory service="doctrine_phpcr.jackalope.repository.factory.service.prismic" method="getRepository"/>
             <argument type="collection"/>
         </service>
 

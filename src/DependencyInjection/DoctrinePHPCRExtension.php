@@ -130,23 +130,6 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                 case 'jackrabbit':
                     if (empty($loaded['jackalope'])) {
                         $this->loader->load('jackalope.xml');
-
-                        // TODO: move the following code block back into the XML file when we drop support for symfony <2.6
-                        $jackalopeTransports = ['prismic', 'doctrinedbal', 'jackrabbit'];
-                        foreach ($jackalopeTransports as $transport) {
-                            $factoryServiceId = sprintf('doctrine_phpcr.jackalope.repository.factory.service.%s', $transport);
-                            $factoryService = $container->getDefinition(sprintf('doctrine_phpcr.jackalope.repository.factory.%s', $transport));
-                            if (method_exists($factoryService, 'setFactory')) {
-                                $factoryService->setFactory([
-                                    new Reference($factoryServiceId),
-                                    'getRepository',
-                                ]);
-                            } else {
-                                $factoryService->setFactoryService($factoryServiceId);
-                                $factoryService->setFactoryMethod('getRepository');
-                            }
-                        }
-
                         $loaded['jackalope'] = true;
                     }
                     $this->loadJackalopeSession($session, $container, $type);
@@ -313,20 +296,12 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             ->replaceArgument(1, $password)
         ;
 
-        // TODO: move the following code block back into the XML file when we drop support for symfony <2.6
-        $definition = class_exists(ChildDefinition::class)
-            ? new ChildDefinition('doctrine_phpcr.jackalope.session')
-            : new DefinitionDecorator('doctrine_phpcr.jackalope.session');
+        $definition = new ChildDefinition('doctrine_phpcr.jackalope.session');
         $factoryServiceId = sprintf('doctrine_phpcr%s.jackalope.repository.%s', $serviceNamePrefix, $session['name']);
-        if (method_exists($definition, 'setFactory')) {
-            $definition->setFactory([
-                new Reference($factoryServiceId),
-                'login',
-            ]);
-        } else {
-            $definition->setFactoryService($factoryServiceId);
-            $definition->setFactoryMethod('login');
-        }
+        $definition->setFactory([
+            new Reference($factoryServiceId),
+            'login',
+        ]);
 
         $workspace = $admin ? null : $session['workspace'];
         $definition

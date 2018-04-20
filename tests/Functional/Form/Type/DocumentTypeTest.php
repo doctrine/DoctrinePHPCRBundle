@@ -8,7 +8,6 @@ use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\ReferrerDocument;
 use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument;
 use Doctrine\Bundle\PHPCRBundle\Tests\Functional\BaseTestCase;
 use Doctrine\ODM\PHPCR\DocumentManagerInterface;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Twig\Environment;
