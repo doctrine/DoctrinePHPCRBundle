@@ -16,8 +16,6 @@ use Symfony\Component\DependencyInjection\Reference;
  * Class for Symfony bundles to configure mappings for model classes not in the
  * automapped folder.
  *
- * NOTE: alias is only supported by Symfony 2.6+ and will be ignored with older versions.
- *
  * @author David Buchmann <mail@davidbu.ch>
  */
 class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
