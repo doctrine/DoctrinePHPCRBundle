@@ -138,7 +138,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             $formBuilder->get('mbool'),
             CollectionType::class,
             [
-                CheckboxType::class,
+                'entry_type' => CheckboxType::class,
                 'required' => false,
             ]
         );
@@ -147,7 +147,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             $formBuilder->get('mdate'),
             CollectionType::class,
             [
-                DateTimeType::class,
+                'entry_type' => DateTimeType::class,
                 'required' => false,
             ]
         );
@@ -156,7 +156,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             $formBuilder->get('mtext'),
             CollectionType::class,
             [
-                TextType::class,
+                'entry_type' => TextType::class,
                 'required' => false,
             ]
         );
@@ -165,7 +165,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             $formBuilder->get('mnumber'),
             CollectionType::class,
             [
-                NumberType::class,
+                'entry_type' => NumberType::class,
                 'required' => false,
             ]
         );
@@ -174,7 +174,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             $formBuilder->get('minteger'),
             CollectionType::class,
             [
-                IntegerType::class,
+                'entry_type' => IntegerType::class,
                 'required' => false,
             ]
         );
@@ -183,7 +183,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             $formBuilder->get('mlong'),
             CollectionType::class,
             [
-                IntegerType::class,
+                'entry_type' => IntegerType::class,
                 'required' => false,
             ]
         );
