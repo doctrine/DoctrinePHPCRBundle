@@ -3,9 +3,8 @@
 namespace Doctrine\Bundle\PHPCRBundle;
 
 use Doctrine\ODM\PHPCR\PHPCRException;
+use Psr\Container\ContainerInterface;
 use Symfony\Bridge\Doctrine\ManagerRegistry as BaseManagerRegistry;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Symfony aware manager registry.
@@ -22,14 +21,7 @@ class ManagerRegistry extends BaseManagerRegistry
         $defaultEntityManagerName,
         $proxyInterfaceName
     ) {
-        $parentTraits = class_uses(parent::class);
-        if (isset($parentTraits[ContainerAwareTrait::class])) {
-            // this case should be removed when Symfony 3.4 becomes the lowest supported version
-            // and then also, the constructor should type-hint Psr\Container\ContainerInterface
-            $this->setContainer($container);
-        } else {
-            $this->container = $container;
-        }
+        $this->container = $container;
 
         parent::__construct(
             'PHPCR',

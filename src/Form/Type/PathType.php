@@ -8,7 +8,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class PathType extends AbstractType
 {
@@ -45,16 +44,6 @@ class PathType extends AbstractType
         $dm = $this->registry->getManager($options['manager_name']);
         $transformer = new DocumentToPathTransformer($dm);
         $builder->addModelTransformer($transformer);
-    }
-
-    /**
-     * BC for Symfony 2.8.
-     *
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $this->configureOptions($resolver);
     }
 
     public function configureOptions(OptionsResolver $resolver)

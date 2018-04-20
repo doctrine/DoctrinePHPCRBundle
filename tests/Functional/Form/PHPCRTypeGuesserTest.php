@@ -9,7 +9,6 @@ use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\ReferrerDocument;
 use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument;
 use Doctrine\Bundle\PHPCRBundle\Tests\Functional\BaseTestCase;
 use Doctrine\ODM\PHPCR\DocumentManager;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -37,21 +36,8 @@ class PHPCRTypeGuesserTest extends BaseTestCase
      */
     private $referrer;
 
-    /**
-     * Work with 2.3-2.7 and 3.0 at the same time. drop once we switch to symfony 3.0.
-     */
-    private $legacy;
-
-    /**
-     * Work with 2.3-2.7 and 3.0 at the same time. drop once we switch to symfony 3.0.
-     */
-    private $entryTypeOption;
-
     public function setUp()
     {
-        $this->legacy = !method_exists(AbstractType::class, 'getBlockPrefix');
-        $this->entryTypeOption = $this->legacy ? 'type' : 'entry_type';
-
         self::createClient();
         $repositoryManager = $this->getRepositoryManager();
         $repositoryManager->loadFixtures([LoadData::class]);
@@ -67,7 +53,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
      */
     private function createFormBuilder($data, $options = [])
     {
-        return self::$kernel->getContainer()->get('form.factory')->createBuilder($this->legacy ? 'form' : FormType::class, $data, $options);
+        return self::$kernel->getContainer()->get('form.factory')->createBuilder(FormType::class, $data, $options);
     }
 
     public function testFields()
@@ -152,7 +138,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             $formBuilder->get('mbool'),
             CollectionType::class,
             [
-                $this->entryTypeOption => $this->legacy ? 'checkbox' : CheckboxType::class,
+                'entry_type' => CheckboxType::class,
                 'required' => false,
             ]
         );
@@ -161,7 +147,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             $formBuilder->get('mdate'),
             CollectionType::class,
             [
-                $this->entryTypeOption => $this->legacy ? 'datetime' : DateTimeType::class,
+                'entry_type' => DateTimeType::class,
                 'required' => false,
             ]
         );
@@ -170,7 +156,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             $formBuilder->get('mtext'),
             CollectionType::class,
             [
-                $this->entryTypeOption => $this->legacy ? 'text' : TextType::class,
+                'entry_type' => TextType::class,
                 'required' => false,
             ]
         );
@@ -179,7 +165,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             $formBuilder->get('mnumber'),
             CollectionType::class,
             [
-                $this->entryTypeOption => $this->legacy ? 'number' : NumberType::class,
+                'entry_type' => NumberType::class,
                 'required' => false,
             ]
         );
@@ -188,7 +174,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             $formBuilder->get('minteger'),
             CollectionType::class,
             [
-                $this->entryTypeOption => $this->legacy ? 'integer' : IntegerType::class,
+                'entry_type' => IntegerType::class,
                 'required' => false,
             ]
         );
@@ -197,7 +183,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             $formBuilder->get('mlong'),
             CollectionType::class,
             [
-                $this->entryTypeOption => $this->legacy ? 'integer' : IntegerType::class,
+                'entry_type' => IntegerType::class,
                 'required' => false,
             ]
         );
@@ -267,7 +253,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             [
                 'attr' => ['readonly' => 'readonly'],
                 'required' => false,
-                $this->entryTypeOption => $this->legacy ? 'phpcr_odm_path' : PathType::class,
+                'entry_type' => PathType::class,
             ]
         );
 
@@ -351,7 +337,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             [
                 'attr' => ['readonly' => 'readonly'],
                 'required' => false,
-                $this->entryTypeOption => $this->legacy ? 'phpcr_odm_path' : PathType::class,
+                'entry_type' => PathType::class,
             ]
         );
 

@@ -58,17 +58,17 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                             'curl_options' => [],
                             'url' => 'http://localhost:8080/server/',
                             'backtrace' => false,
-                            ],
-                            'workspace' => 'default',
-                            'username' => 'admin',
-                            'password' => 'admin',
-                            'options' => [
-                                'jackalope.fetch_depth' => 1,
-                            ],
-                            'admin_username' => null,
-                            'admin_password' => null,
                         ],
+                        'workspace' => 'default',
+                        'username' => 'admin',
+                        'password' => 'admin',
+                        'options' => [
+                            'jackalope.fetch_depth' => 1,
+                        ],
+                        'admin_username' => null,
+                        'admin_password' => null,
                     ],
+                ],
             ],
             'odm' => [
                 'auto_generate_proxy_classes' => true,
@@ -218,37 +218,6 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
             'dump_max_line_length' => 120,
             'manager_registry_service_id' => null,
         ];
-        $bc = [
-            'session' => [
-                'default_session' => 'default',
-                'sessions' => [
-                    'default' => [
-                        'backend' => [
-                            'type' => 'doctrinedbal',
-                            'logging' => false,
-                            'profiling' => false,
-                            'factory' => null,
-                            'backtrace' => false,
-                            'parameters' => [
-                                'jackalope.factory' => Factory::class,
-                                'jackalope.check_login_on_server' => true,
-                                'jackalope.disable_stream_wrapper' => true,
-                                'jackalope.disable_transactions' => true,
-                            ],
-                            'curl_options' => [],
-                        ],
-                        'workspace' => 'default',
-                        'username' => 'admin',
-                        'password' => 'admin',
-                        'options' => [],
-                        'admin_username' => null,
-                        'admin_password' => null,
-                    ],
-                ],
-            ],
-            'dump_max_line_length' => 120,
-            'manager_registry_service_id' => null,
-        ];
 
         return [
             [
@@ -266,10 +235,6 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                     'config/multiple.xml',
                     'config/multiple.php',
                 ],
-            ],
-            [
-                $bc,
-                ['config/bc.php'],
             ],
         ];
     }

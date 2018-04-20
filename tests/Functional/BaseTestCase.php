@@ -3,24 +3,11 @@
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Functional;
 
 use Doctrine\Bundle\PHPCRBundle\Test\RepositoryManager;
-use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Kernel;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class BaseTestCase extends WebTestCase
 {
-    /**
-     * Overwrite because older versions of Symfony require the kernel path instead of the kernel class.
-     *
-     * Remove when we drop support for Symfony 2.
-     *
-     * @return string
-     */
-    protected static function getKernelClass()
-    {
-        return Kernel::class;
-    }
-
     protected function getRepositoryManager(): RepositoryManager
     {
         if (!self::$kernel) {
