@@ -28,7 +28,9 @@ matrix:
 
 
     # Test LTS versions. This makes sure we do not use Symfony packages with version greater
-    # than 4. Read more at https://github.com/symfony/lts
+    # than 3 or 4 respectively. Read more at https://github.com/symfony/lts
+    - php: 7.2
+      env: DEPENDENCIES="symfony/lts:^3"
     - php: 7.2
       env: DEPENDENCIES="symfony/lts:^4@dev"
 
