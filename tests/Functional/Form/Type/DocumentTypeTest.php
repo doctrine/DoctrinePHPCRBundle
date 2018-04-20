@@ -25,15 +25,8 @@ class DocumentTypeTest extends BaseTestCase
      */
     private $referrer;
 
-    /**
-     * @var bool whether we are dealing with legacy symfony form component that uses alias instead of class name for form types
-     */
-    private $legacy;
-
     public function setUp()
     {
-        $this->legacy = !method_exists(AbstractType::class, 'getBlockPrefix');
-
         $repositoryManager = $this->getRepositoryManager();
         $repositoryManager->loadFixtures([LoadData::class]);
         $this->dm = $repositoryManager->getDocumentManager();
@@ -48,7 +41,7 @@ class DocumentTypeTest extends BaseTestCase
      */
     private function createFormBuilder($data, $options = [])
     {
-        return self::$kernel->getContainer()->get('form.factory')->createBuilder($this->legacy ? 'form' : FormType::class, $data, $options);
+        return self::$kernel->getContainer()->get('form.factory')->createBuilder(FormType::class, $data, $options);
     }
 
     /**
@@ -68,7 +61,7 @@ class DocumentTypeTest extends BaseTestCase
         $formBuilder = $this->createFormBuilder($this->referrer);
 
         $formBuilder
-            ->add('single', $this->legacy ? 'phpcr_document' : DocumentType::class, [
+            ->add('single', DocumentType::class, [
                 'class' => TestDocument::class,
             ])
         ;
@@ -88,7 +81,7 @@ class DocumentTypeTest extends BaseTestCase
         $formBuilder = $this->createFormBuilder($this->referrer);
 
         $formBuilder
-            ->add('single', $this->legacy ? 'phpcr_document' : DocumentType::class, [
+            ->add('single', DocumentType::class, [
                 'class' => TestDocument::class,
                 'query_builder' => $qb,
             ])

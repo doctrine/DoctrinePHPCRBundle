@@ -45,26 +45,17 @@ class ValidPhpcrOdmValidator extends ConstraintValidator
         $parent = $class->getFieldValue($document, $class->parentMapping);
 
         if (empty($parent)) {
-            $this->legacyAddViolationAt($class->parentMapping, $constraint->message);
+            $this->context->buildViolation($constraint->message)
+                ->atPath($class->parentMapping)
+                ->addViolation();
         }
 
         $name = $class->getFieldValue($document, $class->nodename);
 
         if (empty($name)) {
-            $this->legacyAddViolationAt($class->nodename, $constraint->message);
-        }
-    }
-
-    private function legacyAddViolationAt($property, $message)
-    {
-        if (method_exists($this->context, 'buildViolation')) {
-            // Symfony Validator 2.5+ API
-            $this->context->buildViolation($message)
-                ->atPath($property)
+            $this->context->buildViolation($constraint->message)
+                ->atPath($class->nodename)
                 ->addViolation();
-        } else {
-            // Symfony Validator <2.5 API
-            $this->context->addViolationAt($property, $message);
         }
     }
 }
