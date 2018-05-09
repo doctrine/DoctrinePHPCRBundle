@@ -2,8 +2,11 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\DependencyInjection;
 
+use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
 use Doctrine\ODM\PHPCR\Document\Generic;
+use Doctrine\ODM\PHPCR\DocumentManagerInterface;
 use Doctrine\ODM\PHPCR\Version;
+use PHPCR\SessionInterface;
 use Symfony\Bridge\Doctrine\DependencyInjection\AbstractDoctrineExtension;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
@@ -67,9 +70,12 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         $this->loader->load('phpcr.xml');
         $this->loader->load('commands.xml');
 
+        $managerRegistryServiceId = 'doctrine_phpcr';
         if (!empty($config['manager_registry_service_id'])) {
+            $managerRegistryServiceId = $config['manager_registry_service_id'];
             $container->setAlias('doctrine_phpcr', new Alias($config['manager_registry_service_id'], true));
         }
+        $container->setAlias(ManagerRegistry::class, new Alias($managerRegistryServiceId, true));
 
         $parameters = [
             'workspace_dir',
@@ -154,8 +160,8 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         $this->defaultSession = $config['default_session'];
         $this->sessions = $sessions;
         $container->setParameter('doctrine_phpcr.default_session', $config['default_session']);
-        $container->setAlias('doctrine_phpcr.session', $sessions[$config['default_session']]);
-        $container->getAlias('doctrine_phpcr.session')->setPublic(true);
+        $container->setAlias('doctrine_phpcr.session', new Alias($sessions[$config['default_session']], true));
+        $container->setAlias(SessionInterface::class, new Alias($sessions[$config['default_session']], true));
     }
 
     private function loadJackalopeSession(array $session, ContainerBuilder $container, $type, $admin = false)
@@ -168,13 +174,12 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                     ? $session['backend']['connection']
                     : null
                 ;
-                $connectionAliasName = $connectionName
+                $connectionTargetName = $connectionName
                     ? sprintf('doctrine.dbal.%s_connection', $connectionName)
                     : 'database_connection'
                 ;
-                $connectionAlias = new Alias($connectionAliasName, true);
                 $connectionAliasName = sprintf('doctrine_phpcr%s.jackalope_doctrine_dbal.%s_connection', $serviceNamePrefix, $session['name']);
-                $container->setAlias($connectionAliasName, $connectionAlias);
+                $container->setAlias($connectionAliasName, new Alias($connectionTargetName, true));
 
                 if (!$this->dbalSchemaListenerLoaded) {
                     $this->loader->load('jackalope_doctrine_dbal.xml');
@@ -346,7 +351,8 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         }
 
         $container->setParameter('doctrine_phpcr.odm.default_document_manager', $config['default_document_manager']);
-        $container->setAlias('doctrine_phpcr.odm.document_manager', $documentManagers[$config['default_document_manager']]);
+        $container->setAlias('doctrine_phpcr.odm.document_manager', new Alias($documentManagers[$config['default_document_manager']], true));
+        $container->setAlias(DocumentManagerInterface::class, new Alias($documentManagers[$config['default_document_manager']]));
 
         $options = ['auto_generate_proxy_classes', 'proxy_dir', 'proxy_namespace'];
         foreach ($options as $key) {
