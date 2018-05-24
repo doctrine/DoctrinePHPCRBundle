@@ -50,10 +50,12 @@
             public="false"
         />
 
+        <!-- public even though abstract: all named document managers have to be public services -->
         <service
             id="doctrine_phpcr.odm.document_manager.abstract"
             class="Doctrine\ODM\PHPCR\DocumentManager"
             abstract="true"
+            public="true"
         />
 
         <service id="form.type.phpcr_odm.reference_collection"

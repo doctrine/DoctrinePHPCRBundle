@@ -4,6 +4,11 @@ Changelog
 2.0.0 (unreleased)
 ------------------
 
+* Prepared services for autowiring. Services now have aliases named the same as the class:
+  - doctrine_phpcr => Doctrine\Bundle\PHPCRBundle\ManagerRegistry
+  - doctrine_phpcr.session => PHPCR\SessionInterface
+  - doctrine_phpcr.odm.document_manager => Doctrine\ODM\PHPCR\DocumentManagerInterface
+
 * Removed deprecated `PHPCRODMReferenceCollectionType` and `ReferenceManyCollectionToArrayTransformer`.
 * Dropped deprecated option session (use dm instead) and unused option name from command `doctrine:phpcr:fixtures:load`
 * Dropped deprecated option session (use dm instead) from command `doctrine:phpcr:document:migrate-class`
