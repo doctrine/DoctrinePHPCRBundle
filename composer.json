@@ -33,7 +33,6 @@
         "symfony/monolog-bundle": "^3.2.0",
         "symfony/monolog-bridge": "^3.4 || ^4.0",
         "symfony/phpunit-bridge": "^3.4 || ^4.0",
-        "symfony/security-bundle": "^3.4 || ^4.0",
         "symfony/templating": "^3.4 || ^4.0",
         "symfony/translation": "^3.4 || ^4.0",
         "symfony/twig-bundle": "^3.4 || ^4.0",
