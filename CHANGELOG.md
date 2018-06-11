@@ -1,8 +1,8 @@
 Changelog
 =========
 
-2.0.0 (unreleased)
-------------------
+2.0.0
+-----
 
 * Prepared services for autowiring. Services now have aliases named the same as the class:
   - doctrine_phpcr => Doctrine\Bundle\PHPCRBundle\ManagerRegistry
