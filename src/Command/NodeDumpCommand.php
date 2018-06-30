@@ -75,7 +75,7 @@ class NodeDumpCommand extends BaseDumpCommand implements ContainerAwareInterface
         $helperSet = $application->getHelperSet();
         $helperSet->set($this->consoleDumper);
 
-        if (!$input->getParameterOption('max_line_length')
+        if (!$input->hasOption('max_line_length')
             && $this->getContainer()->hasParameter('doctrine_phpcr.dump_max_line_length')
         ) {
             $input->setOption('max_line_length', $this->getContainer()->getParameter('doctrine_phpcr.dump_max_line_length'));

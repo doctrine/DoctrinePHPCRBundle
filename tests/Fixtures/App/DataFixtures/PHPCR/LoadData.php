@@ -59,6 +59,21 @@ class LoadData implements FixtureInterface
 
         $manager->persist($ref);
 
+        $doc = new TestDocument();
+        $doc->parent = $base;
+        $doc->nodename = 'doc-very-long';
+        $doc->bool = true;
+        $doc->date = new \DateTime('2014-01-14');
+        $doc->integer = 42;
+        $doc->long = 24;
+        $doc->number = 3.14;
+        $doc->text = 'Lorem ipsum dolor sit amet, consectetur adipiscing'.
+            ' elit. Aenean ultrices consectetur ex. Integer fringilla'.
+            ' augue sed lacus blandit, non aliquam leo dapibus. Sed'.
+            ' ac dolor lorem. Sed non ullamcorper nisl.';
+
+        $manager->persist($doc);
+
         $manager->flush();
 
         $node = $manager->getPhpcrSession()->getNode('/test/doc');
