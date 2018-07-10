@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.0.1
+-----
+
+* Fixed: NodeDumpCommand now respects the --max_line_length option
+
 2.0.0
 -----
 
