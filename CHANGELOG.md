@@ -1,5 +1,11 @@
 Changelog
 =========
+2.0.2
+-----
+
+* Fixed: Removed problematic default mapping for the whole src/ directory. When not using a bundle,
+  you need to explicitly configure your Document folder. See step 6 at
+  https://symfony.com/doc/master/cmf/cookbook/database/create_new_project_phpcr_odm.html .
 
 2.0.1
 -----
