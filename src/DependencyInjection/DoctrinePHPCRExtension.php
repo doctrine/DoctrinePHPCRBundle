@@ -174,12 +174,6 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                     ? $session['backend']['connection']
                     : null
                 ;
-                $connectionTargetName = $connectionName
-                    ? sprintf('doctrine.dbal.%s_connection', $connectionName)
-                    : 'database_connection'
-                ;
-                $connectionAliasName = sprintf('doctrine_phpcr%s.jackalope_doctrine_dbal.%s_connection', $serviceNamePrefix, $session['name']);
-                $container->setAlias($connectionAliasName, new Alias($connectionTargetName, true));
 
                 if (!$this->dbalSchemaListenerLoaded) {
                     $this->loader->load('jackalope_doctrine_dbal.xml');
@@ -193,6 +187,13 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                         'lazy' => true,
                     ])
                 ;
+
+                $connectionTargetName = $connectionName
+                    ? sprintf('doctrine.dbal.%s_connection', $connectionName)
+                    : 'database_connection'
+                ;
+                $connectionAliasName = sprintf('doctrine_phpcr%s.jackalope_doctrine_dbal.%s_connection', $serviceNamePrefix, $session['name']);
+                $container->setAlias($connectionAliasName, new Alias($connectionTargetName, true));
 
                 $backendParameters['jackalope.doctrine_dbal_connection'] = new Reference($connectionAliasName);
                 if (false === $admin && isset($session['backend']['caches'])) {
