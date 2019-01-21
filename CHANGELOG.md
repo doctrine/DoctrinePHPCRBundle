@@ -1,5 +1,11 @@
 Changelog
 =========
+
+2.0.3
+-----
+
+* Fixed: Avoid problem with debug:autowiring command by reordering things in container extension #333.
+
 2.0.2
 -----
 
