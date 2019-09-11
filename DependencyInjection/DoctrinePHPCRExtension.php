@@ -44,10 +44,14 @@ use Symfony\Component\DependencyInjection\Reference;
 class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 {
     private $defaultSession;
+
     private $sessions = array();
+
     private $bundleDirs = array();
+
     /** @var XmlFileLoader */
     private $loader;
+
     private $disableProxyWarmer = false;
 
     /**
@@ -193,6 +197,12 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                 $connectionService = new Alias($connectionService, true);
                 $connectionAliasName = sprintf('doctrine_phpcr%s.jackalope_doctrine_dbal.%s_connection', $serviceNamePrefix, $session['name']);
                 $container->setAlias($connectionAliasName, $connectionService);
+
+                // If default connection does not exist set the first doctrine_dbal connection as default
+                $defaultConnectionAlias = sprintf('doctrine_phpcr%s.jackalope_doctrine_dbal.%s_connection', $serviceNamePrefix, 'default');
+                if (!$container->hasAlias($defaultConnectionAlias) && !$container->hasDefinition($defaultConnectionAlias)) {
+                    $container->setAlias($defaultConnectionAlias, $connectionAliasName);
+                }
 
                 if (!$this->dbalSchemaListenerLoaded) {
                     $this->loader->load('jackalope_doctrine_dbal.xml');
