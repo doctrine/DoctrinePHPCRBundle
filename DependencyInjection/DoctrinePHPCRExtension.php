@@ -44,10 +44,14 @@ use Symfony\Component\DependencyInjection\Reference;
 class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 {
     private $defaultSession;
+
     private $sessions = array();
+
     private $bundleDirs = array();
+
     /** @var XmlFileLoader */
     private $loader;
+
     private $disableProxyWarmer = false;
 
     /**
@@ -198,14 +202,20 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                     $this->loader->load('jackalope_doctrine_dbal.xml');
                     $this->dbalSchemaListenerLoaded = true;
                 }
-                $container
-                    ->getDefinition('doctrine_phpcr.jackalope_doctrine_dbal.schema_listener')
-                    ->addTag('doctrine.event_listener', array(
-                        'connection' => $connectionName,
-                        'event' => 'postGenerateSchema',
-                        'lazy' => true,
-                    ))
-                ;
+
+                $schemaListenerDefinition = $container->getDefinition('doctrine_phpcr.jackalope_doctrine_dbal.schema_listener');
+
+                $eventListenerOptions = array(
+                    'connection' => $connectionName,
+                    'event' => 'postGenerateSchema',
+                    'lazy' => true,
+                );
+
+                $schemaListenerTags = $schemaListenerDefinition->getTag('doctrine.event_listener');
+
+                if (!in_array($eventListenerOptions, $schemaListenerTags)) {
+                    $schemaListenerDefinition->addTag('doctrine.event_listener', $eventListenerOptions);
+                }
 
                 $backendParameters['jackalope.doctrine_dbal_connection'] = new Reference($connectionAliasName);
                 if (false === $admin && isset($session['backend']['caches'])) {
