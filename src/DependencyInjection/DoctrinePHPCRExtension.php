@@ -179,14 +179,20 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                     $this->loader->load('jackalope_doctrine_dbal.xml');
                     $this->dbalSchemaListenerLoaded = true;
                 }
-                $container
-                    ->getDefinition('doctrine_phpcr.jackalope_doctrine_dbal.schema_listener')
-                    ->addTag('doctrine.event_listener', [
-                        'connection' => $connectionName,
-                        'event' => 'postGenerateSchema',
-                        'lazy' => true,
-                    ])
-                ;
+
+                $schemaListenerDefinition = $container->getDefinition('doctrine_phpcr.jackalope_doctrine_dbal.schema_listener');
+
+                $eventListenerOptions = [
+                    'connection' => $connectionName,
+                    'event' => 'postGenerateSchema',
+                    'lazy' => true,
+                ];
+
+                $schemaListenerTags = $schemaListenerDefinition->getTag('doctrine.event_listener');
+
+                if (!in_array($eventListenerOptions, $schemaListenerTags)) {
+                    $schemaListenerDefinition->addTag('doctrine.event_listener', $eventListenerOptions);
+                }
 
                 $connectionTargetName = $connectionName
                     ? sprintf('doctrine.dbal.%s_connection', $connectionName)
@@ -194,6 +200,11 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                 ;
                 $connectionAliasName = sprintf('doctrine_phpcr%s.jackalope_doctrine_dbal.%s_connection', $serviceNamePrefix, $session['name']);
                 $container->setAlias($connectionAliasName, new Alias($connectionTargetName, true));
+                // If default connection does not exist set the first doctrine_dbal connection as default
+                $defaultConnectionName = sprintf('doctrine_phpcr%s.jackalope_doctrine_dbal.default_connection', $serviceNamePrefix);
+                if (!$container->hasAlias($defaultConnectionName)) {
+                    $container->setAlias($defaultConnectionName, $connectionAliasName);
+                }
 
                 $backendParameters['jackalope.doctrine_dbal_connection'] = new Reference($connectionAliasName);
                 if (false === $admin && isset($session['backend']['caches'])) {
