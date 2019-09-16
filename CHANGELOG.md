@@ -1,6 +1,14 @@
 Changelog
 =========
 
+1.3.10
+------
+
+* [fix] Alias to provide default dbal connection when the default session is not using dbal
+* [fix] Avoid adding multiple doctrine.event_listener tags with same options
+* [fix] Allow initializer services to be private
+* [fix] Add kernel root directory to fixtures location paths
+
 1.3.9
 -----
 
@@ -23,7 +31,7 @@ Changelog
 1.3.3
 -----
 
-* Since version 1.3.0 `LocaleListener` has treated the `locale_fallback` strategy 'hardcoded' as 'merge', this is now 
+* Since version 1.3.0 `LocaleListener` has treated the `locale_fallback` strategy 'hardcoded' as 'merge', this is now
   rectified so and the default behaviour is now 'merge'
 
 1.3.2
