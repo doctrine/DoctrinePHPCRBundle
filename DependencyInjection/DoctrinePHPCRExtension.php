@@ -198,6 +198,12 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                 $connectionAliasName = sprintf('doctrine_phpcr%s.jackalope_doctrine_dbal.%s_connection', $serviceNamePrefix, $session['name']);
                 $container->setAlias($connectionAliasName, $connectionService);
 
+                // If default connection does not exist set the first doctrine_dbal connection as default
+                $defaultConnectionName = sprintf('doctrine_phpcr%s.jackalope_doctrine_dbal.default_connection', $serviceNamePrefix);
+                if (!$container->hasAlias($defaultConnectionName)) {
+                    $container->setAlias($defaultConnectionName, $connectionAliasName);
+                }
+
                 if (!$this->dbalSchemaListenerLoaded) {
                     $this->loader->load('jackalope_doctrine_dbal.xml');
                     $this->dbalSchemaListenerLoaded = true;
