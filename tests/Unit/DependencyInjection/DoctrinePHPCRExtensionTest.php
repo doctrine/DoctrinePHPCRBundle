@@ -23,6 +23,8 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
 
         $this->setParameter('kernel.name', 'app');
         $this->setParameter('kernel.root_dir', null);
+        $this->setParameter('kernel.project_dir', null);
+        $this->setParameter('kernel.container_class', null);
         $this->setParameter('kernel.environment', 'test');
         $this->setParameter('kernel.bundles', []);
         $this->setParameter('kernel.debug', false);
