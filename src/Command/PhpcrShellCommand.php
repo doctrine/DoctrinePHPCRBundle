@@ -4,7 +4,7 @@ namespace Doctrine\Bundle\PHPCRBundle\Command;
 
 use PHPCR\Shell\Console\Application\SessionApplication;
 use PHPCR\Shell\PhpcrShell;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Wrapper to use this command in the symfony console with multiple sessions.
  */
-class PhpcrShellCommand extends ContainerAwareCommand
+class PhpcrShellCommand extends Command
 {
     /**
      * {@inheritdoc}

@@ -1,7 +1,7 @@
 doctrine:
     dbal:
         driver: pdo_sqlite
-        path: "%kernel.root_dir%/var/cache/app.sqlite"
+        path: "%kernel.project_dir%/var/cache/app.sqlite"
         charset: UTF8
 
 doctrine_phpcr:
@@ -25,5 +25,5 @@ doctrine_phpcr:
             test_additional:
                 type: annotation
                 prefix: Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document
-                dir: "%kernel.root_dir%/Document"
+                dir: "%kernel.project_dir%/Document"
                 is_bundle: false

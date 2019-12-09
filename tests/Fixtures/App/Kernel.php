@@ -17,6 +17,11 @@ class Kernel extends HttpKernel
         return __DIR__.'/var/log';
     }
 
+    public function getProjectDir()
+    {
+        return __DIR__;
+    }
+
     public function registerBundles()
     {
         $contents = require __DIR__.'/config/bundles.php';

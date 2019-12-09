@@ -3,18 +3,21 @@
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
 use Doctrine\ODM\PHPCR\Tools\Console\Command\RegisterSystemNodeTypesCommand;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
  * Command to collect init operations from any interested bundles.
  *
  * If phpcr-odm is present, this also executes RegisterSystemNodeTypesCommand.
  */
-class RepositoryInitCommand extends ContainerAwareCommand
+class RepositoryInitCommand extends Command
 {
+    use ContainerAwareTrait;
+
     protected function configure()
     {
         parent::configure();
@@ -44,11 +47,13 @@ EOT
             $command->execute($input, $output);
         }
 
-        $initializerManager = $this->getContainer()->get('doctrine_phpcr.initializer_manager');
+        $initializerManager = $this->container->get('doctrine_phpcr.initializer_manager');
         $initializerManager->setLoggingClosure(function ($message) use ($output) {
             $output->writeln($message);
         });
 
         $initializerManager->initialize($input->getOption('session'));
+
+        return 0;
     }
 }

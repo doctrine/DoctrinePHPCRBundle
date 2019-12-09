@@ -6,13 +6,14 @@ use Doctrine\Bundle\PHPCRBundle\DataFixtures\PHPCRExecutor;
 use Doctrine\Common\DataFixtures\Purger\PHPCRPurger;
 use InvalidArgumentException;
 use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -23,8 +24,10 @@ use Symfony\Component\HttpKernel\KernelInterface;
  * @author Jonathan H. Wage <jonwage@gmail.com>
  * @author Daniel Leech <daniel@dantleech.com>
  */
-class LoadFixtureCommand extends ContainerAwareCommand
+class LoadFixtureCommand extends Command
 {
+    use ContainerAwareTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -107,7 +110,7 @@ EOT
             }
         }
 
-        $loader = new ContainerAwareLoader($this->getContainer());
+        $loader = new ContainerAwareLoader($this->container);
         foreach ($paths as $path) {
             if (is_dir($path)) {
                 $loader->loadFromDirectory($path);
@@ -128,7 +131,7 @@ EOT
         if ($noInitialize) {
             $initializerManager = null;
         } else {
-            $initializerManager = $this->getContainer()->get('doctrine_phpcr.initializer_manager');
+            $initializerManager = $this->container->get('doctrine_phpcr.initializer_manager');
         }
 
         $executor = new PHPCRExecutor($dm, $purger, $initializerManager);

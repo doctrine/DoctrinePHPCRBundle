@@ -3,4 +3,4 @@ framework:
     test: ~
     form: ~
     router:
-        resource: '%kernel.root_dir%/config/routing.php'
+        resource: '%kernel.project_dir%/config/routing.php'
