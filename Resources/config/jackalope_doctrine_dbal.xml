@@ -14,6 +14,7 @@
         <service id="doctrine_phpcr.jackalope_doctrine_dbal.schema"
                  class="%doctrine_phpcr.jackalope_doctrine_dbal.repository_schema.class%"
                  public="false"
+                 lazy="true"
         >
             <argument type="collection"/>
             <argument type="service" id="doctrine_phpcr.jackalope_doctrine_dbal.default_connection"/>

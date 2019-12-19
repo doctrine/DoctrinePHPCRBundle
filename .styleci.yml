@@ -1,1 +1,4 @@
 preset: symfony
+
+disabled:
+  - single_line_throw
