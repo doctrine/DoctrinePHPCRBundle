@@ -1,13 +1,6 @@
 Changelog
 =========
 
-2.1.0 (unreleased)
-------------------
-
-* Made the schema listener for doctrine dbal use the container to only load the schema when really
-  necessary. This avoids trying to connect to the database when the cache is warmed - as this
-  operation can happen in a different place than where the application runs.
-
 2.0.4
 ------
 

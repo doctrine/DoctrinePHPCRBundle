@@ -8,7 +8,7 @@
 
         <service id="doctrine_phpcr.jackalope_doctrine_dbal.schema"
                  class="Jackalope\Transport\DoctrineDBAL\RepositorySchema"
-                 public="true"
+                 public="false"
         >
             <argument type="collection"/>
             <argument type="service" id="doctrine_phpcr.jackalope_doctrine_dbal.default_connection"/>
@@ -16,7 +16,7 @@
 
         <service id="doctrine_phpcr.jackalope_doctrine_dbal.schema_listener"
                  class="Doctrine\Bundle\PHPCRBundle\EventListener\JackalopeDoctrineDbalSchemaListener">
-            <argument type="service" id="service_container" />
+            <argument type="service" id="doctrine_phpcr.jackalope_doctrine_dbal.schema" />
         </service>
 
     </services>
