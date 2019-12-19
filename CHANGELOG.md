@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.3.11
+------
+
+* [performance] Jackalope Doctrine DBAL schema listener marked as lazy.
+  Install ocramius/proxy-manager to avoid unnecessary database calls.
+
 1.3.10
 ------
 
