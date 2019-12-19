@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="doctrine_phpcr.jackalope_doctrine_dbal.schema"
+                 class="Jackalope\Transport\DoctrineDBAL\RepositorySchema"
+                 public="false"
+                 lazy="true"
+        >
+            <argument type="collection"/>
+            <argument type="service" id="doctrine_phpcr.jackalope_doctrine_dbal.default_connection"/>
+        </service>
+
+        <service id="doctrine_phpcr.jackalope_doctrine_dbal.schema_listener"
+                 class="Doctrine\Bundle\PHPCRBundle\EventListener\JackalopeDoctrineDbalSchemaListener">
+            <argument type="service" id="doctrine_phpcr.jackalope_doctrine_dbal.schema" />
+        </service>
+
+    </services>
+
+</container>

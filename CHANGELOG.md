@@ -1,6 +1,50 @@
 Changelog
 =========
 
+2.0.5 (unreleased)
+------------------
+
+* [performance] Jackalope Doctrine DBAL schema listener marked as lazy.
+  Install ocramius/proxy-manager to avoid unnecessary database calls.
+
+2.0.4
+------
+
+* [fix] Alias to provide default dbal connection when the default session is not using dbal
+* [fix] Avoid adding multiple doctrine.event_listener tags with same options
+* [fix] Allow initializer services to be private
+* [fix] Add kernel root directory to fixtures location paths
+
+2.0.3
+-----
+
+* Fixed: Avoid problem with debug:autowiring command by reordering things in container extension #333.
+
+2.0.2
+-----
+
+* Fixed: Removed problematic default mapping for the whole src/ directory. When not using a bundle,
+  you need to explicitly configure your Document folder. See step 6 at
+  https://symfony.com/doc/master/cmf/cookbook/database/create_new_project_phpcr_odm.html .
+
+2.0.1
+-----
+
+* Fixed: NodeDumpCommand now respects the --max_line_length option
+
+2.0.0
+-----
+
+* Prepared services for autowiring. Services now have aliases named the same as the class:
+  - doctrine_phpcr => Doctrine\Bundle\PHPCRBundle\ManagerRegistry
+  - doctrine_phpcr.session => PHPCR\SessionInterface
+  - doctrine_phpcr.odm.document_manager => Doctrine\ODM\PHPCR\DocumentManagerInterface
+
+* Removed deprecated `PHPCRODMReferenceCollectionType` and `ReferenceManyCollectionToArrayTransformer`.
+* Dropped deprecated option session (use dm instead) and unused option name from command `doctrine:phpcr:fixtures:load`
+* Dropped deprecated option session (use dm instead) from command `doctrine:phpcr:document:migrate-class`
+* Made all command options required - omit the option completely when you don't need to set anything
+
 1.3.11
 ------
 

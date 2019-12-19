@@ -1,5 +1,5 @@
 composer.lock
 vendor
-Tests/Resources/app/cache
-Tests/Resources/app/logs
+!tests/Fixtures/App/var/.gitempty
+tests/Fixtures/App/var
 /.php_cs.cache

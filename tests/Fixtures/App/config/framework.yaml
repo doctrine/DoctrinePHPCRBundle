@@ -1,0 +1,6 @@
+framework:
+    secret: test
+    test: ~
+    form: ~
+    router:
+        resource: '%kernel.root_dir%/config/routing.php'
