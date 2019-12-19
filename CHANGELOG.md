@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.0.5 (unreleased)
+------------------
+
+* [performance] Jackalope Doctrine DBAL schema listener marked as lazy.
+  Install ocramius/proxy-manager to avoid unnecessary database calls.
+
 2.0.4
 ------
 
@@ -38,6 +44,12 @@ Changelog
 * Dropped deprecated option session (use dm instead) and unused option name from command `doctrine:phpcr:fixtures:load`
 * Dropped deprecated option session (use dm instead) from command `doctrine:phpcr:document:migrate-class`
 * Made all command options required - omit the option completely when you don't need to set anything
+
+1.3.11
+------
+
+* [performance] Jackalope Doctrine DBAL schema listener marked as lazy.
+  Install ocramius/proxy-manager to avoid unnecessary database calls.
 
 1.3.10
 ------

@@ -9,3 +9,6 @@ enabled:
   - ordered_use
   - strict
   - php_unit_construct
+
+disabled:
+  - single_line_throw
