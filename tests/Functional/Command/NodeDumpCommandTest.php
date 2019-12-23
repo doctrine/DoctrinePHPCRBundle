@@ -9,7 +9,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class NodeDumpCommandTest extends BaseTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $repositoryManager = $this->getRepositoryManager();
         $repositoryManager->loadFixtures([LoadData::class]);

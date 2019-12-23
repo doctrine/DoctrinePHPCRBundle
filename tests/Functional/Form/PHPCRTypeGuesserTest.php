@@ -36,7 +36,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
      */
     private $referrer;
 
-    public function setUp()
+    public function setUp(): void
     {
         self::createClient();
         $repositoryManager = $this->getRepositoryManager();

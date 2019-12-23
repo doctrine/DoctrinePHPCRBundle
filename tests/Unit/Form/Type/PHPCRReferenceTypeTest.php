@@ -11,7 +11,7 @@ use Symfony\Component\Form\FormBuilder;
 
 class PHPCRReferenceTypeTest extends Testcase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->session = $this->createMock(SessionInterface::class);
 

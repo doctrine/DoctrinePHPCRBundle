@@ -10,14 +10,14 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
 {
-    protected function getContainerExtensions()
+    protected function getContainerExtensions(): array
     {
         return [
             new DoctrinePHPCRExtension(),
         ];
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

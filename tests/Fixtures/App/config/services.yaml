@@ -1,0 +1,7 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+    autoconfigure: true
+
+  Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Controller\TestController: ~

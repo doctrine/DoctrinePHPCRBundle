@@ -24,7 +24,7 @@ class DocumentTypeTest extends BaseTestCase
      */
     private $referrer;
 
-    public function setUp()
+    public function setUp(): void
     {
         $repositoryManager = $this->getRepositoryManager();
         $repositoryManager->loadFixtures([LoadData::class]);

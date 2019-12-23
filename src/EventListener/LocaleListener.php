@@ -5,6 +5,7 @@ namespace Doctrine\Bundle\PHPCRBundle\EventListener;
 use Doctrine\ODM\PHPCR\Translation\LocaleChooser\LocaleChooser;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -78,11 +79,11 @@ class LocaleListener implements EventSubscriberInterface
     /**
      * Decides which locale will be used.
      *
-     * @param GetResponseEvent $event used to get the request
+     * @param RequestEvent|GetResponseEvent $event used to get the request
      *
      * @return mixed string|null a locale or null if no valid locale is found
      */
-    protected function determineLocale(GetResponseEvent $event)
+    protected function determineLocale(/* RequestEvent */ $event)
     {
         $locale = $event->getRequest()->getLocale();
 
@@ -94,9 +95,9 @@ class LocaleListener implements EventSubscriberInterface
     /**
      * Handling the request event.
      *
-     * @param GetResponseEvent $event
+     * @param RequestEvent|GetResponseEvent $event
      */
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(/* RequestEvent */ $event)
     {
         $request = $event->getRequest();
 
