@@ -2,14 +2,17 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class MigratorMigrateCommand extends ContainerAwareCommand
+class MigratorMigrateCommand extends Command
 {
+    use ContainerAwareTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -40,8 +43,7 @@ EOT
         );
         $session = $this->getHelperSet()->get('phpcr')->getSession();
 
-        $container = $this->getContainer();
-        $migrators = $container->getParameter('doctrine_phpcr.migrate.migrators');
+        $migrators = $this->container->getParameter('doctrine_phpcr.migrate.migrators');
 
         $migratorName = $input->getArgument('migrator_name');
         if (!$migratorName) {
@@ -52,11 +54,11 @@ EOT
         }
 
         $id = $migrators[$migratorName] ?? null;
-        if (!$id || !$container->has($id)) {
+        if (!$id || !$this->container->has($id)) {
             throw new \InvalidArgumentException("Wrong value '$migratorName' for migrator_name argument.\nAvailable migrators:\n".implode("\n", array_keys($migrators)));
         }
 
-        $migrator = $container->get($id);
+        $migrator = $this->container->get($id);
 
         $migrator->init($session, $output);
 

@@ -16,7 +16,7 @@ class PhpcrOdmQueryBuilderLoaderTest extends BaseTestCase
      */
     private $dm;
 
-    public function setUp()
+    public function setUp(): void
     {
         $repositoryManager = $this->getRepositoryManager();
         $repositoryManager->loadFixtures([LoadData::class]);

@@ -6,6 +6,7 @@ use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\DocumentToPathTransformer;
 use Doctrine\Bundle\PHPCRBundle\Form\Type\PathType;
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
 use Doctrine\ODM\PHPCR\DocumentManager;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,22 +14,22 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class PathTypeTest extends Testcase
 {
     /**
-     * @var ManagerRegistry|\PHPUnit_Framework_MockObject_MockObject
+     * @var ManagerRegistry|MockObject
      */
     private $reg;
 
     /**
-     * @var DocumentManager|\PHPUnit_Framework_MockObject_MockObject
+     * @var DocumentManager|MockObject
      */
     private $dm;
 
     /**
-     * @var FormBuilder|\PHPUnit_Framework_MockObject_MockObject
+     * @var FormBuilder|MockObject
      */
     private $builder;
 
     /**
-     * @var OptionsResolver|\PHPUnit_Framework_MockObject_MockObject
+     * @var OptionsResolver|MockObject
      */
     private $optionsResolver;
 
@@ -37,7 +38,7 @@ class PathTypeTest extends Testcase
      */
     private $type;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->reg = $this->createMock(ManagerRegistry::class);
 

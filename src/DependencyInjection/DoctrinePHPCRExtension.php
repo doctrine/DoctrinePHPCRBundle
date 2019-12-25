@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\Reference;
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
-class DoctrinePHPCRExtension extends AbstractDoctrineExtension
+abstract class BaseDoctrinePHPCRExtension extends AbstractDoctrineExtension
 {
     /**
      * @var string
@@ -534,14 +534,6 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
     /**
      * {@inheritdoc}
      */
-    protected function getObjectManagerElementName($name)
-    {
-        return 'doctrine_phpcr.odm.'.$name;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function getMappingObjectDefaultName()
     {
         return 'Document';
@@ -569,5 +561,37 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
     public function getNamespace()
     {
         return 'http://doctrine-project.org/schema/symfony-dic/odm/phpcr';
+    }
+
+    protected function getMetadataDriverClass(string $driverType): string
+    {
+        return '%'.$this->getObjectManagerElementName('metadata.'.$driverType.'.class%');
+    }
+}
+
+// Hackery to be compatible with doctrine bridge < 5 and >= 5
+
+$refl = new \ReflectionClass(AbstractDoctrineExtension::class);
+if ($refl->hasMethod('getMetadataDriverClass') && $refl->getMethod('getMetadataDriverClass')->isAbstract()) {
+    class DoctrinePHPCRExtension extends BaseDoctrinePHPCRExtension
+    {
+        /**
+         * {@inheritdoc}
+         */
+        protected function getObjectManagerElementName(string $name)
+        {
+            return 'doctrine_phpcr.odm.'.$name;
+        }
+    }
+} else {
+    class DoctrinePHPCRExtension extends BaseDoctrinePHPCRExtension
+    {
+        /**
+         * {@inheritdoc}
+         */
+        protected function getObjectManagerElementName($name)
+        {
+            return 'doctrine_phpcr.odm.'.$name;
+        }
     }
 }

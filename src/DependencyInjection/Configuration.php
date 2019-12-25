@@ -21,8 +21,15 @@ class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('doctrine_phpcr')
+        $treeBuilder = new TreeBuilder('doctrine_phpcr');
+        if (method_exists($treeBuilder, 'getRootNode')) {
+            $root = $treeBuilder->getRootNode();
+        } else {
+            // BC layer for symfony/config 4.1 and older
+            $root = $treeBuilder->root('doctrine_phpcr');
+        }
+
+        $root
             ->children()
                 ->scalarNode('jackrabbit_jar')->end()
                 ->scalarNode('workspace_dir')->end()
@@ -31,8 +38,8 @@ class Configuration implements ConfigurationInterface
             ->end()
         ;
 
-        $this->addPHPCRSection($rootNode);
-        $this->addOdmSection($rootNode);
+        $this->addPHPCRSection($root);
+        $this->addOdmSection($root);
 
         return $treeBuilder;
     }
@@ -83,10 +90,15 @@ class Configuration implements ConfigurationInterface
 
     private function getPHPCRSessionsNode()
     {
-        $treeBuilder = new TreeBuilder();
-        $node = $treeBuilder->root('sessions');
+        $treeBuilder = new TreeBuilder('sessions');
+        if (method_exists($treeBuilder, 'getRootNode')) {
+            $root = $treeBuilder->getRootNode();
+        } else {
+            // BC layer for symfony/config 4.1 and older
+            $root = $treeBuilder->root('sessions');
+        }
 
-        $node
+        $root
             ->requiresAtLeastOneElement()
             ->fixXmlConfig('option')
             ->useAttributeAsKey('name')
@@ -180,7 +192,7 @@ class Configuration implements ConfigurationInterface
             ->end()
         ;
 
-        return $node;
+        return $root;
     }
 
     private function addOdmSection(ArrayNodeDefinition $node)
@@ -259,10 +271,15 @@ class Configuration implements ConfigurationInterface
 
     private function getOdmLocaleNode()
     {
-        $treeBuilder = new TreeBuilder();
-        $node = $treeBuilder->root('locales');
+        $treeBuilder = new TreeBuilder('locales');
+        if (method_exists($treeBuilder, 'getRootNode')) {
+            $root = $treeBuilder->getRootNode();
+        } else {
+            // BC layer for symfony/config 4.1 and older
+            $root = $treeBuilder->root('locales');
+        }
 
-        $node
+        $root
             ->useAttributeAsKey('name')
             ->prototype('array')
                 ->beforeNormalization()
@@ -283,15 +300,20 @@ class Configuration implements ConfigurationInterface
         ->end()
         ;
 
-        return $node;
+        return $root;
     }
 
     private function getOdmDocumentManagersNode()
     {
-        $treeBuilder = new TreeBuilder();
-        $node = $treeBuilder->root('document_managers');
+        $treeBuilder = new TreeBuilder('document_managers');
+        if (method_exists($treeBuilder, 'getRootNode')) {
+            $root = $treeBuilder->getRootNode();
+        } else {
+            // BC layer for symfony/config 4.1 and older
+            $root = $treeBuilder->root('document_managers');
+        }
 
-        $node
+        $root
             ->requiresAtLeastOneElement()
             ->useAttributeAsKey('name')
             ->prototype('array')
@@ -333,15 +355,20 @@ class Configuration implements ConfigurationInterface
             ->end()
         ;
 
-        return $node;
+        return $root;
     }
 
     private function getOdmCacheDriverNode($name)
     {
-        $treeBuilder = new TreeBuilder();
-        $node = $treeBuilder->root($name);
+        $treeBuilder = new TreeBuilder($name);
+        if (method_exists($treeBuilder, 'getRootNode')) {
+            $root = $treeBuilder->getRootNode();
+        } else {
+            // BC layer for symfony/config 4.1 and older
+            $root = $treeBuilder->root($name);
+        }
 
-        $node
+        $root
             ->addDefaultsIfNotSet()
             ->beforeNormalization()
             ->ifString()
@@ -359,6 +386,6 @@ class Configuration implements ConfigurationInterface
             ->scalarNode('namespace')->defaultNull()->end()
             ->end();
 
-        return $node;
+        return $root;
     }
 }

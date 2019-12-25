@@ -8,15 +8,17 @@ use Doctrine\ODM\PHPCR\DocumentRepository;
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadataFactory;
 use Jackalope\Factory;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionConfigurationTestCase;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 
 class ConfigurationTest extends AbstractExtensionConfigurationTestCase
 {
-    protected function getContainerExtension()
+    protected function getContainerExtension(): ExtensionInterface
     {
         return new DoctrinePHPCRExtension();
     }
 
-    protected function getConfiguration()
+    protected function getConfiguration(): ConfigurationInterface
     {
         return new Configuration();
     }

@@ -4,6 +4,7 @@ Changelog
 2.0.5 (unreleased)
 ------------------
 
+* Allow Symfony 5
 * [performance] Jackalope Doctrine DBAL schema listener marked as lazy.
   Install ocramius/proxy-manager to avoid unnecessary database calls.
 

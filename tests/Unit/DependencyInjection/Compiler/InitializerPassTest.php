@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class InitializerPassTest extends AbstractCompilerPassTestCase
 {
-    public function registerCompilerPass(ContainerBuilder $container)
+    public function registerCompilerPass(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new InitializerPass());
 

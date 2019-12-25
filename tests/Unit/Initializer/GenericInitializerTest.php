@@ -14,7 +14,7 @@ class GenericInitializerTest extends TestCase
 {
     protected $registry;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->registry = $this->createMock(ManagerRegistry::class);
 

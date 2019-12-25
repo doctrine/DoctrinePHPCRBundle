@@ -5,26 +5,27 @@ namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\Form\DataTransformer;
 use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\PHPCRNodeToUuidTransformer;
 use Jackalope\Node;
 use PHPCR\SessionInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class PHPCRNodeToUuidTransformerTest extends Testcase
 {
     /**
-     * @var SessionInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var SessionInterface|MockObject
      */
     private $session;
 
     /**
-     * @var PHPCRNodeToUuidTransformer|\PHPUnit_Framework_MockObject_MockObject
+     * @var PHPCRNodeToUuidTransformer|MockObject
      */
     private $transformer;
 
     /**
-     * @var Node|\PHPUnit_Framework_MockObject_MockObject
+     * @var Node|MockObject
      */
     private $node;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->session = $this->createMock(SessionInterface::class);
         $this->transformer = new PHPCRNodeToUuidTransformer($this->session);

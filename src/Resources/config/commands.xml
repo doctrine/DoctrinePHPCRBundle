@@ -6,12 +6,18 @@
 
     <services>
         <service id="Doctrine\Bundle\PHPCRBundle\Command\LoadFixtureCommand" class="Doctrine\Bundle\PHPCRBundle\Command\LoadFixtureCommand">
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
             <tag name="console.command"/>
         </service>
         <service id="Doctrine\Bundle\PHPCRBundle\Command\WorkspaceQueryCommand" class="Doctrine\Bundle\PHPCRBundle\Command\WorkspaceQueryCommand">
             <tag name="console.command"/>
         </service>
         <service id="Doctrine\Bundle\PHPCRBundle\Command\MigratorMigrateCommand" class="Doctrine\Bundle\PHPCRBundle\Command\MigratorMigrateCommand">
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
             <tag name="console.command"/>
         </service>
         <service id="Doctrine\Bundle\PHPCRBundle\Command\NodeDumpCommand" class="Doctrine\Bundle\PHPCRBundle\Command\NodeDumpCommand">
@@ -42,6 +48,9 @@
             <tag name="console.command"/>
         </service>
         <service id="Doctrine\Bundle\PHPCRBundle\Command\RepositoryInitCommand" class="Doctrine\Bundle\PHPCRBundle\Command\RepositoryInitCommand">
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
             <tag name="console.command"/>
         </service>
         <service id="Doctrine\Bundle\PHPCRBundle\Command\WorkspaceCreateCommand" class="Doctrine\Bundle\PHPCRBundle\Command\WorkspaceCreateCommand">

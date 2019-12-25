@@ -5,16 +5,17 @@ namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\Form\DataTransformer;
 use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\DocumentToPathTransformer;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Doctrine\ODM\PHPCR\UnitOfWork;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class DocumentToPathTransformerTest extends Testcase
 {
     /**
-     * @var DocumentManager|\PHPUnit_Framework_MockObject_MockObject
+     * @var DocumentManager|MockObject
      */
     private $dm;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->dm = $this->createMock(DocumentManager::class);
         $this->uow = $this->createMock(UnitOfWork::class);

@@ -5,16 +5,17 @@ namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\Initializer;
 use Doctrine\Bundle\PHPCRBundle\Initializer\InitializerInterface;
 use Doctrine\Bundle\PHPCRBundle\Initializer\InitializerManager;
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class InitializerManagerTest extends TestCase
 {
     /**
-     * @var ManagerRegistry|\PHPUnit_Framework_MockObject_MockObject
+     * @var ManagerRegistry|MockObject
      */
     private $registry;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->registry = $this->createMock(ManagerRegistry::class);
 
