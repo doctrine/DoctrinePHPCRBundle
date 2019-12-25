@@ -1,8 +1,8 @@
 Changelog
 =========
 
-2.0.5 (unreleased)
-------------------
+2.1.0
+-----
 
 * Allow Symfony 5
 * [performance] Jackalope Doctrine DBAL schema listener marked as lazy.
