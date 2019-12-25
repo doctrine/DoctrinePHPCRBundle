@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Kernel;
 
 /*
+ * Hackery to be compatible with both Symfony < 5 and >= 5.
+ *
  * @author Christophe Coevoet <stof@notk.org>
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  */

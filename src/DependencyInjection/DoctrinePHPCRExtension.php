@@ -569,6 +569,8 @@ abstract class BaseDoctrinePHPCRExtension extends AbstractDoctrineExtension
     }
 }
 
+// Hackery to be compatible with doctrine bridge < 5 and >= 5
+
 $refl = new \ReflectionClass(AbstractDoctrineExtension::class);
 if ($refl->hasMethod('getMetadataDriverClass') && $refl->getMethod('getMetadataDriverClass')->isAbstract()) {
     class DoctrinePHPCRExtension extends BaseDoctrinePHPCRExtension
