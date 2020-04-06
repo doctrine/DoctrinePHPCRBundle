@@ -1,6 +1,17 @@
 Changelog
 =========
 
+2.1.1
+-----
+
+* [fix] Allow rfc5646 compatible locales like `en-gb`
+  When using yaml configuration, Symfony converted locales defined under
+  `doctrine_phpcr.odm.locales` to underscore, e.g. `en_gb`. With this fix,
+  the locales are kept literal.
+  CAUTION: If you previously used the workaround of defining both `en-gb` and
+  `en_gb`, this will now break. See this github pull request for more details:
+  https://github.com/doctrine/DoctrinePHPCRBundle/pull/347.
+
 2.1.0
 -----
 
