@@ -1,5 +1,13 @@
 Changelog
 =========
+2.1.1
+-----
+
+* [fix] Allow rfc5646 compatible locales without workaround
+  If you defined en-gb as locale in the config under `doctrine_phpcr.odm.locales` 
+  it would be converted to to en_gb by the symfony config key normalization.if
+  CAUTION: you did this before without applying a workaround of also defining en_gb
+  your installation will brake, see PR #347 for more details
 
 2.1.0
 -----
