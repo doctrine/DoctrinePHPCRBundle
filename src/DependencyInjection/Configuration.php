@@ -281,6 +281,7 @@ class Configuration implements ConfigurationInterface
 
         $root
             ->useAttributeAsKey('name')
+            ->normalizeKeys(false)
             ->prototype('array')
                 ->beforeNormalization()
                     ->ifTrue(function ($v) {
