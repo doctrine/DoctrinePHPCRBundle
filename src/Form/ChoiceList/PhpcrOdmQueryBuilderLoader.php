@@ -80,7 +80,7 @@ class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
             return !empty($v);
         }));
 
-        if (0 === count($values)) {
+        if (0 === \count($values)) {
             return [];
         }
 
@@ -101,8 +101,6 @@ class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
 
     /**
      * Run the query and return a consecutive array.
-     *
-     * @param QueryBuilder $qb
      *
      * @return array list of result documents
      */

@@ -37,7 +37,7 @@ class PHPCRReferenceTypeTest extends Testcase
         $this->builder->expects($this->once())
             ->method('addModelTransformer')
             ->will($this->returnCallback(function ($transformer) use (&$type) {
-                $type = get_class($transformer);
+                $type = \get_class($transformer);
 
                 return;
             }));
