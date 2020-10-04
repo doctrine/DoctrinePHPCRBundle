@@ -11,7 +11,7 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Form;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Form\AbstractExtension;
 
 class DoctrinePHPCRExtension extends AbstractExtension

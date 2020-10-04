@@ -4,9 +4,9 @@ namespace Doctrine\Bundle\PHPCRBundle\Form;
 
 use Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType;
 use Doctrine\Bundle\PHPCRBundle\Form\Type\PathType;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;

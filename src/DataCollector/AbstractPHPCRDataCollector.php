@@ -2,9 +2,9 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\DataCollector;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadataFactory;
+use Doctrine\Persistence\ManagerRegistry;
 use Jackalope\Query\Query;
 use Jackalope\Transport\Logging\DebugStack;
 use PHPCR\Query\QueryInterface;
