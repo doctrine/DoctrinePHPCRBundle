@@ -266,7 +266,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
 
         $formBuilder
             ->add('single', null, ['class' => ReferrerDocument::class])
-            ->add('documents', null, ['class' => ReferrerDocument::class])
+            ->add('documents', null, ['class' => TestDocument::class])
             ->add('testDocument')
             ->add('testDocuments')
         ;
@@ -286,7 +286,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
             [
                 'required' => false,
                 'multiple' => true,
-                'class' => ReferrerDocument::class,
+                'class' => TestDocument::class,
             ]
         );
 
@@ -362,10 +362,9 @@ class PHPCRTypeGuesserTest extends BaseTestCase
      * Assert that the form element has an inner type of type $typeClass and
      * the specified options with their values.
      *
-     * @param FormBuilderInterface $element
-     * @param string               $typeClass FQN class
-     * @param array                $options   keys are option names, values the
-     *                                        expected option values
+     * @param string $typeClass FQN class
+     * @param array  $options   keys are option names, values the
+     *                          expected option values
      */
     private function assertFormType(FormBuilderInterface $element, $typeClass, array $options)
     {
