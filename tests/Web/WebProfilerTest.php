@@ -25,7 +25,7 @@ class WebProfilerTest extends BaseTestCase
         $this->assertResponseSuccess($client->getResponse());
 
         $token = $client->getProfile()->getToken();
-        $uri = \str_replace('{token}', $token, $uri);
+        $uri = str_replace('{token}', $token, $uri);
 
         $client->request('GET', $uri);
         $this->assertResponseSuccess($client->getResponse());

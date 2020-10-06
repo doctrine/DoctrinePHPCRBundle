@@ -67,7 +67,7 @@ class GenericInitializer implements InitializerInterface, SessionAwareInitialize
         if ($this->cnd) {
             $this->registerCnd($session, $this->cnd);
         }
-        if (count($this->basePaths)) {
+        if (\count($this->basePaths)) {
             $this->createBasePaths($session, $this->basePaths);
         }
     }

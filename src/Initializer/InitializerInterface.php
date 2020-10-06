@@ -15,8 +15,6 @@ interface InitializerInterface
     /**
      * This method should be used to establish the requisite structure needed
      * by the application or bundle of the content repository.
-     *
-     * @param ManagerRegistry $registry
      */
     public function init(ManagerRegistry $registry);
 

@@ -60,7 +60,7 @@ class GenericInitializerTest extends TestCase
             $this->node->expects($this->any())
                 ->method('addNode')
                 ->will($this->returnValue($this->node));
-            $this->session->expects($this->exactly(count($basePaths)))
+            $this->session->expects($this->exactly(\count($basePaths)))
                 ->method('getRootNode')
                 ->will($this->returnValue($this->node));
         }
