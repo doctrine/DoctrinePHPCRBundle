@@ -7,6 +7,7 @@ use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\PHPCRNodeToUuidTransformer;
 use Doctrine\Bundle\PHPCRBundle\Form\Type\PHPCRReferenceType;
 use PHPCR\SessionInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\FormBuilder;
 
 class PHPCRReferenceTypeTest extends Testcase
@@ -37,7 +38,7 @@ class PHPCRReferenceTypeTest extends Testcase
         $this->builder->expects($this->once())
             ->method('addModelTransformer')
             ->will($this->returnCallback(function ($transformer) use (&$type) {
-                $type = get_class($transformer);
+                $type = \get_class($transformer);
 
                 return;
             }));
@@ -46,11 +47,10 @@ class PHPCRReferenceTypeTest extends Testcase
         $this->assertEquals($transformerFqn, $type);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     */
     public function testInvalidType()
     {
+        $this->expectException(InvalidConfigurationException::class);
+
         $this->type->buildForm($this->builder, ['transformer_type' => 'asdasd']);
     }
 }

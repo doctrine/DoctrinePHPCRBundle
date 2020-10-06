@@ -7,6 +7,7 @@ use Doctrine\ODM\PHPCR\Translation\LocaleChooser\LocaleChooser;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 class LocaleListenerTest extends TestCase
 {
@@ -21,9 +22,18 @@ class LocaleListenerTest extends TestCase
     private function setUpTestOnKernelRequest()
     {
         $this->chooser = $this->createMock(LocaleChooser::class);
-        $this->responseEvent = $this->createMock(GetResponseEvent::class);
+        $this->responseEvent = $this->createMock($this->getResponseEventClass());
         $this->request = $this->createMock(Request::class);
         $this->allowedLocales = ['fr', 'en', 'de'];
+    }
+
+    private function getResponseEventClass(): string
+    {
+        if (class_exists(RequestEvent::class)) {
+            return RequestEvent::class;
+        }
+
+        return GetResponseEvent::class;
     }
 
     public function testOnKernelRequestWithFallbackHardcoded()

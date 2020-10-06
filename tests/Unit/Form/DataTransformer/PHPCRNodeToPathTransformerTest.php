@@ -7,6 +7,7 @@ use Jackalope\Node;
 use PHPCR\SessionInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 class PHPCRNodeToPathTransformerTest extends Testcase
 {
@@ -43,11 +44,10 @@ class PHPCRNodeToPathTransformerTest extends Testcase
         $this->assertEquals('/asd', $res);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\UnexpectedTypeException
-     */
     public function testTransformWrongType()
     {
+        $this->expectException(UnexpectedTypeException::class);
+
         $this->transformer->transform(new \stdClass());
     }
 

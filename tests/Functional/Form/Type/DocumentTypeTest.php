@@ -66,8 +66,8 @@ class DocumentTypeTest extends BaseTestCase
         ;
 
         $html = $this->renderForm($formBuilder);
-        $this->assertContains('<select id="form_single" name="form[single]"', $html);
-        $this->assertContains('<option value="/test/doc"', $html);
+        $this->assertStringContainsString('<select id="form_single" name="form[single]"', $html);
+        $this->assertStringContainsString('<option value="/test/doc"', $html);
     }
 
     public function testFiltered()
@@ -87,7 +87,7 @@ class DocumentTypeTest extends BaseTestCase
         ;
 
         $html = $this->renderForm($formBuilder);
-        $this->assertContains('<select id="form_single" name="form[single]"', $html);
-        $this->assertNotContains('<option', $html);
+        $this->assertStringContainsString('<select id="form_single" name="form[single]"', $html);
+        $this->assertStringNotContainsString('<option', $html);
     }
 }

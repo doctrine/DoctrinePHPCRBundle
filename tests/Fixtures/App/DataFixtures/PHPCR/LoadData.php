@@ -14,9 +14,9 @@ namespace Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\DataFixtures\PHPCR;
 use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\ReferrerDocument;
 use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument;
 use Doctrine\Common\DataFixtures\FixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ODM\PHPCR\Document\Generic;
 use Doctrine\ODM\PHPCR\DocumentManager;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadData implements FixtureInterface
 {

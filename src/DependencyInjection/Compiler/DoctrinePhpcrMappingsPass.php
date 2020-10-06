@@ -2,12 +2,12 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler;
 
-use Doctrine\Common\Persistence\Mapping\Driver\PHPDriver;
-use Doctrine\Common\Persistence\Mapping\Driver\StaticPHPDriver;
-use Doctrine\Common\Persistence\Mapping\Driver\SymfonyFileLocator;
 use Doctrine\ODM\PHPCR\Mapping\Driver\AnnotationDriver;
 use Doctrine\ODM\PHPCR\Mapping\Driver\XmlDriver;
 use Doctrine\ODM\PHPCR\Mapping\Driver\YamlDriver;
+use Doctrine\Persistence\Mapping\Driver\PHPDriver;
+use Doctrine\Persistence\Mapping\Driver\StaticPHPDriver;
+use Doctrine\Persistence\Mapping\Driver\SymfonyFileLocator;
 use Symfony\Bridge\Doctrine\DependencyInjection\CompilerPass\RegisterMappingsPass;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;

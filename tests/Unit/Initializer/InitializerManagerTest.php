@@ -107,11 +107,11 @@ class InitializerManagerTest extends TestCase
 
         $this->initializerManager->initialize();
 
-        $this->assertCount(count($initializers), $log);
+        $this->assertCount(\count($initializers), $log);
 
         // check expected order against the log
         foreach ($expectedOrder as $i => $initializerVar) {
-            $this->assertContains($initializerVar, $log[$i]);
+            $this->assertStringContainsString($initializerVar, $log[$i]);
         }
     }
 

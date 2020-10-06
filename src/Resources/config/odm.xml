@@ -21,8 +21,8 @@
         <parameter key="doctrine_phpcr.odm.cache.xcache.class">Doctrine\Common\Cache\XcacheCache</parameter>
         <parameter key="doctrine_phpcr.odm.metadata.xml.class">Doctrine\Bundle\PHPCRBundle\Mapping\Driver\XmlDriver</parameter>
         <parameter key="doctrine_phpcr.odm.metadata.yml.class">Doctrine\Bundle\PHPCRBundle\Mapping\Driver\YamlDriver</parameter>
-        <parameter key="doctrine_phpcr.odm.metadata.php.class">Doctrine\Common\Persistence\Mapping\Driver\StaticPHPDriver</parameter>
-        <parameter key="doctrine_phpcr.odm.metadata.driver_chain.class">Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain</parameter>
+        <parameter key="doctrine_phpcr.odm.metadata.php.class">Doctrine\Persistence\Mapping\Driver\StaticPHPDriver</parameter>
+        <parameter key="doctrine_phpcr.odm.metadata.driver_chain.class">Doctrine\Persistence\Mapping\Driver\MappingDriverChain</parameter>
         <parameter key="doctrine_phpcr.odm.metadata.annotation.class">Doctrine\ODM\PHPCR\Mapping\Driver\AnnotationDriver</parameter>
     </parameters>
     <services>

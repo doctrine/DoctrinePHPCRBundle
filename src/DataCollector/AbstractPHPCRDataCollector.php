@@ -2,9 +2,9 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\DataCollector;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadataFactory;
+use Doctrine\Persistence\ManagerRegistry;
 use Jackalope\Query\Query;
 use Jackalope\Transport\Logging\DebugStack;
 use PHPCR\Query\QueryInterface;
@@ -50,8 +50,7 @@ abstract class AbstractPHPCRDataCollector extends DataCollector
     /**
      * Adds the stack logger for a connection.
      *
-     * @param string     $name
-     * @param DebugStack $logger
+     * @param string $name
      */
     public function addLogger($name, DebugStack $logger)
     {
@@ -129,7 +128,7 @@ abstract class AbstractPHPCRDataCollector extends DataCollector
      */
     private function sanitizeParam($var): array
     {
-        if (is_object($var)) {
+        if (\is_object($var)) {
             if ($var instanceof QueryInterface) {
                 $query = [
                     'querystring' => $var->getStatement(),
@@ -143,10 +142,10 @@ abstract class AbstractPHPCRDataCollector extends DataCollector
                 return $query;
             }
 
-            return [sprintf('Object(%s)', get_class($var)), false];
+            return [sprintf('Object(%s)', \get_class($var)), false];
         }
 
-        if (is_array($var)) {
+        if (\is_array($var)) {
             $a = [];
             $original = true;
             foreach ($var as $k => $v) {
@@ -158,7 +157,7 @@ abstract class AbstractPHPCRDataCollector extends DataCollector
             return [$a, $original];
         }
 
-        if (is_resource($var)) {
+        if (\is_resource($var)) {
             return [sprintf('Resource(%s)', get_resource_type($var)), false];
         }
 

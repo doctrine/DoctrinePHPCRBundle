@@ -154,7 +154,7 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
         $repositoryFactory = $this->container->getDefinition('doctrine_phpcr.jackalope.repository.default');
         $parameters = $repositoryFactory->getArgument(0);
 
-        $this->assertInternalType('array', $parameters);
+        $this->assertIsArray($parameters);
         $this->assertEquals([
             'jackalope.doctrine_dbal_connection',
             'jackalope.check_login_on_server',

@@ -7,6 +7,7 @@ use Doctrine\ODM\PHPCR\DocumentManager;
 use Doctrine\ODM\PHPCR\UnitOfWork;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class DocumentToPathTransformerTest extends Testcase
 {
@@ -48,15 +49,14 @@ class DocumentToPathTransformerTest extends Testcase
         $this->assertSame($this->document, $res);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
-     */
     public function testReverseTransformNotFound()
     {
         $this->dm->expects($this->once())
             ->method('find')
             ->with(null, '/asd')
             ->will($this->returnValue(null));
+
+        $this->expectException(TransformationFailedException::class);
 
         $res = $this->transformer->reverseTransform('/asd');
         $this->assertSame($this->document, $res);

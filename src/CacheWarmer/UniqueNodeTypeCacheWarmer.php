@@ -2,8 +2,8 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\CacheWarmer;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ODM\PHPCR\Tools\Helper\UniqueNodeTypeHelper;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
 
 /**
