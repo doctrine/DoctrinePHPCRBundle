@@ -1,10 +1,8 @@
 preset: symfony
+risky: true
 
 enabled:
   - combine_consecutive_unsets
-  - short_array_syntax
-  - newline_after_open_tag
-  - no_php4_constructor
   - no_useless_else
   - ordered_use
   - strict
