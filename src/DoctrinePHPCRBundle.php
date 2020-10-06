@@ -81,8 +81,8 @@ class DoctrinePHPCRBundle extends Bundle
 
             $this->autoloader = function ($class) use ($namespace, $dir, &$container) {
                 if (0 === strpos($class, $namespace)) {
-                    $fileName = str_replace('\\', '', substr($class, strlen($namespace) + 1));
-                    $file = $dir.DIRECTORY_SEPARATOR.$fileName.'.php';
+                    $fileName = str_replace('\\', '', substr($class, \strlen($namespace) + 1));
+                    $file = $dir.\DIRECTORY_SEPARATOR.$fileName.'.php';
 
                     if (!is_file($file) && $container->getParameter('doctrine_phpcr.odm.auto_generate_proxy_classes')) {
                         $originalClassName = ClassUtils::getRealClass($class);

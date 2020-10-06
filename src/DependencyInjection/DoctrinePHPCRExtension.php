@@ -190,7 +190,7 @@ abstract class BaseDoctrinePHPCRExtension extends AbstractDoctrineExtension
 
                 $schemaListenerTags = $schemaListenerDefinition->getTag('doctrine.event_listener');
 
-                if (!in_array($eventListenerOptions, $schemaListenerTags)) {
+                if (!\in_array($eventListenerOptions, $schemaListenerTags)) {
                     $schemaListenerDefinition->addTag('doctrine.event_listener', $eventListenerOptions);
                 }
 
@@ -226,11 +226,11 @@ abstract class BaseDoctrinePHPCRExtension extends AbstractDoctrineExtension
 
         // pipe additional parameters unchanged to jackalope
         $backendParameters += $session['backend']['parameters'];
-        if (array_key_exists('curl_options', $session['backend']) && count($session['backend']['curl_options'])) {
+        if (\array_key_exists('curl_options', $session['backend']) && \count($session['backend']['curl_options'])) {
             $curlOptions = [];
             foreach ($session['backend']['curl_options'] as $option => $value) {
-                if (!is_int($option)) {
-                    $option = constant($option);
+                if (!\is_int($option)) {
+                    $option = \constant($option);
                 }
 
                 $curlOptions[$option] = $value;
@@ -392,10 +392,10 @@ abstract class BaseDoctrinePHPCRExtension extends AbstractDoctrineExtension
             $this->loader->load('odm_multilang.xml');
 
             foreach ($config['locales'] as $locale => $fallbacks) {
-                if (in_array($locale, $fallbacks)) {
+                if (\in_array($locale, $fallbacks)) {
                     throw new InvalidArgumentException(sprintf('The fallbacks for locale %s contain the locale itself.', $locale));
                 }
-                if (count($fallbacks) !== count(array_unique($fallbacks))) {
+                if (\count($fallbacks) !== \count(array_unique($fallbacks))) {
                     throw new InvalidArgumentException(sprintf('Duplicate locale in the fallbacks for locale %s.', $locale));
                 }
             }
@@ -489,7 +489,7 @@ abstract class BaseDoctrinePHPCRExtension extends AbstractDoctrineExtension
      */
     protected function getMappingDriverBundleConfigDefaults(array $bundleConfig, \ReflectionClass $bundle, ContainerBuilder $container)
     {
-        $this->bundleDirs[] = dirname($bundle->getFileName());
+        $this->bundleDirs[] = \dirname($bundle->getFileName());
 
         return parent::getMappingDriverBundleConfigDefaults($bundleConfig, $bundle, $container);
     }
@@ -508,7 +508,7 @@ abstract class BaseDoctrinePHPCRExtension extends AbstractDoctrineExtension
         $class = new \ReflectionClass(Generic::class);
 
         $documentManager['mappings']['__PHPCRODM__'] = [
-            'dir' => dirname($class->getFileName()),
+            'dir' => \dirname($class->getFileName()),
             'type' => 'annotation',
             'prefix' => 'Doctrine\ODM\PHPCR\Document',
             'is_bundle' => false,

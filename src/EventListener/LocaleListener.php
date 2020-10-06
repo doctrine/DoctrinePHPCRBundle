@@ -87,7 +87,7 @@ class LocaleListener implements EventSubscriberInterface
     {
         $locale = $event->getRequest()->getLocale();
 
-        return in_array($locale, $this->allowedLocales) ?
+        return \in_array($locale, $this->allowedLocales) ?
             $locale :
             null;
     }
@@ -119,7 +119,7 @@ class LocaleListener implements EventSubscriberInterface
             $extendedPreferredLanguages[] = $language;
             if (false !== $position = strpos($language, '_')) {
                 $superLanguage = substr($language, 0, $position);
-                if (!in_array($superLanguage, $preferredLanguages)) {
+                if (!\in_array($superLanguage, $preferredLanguages)) {
                     $extendedPreferredLanguages[] = $superLanguage;
                 }
             }
