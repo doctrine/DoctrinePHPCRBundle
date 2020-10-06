@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.1.2
+-----
+
+* [fix] Do not fail when doctrine/persistence 2.x is used.
+
 2.1.1
 -----
 
