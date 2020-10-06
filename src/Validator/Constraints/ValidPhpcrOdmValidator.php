@@ -23,12 +23,11 @@ class ValidPhpcrOdmValidator extends ConstraintValidator
     }
 
     /**
-     * @param object     $document
-     * @param Constraint $constraint
+     * @param object $document
      */
     public function validate($document, Constraint $constraint)
     {
-        $className = get_class($document);
+        $className = \get_class($document);
         $dm = $this->registry->getManagerForClass($className);
 
         if (null === $dm) {

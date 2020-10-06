@@ -51,10 +51,10 @@ class Configuration implements ConfigurationInterface
             ->arrayNode('session')
                 ->beforeNormalization()
                     ->ifTrue(function ($v) {
-                        return !is_array($v) || (is_array($v) && !array_key_exists('sessions', $v) && !array_key_exists('session', $v));
+                        return !\is_array($v) || (\is_array($v) && !\array_key_exists('sessions', $v) && !\array_key_exists('session', $v));
                     })
                     ->then(function ($v) {
-                        if (!is_array($v)) {
+                        if (!\is_array($v)) {
                             $v = [];
                         }
 
@@ -68,7 +68,7 @@ class Configuration implements ConfigurationInterface
                             'backend',
                             'options',
                         ] as $key) {
-                            if (array_key_exists($key, $v)) {
+                            if (\array_key_exists($key, $v)) {
                                 $session[$key] = $v[$key];
                                 unset($v[$key]);
                             }
@@ -202,7 +202,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('odm')
                     ->beforeNormalization()
                         ->ifTrue(function ($v) {
-                            return null === $v || (is_array($v) && !array_key_exists('document_managers', $v) && !array_key_exists('document_manager', $v));
+                            return null === $v || (\is_array($v) && !\array_key_exists('document_managers', $v) && !\array_key_exists('document_manager', $v));
                         })
                         ->then(function ($v) {
                             $v = (array) $v;

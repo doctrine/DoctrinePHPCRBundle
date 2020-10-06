@@ -50,7 +50,7 @@ EOT;
         $application = $this->getApplication();
 
         // if no cnd-files, automatically load from bundles
-        if (0 === count($definitions)) {
+        if (0 === \count($definitions)) {
             $bundles = $application->getKernel()->getBundles();
 
             $candidatePaths = [];
@@ -64,7 +64,7 @@ EOT;
                 $candidatePaths[] = $candidatePath;
             }
 
-            if (0 === count($candidatePaths)) {
+            if (0 === \count($candidatePaths)) {
                 $output->writeln(sprintf(
                     'No definition files specified and could not find any definitions in any <comment><bundle>/%s</comment> folders. Aborting.',
                     self::BUNDLE_NT_PATH

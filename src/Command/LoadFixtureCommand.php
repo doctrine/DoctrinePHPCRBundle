@@ -100,7 +100,7 @@ EOT
 
         $dirOrFile = $input->getOption('fixtures');
         if ($dirOrFile) {
-            $paths = is_array($dirOrFile) ? $dirOrFile : [$dirOrFile];
+            $paths = \is_array($dirOrFile) ? $dirOrFile : [$dirOrFile];
         } else {
             /** @var $kernel KernelInterface */
             $kernel = $this->getApplication()->getKernel();

@@ -362,10 +362,9 @@ class PHPCRTypeGuesserTest extends BaseTestCase
      * Assert that the form element has an inner type of type $typeClass and
      * the specified options with their values.
      *
-     * @param FormBuilderInterface $element
-     * @param string               $typeClass FQN class
-     * @param array                $options   keys are option names, values the
-     *                                        expected option values
+     * @param string $typeClass FQN class
+     * @param array  $options   keys are option names, values the
+     *                          expected option values
      */
     private function assertFormType(FormBuilderInterface $element, $typeClass, array $options)
     {
