@@ -50,6 +50,9 @@ jobs:
                       phpunit-version: "8.5"
                       symfony-version: "5.0.*"
 
+                    - php-version: "8.0"
+                      phpunit-version: "8.5"
+
         steps:
             - name: "Checkout project"
               uses: "actions/checkout@v2"
