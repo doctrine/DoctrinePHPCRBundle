@@ -1,0 +1,89 @@
+name: "Test application"
+
+on:
+    pull_request:
+    push:
+        branches:
+            - "master"
+            - "[0-9]+.x"
+            - "[0-9]+.[0-9]+"
+            - "[0-9]+.[0-9]+.x"
+
+jobs:
+    test:
+        name: "PHP ${{ matrix.php-version }}, Symfony ${{ matrix.symfony-version }}"
+        runs-on: "ubuntu-20.04"
+
+        strategy:
+            fail-fast: false
+            matrix:
+                include:
+                    - php-version: "7.1"
+                      phpunit-version: "6.5"
+                      dependencies: "lowest"
+
+                    - php-version: "7.1"
+                      phpunit-version: "6.5"
+
+                    - php-version: "7.2"
+                      phpunit-version: "8.5"
+
+                    - php-version: "7.3"
+                      phpunit-version: "8.5"
+
+                    - php-version: "7.4"
+                      phpunit-version: "6.5"
+                      dependencies: "lowest"
+
+                    - php-version: "7.4"
+                      phpunit-version: "7.5"
+                      dependencies: "lowest"
+                      composer-require: "matthiasnoback/symfony-dependency-injection-test:^3.0"
+                      symfony-version: "^3.4"
+
+                    - php-version: "7.4"
+                      phpunit-version: "8.5"
+                      phpunit-flags: "-v --coverage-text"
+                      symfony-version: "^4.4"
+
+                    - php-version: "7.4"
+                      phpunit-version: "8.5"
+                      symfony-version: "5.0.*"
+
+                    - php-version: "8.0"
+                      phpunit-version: "8.5"
+
+        steps:
+            - name: "Checkout project"
+              uses: "actions/checkout@v2"
+
+            - name: "Install and configure PHP"
+              uses: "shivammathur/setup-php@v2"
+              with:
+                  php-version: "${{ matrix.php-version }}"
+                  extensions: "pdo, pdo_sqlite"
+                  tools: "composer:v2"
+
+            - name: "Require Specific Symfony Version"
+              if: "${{ matrix.symfony-version }}"
+              run: "composer require --no-update symfony/symfony:${{ matrix.symfony-version }}"
+
+            - name: "Require Additional dependencies"
+              if: "${{ matrix.composer-require }}"
+              run: "composer require --no-update ${{ matrix.composer-require }}"
+
+            - name: "Install dependencies with Composer"
+              uses: "ramsey/composer-install@v1"
+              with:
+                  dependency-versions: "${{ matrix.dependencies }}"
+                  composer-options: "--prefer-dist --no-suggest"
+
+            - name: "Setup phpcr"
+              run: "tests/phpcr_odm_doctrine_dbal.sh"
+
+            - name: "Execute test cases"
+              run: |
+                if [[ $SYMFONY_PHPUNIT_VERSION == '' ]]; then unset SYMFONY_PHPUNIT_VERSION; fi;
+                vendor/bin/simple-phpunit ${{ matrix.phpunit-flags }}
+              env:
+                  SYMFONY_PHPUNIT_VERSION: "${{ matrix.phpunit-version }}"
