@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.2.0
+-----
+
+* Added support for PHP 8
+
 2.1.2
 -----
 
