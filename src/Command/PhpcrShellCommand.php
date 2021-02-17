@@ -60,10 +60,10 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if (!class_exists(SessionApplication::class)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new \InvalidArgumentException(
                 'PHPCR-Shell not installed as a dependency. Add the "phpcr/phpcr-shell" to your '.
                 'composer.json file to use this command'
-            ));
+            );
         }
 
         DoctrineCommandHelper::setApplicationPHPCRSession(
