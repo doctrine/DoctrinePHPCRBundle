@@ -104,7 +104,8 @@ EOT
         } else {
             /** @var $kernel KernelInterface */
             $kernel = $this->getApplication()->getKernel();
-            $paths = [$kernel->getRootDir().'/DataFixtures/PHPCR'];
+            $projectDir = method_exists($kernel, 'getRootDir') ? $kernel->getRootDir() : $kernel->getProjectDir().'/src';
+            $paths = [$projectDir.'/DataFixtures/PHPCR'];
             foreach ($kernel->getBundles() as $bundle) {
                 $paths[] = $bundle->getPath().'/DataFixtures/PHPCR';
             }
