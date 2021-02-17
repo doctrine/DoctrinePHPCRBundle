@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.2.1
+-----
+
+* [fix] Use `Kernel::getProjectDir().'/src'` if `Kernel::getRootDir()` is not
+  available (method was removed in Symfony 5).
+
 2.2.0
 -----
 
