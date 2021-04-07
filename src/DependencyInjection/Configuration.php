@@ -180,6 +180,7 @@ class Configuration implements ConfigurationInterface
                                 ->children()
                                     ->scalarNode('meta')->end()
                                     ->scalarNode('nodes')->end()
+                                    ->scalarNode('query')->end()
                                 ->end()
                             ->end()
                         ->end()
