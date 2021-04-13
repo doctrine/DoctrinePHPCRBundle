@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.2.2
+-----
+
+* Allow to configure a doctrine-dbal query cache, like you can configure the meta and nodes cache.
+
 2.2.1
 -----
 
