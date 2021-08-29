@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.3.0
+-----
+
+* Explicitly require doctrine/cache to keep running Jackalope with cache.
+* Drop support for PHP 7.1 - 7.3
+
 2.2.2
 -----
 
