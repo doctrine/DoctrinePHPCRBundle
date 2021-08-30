@@ -18,19 +18,6 @@ jobs:
             fail-fast: false
             matrix:
                 include:
-                    - php-version: "7.1"
-                      phpunit-version: "6.5"
-                      dependencies: "lowest"
-
-                    - php-version: "7.1"
-                      phpunit-version: "6.5"
-
-                    - php-version: "7.2"
-                      phpunit-version: "8.5"
-
-                    - php-version: "7.3"
-                      phpunit-version: "8.5"
-
                     - php-version: "7.4"
                       phpunit-version: "6.5"
                       dependencies: "lowest"

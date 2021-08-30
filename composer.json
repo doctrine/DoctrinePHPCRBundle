@@ -21,10 +21,11 @@
         }
     ],
     "require": {
-        "php": "^7.1|^8.0",
+        "php": "^7.4|^8.0",
         "phpcr/phpcr-utils": "^1.3",
         "symfony/doctrine-bridge": "^3.4 || ^4.3 || ^5.0",
-        "symfony/framework-bundle": "^3.4 || ^4.3 || ^5.0"
+        "symfony/framework-bundle": "^3.4 || ^4.3 || ^5.0",
+        "doctrine/cache": "^1.12"
     },
     "conflict": {
         "doctrine/annotations": "< 1.7.0",

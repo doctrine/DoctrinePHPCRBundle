@@ -1,5 +1,7 @@
 framework:
     secret: test
+    annotations: ~
+    property_access: ~
     test: ~
     form: ~
     router:
