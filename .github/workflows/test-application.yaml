@@ -19,14 +19,8 @@ jobs:
             matrix:
                 include:
                     - php-version: "7.4"
-                      phpunit-version: "6.5"
+                      phpunit-version: "8.5"
                       dependencies: "lowest"
-
-                    - php-version: "7.4"
-                      phpunit-version: "7.5"
-                      dependencies: "lowest"
-                      composer-require: "matthiasnoback/symfony-dependency-injection-test:^3.0"
-                      symfony-version: "^3.4"
 
                     - php-version: "7.4"
                       phpunit-version: "8.5"
@@ -38,7 +32,11 @@ jobs:
                       symfony-version: "5.0.*"
 
                     - php-version: "8.0"
-                      phpunit-version: "8.5"
+                      phpunit-version: "9.5"
+                      symfony-version: "6.0.*"
+
+                    - php-version: "8.0"
+                      phpunit-version: "9.5"
 
         steps:
             - name: "Checkout project"
