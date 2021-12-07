@@ -40,7 +40,7 @@ class PHPCRReferenceTypeTest extends Testcase
             ->will($this->returnCallback(function ($transformer) use (&$type) {
                 $type = \get_class($transformer);
 
-                return;
+                return $this->builder;
             }));
         $this->type->buildForm($this->builder, ['transformer_type' => $transformerType]);
 

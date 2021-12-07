@@ -26,6 +26,8 @@ class DocumentTypeTest extends BaseTestCase
 
     public function setUp(): void
     {
+        self::bootKernel();
+
         $repositoryManager = $this->getRepositoryManager();
         $repositoryManager->loadFixtures([LoadData::class]);
         $this->dm = $repositoryManager->getDocumentManager();
@@ -40,7 +42,7 @@ class DocumentTypeTest extends BaseTestCase
      */
     private function createFormBuilder($data, $options = [])
     {
-        return self::$kernel->getContainer()->get('form.factory')->createBuilder(FormType::class, $data, $options);
+        return self::getTestContainer()->get('form.factory')->createBuilder(FormType::class, $data, $options);
     }
 
     /**
@@ -50,7 +52,7 @@ class DocumentTypeTest extends BaseTestCase
     {
         $formView = $formBuilder->getForm()->createView();
         /** @var Environment $twig */
-        $twig = self::$kernel->getContainer()->get('twig');
+        $twig = self::getTestContainer()->get('twig');
 
         return $twig->render('form.html.twig', ['form' => $formView]);
     }
