@@ -487,12 +487,12 @@ abstract class BaseDoctrinePHPCRExtension extends AbstractDoctrineExtension
     /**
      * {@inheritdoc}
      */
-    protected function getMappingDriverBundleConfigDefaults(array $bundleConfig, \ReflectionClass $bundle, ContainerBuilder $container)
-    {
-        $this->bundleDirs[] = \dirname($bundle->getFileName());
-
-        return parent::getMappingDriverBundleConfigDefaults($bundleConfig, $bundle, $container);
-    }
+//    protected function getMappingDriverBundleConfigDefaults(array $bundleConfig, \ReflectionClass $bundle, ContainerBuilder $container)
+//    {
+//        $this->bundleDirs[] = \dirname($bundle->getFileName());
+//
+//        return parent::getMappingDriverBundleConfigDefaults($bundleConfig, $bundle, $container);
+//    }
 
     private function loadOdmDocumentManagerMappingInformation(array $documentManager, Definition $odmConfig, ContainerBuilder $container)
     {
@@ -534,7 +534,7 @@ abstract class BaseDoctrinePHPCRExtension extends AbstractDoctrineExtension
     /**
      * {@inheritdoc}
      */
-    protected function getMappingObjectDefaultName()
+    protected function getMappingObjectDefaultName(): string
     {
         return 'Document';
     }
@@ -542,7 +542,7 @@ abstract class BaseDoctrinePHPCRExtension extends AbstractDoctrineExtension
     /**
      * {@inheritdoc}
      */
-    protected function getMappingResourceConfigDirectory()
+    protected function getMappingResourceConfigDirectory(string $bundleDir = null): string
     {
         return 'Resources/config/doctrine';
     }
@@ -550,7 +550,7 @@ abstract class BaseDoctrinePHPCRExtension extends AbstractDoctrineExtension
     /**
      * {@inheritdoc}
      */
-    protected function getMappingResourceExtension()
+    protected function getMappingResourceExtension(): string
     {
         return 'phpcr';
     }
@@ -578,7 +578,7 @@ if ($refl->hasMethod('getMetadataDriverClass') && $refl->getMethod('getMetadataD
         /**
          * {@inheritdoc}
          */
-        protected function getObjectManagerElementName(string $name)
+        protected function getObjectManagerElementName(string $name): string
         {
             return 'doctrine_phpcr.odm.'.$name;
         }

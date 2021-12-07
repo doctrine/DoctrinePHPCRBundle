@@ -59,7 +59,7 @@ class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
      *
      * @return array the documents
      */
-    public function getEntities()
+    public function getEntities(): array
     {
         return $this->getResult($this->queryBuilder);
     }
@@ -74,7 +74,7 @@ class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
      *
      * @return array the entities
      */
-    public function getEntitiesByIds($identifier, array $values)
+    public function getEntitiesByIds($identifier, array $values): array
     {
         $values = array_values(array_filter($values, function ($v) {
             return !empty($v);
