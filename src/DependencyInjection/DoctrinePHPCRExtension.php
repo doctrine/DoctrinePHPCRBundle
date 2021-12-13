@@ -36,11 +36,6 @@ abstract class BaseDoctrinePHPCRExtension extends AbstractDoctrineExtension
     private $sessions = [];
 
     /**
-     * @var string[]
-     */
-    private $bundleDirs = [];
-
-    /**
      * @var XmlFileLoader
      */
     private $loader;
@@ -483,16 +478,6 @@ abstract class BaseDoctrinePHPCRExtension extends AbstractDoctrineExtension
             $documentManagerDefinition->addMethodCall('setTranslationStrategy', [$name, new Reference($strategyId)]);
         }
     }
-
-    /**
-     * {@inheritdoc}
-     */
-//    protected function getMappingDriverBundleConfigDefaults(array $bundleConfig, \ReflectionClass $bundle, ContainerBuilder $container)
-//    {
-//        $this->bundleDirs[] = \dirname($bundle->getFileName());
-//
-//        return parent::getMappingDriverBundleConfigDefaults($bundleConfig, $bundle, $container);
-//    }
 
     private function loadOdmDocumentManagerMappingInformation(array $documentManager, Definition $odmConfig, ContainerBuilder $container)
     {
