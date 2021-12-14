@@ -53,7 +53,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
      */
     private function createFormBuilder($data, $options = [])
     {
-        return self::$kernel->getContainer()->get('form.factory')->createBuilder(FormType::class, $data, $options);
+        return self::getTestContainer()->get('form.factory')->createBuilder(FormType::class, $data, $options);
     }
 
     public function testFields()
@@ -354,7 +354,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
     {
         $formView = $formBuilder->getForm()->createView();
         /** @var Environment $twig */
-        $twig = self::$kernel->getContainer()->get('twig');
+        $twig = self::getTestContainer()->get('twig');
         $twig->render('form.html.twig', ['form' => $formView]);
     }
 

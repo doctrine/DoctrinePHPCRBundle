@@ -7,22 +7,22 @@ use Symfony\Component\HttpKernel\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
 {
-    public function getCacheDir()
+    public function getCacheDir(): string
     {
         return __DIR__.'/var/cache/'.$this->environment;
     }
 
-    public function getLogDir()
+    public function getLogDir(): string
     {
         return __DIR__.'/var/log';
     }
 
-    public function getProjectDir()
+    public function getProjectDir(): string
     {
         return __DIR__;
     }
 
-    public function registerBundles()
+    public function registerBundles(): iterable
     {
         $contents = require __DIR__.'/config/bundles.php';
         foreach ($contents as $class => $envs) {

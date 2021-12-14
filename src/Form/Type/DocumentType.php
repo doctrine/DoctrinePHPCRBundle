@@ -18,6 +18,7 @@ namespace Doctrine\Bundle\PHPCRBundle\Form\Type;
 
 use Doctrine\Bundle\PHPCRBundle\Form\ChoiceList\PhpcrOdmQueryBuilderLoader;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityLoaderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\DoctrineType;
 
 class DocumentType extends DoctrineType
@@ -25,7 +26,7 @@ class DocumentType extends DoctrineType
     /**
      * {@inheritdoc}
      */
-    public function getLoader(ObjectManager $manager, $queryBuilder, $class)
+    public function getLoader(ObjectManager $manager, $queryBuilder, $class): EntityLoaderInterface
     {
         return new PhpcrOdmQueryBuilderLoader(
             $queryBuilder,

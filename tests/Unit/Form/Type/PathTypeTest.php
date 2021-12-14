@@ -64,7 +64,7 @@ class PathTypeTest extends Testcase
                     $transformer
                 );
 
-                return;
+                return $this->builder;
             }));
 
         $this->type->buildForm($this->builder, ['manager_name' => null]);
