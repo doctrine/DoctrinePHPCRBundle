@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.4.0
+-----
+
+* Support for Symfony 6
+* Drop support for Symfony 3
+
 2.3.0
 -----
 
