@@ -101,7 +101,7 @@ abstract class BaseDoctrinePHPCRExtension extends AbstractDoctrineExtension
         $this->loadTypeGuess($config, $container);
     }
 
-    private function loadTypeGuess($config, ContainerBuilder $container)
+    private function loadTypeGuess($config, ContainerBuilder $container): void
     {
         $types = [];
 
@@ -113,7 +113,7 @@ abstract class BaseDoctrinePHPCRExtension extends AbstractDoctrineExtension
         $container->setParameter('doctrine_phpcr.form.type_guess', $types);
     }
 
-    private function sessionLoad($config, ContainerBuilder $container)
+    private function sessionLoad($config, ContainerBuilder $container): void
     {
         $sessions = $loaded = [];
         foreach ($config['sessions'] as $name => $session) {
@@ -159,7 +159,7 @@ abstract class BaseDoctrinePHPCRExtension extends AbstractDoctrineExtension
         $container->setAlias(SessionInterface::class, new Alias($sessions[$config['default_session']], true));
     }
 
-    private function loadJackalopeSession(array $session, ContainerBuilder $container, $type, $admin = false)
+    private function loadJackalopeSession(array $session, ContainerBuilder $container, $type, $admin = false): void
     {
         $serviceNamePrefix = $admin ? '.admin' : '';
         $backendParameters = [];
@@ -333,7 +333,7 @@ abstract class BaseDoctrinePHPCRExtension extends AbstractDoctrineExtension
         $container->setDefinition($eventManagerServiceId, $eventManagerDefinition);
     }
 
-    private function loadOdm(array $config, ContainerBuilder $container)
+    private function loadOdm(array $config, ContainerBuilder $container): void
     {
         $this->loader->load('odm.xml');
         $this->loadOdmLocales($config, $container);
@@ -375,7 +375,7 @@ abstract class BaseDoctrinePHPCRExtension extends AbstractDoctrineExtension
         $container->setParameter('doctrine_phpcr.odm.namespaces.translation.alias', $config['namespaces']['translation']['alias']);
     }
 
-    private function loadOdmLocales(array $config, ContainerBuilder $container)
+    private function loadOdmLocales(array $config, ContainerBuilder $container): void
     {
         $localeChooser = $config['locale_chooser'];
 
@@ -419,7 +419,7 @@ abstract class BaseDoctrinePHPCRExtension extends AbstractDoctrineExtension
         }
     }
 
-    private function loadOdmDocumentManager(array $documentManager, ContainerBuilder $container)
+    private function loadOdmDocumentManager(array $documentManager, ContainerBuilder $container): void
     {
         $odmConfigDefTemplate = empty($documentManager['configuration_id']) ? 'doctrine_phpcr.odm.configuration' : $documentManager['configuration_id'];
         $odmConfigDefDefinition = new ChildDefinition($odmConfigDefTemplate);
@@ -479,7 +479,7 @@ abstract class BaseDoctrinePHPCRExtension extends AbstractDoctrineExtension
         }
     }
 
-    private function loadOdmDocumentManagerMappingInformation(array $documentManager, Definition $odmConfig, ContainerBuilder $container)
+    private function loadOdmDocumentManagerMappingInformation(array $documentManager, Definition $odmConfig, ContainerBuilder $container): void
     {
         // reset state of drivers and alias map. They are only used by this methods and children.
         $this->drivers = [];
@@ -511,7 +511,7 @@ abstract class BaseDoctrinePHPCRExtension extends AbstractDoctrineExtension
      * @param array            $documentManager a configured ORM document manager
      * @param ContainerBuilder $container       A ContainerBuilder instance
      */
-    private function loadOdmCacheDrivers(array $documentManager, ContainerBuilder $container)
+    private function loadOdmCacheDrivers(array $documentManager, ContainerBuilder $container): void
     {
         $this->loadObjectManagerCacheDriver($documentManager, $container, 'metadata_cache');
     }
