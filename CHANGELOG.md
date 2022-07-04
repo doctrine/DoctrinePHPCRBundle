@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.4.1
+-----
+
+* Remove obsolete service definition for removed PHPCRODMReferenceCollectionType to avoid container linting errors.
+
 2.4.0
 -----
 
