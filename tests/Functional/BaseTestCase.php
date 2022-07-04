@@ -25,10 +25,10 @@ abstract class BaseTestCase extends WebTestCase
     {
         libxml_use_internal_errors(true);
 
-        $dom = new \DomDocument();
+        $dom = new \DOMDocument();
         $dom->loadHTML($response->getContent());
 
-        $xpath = new \DOMXpath($dom);
+        $xpath = new \DOMXPath($dom);
         $result = $xpath->query('//div[contains(@class,"text-exception")]/h1');
         $exception = null;
         if ($result->length) {
