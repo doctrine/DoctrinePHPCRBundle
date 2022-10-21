@@ -14,7 +14,7 @@ class InitDoctrineDbalCommand extends BaseInitDoctrineDbalCommand
     /**
      * @see Command
      */
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
 
@@ -27,7 +27,7 @@ class InitDoctrineDbalCommand extends BaseInitDoctrineDbalCommand
     /**
      * @see Command
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $application = $this->getApplication();
         $sessionName = $input->getOption('session');
