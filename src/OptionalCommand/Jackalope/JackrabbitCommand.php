@@ -41,7 +41,7 @@ class JackrabbitCommand extends BaseJackrabbitCommand implements ContainerAwareI
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
 
@@ -62,7 +62,7 @@ EOF
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($this->getContainer()->hasParameter('doctrine_phpcr.jackrabbit_jar')) {
             $this->setJackrabbitPath($this->getContainer()->getParameter('doctrine_phpcr.jackrabbit_jar'));
