@@ -62,7 +62,7 @@ The <info>--dm</info> specifies wich documentmanager to use.
 This command will also execute any registered Initializer classes after
 purging.
 EOT
-        );
+            );
     }
 
     /**

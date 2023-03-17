@@ -59,8 +59,6 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      *                                       enable the mapping. Set to false to not do any check,
      *                                       optional.
      * @param string[]    $aliasMap          map of alias to namespace
-     *
-     * @return DoctrinePhpcrMappingsPass
      */
     public static function createXmlMappingDriver(
         array $namespaces,
@@ -85,8 +83,6 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      *                                       enable the mapping. Set to false to not do any check,
      *                                       optional.
      * @param string[]    $aliasMap          map of alias to namespace
-     *
-     * @return DoctrinePhpcrMappingsPass
      */
     public static function createYamlMappingDriver(
         array $namespaces,
@@ -111,8 +107,6 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      *                                       enable the mapping. Set to false to not do any check,
      *                                       optional.
      * @param string[]    $aliasMap          map of alias to namespace
-     *
-     * @return DoctrinePhpcrMappingsPass
      */
     public static function createPhpMappingDriver(
         array $mappings,
@@ -138,8 +132,6 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      *                                       enable the mapping. Set to false to not do any check,
      *                                       optional.
      * @param string[]    $aliasMap          map of alias to namespace
-     *
-     * @return DoctrinePhpcrMappingsPass
      */
     public static function createAnnotationMappingDriver(
         array $namespaces,
@@ -165,8 +157,6 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      *                                       enable the mapping. Set to false to not do any check,
      *                                       optional.
      * @param string[]    $aliasMap          map of alias to namespace
-     *
-     * @return DoctrinePhpcrMappingsPass
      */
     public static function createStaticPhpMappingDriver(
         array $namespaces,
