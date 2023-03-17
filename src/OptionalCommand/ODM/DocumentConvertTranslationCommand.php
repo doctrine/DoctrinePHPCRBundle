@@ -31,7 +31,7 @@ If you are using multiple document managers you can pick your choice with the
 
 <info>php app/console doctrine:phpcr:document:convert-translation --session=default</info>
 EOT
-        );
+            );
     }
 
     /**

@@ -51,7 +51,7 @@ NOTE: When executing single commands the session is saved automatically. This
       is in contrast to the shell, where the session has to be explicitly saved with
       the <info>session:save</info> command.
 EOT
-    );
+        );
     }
 
     /**

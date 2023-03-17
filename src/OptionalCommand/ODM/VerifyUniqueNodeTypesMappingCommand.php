@@ -28,7 +28,7 @@ class VerifyUniqueNodeTypesMappingCommand extends BaseVerifyUniqueNodeTypesMappi
 The <info>%command.name%</info> command checks all mapped PHPCR-ODM documents
 and verifies that any claiming to use unique node types are truly unique.
 EOT
-        );
+            );
     }
 
     /**

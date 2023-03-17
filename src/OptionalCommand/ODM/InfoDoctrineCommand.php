@@ -31,7 +31,7 @@ If you are using multiple document managers you can pick your choice with the
 
 <info>php app/console doctrine:phpcr:mapping:info --session=default</info>
 EOT
-        );
+            );
     }
 
     /**
