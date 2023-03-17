@@ -7,6 +7,7 @@ use Doctrine\ODM\PHPCR\DocumentRepository;
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadataFactory;
 use Doctrine\ODM\PHPCR\Translation\Translation;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
@@ -19,15 +20,10 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
  */
 class Configuration implements ConfigurationInterface
 {
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('doctrine_phpcr');
-        if (method_exists($treeBuilder, 'getRootNode')) {
-            $root = $treeBuilder->getRootNode();
-        } else {
-            // BC layer for symfony/config 4.1 and older
-            $root = $treeBuilder->root('doctrine_phpcr');
-        }
+        $root = $treeBuilder->getRootNode();
 
         $root
             ->children()
@@ -44,7 +40,7 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    private function addPHPCRSection(ArrayNodeDefinition $node)
+    private function addPHPCRSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()
@@ -88,15 +84,9 @@ class Configuration implements ConfigurationInterface
         ;
     }
 
-    private function getPHPCRSessionsNode()
+    private function getPHPCRSessionsNode(): NodeDefinition
     {
-        $treeBuilder = new TreeBuilder('sessions');
-        if (method_exists($treeBuilder, 'getRootNode')) {
-            $root = $treeBuilder->getRootNode();
-        } else {
-            // BC layer for symfony/config 4.1 and older
-            $root = $treeBuilder->root('sessions');
-        }
+        $root = (new TreeBuilder('sessions'))->getRootNode();
 
         $root
             ->requiresAtLeastOneElement()
@@ -178,9 +168,15 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('connection')->end()
                             ->arrayNode('caches')
                                 ->children()
-                                    ->scalarNode('meta')->end()
-                                    ->scalarNode('nodes')->end()
-                                    ->scalarNode('query')->end()
+                                    ->scalarNode('meta')
+                                        ->info('For jackalope 2.x, this must be a PSR-16 simple cache instance. Jackalope 1.x also accepts a Doctrine Cache')
+                                    ->end()
+                                    ->scalarNode('nodes')
+                                        ->info('For jackalope 2.x, this must be a PSR-16 simple cache instance. Jackalope 1.x also accepts a Doctrine Cache')
+                                    ->end()
+                                    ->scalarNode('query')
+                                        ->info('For jackalope 2.x, this must be a PSR-16 simple cache instance. Jackalope 1.x also accepts a Doctrine Cache')
+                                    ->end()
                                 ->end()
                             ->end()
                         ->end()
@@ -196,7 +192,7 @@ class Configuration implements ConfigurationInterface
         return $root;
     }
 
-    private function addOdmSection(ArrayNodeDefinition $node)
+    private function addOdmSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()
@@ -270,15 +266,9 @@ class Configuration implements ConfigurationInterface
         ;
     }
 
-    private function getOdmLocaleNode()
+    private function getOdmLocaleNode(): NodeDefinition
     {
-        $treeBuilder = new TreeBuilder('locales');
-        if (method_exists($treeBuilder, 'getRootNode')) {
-            $root = $treeBuilder->getRootNode();
-        } else {
-            // BC layer for symfony/config 4.1 and older
-            $root = $treeBuilder->root('locales');
-        }
+        $root = (new TreeBuilder('locales'))->getRootNode();
 
         $root
             ->useAttributeAsKey('name')
@@ -305,15 +295,9 @@ class Configuration implements ConfigurationInterface
         return $root;
     }
 
-    private function getOdmDocumentManagersNode()
+    private function getOdmDocumentManagersNode(): NodeDefinition
     {
-        $treeBuilder = new TreeBuilder('document_managers');
-        if (method_exists($treeBuilder, 'getRootNode')) {
-            $root = $treeBuilder->getRootNode();
-        } else {
-            // BC layer for symfony/config 4.1 and older
-            $root = $treeBuilder->root('document_managers');
-        }
+        $root = (new TreeBuilder('document_managers'))->getRootNode();
 
         $root
             ->requiresAtLeastOneElement()
@@ -360,32 +344,20 @@ class Configuration implements ConfigurationInterface
         return $root;
     }
 
-    private function getOdmCacheDriverNode($name)
+    private function getOdmCacheDriverNode($name): NodeDefinition
     {
-        $treeBuilder = new TreeBuilder($name);
-        if (method_exists($treeBuilder, 'getRootNode')) {
-            $root = $treeBuilder->getRootNode();
-        } else {
-            // BC layer for symfony/config 4.1 and older
-            $root = $treeBuilder->root($name);
-        }
+        $root = (new TreeBuilder($name))->getRootNode();
 
         $root
             ->addDefaultsIfNotSet()
-            ->beforeNormalization()
-            ->ifString()
-            ->then(function ($v) {
-                return ['type' => $v];
-            })
-            ->end()
             ->children()
-            ->scalarNode('type')->defaultValue('array')->end()
-            ->scalarNode('host')->end()
-            ->scalarNode('port')->end()
-            ->scalarNode('instance_class')->end()
-            ->scalarNode('class')->end()
-            ->scalarNode('id')->end()
-            ->scalarNode('namespace')->defaultNull()->end()
+                ->enumNode('type')
+                    ->values(['array', 'service'])
+                    ->defaultValue('array')
+                ->end()
+                ->scalarNode('id')
+                    ->info('This needs to be a PSR-6 cache service.')
+                ->end()
             ->end();
 
         return $root;

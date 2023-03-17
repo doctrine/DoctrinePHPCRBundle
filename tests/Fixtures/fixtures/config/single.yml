@@ -35,11 +35,6 @@ doctrine_phpcr:
 
         metadata_cache_driver:
             type:                 array
-            host:                 ~
-            port:                 ~
-            instance_class:       ~
-            class:                ~
-            id:                   ~
 
         locales:
             en: [de, fr]

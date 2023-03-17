@@ -46,11 +46,6 @@ $container->loadFromExtension('doctrine_phpcr', [
 
         'metadata_cache_driver' => [
             'type' => 'array',
-            'host' => null,
-            'port' => null,
-            'instance_class' => null,
-            'class' => null,
-            'id' => null,
         ],
 
         'locales' => [

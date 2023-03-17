@@ -50,11 +50,6 @@
             </mappings>
             <metadata-cache-driver
                 type="array"
-                host="null"
-                port="null"
-                instance-class="null"
-                class="null"
-                id="null"
             />
             <locale name="en">
                 <fallback>de</fallback>

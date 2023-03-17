@@ -100,12 +100,6 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                         ],
                         'metadata_cache_driver' => [
                             'type' => 'array',
-                            'host' => null,
-                            'port' => null,
-                            'instance_class' => null,
-                            'class' => null,
-                            'id' => null,
-                            'namespace' => null,
                         ],
                         'class_metadata_factory_name' => ClassMetadataFactory::class,
                         'default_repository_class' => DocumentRepository::class,
@@ -185,7 +179,6 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                         ],
                         'metadata_cache_driver' => [
                             'type' => 'array',
-                            'namespace' => null,
                         ],
                         'class_metadata_factory_name' => ClassMetadataFactory::class,
                         'default_repository_class' => DocumentRepository::class,
@@ -201,7 +194,6 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                         ],
                         'metadata_cache_driver' => [
                             'type' => 'array',
-                            'namespace' => null,
                         ],
                         'class_metadata_factory_name' => ClassMetadataFactory::class,
                         'default_repository_class' => DocumentRepository::class,
@@ -222,7 +214,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
         ];
 
         return [
-            [
+            'single-configuration' => [
                 $singleConfiguration,
                 [
                     'config/single.yml',
@@ -230,7 +222,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                     'config/single.php',
                 ],
             ],
-            [
+            'multiple-configuration' => [
                 $multipleConfiguration,
                 [
                     'config/multiple.yml',

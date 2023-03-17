@@ -20,10 +20,7 @@ class JackrabbitCommand extends BaseJackrabbitCommand implements ContainerAwareI
      */
     private $container;
 
-    /**
-     * @return ContainerInterface
-     */
-    protected function getContainer()
+    protected function getContainer(): ContainerInterface
     {
         if (null === $this->container) {
             $this->container = $this->getApplication()->getKernel()->getContainer();
@@ -32,7 +29,7 @@ class JackrabbitCommand extends BaseJackrabbitCommand implements ContainerAwareI
         return $this->container;
     }
 
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(ContainerInterface $container = null): void
     {
         $this->container = $container;
     }

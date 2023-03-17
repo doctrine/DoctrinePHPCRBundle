@@ -2,9 +2,8 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\EventListener;
 
-use Doctrine\ODM\PHPCR\Translation\LocaleChooser\LocaleChooser;
+use Doctrine\ODM\PHPCR\Translation\LocaleChooser\LocaleChooserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -13,8 +12,8 @@ use Symfony\Component\HttpKernel\KernelEvents;
  *
  * This listener is invoked on every sub-request, keeping the locale up to date.
  *
- * If a fallback type other than hardcoded is specified, the LocaleChooser is
- * also updated with the fallback locales to use based on the Accept-Language
+ * If a fallback type other than hardcoded is specified, the LocaleChooserInterface
+ * is also updated with the fallback locales to use based on the Accept-Language
  * header.
  */
 class LocaleListener implements EventSubscriberInterface
@@ -35,7 +34,7 @@ class LocaleListener implements EventSubscriberInterface
     public const FALLBACK_HARDCODED = 'hardcoded';
 
     /**
-     * @var LocaleChooser
+     * @var LocaleChooserInterface
      */
     private $chooser;
 
@@ -47,18 +46,17 @@ class LocaleListener implements EventSubscriberInterface
     private $fallback = null;
 
     /**
-     * List of allowed locales to set on the LocaleChooser.
+     * List of allowed locales to set on the LocaleChooserInterface.
      *
      * @var array
      */
     private $allowedLocales;
 
     /**
-     * @param LocaleChooser $chooser        the listener will update this choose with the request locale
-     * @param array         $allowedLocales list of locales that are allowed
-     * @param string        $fallback       one of the FALLBACK_* constants
+     * @param array  $allowedLocales list of locales that are allowed
+     * @param string $fallback       one of the FALLBACK_* constants
      */
-    public function __construct(LocaleChooser $chooser, array $allowedLocales, $fallback = self::FALLBACK_MERGE)
+    public function __construct(LocaleChooserInterface $chooser, array $allowedLocales, $fallback = self::FALLBACK_MERGE)
     {
         $this->chooser = $chooser;
         $this->allowedLocales = $allowedLocales;
@@ -79,11 +77,9 @@ class LocaleListener implements EventSubscriberInterface
     /**
      * Decides which locale will be used.
      *
-     * @param RequestEvent|GetResponseEvent $event used to get the request
-     *
      * @return mixed string|null a locale or null if no valid locale is found
      */
-    protected function determineLocale(/* RequestEvent */ $event)
+    protected function determineLocale(RequestEvent $event)
     {
         $locale = $event->getRequest()->getLocale();
 
@@ -92,12 +88,7 @@ class LocaleListener implements EventSubscriberInterface
             null;
     }
 
-    /**
-     * Handling the request event.
-     *
-     * @param RequestEvent|GetResponseEvent $event
-     */
-    public function onKernelRequest(/* RequestEvent */ $event)
+    public function onKernelRequest(RequestEvent $event)
     {
         $request = $event->getRequest();
 

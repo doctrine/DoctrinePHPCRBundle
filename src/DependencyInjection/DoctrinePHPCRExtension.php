@@ -5,9 +5,9 @@ namespace Doctrine\Bundle\PHPCRBundle\DependencyInjection;
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
 use Doctrine\ODM\PHPCR\Document\Generic;
 use Doctrine\ODM\PHPCR\DocumentManagerInterface;
-use Doctrine\ODM\PHPCR\Version;
 use PHPCR\SessionInterface;
 use Symfony\Bridge\Doctrine\DependencyInjection\AbstractDoctrineExtension;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\Reference;
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
-abstract class BaseDoctrinePHPCRExtension extends AbstractDoctrineExtension
+class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 {
     /**
      * @var string
@@ -436,14 +436,13 @@ abstract class BaseDoctrinePHPCRExtension extends AbstractDoctrineExtension
             'setAutoGenerateProxyClasses' => ['%doctrine_phpcr.odm.auto_generate_proxy_classes%'],
         ];
 
-        if (version_compare(Version::VERSION, '1.1.0-DEV') >= 0) {
-            $methods['setClassMetadataFactoryName'] = [$documentManager['class_metadata_factory_name']];
-            $methods['setDefaultRepositoryClassName'] = [$documentManager['default_repository_class']];
+        $methods['setClassMetadataFactoryName'] = [$documentManager['class_metadata_factory_name']];
+        $methods['setDefaultRepositoryClassName'] = [$documentManager['default_repository_class']];
 
-            if ($documentManager['repository_factory']) {
-                $methods['setRepositoryFactory'] = [new Reference($documentManager['repository_factory'])];
-            }
+        if ($documentManager['repository_factory']) {
+            $methods['setRepositoryFactory'] = [new Reference($documentManager['repository_factory'])];
         }
+
         foreach ($methods as $method => $args) {
             $odmConfigDef->addMethodCall($method, $args);
         }
@@ -513,7 +512,53 @@ abstract class BaseDoctrinePHPCRExtension extends AbstractDoctrineExtension
      */
     private function loadOdmCacheDrivers(array $documentManager, ContainerBuilder $container): void
     {
-        $this->loadObjectManagerCacheDriver($documentManager, $container, 'metadata_cache');
+        $this->loadCacheDriver('metadata_cache', $documentManager['name'], $documentManager['metadata_cache_driver'], $container);
+    }
+
+    /**
+     * Prevent calling the generic method from the Symfony bridge.
+     */
+    protected function loadObjectManagerCacheDriver(array $objectManager, ContainerBuilder $container, $cacheName): void
+    {
+        $this->loadCacheDriver($cacheName, $objectManager['name'], $objectManager[$cacheName.'_driver'], $container);
+    }
+
+    protected function loadCacheDriver($cacheName, $objectManagerName, array $cacheDriver, ContainerBuilder $container): string
+    {
+        $aliasId = $this->getObjectManagerElementName(sprintf('%s_%s', $objectManagerName, $cacheName));
+
+        switch ($cacheDriver['type']) {
+            case 'service':
+                $serviceId = $cacheDriver['id'];
+                break;
+
+            case 'array':
+                $serviceId = $this->createArrayAdapterCachePool($container, $objectManagerName, $cacheName);
+                break;
+
+            default:
+                throw new InvalidArgumentException(sprintf(
+                    'Unknown cache of type "%s" configured for cache "%s" in entity manager "%s".',
+                    $cacheDriver['type'],
+                    $cacheName,
+                    $objectManagerName
+                ));
+        }
+
+        $container->setAlias($aliasId, new Alias($serviceId, false));
+
+        return $aliasId;
+    }
+
+    private function createArrayAdapterCachePool(ContainerBuilder $container, string $objectManagerName, string $cacheName): string
+    {
+        $id = sprintf('cache.doctrine.phpcr_odm.%s.%s', $objectManagerName, str_replace('_cache', '', $cacheName));
+
+        $poolDefinition = $container->register($id, ArrayAdapter::class);
+        $poolDefinition->addTag('cache.pool');
+        $container->setDefinition($id, $poolDefinition);
+
+        return $id;
     }
 
     /**
@@ -552,31 +597,12 @@ abstract class BaseDoctrinePHPCRExtension extends AbstractDoctrineExtension
     {
         return '%'.$this->getObjectManagerElementName('metadata.'.$driverType.'.class%');
     }
-}
 
-// Hackery to be compatible with doctrine bridge < 5 and >= 5
-
-$refl = new \ReflectionClass(AbstractDoctrineExtension::class);
-if ($refl->hasMethod('getMetadataDriverClass') && $refl->getMethod('getMetadataDriverClass')->isAbstract()) {
-    class DoctrinePHPCRExtension extends BaseDoctrinePHPCRExtension
+    /**
+     * {@inheritdoc}
+     */
+    protected function getObjectManagerElementName(string $name): string
     {
-        /**
-         * {@inheritdoc}
-         */
-        protected function getObjectManagerElementName(string $name): string
-        {
-            return 'doctrine_phpcr.odm.'.$name;
-        }
-    }
-} else {
-    class DoctrinePHPCRExtension extends BaseDoctrinePHPCRExtension
-    {
-        /**
-         * {@inheritdoc}
-         */
-        protected function getObjectManagerElementName($name)
-        {
-            return 'doctrine_phpcr.odm.'.$name;
-        }
+        return 'doctrine_phpcr.odm.'.$name;
     }
 }
