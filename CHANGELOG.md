@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.4.2
+-----
+
+* Drop support for Symfony 4.3 and 5.0 - 5.3. This release supports the LTS versions Symfony 4.4, 5.4 and Symfony 6. 
+
 2.4.1
 -----
 
@@ -213,4 +218,3 @@ Changelog
  * `phpcr_odm_image` is changed to `cmf_media_image`
  * the ImagineCacheInvalidatorSubscriber is moved
  * the ModelToFileTransformer is moved
-

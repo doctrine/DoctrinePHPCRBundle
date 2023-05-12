@@ -28,7 +28,7 @@ jobs:
 
                     - php-version: "7.4"
                       phpunit-version: "8.5"
-                      symfony-version: "5.0.*"
+                      symfony-version: "5.4.*"
 
                     - php-version: "8.0"
                       phpunit-version: "9.5"
