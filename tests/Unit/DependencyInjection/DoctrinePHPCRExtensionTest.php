@@ -5,7 +5,7 @@ namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\DependencyInjection;
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\DoctrinePHPCRExtension;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Symfony\Component\DependencyInjection\Alias;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Reference;
 
 class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
@@ -35,7 +35,8 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
      */
     public function testLoad()
     {
-        $this->assertNull($this->load());
+        $this->load();
+        $this->addToAssertionCount(1);
     }
 
     public function testJackrabbitSession()
@@ -51,8 +52,8 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        /** @var $repositoryFactory DefinitionDecorator */
         $repositoryFactory = $this->container->getDefinition('doctrine_phpcr.jackalope.repository.default');
+        $this->assertInstanceOf(ChildDefinition::class, $repositoryFactory);
         $parameters = $repositoryFactory->getArgument(0);
         $this->assertEquals([
             'jackalope.jackrabbit_uri',
@@ -150,8 +151,8 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        /** @var $repositoryFactory DefinitionDecorator */
         $repositoryFactory = $this->container->getDefinition('doctrine_phpcr.jackalope.repository.default');
+        $this->assertInstanceOf(ChildDefinition::class, $repositoryFactory);
         $parameters = $repositoryFactory->getArgument(0);
 
         $this->assertIsArray($parameters);

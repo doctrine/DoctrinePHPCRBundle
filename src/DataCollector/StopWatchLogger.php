@@ -21,20 +21,14 @@ class StopWatchLogger implements LoggerInterface
         $this->stopwatch = $stopwatch;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function startCall($method, array $params = null, array $env = null)
+    public function startCall($method, array $params = null, array $env = null): void
     {
         if (null !== $this->stopwatch) {
             $this->stopwatch->start('doctrine_phpcr', 'doctrine_phpcr');
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function stopCall()
+    public function stopCall(): void
     {
         if (null !== $this->stopwatch) {
             $this->stopwatch->stop('doctrine_phpcr');

@@ -43,7 +43,7 @@ class NodeDumpCommandTest extends BaseTestCase
         ]);
 
         $output = $commandTester->getDisplay();
-        $this->assertRegExp('/^\s+ - \s+ text \s+ = \s+ .{120} \.\.\.$/mx', $output);
+        $this->assertMatchesRegularExpression('/^\s+ - \s+ text \s+ = \s+ .{120} \.\.\.$/mx', $output);
 
         $commandTester->execute([
             'command' => $command->getName(),
@@ -53,6 +53,6 @@ class NodeDumpCommandTest extends BaseTestCase
         ]);
 
         $output = $commandTester->getDisplay();
-        $this->assertRegExp('/^\s+ - \s+ text \s+ = \s+ .{20} \.\.\.$/mx', $output);
+        $this->assertMatchesRegularExpression('/^\s+ - \s+ text \s+ = \s+ .{20} \.\.\.$/mx', $output);
     }
 }
