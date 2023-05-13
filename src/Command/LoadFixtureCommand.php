@@ -28,10 +28,7 @@ class LoadFixtureCommand extends Command
 {
     use ContainerAwareTrait;
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('doctrine:phpcr:fixtures:load')
@@ -65,10 +62,7 @@ EOT
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $dmName = $input->getOption('dm'); // defaults to null
         DoctrineCommandHelper::setApplicationDocumentManager(
