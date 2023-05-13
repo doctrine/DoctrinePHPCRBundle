@@ -2,7 +2,7 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Initializer;
 
-use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
+use Doctrine\Bundle\PHPCRBundle\ManagerRegistryInterface;
 use PHPCR\SessionInterface;
 use PHPCR\Util\NodeHelper;
 
@@ -20,31 +20,22 @@ use PHPCR\Util\NodeHelper;
  */
 class GenericInitializer implements InitializerInterface, SessionAwareInitializerInterface
 {
-    /**
-     * Name for this initializer.
-     *
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var string
-     */
-    private $cnd;
+    private string $name;
+    private ?string $cnd;
 
     /**
      * List of base paths to create.
      *
-     * @var array
+     * @var string[]
      */
-    private $basePaths;
+    private array $basePaths;
 
     /**
      * Name of the session in which this initializer should run.
      *
-     * @var string
+     * If this is null, the default session is used.
      */
-    private $sessionName;
+    private ?string $sessionName = null;
 
     /**
      * @param string      $name      name to identify this initializer instance
@@ -52,16 +43,15 @@ class GenericInitializer implements InitializerInterface, SessionAwareInitialize
      * @param string|null $cnd       node type and namespace definitions in cnd
      *                               format, pass null to not create any node types
      */
-    public function __construct(string $name, array $basePaths, string $cnd = null)
+    public function __construct(string $name, array $basePaths, ?string $cnd = null)
     {
         $this->cnd = $cnd;
         $this->basePaths = $basePaths;
         $this->name = $name;
     }
 
-    public function init(ManagerRegistry $registry)
+    public function init(ManagerRegistryInterface $registry): void
     {
-        /** @var SessionInterface $session */
         $session = $registry->getConnection($this->sessionName);
 
         if ($this->cnd) {
@@ -72,22 +62,22 @@ class GenericInitializer implements InitializerInterface, SessionAwareInitialize
         }
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function setSessionName($sessionName)
+    public function setSessionName(string $sessionName): void
     {
         $this->sessionName = $sessionName;
     }
 
-    protected function registerCnd(SessionInterface $session, $cnd)
+    protected function registerCnd(SessionInterface $session, string $cnd): void
     {
         $session->getWorkspace()->getNodeTypeManager()->registerNodeTypesCnd($cnd, true);
     }
 
-    protected function createBasePaths(SessionInterface $session, array $basePaths)
+    protected function createBasePaths(SessionInterface $session, array $basePaths): void
     {
         foreach ($basePaths as $path) {
             NodeHelper::createPath($session, $path);

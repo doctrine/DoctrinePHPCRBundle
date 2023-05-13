@@ -11,19 +11,19 @@ use PHPUnit\Framework\TestCase;
 class PHPCRNodeToUuidTransformerTest extends Testcase
 {
     /**
-     * @var SessionInterface|MockObject
+     * @var SessionInterface&MockObject
      */
-    private $session;
+    private SessionInterface $session;
 
     /**
-     * @var PHPCRNodeToUuidTransformer|MockObject
+     * @var PHPCRNodeToUuidTransformer&MockObject
      */
-    private $transformer;
+    private PHPCRNodeToUuidTransformer $transformer;
 
     /**
-     * @var Node|MockObject
+     * @var Node&MockObject
      */
-    private $node;
+    private Node $node;
 
     public function setUp(): void
     {

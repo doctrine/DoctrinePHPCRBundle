@@ -4,7 +4,6 @@ namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\DependencyInjection;
 
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\DoctrinePHPCRExtension;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
-use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -33,13 +32,13 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
     /**
      * Check that the extension loads without error.
      */
-    public function testLoad()
+    public function testLoad(): void
     {
         $this->load();
         $this->addToAssertionCount(1);
     }
 
-    public function testJackrabbitSession()
+    public function testJackrabbitSession(): void
     {
         $this->load([
             'session' => [
@@ -69,7 +68,7 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
         $this->assertTrue($this->container->hasDefinition('doctrine_phpcr.admin.jackalope.repository.default'));
     }
 
-    public function testCustomManagerRegistryService()
+    public function testCustomManagerRegistryService(): void
     {
         $this->registerService('my_phpcr_registry', \stdClass::class);
 
@@ -88,11 +87,10 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasAlias('doctrine_phpcr', 'my_phpcr_registry');
 
         $managerRegistry = $this->container->getAlias('doctrine_phpcr');
-        $this->assertInstanceOf(Alias::class, $managerRegistry);
         $this->assertTrue($managerRegistry->isPublic());
     }
 
-    public function testJackrabbitSessions()
+    public function testJackrabbitSessions(): void
     {
         $this->load([
             'session' => [
@@ -127,7 +125,7 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
         }
     }
 
-    public function testDoctrineDbalSession()
+    public function testDoctrineDbalSession(): void
     {
         $this->load([
             'session' => [
@@ -177,7 +175,7 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
         );
     }
 
-    public function provideLocaleChooser()
+    public function provideLocaleChooser(): array
     {
         return [
             [
@@ -211,7 +209,7 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
     /**
      * @dataProvider provideLocaleChooser
      */
-    public function testLocales($odmConfig, $expectedChooser)
+    public function testLocales(array $odmConfig, string $expectedChooser): void
     {
         $this->load(array_merge([
             'session' => [

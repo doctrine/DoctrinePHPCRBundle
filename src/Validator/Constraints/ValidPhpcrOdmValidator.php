@@ -2,8 +2,8 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Validator\Constraints;
 
-use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
-use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
+use Doctrine\Bundle\PHPCRBundle\ManagerRegistryInterface;
+use Doctrine\ODM\PHPCR\DocumentManagerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
@@ -15,9 +15,9 @@ use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
  */
 class ValidPhpcrOdmValidator extends ConstraintValidator
 {
-    private $registry;
+    private ManagerRegistryInterface $registry;
 
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistryInterface $registry)
     {
         $this->registry = $registry;
     }
@@ -25,35 +25,34 @@ class ValidPhpcrOdmValidator extends ConstraintValidator
     /**
      * @param object $document
      */
-    public function validate($document, Constraint $constraint)
+    public function validate($document, Constraint $constraint): void
     {
         $className = \get_class($document);
         $dm = $this->registry->getManagerForClass($className);
 
-        if (null === $dm) {
+        if (!$dm instanceof DocumentManagerInterface) {
             throw new ConstraintDefinitionException('This document is not managed by the PHPCR ODM.');
         }
 
-        /** @var ClassMetadata $class */
-        $class = $dm->getClassMetadata($className);
+        $classMetadata = $dm->getClassMetadata($className);
 
-        if ($class->getFieldValue($document, $class->identifier)) {
+        if ($classMetadata->getFieldValue($document, $classMetadata->identifier)) {
             return;
         }
 
-        $parent = $class->getFieldValue($document, $class->parentMapping);
+        $parent = $classMetadata->getFieldValue($document, $classMetadata->parentMapping);
 
         if (empty($parent)) {
             $this->context->buildViolation($constraint->message)
-                ->atPath($class->parentMapping)
+                ->atPath($classMetadata->parentMapping)
                 ->addViolation();
         }
 
-        $name = $class->getFieldValue($document, $class->nodename);
+        $name = $classMetadata->getFieldValue($document, $classMetadata->nodename);
 
         if (empty($name)) {
             $this->context->buildViolation($constraint->message)
-                ->atPath($class->nodename)
+                ->atPath($classMetadata->nodename)
                 ->addViolation();
         }
     }

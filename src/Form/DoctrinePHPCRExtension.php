@@ -11,26 +11,26 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Form;
 
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\PHPCRBundle\ManagerRegistryInterface;
 use Symfony\Component\Form\AbstractExtension;
 
 class DoctrinePHPCRExtension extends AbstractExtension
 {
-    private $registry;
+    private ManagerRegistryInterface $registry;
 
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistryInterface $registry)
     {
         $this->registry = $registry;
     }
 
-    protected function loadTypes()
+    protected function loadTypes(): array
     {
         return [
             new Type\DocumentType($this->registry),
         ];
     }
 
-    protected function loadTypeGuesser()
+    protected function loadTypeGuesser(): PhpcrOdmTypeGuesser
     {
         return new PhpcrOdmTypeGuesser($this->registry);
     }

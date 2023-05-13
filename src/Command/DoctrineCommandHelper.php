@@ -2,14 +2,16 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
+use Doctrine\Bundle\PHPCRBundle\ManagerRegistryInterface;
+use Doctrine\ODM\PHPCR\DocumentManagerInterface;
 use Doctrine\ODM\PHPCR\Tools\Console\Helper\DocumentManagerHelper;
 use Doctrine\ODM\PHPCR\Version;
 use Jackalope\Session as JackalopeSession;
 use Jackalope\Tools\Console\Helper\DoctrineDbalHelper;
 use Jackalope\Transport\DoctrineDBAL\Client as DbalClient;
 use Jackalope\Transport\DoctrineDBAL\LoggingClient as DbalLoggingClient;
+use PHPCR\ConfigurationException;
 use PHPCR\Util\Console\Helper\PhpcrHelper;
-use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 
 /**
@@ -23,7 +25,7 @@ abstract class DoctrineCommandHelper
     /**
      * Prepare just the DBAL connection for the init command where no session is available yet.
      */
-    public static function setApplicationConnection(Application $application, string $sessionName)
+    public static function setApplicationConnection(Application $application, string $sessionName): void
     {
         $connectionService = sprintf('doctrine_phpcr.jackalope_doctrine_dbal.%s_connection', $sessionName);
         $helperSet = $application->getHelperSet();
@@ -33,9 +35,9 @@ abstract class DoctrineCommandHelper
     /**
      * Prepare the DBAL connection and the PHPCR session.
      */
-    public static function setApplicationPHPCRSession(Application $application, string $sessionName = null, bool $admin = false)
+    public static function setApplicationPHPCRSession(Application $application, string $sessionName = null, bool $admin = false): void
     {
-        $registry = $application->getKernel()->getContainer()->get('doctrine_phpcr');
+        $registry = self::getRegistry($application);
         $session = $admin ? $registry->getAdminConnection($sessionName) : $registry->getConnection($sessionName);
 
         $helperSet = $application->getHelperSet();
@@ -57,13 +59,22 @@ abstract class DoctrineCommandHelper
     /**
      * Select which document manager should be used.
      */
-    public static function setApplicationDocumentManager(Application $application, ?string $dmName)
+    public static function setApplicationDocumentManager(Application $application, ?string $dmName): void
     {
-        /** @var $registry ManagerRegistry */
-        $registry = $application->getKernel()->getContainer()->get('doctrine_phpcr');
-        $documentManager = $registry->getManager($dmName);
+        $documentManager = self::getRegistry($application)->getManager($dmName);
+        \assert($documentManager instanceof DocumentManagerInterface);
 
         $helperSet = $application->getHelperSet();
         $helperSet->set(new DocumentManagerHelper(null, $documentManager));
+    }
+
+    private static function getRegistry(Application $application): ManagerRegistryInterface
+    {
+        $registry = $application->getKernel()->getContainer()->get('doctrine_phpcr');
+        if (!$registry instanceof ManagerRegistryInterface) {
+            throw new ConfigurationException('Registry was expected to implement '.ManagerRegistryInterface::class);
+        }
+
+        return $registry;
     }
 }

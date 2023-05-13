@@ -20,17 +20,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PHPCRReferenceType extends AbstractType
 {
-    private $session;
+    private ?SessionInterface $session;
 
     public function __construct(SessionInterface $session = null)
     {
         $this->session = $session;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         switch (strtolower($options['transformer_type'])) {
             case 'uuid':
@@ -51,36 +48,19 @@ class PHPCRReferenceType extends AbstractType
         $builder->addModelTransformer($transformer);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'transformer_type' => 'uuid',
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
+    public function getParent(): string
     {
         return method_exists(AbstractType::class, 'getBlockPrefix') ? TextType::class : 'text';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'phpcr_reference';
     }

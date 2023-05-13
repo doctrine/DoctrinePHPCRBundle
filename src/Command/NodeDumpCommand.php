@@ -17,17 +17,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class NodeDumpCommand extends BaseDumpCommand implements ContainerAwareInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private ContainerInterface $container;
+    private PhpcrConsoleDumperHelper $consoleDumper;
 
-    /**
-     * @var PhpcrConsoleDumperHelper
-     */
-    private $consoleDumper;
-
-    protected function getContainer()
+    protected function getContainer(): ContainerInterface
     {
         if (null === $this->container) {
             $this->container = $this->getApplication()->getKernel()->getContainer();
@@ -36,12 +29,18 @@ class NodeDumpCommand extends BaseDumpCommand implements ContainerAwareInterface
         return $this->container;
     }
 
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(ContainerInterface $container = null): void
     {
+        if (!$container) {
+            unset($this->container);
+
+            return;
+        }
+
         $this->container = $container;
     }
 
-    public function setConsoleDumper(PhpcrConsoleDumperHelper $consoleDumper)
+    public function setConsoleDumper(PhpcrConsoleDumperHelper $consoleDumper): void
     {
         $this->consoleDumper = $consoleDumper;
     }

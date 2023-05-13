@@ -2,7 +2,7 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Initializer;
 
-use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
+use Doctrine\Bundle\PHPCRBundle\ManagerRegistryInterface;
 
 /**
  * Aggregates and executes initializers.
@@ -14,24 +14,17 @@ class InitializerManager
     /**
      * @var InitializerInterface[]
      */
-    private $initializers = [];
+    private array $initializers = [];
 
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
+    private ManagerRegistryInterface $registry;
+    private ?\Closure $loggingClosure = null;
 
-    /**
-     * @var \Closure
-     */
-    private $loggingClosure = null;
-
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistryInterface $registry)
     {
         $this->registry = $registry;
     }
 
-    public function setLoggingClosure(\Closure $closure = null)
+    public function setLoggingClosure(\Closure $closure = null): void
     {
         $this->loggingClosure = $closure;
     }
@@ -41,7 +34,7 @@ class InitializerManager
      *
      * @param int $priority The higher the number, the earlier the initializer is executed
      */
-    public function addInitializer(InitializerInterface $initializer, int $priority = 0)
+    public function addInitializer(InitializerInterface $initializer, int $priority = 0): void
     {
         if (empty($this->initializers[$priority])) {
             $this->initializers[$priority] = [];
@@ -54,7 +47,7 @@ class InitializerManager
     /**
      * Iterate over the registered initializers and execute each of them.
      */
-    public function initialize($sessionName = null)
+    public function initialize(string $sessionName = null): void
     {
         $loggingClosure = $this->loggingClosure;
 

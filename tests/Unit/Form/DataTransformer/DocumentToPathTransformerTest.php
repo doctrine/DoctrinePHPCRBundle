@@ -4,6 +4,7 @@ namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\Form\DataTransformer;
 
 use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\DocumentToPathTransformer;
 use Doctrine\ODM\PHPCR\DocumentManager;
+use Doctrine\ODM\PHPCR\DocumentManagerInterface;
 use Doctrine\ODM\PHPCR\UnitOfWork;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -12,19 +13,27 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 class DocumentToPathTransformerTest extends Testcase
 {
     /**
-     * @var DocumentManager|MockObject
+     * @var DocumentManager&MockObject
      */
-    private $dm;
+    private DocumentManagerInterface $dm;
+
+    /**
+     * @var UnitOfWork&MockObject
+     */
+    private UnitOfWork $uow;
+
+    private DocumentToPathTransformer $transformer;
+    private \stdClass $document;
 
     public function setUp(): void
     {
-        $this->dm = $this->createMock(DocumentManager::class);
+        $this->dm = $this->createMock(DocumentManagerInterface::class);
         $this->uow = $this->createMock(UnitOfWork::class);
         $this->transformer = new DocumentToPathTransformer($this->dm);
         $this->document = new \stdClass();
     }
 
-    public function testTransform()
+    public function testTransform(): void
     {
         $this->dm->expects($this->once())
             ->method('getUnitOfWork')
@@ -38,7 +47,7 @@ class DocumentToPathTransformerTest extends Testcase
         $this->assertEquals('/asd', $res);
     }
 
-    public function testReverseTransform()
+    public function testReverseTransform(): void
     {
         $this->dm->expects($this->once())
             ->method('find')
@@ -49,7 +58,7 @@ class DocumentToPathTransformerTest extends Testcase
         $this->assertSame($this->document, $res);
     }
 
-    public function testReverseTransformNotFound()
+    public function testReverseTransformNotFound(): void
     {
         $this->dm->expects($this->once())
             ->method('find')
@@ -62,7 +71,7 @@ class DocumentToPathTransformerTest extends Testcase
         $this->assertSame($this->document, $res);
     }
 
-    public function testReverseTransformEmpty()
+    public function testReverseTransformEmpty(): void
     {
         $this->dm->expects($this->never())
             ->method('find');

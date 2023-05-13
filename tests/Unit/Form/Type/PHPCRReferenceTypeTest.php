@@ -6,19 +6,26 @@ use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\PHPCRNodeToPathTransformer;
 use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\PHPCRNodeToUuidTransformer;
 use Doctrine\Bundle\PHPCRBundle\Form\Type\PHPCRReferenceType;
 use PHPCR\SessionInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\FormBuilder;
 
 class PHPCRReferenceTypeTest extends Testcase
 {
+    /**
+     * @var FormBuilder&MockObject
+     */
+    private FormBuilder $builder;
+    private PHPCRReferenceType $type;
+
     public function setUp(): void
     {
-        $this->session = $this->createMock(SessionInterface::class);
+        $session = $this->createMock(SessionInterface::class);
 
         // hmm, phpunit won't mock a traversable interface so mocking the concrete class
         $this->builder = $this->createMock(FormBuilder::class);
-        $this->type = new PHPCRReferenceType($this->session);
+        $this->type = new PHPCRReferenceType($session);
     }
 
     public function provideTypes()
@@ -32,7 +39,7 @@ class PHPCRReferenceTypeTest extends Testcase
     /**
      * @dataProvider provideTypes
      */
-    public function testBuildForm($transformerType, $transformerFqn)
+    public function testBuildForm($transformerType, $transformerFqn): void
     {
         $type = null;
         $this->builder->expects($this->once())
@@ -47,7 +54,7 @@ class PHPCRReferenceTypeTest extends Testcase
         $this->assertEquals($transformerFqn, $type);
     }
 
-    public function testInvalidType()
+    public function testInvalidType(): void
     {
         $this->expectException(InvalidConfigurationException::class);
 

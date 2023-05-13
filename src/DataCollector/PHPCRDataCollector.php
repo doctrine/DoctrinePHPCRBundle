@@ -2,9 +2,9 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\DataCollector;
 
+use Doctrine\Bundle\PHPCRBundle\ManagerRegistryInterface;
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadataFactory;
-use Doctrine\Persistence\ManagerRegistry;
 use Jackalope\Query\Query;
 use Jackalope\Transport\Logging\DebugStack;
 use PHPCR\Query\QueryInterface;
@@ -12,71 +12,66 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
-class PHPCRDataCollector extends DataCollector
+final class PHPCRDataCollector extends DataCollector
 {
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
+    private ManagerRegistryInterface $registry;
 
     /**
      * @var string[]
      */
-    private $connections;
+    private array $connections;
 
     /**
      * @var string[]
      */
-    private $managers;
+    private array $managers;
 
     /**
      * @var DebugStack[]
      */
-    private $loggers = [];
+    private array $loggers = [];
 
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistryInterface $registry)
     {
         $this->registry = $registry;
         $this->connections = $registry->getConnectionNames();
         $this->managers = $registry->getManagerNames();
     }
 
-    public function collect(Request $request, Response $response, \Throwable $exception = null)
+    public function collect(Request $request, Response $response, \Throwable $exception = null): void
     {
         $this->collectInternal($request, $response);
     }
 
     /**
      * Adds the stack logger for a connection.
-     *
-     * @param string $name
      */
-    public function addLogger($name, DebugStack $logger)
+    public function addLogger(string $name, DebugStack $logger): void
     {
         $this->loggers[$name] = $logger;
     }
 
-    public function getManagers()
+    public function getManagers(): array
     {
         return $this->data['managers'];
     }
 
-    public function getConnections()
+    public function getConnections(): array
     {
         return $this->data['connections'];
     }
 
-    public function getCallCount()
+    public function getCallCount(): int
     {
         return array_sum(array_map('count', $this->data['calls']));
     }
 
-    public function getCalls()
+    public function getCalls(): array
     {
         return $this->data['calls'];
     }
 
-    public function getTime()
+    public function getTime(): int
     {
         $time = 0;
         foreach ($this->data['calls'] as $calls) {
@@ -88,10 +83,7 @@ class PHPCRDataCollector extends DataCollector
         return $time;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'phpcr';
     }
@@ -163,10 +155,7 @@ class PHPCRDataCollector extends DataCollector
         return [$var, true];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function collectInternal(Request $request, Response $response, \Throwable $exception = null)
+    protected function collectInternal(Request $request, Response $response, \Throwable $exception = null): void
     {
         $calls = [];
         foreach ($this->loggers as $name => $logger) {
@@ -183,10 +172,10 @@ class PHPCRDataCollector extends DataCollector
 
         foreach ($this->registry->getManagers() as $name => $em) {
             $documents[$name] = [];
-            /** @var $factory ClassMetadataFactory */
+            /** @var ClassMetadataFactory $factory */
             $factory = $em->getMetadataFactory();
 
-            /** @var $class ClassMetadata */
+            /** @var ClassMetadata $class */
             foreach ($factory->getLoadedMetadata() as $class) {
                 $documents[$name][] = $class->getName();
             }
@@ -200,12 +189,12 @@ class PHPCRDataCollector extends DataCollector
         return $this->data['documents'];
     }
 
-    public function reset()
+    public function reset(): void
     {
         $this->data = [];
 
         foreach ($this->loggers as $logger) {
-            $logger->queries = [];
+            $logger->calls = [];
             $logger->currentQuery = 0;
         }
     }

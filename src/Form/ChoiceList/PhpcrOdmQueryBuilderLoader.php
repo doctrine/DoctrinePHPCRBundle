@@ -2,7 +2,7 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Form\ChoiceList;
 
-use Doctrine\ODM\PHPCR\DocumentManager;
+use Doctrine\ODM\PHPCR\DocumentManagerInterface;
 use Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityLoaderInterface;
@@ -17,19 +17,14 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Ivan Borzenkov <ivan.borzenkov@gmail.com>
  */
-class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
+final class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
 {
-    /**
-     * Contains the query builder that builds the query for fetching the entities.
-     *
-     * @var QueryBuilder
-     */
-    private $queryBuilder;
+    private QueryBuilder $queryBuilder;
 
     /**
      * @param QueryBuilder|\Closure $queryBuilder
      */
-    public function __construct($queryBuilder, DocumentManager $manager = null, string $class = null)
+    public function __construct($queryBuilder, DocumentManagerInterface $manager = null, string $class = null)
     {
         // If a query builder was passed, it must be a closure or QueryBuilder
         // instance
@@ -47,8 +42,6 @@ class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
                 throw new UnexpectedTypeException($queryBuilder, ObjectManager::class);
             }
         }
-
-        $this->manager = $manager;
 
         $this->queryBuilder = $queryBuilder;
     }
@@ -74,9 +67,9 @@ class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
      *
      * @return array the entities
      */
-    public function getEntitiesByIds($identifier, array $values): array
+    public function getEntitiesByIds(string $identifier, array $values): array
     {
-        $values = array_values(array_filter($values, function ($v) {
+        $values = array_values(array_filter($values, static function ($v) {
             return !empty($v);
         }));
 

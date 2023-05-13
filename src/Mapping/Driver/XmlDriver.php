@@ -13,14 +13,11 @@ use Doctrine\Persistence\Mapping\Driver\SymfonyFileLocator;
  */
 class XmlDriver extends BaseXmlDriver
 {
-    const DEFAULT_FILE_EXTENSION = '.phpcr.xml';
+    public const DEFAULT_FILE_EXTENSION = '.phpcr.xml';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct($prefixes, string $fileExtension = self::DEFAULT_FILE_EXTENSION)
+    public function __construct(array $prefixes, string $fileExtension = self::DEFAULT_FILE_EXTENSION)
     {
-        $locator = new SymfonyFileLocator((array) $prefixes, $fileExtension);
+        $locator = new SymfonyFileLocator($prefixes, $fileExtension);
         parent::__construct($locator, $fileExtension);
     }
 }

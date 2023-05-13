@@ -7,13 +7,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 interface MigratorInterface
 {
-    public function init(SessionInterface $session, OutputInterface $output);
+    public function init(SessionInterface $session, OutputInterface $output): void;
 
     /**
-     * @param string $identifier
-     * @param int    $depth
-     *
      * @return int exit code
      */
-    public function migrate($identifier = '/', $depth = -1);
+    public function migrate(string $identifier = '/', int $depth = -1): int;
 }

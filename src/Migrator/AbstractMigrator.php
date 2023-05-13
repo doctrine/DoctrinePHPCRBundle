@@ -8,24 +8,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class AbstractMigrator extends TraversingItemVisitor implements MigratorInterface
 {
-    /**
-     * @var SessionInterface
-     */
-    protected $session;
+    protected SessionInterface $session;
+    protected OutputInterface $output;
 
-    /*
-     * @var OutputInterface
-     */
-    protected $output;
-
-    public function init(SessionInterface $session, OutputInterface $output)
+    public function init(SessionInterface $session, OutputInterface $output): void
     {
         $this->session = $session;
         $this->output = $output;
-    }
-
-    public function setLevel($level)
-    {
-        $this->currentDepth = $level;
     }
 }

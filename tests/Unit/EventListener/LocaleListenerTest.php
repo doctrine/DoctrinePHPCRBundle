@@ -58,8 +58,7 @@ class LocaleListenerTest extends TestCase
 
         $localeListener = new LocaleListener(
             $this->chooser,
-            $this->allowedLocales,
-            null
+            $this->allowedLocales
         );
 
         $this->responseEvent->expects($this->exactly(2))

@@ -9,14 +9,11 @@ use Symfony\Component\Stopwatch\Stopwatch;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  */
-class StopWatchLogger implements LoggerInterface
+final class StopWatchLogger implements LoggerInterface
 {
-    /**
-     * @var Stopwatch
-     */
-    private $stopwatch;
+    private ?Stopwatch $stopwatch;
 
-    public function __construct(Stopwatch $stopwatch = null)
+    public function __construct(?Stopwatch $stopwatch = null)
     {
         $this->stopwatch = $stopwatch;
     }

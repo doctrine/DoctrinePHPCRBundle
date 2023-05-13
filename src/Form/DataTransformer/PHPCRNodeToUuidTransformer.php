@@ -10,7 +10,7 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 class PHPCRNodeToUuidTransformer implements DataTransformerInterface
 {
-    private $session;
+    private SessionInterface $session;
 
     public function __construct(SessionInterface $session)
     {
@@ -26,10 +26,10 @@ class PHPCRNodeToUuidTransformer implements DataTransformerInterface
      *
      * @throws UnexpectedTypeException if given value is not a NodeInterface
      */
-    public function transform($node)
+    public function transform($node): ?string
     {
         if (null === $node) {
-            return;
+            return null;
         }
 
         if (!$node instanceof NodeInterface) {
@@ -48,10 +48,10 @@ class PHPCRNodeToUuidTransformer implements DataTransformerInterface
      *
      * @throws ItemNotFoundException if node for a non-empty $id is not found
      */
-    public function reverseTransform($id)
+    public function reverseTransform($id): ?NodeInterface
     {
         if (!$id) {
-            return;
+            return null;
         }
 
         return $this->session->getNodeByIdentifier($id);

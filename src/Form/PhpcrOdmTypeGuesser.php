@@ -4,9 +4,9 @@ namespace Doctrine\Bundle\PHPCRBundle\Form;
 
 use Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType;
 use Doctrine\Bundle\PHPCRBundle\Form\Type\PathType;
+use Doctrine\Bundle\PHPCRBundle\ManagerRegistryInterface;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -24,40 +24,30 @@ use Symfony\Component\Form\Guess\ValueGuess;
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
-class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
+final class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
 {
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
+    private ManagerRegistryInterface $registry;
 
     /**
-     * @var string
-     *
-     * guessed form types
+     * @var string[]
      */
-    private $typeGuess = [];
+    private array $typeGuess;
 
-    private $cache = [];
+    private array $cache = [];
 
-    public function __construct(ManagerRegistry $registry, $typeGuess = [])
+    public function __construct(ManagerRegistryInterface $registry, array $typeGuess = [])
     {
         $this->registry = $registry;
         $this->typeGuess = $typeGuess;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function guessType($class, $property)
+    public function guessType(string $class, string $property): ?TypeGuess
     {
         if (!$ret = $this->getMetadata($class)) {
             return new TypeGuess(TextType::class, [], Guess::LOW_CONFIDENCE);
         }
 
-        /** @var ClassMetadata $metadata */
-        /** @var DocumentManager $documentManager */
-        list($metadata, $documentManager) = $ret;
+        [$metadata, $documentManager] = $ret;
 
         if ($metadata->hasAssociation($property)) {
             $mapping = $metadata->getAssociation($property);
@@ -66,6 +56,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
                 case 'parent':
                     return new TypeGuess(PathType::class, [], Guess::MEDIUM_CONFIDENCE);
 
+                case 'children':
                 case 'mixedreferrers':
                     $options = [
                         'attr' => ['readonly' => 'readonly'],
@@ -100,16 +91,8 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
 
                     return new TypeGuess(PathType::class, $options, Guess::LOW_CONFIDENCE);
 
-                case 'children':
-                    $options = [
-                        'attr' => ['readonly' => 'readonly'],
-                        'entry_type' => PathType::class,
-                    ];
-
-                    return new TypeGuess(CollectionType::class, $options, Guess::LOW_CONFIDENCE);
-
                 default:
-                    return;
+                    return null;
             }
         }
 
@@ -124,7 +107,7 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
                 );
             }
 
-            return;
+            return null;
         }
 
         $options = [];
@@ -136,10 +119,10 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
             case 'binary':
                 // the file type only works on documents like the File document,
                 // not directly on properties with raw binary data.
-                return;
+                return null;
             case 'node':
                 // editing the phpcr node has no meaning
-                return;
+                return null;
             case 'date':
                 $type = DateTimeType::class;
 
@@ -194,30 +177,17 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
         return new TypeGuess($type, $options, Guess::HIGH_CONFIDENCE);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function guessMaxLength($class, $property)
+    public function guessMaxLength(string $class, string $property): ?ValueGuess
     {
+        return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function guessMinLength($class, $property)
+    public function guessRequired(string $class, string $property): ?ValueGuess
     {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function guessRequired($class, $property)
-    {
-        /** @var ClassMetadata $metadata */
-        list($metadata, $documentManager) = $this->getMetadata($class);
+        [$metadata, $documentManager] = $this->getMetadata($class);
 
         if (!$metadata) {
-            return;
+            return null;
         }
 
         if ($metadata->hasField($property)) {
@@ -249,14 +219,15 @@ class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function guessPattern($class, $property)
+    public function guessPattern(string $class, string $property): ?ValueGuess
     {
+        return null;
     }
 
-    private function getMetadata($class): ?array
+    /**
+     * @return array{0: ClassMetadata, 1: DocumentManager}|null
+     */
+    private function getMetadata(string $class): ?array
     {
         if (\array_key_exists($class, $this->cache)) {
             return $this->cache[$class];

@@ -33,30 +33,27 @@ class LocaleListener implements EventSubscriberInterface
      */
     public const FALLBACK_HARDCODED = 'hardcoded';
 
-    /**
-     * @var LocaleChooserInterface
-     */
-    private $chooser;
+    private LocaleChooserInterface $chooser;
 
     /**
      * Whether to update the locale chooser to update the allowed languages.
      *
-     * @var string|null one of the FALLBACK_ constants or empty
+     * One of the FALLBACK_ constants.
      */
-    private $fallback = null;
+    private string $fallback;
 
     /**
      * List of allowed locales to set on the LocaleChooserInterface.
      *
-     * @var array
+     * @var string[]
      */
-    private $allowedLocales;
+    private array $allowedLocales;
 
     /**
-     * @param array  $allowedLocales list of locales that are allowed
-     * @param string $fallback       one of the FALLBACK_* constants
+     * @param string[] $allowedLocales list of locales that are allowed
+     * @param string   $fallback       one of the FALLBACK_* constants
      */
-    public function __construct(LocaleChooserInterface $chooser, array $allowedLocales, $fallback = self::FALLBACK_MERGE)
+    public function __construct(LocaleChooserInterface $chooser, array $allowedLocales, string $fallback = self::FALLBACK_MERGE)
     {
         $this->chooser = $chooser;
         $this->allowedLocales = $allowedLocales;
@@ -77,18 +74,18 @@ class LocaleListener implements EventSubscriberInterface
     /**
      * Decides which locale will be used.
      *
-     * @return mixed string|null a locale or null if no valid locale is found
+     * @return string|null a locale or null if no valid locale is found
      */
-    protected function determineLocale(RequestEvent $event)
+    protected function determineLocale(RequestEvent $event): ?string
     {
         $locale = $event->getRequest()->getLocale();
 
-        return \in_array($locale, $this->allowedLocales) ?
+        return \in_array($locale, $this->allowedLocales, true) ?
             $locale :
             null;
     }
 
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
 
@@ -121,10 +118,8 @@ class LocaleListener implements EventSubscriberInterface
 
     /**
      * We are only interested in request events.
-     *
-     * @return array
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::REQUEST => [['onKernelRequest', 1]],

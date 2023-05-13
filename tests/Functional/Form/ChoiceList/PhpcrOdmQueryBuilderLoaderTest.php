@@ -7,14 +7,10 @@ use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\DataFixtures\PHPCR\LoadData;
 use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument;
 use Doctrine\Bundle\PHPCRBundle\Tests\Functional\BaseTestCase;
 use Doctrine\ODM\PHPCR\DocumentManagerInterface;
-use Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder;
 
 class PhpcrOdmQueryBuilderLoaderTest extends BaseTestCase
 {
-    /**
-     * @var DocumentManagerInterface
-     */
-    private $dm;
+    private DocumentManagerInterface $dm;
 
     public function setUp(): void
     {
@@ -26,9 +22,8 @@ class PhpcrOdmQueryBuilderLoaderTest extends BaseTestCase
         $this->dm = $repositoryManager->getDocumentManager();
     }
 
-    public function testGetByIds()
+    public function testGetByIds(): void
     {
-        /** @var QueryBuilder $qb */
         $qb = $this->dm->getRepository(TestDocument::class)->createQueryBuilder('e');
         $loader = new PhpcrOdmQueryBuilderLoader($qb, $this->dm);
         $ids = ['/test/doc', '/test/doc2', '/test/doc3'];
@@ -40,18 +35,16 @@ class PhpcrOdmQueryBuilderLoaderTest extends BaseTestCase
         }
     }
 
-    public function testGetByIdsNotFound()
+    public function testGetByIdsNotFound(): void
     {
-        /** @var QueryBuilder $qb */
         $qb = $this->dm->getRepository(TestDocument::class)->createQueryBuilder('e');
         $loader = new PhpcrOdmQueryBuilderLoader($qb, $this->dm);
         $documents = $loader->getEntitiesByIds('id', ['/foo/bar']);
         $this->assertCount(0, $documents);
     }
 
-    public function testGetByIdsFilter()
+    public function testGetByIdsFilter(): void
     {
-        /** @var QueryBuilder $qb */
         $qb = $this->dm->getRepository(TestDocument::class)->createQueryBuilder('e');
         $qb->where()->eq()->field('e.text')->literal('thiswillnotmatch');
         $loader = new PhpcrOdmQueryBuilderLoader($qb, $this->dm);

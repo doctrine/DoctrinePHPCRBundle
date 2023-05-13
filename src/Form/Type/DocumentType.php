@@ -17,16 +17,12 @@
 namespace Doctrine\Bundle\PHPCRBundle\Form\Type;
 
 use Doctrine\Bundle\PHPCRBundle\Form\ChoiceList\PhpcrOdmQueryBuilderLoader;
-use Doctrine\Persistence\ObjectManager;
 use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityLoaderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\DoctrineType;
 
 class DocumentType extends DoctrineType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getLoader(ObjectManager $manager, $queryBuilder, $class): EntityLoaderInterface
+    public function getLoader($manager, $queryBuilder, $class): EntityLoaderInterface
     {
         return new PhpcrOdmQueryBuilderLoader(
             $queryBuilder,
@@ -35,18 +31,7 @@ class DocumentType extends DoctrineType
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'phpcr_document';
     }

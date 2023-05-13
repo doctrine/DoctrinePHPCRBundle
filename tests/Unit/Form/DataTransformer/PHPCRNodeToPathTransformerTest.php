@@ -12,19 +12,19 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 class PHPCRNodeToPathTransformerTest extends Testcase
 {
     /**
-     * @var SessionInterface|MockObject
+     * @var SessionInterface&MockObject
      */
-    private $session;
+    private SessionInterface $session;
 
     /**
-     * @var PHPCRNodeToPathTransformer|MockObject
+     * @var PHPCRNodeToPathTransformer&MockObject
      */
-    private $transformer;
+    private PHPCRNodeToPathTransformer $transformer;
 
     /**
-     * @var Node|MockObject
+     * @var Node&MockObject
      */
-    private $node;
+    private Node $node;
 
     public function setUp(): void
     {
@@ -33,7 +33,7 @@ class PHPCRNodeToPathTransformerTest extends Testcase
         $this->node = $this->createMock(Node::class);
     }
 
-    public function testTransform()
+    public function testTransform(): void
     {
         $this->node->expects($this->once())
             ->method('getPath')
@@ -44,14 +44,14 @@ class PHPCRNodeToPathTransformerTest extends Testcase
         $this->assertEquals('/asd', $res);
     }
 
-    public function testTransformWrongType()
+    public function testTransformWrongType(): void
     {
         $this->expectException(UnexpectedTypeException::class);
 
         $this->transformer->transform(new \stdClass());
     }
 
-    public function testReverseTransform()
+    public function testReverseTransform(): void
     {
         $this->session->expects($this->once())
             ->method('getNode')
