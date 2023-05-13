@@ -9,16 +9,13 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Integrate command into symfony.
+ * Wrapper to use this command in the symfony console with multiple sessions.
  *
  * @author David Buchmann <mail@davidbu.ch>
  */
 class DocumentConvertTranslationCommand extends BaseDocumentConvertTranslationCommand
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
 
@@ -34,10 +31,7 @@ EOT
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         DoctrineCommandHelper::setApplicationDocumentManager(
             $this->getApplication(),

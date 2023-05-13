@@ -9,6 +9,8 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
+ * Wrapper to use this command in the symfony console with multiple sessions.
+ *
  * @author Daniel Barsotti <daniel.barsotti@liip.ch>
  */
 class JackrabbitCommand extends BaseJackrabbitCommand implements ContainerAwareInterface
@@ -30,17 +32,11 @@ class JackrabbitCommand extends BaseJackrabbitCommand implements ContainerAwareI
         return $this->container;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
         parent::configure();
@@ -59,9 +55,6 @@ EOF
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($this->getContainer()->hasParameter('doctrine_phpcr.jackrabbit_jar')) {

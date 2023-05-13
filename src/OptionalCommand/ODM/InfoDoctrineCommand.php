@@ -9,16 +9,13 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Show information about mapped entities.
+ * Wrapper to use this command in the symfony console with multiple sessions.
  *
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  */
 class InfoDoctrineCommand extends BaseInfoDoctrineCommand
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
 
@@ -34,10 +31,7 @@ EOT
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         DoctrineCommandHelper::setApplicationDocumentManager(
             $this->getApplication(),
