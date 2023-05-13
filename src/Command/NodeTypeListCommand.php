@@ -14,10 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class NodeTypeListCommand extends BaseTypeListCommand
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
 
@@ -27,10 +24,7 @@ class NodeTypeListCommand extends BaseTypeListCommand
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         DoctrineCommandHelper::setApplicationPHPCRSession(
             $this->getApplication(),
