@@ -14,7 +14,7 @@ class GenericInitializerTest extends BaseTestCase
     /**
      * Check the initializer idempotency.
      */
-    public function testIdempotency()
+    public function testIdempotency(): void
     {
         $initializer = new GenericInitializer('test', ['/test/path']);
         $managerRegistry = self::createClient()->getContainer()->get('doctrine_phpcr');

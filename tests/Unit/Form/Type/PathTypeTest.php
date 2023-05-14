@@ -46,17 +46,17 @@ class PathTypeTest extends Testcase
         $this->reg->expects($this->once())
             ->method('getManager')
             ->with(null)
-            ->will($this->returnValue($this->dm));
+            ->willReturn($this->dm);
         $this->builder->expects($this->once())
             ->method('addModelTransformer')
-            ->will($this->returnCallback(function ($transformer) use ($test) {
+            ->willReturnCallback(function ($transformer) use ($test) {
                 $test->assertInstanceOf(
                     DocumentToPathTransformer::class,
                     $transformer
                 );
 
                 return $this->builder;
-            }));
+            });
 
         $this->type->buildForm($this->builder, ['manager_name' => null]);
     }

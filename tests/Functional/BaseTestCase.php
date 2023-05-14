@@ -21,7 +21,7 @@ abstract class BaseTestCase extends WebTestCase
         return new RepositoryManager(self::getTestContainer());
     }
 
-    protected function assertResponseSuccess(Response $response)
+    protected function assertResponseSuccess(Response $response): void
     {
         libxml_use_internal_errors(true);
 
@@ -47,10 +47,6 @@ abstract class BaseTestCase extends WebTestCase
             self::$kernel->boot();
         }
 
-        if (method_exists(self::class, 'getContainer')) {
-            return self::getContainer();
-        }
-
-        return self::$container;
+        return self::getContainer();
     }
 }

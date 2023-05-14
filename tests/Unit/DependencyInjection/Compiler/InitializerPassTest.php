@@ -14,14 +14,14 @@ class InitializerPassTest extends AbstractCompilerPassTestCase
     {
         $container->addCompilerPass(new InitializerPass());
 
-        $inititializer = new Definition();
+        $initializer = new Definition();
         $this->setDefinition(
             'doctrine_phpcr.initializer_manager',
-            $inititializer
+            $initializer
         );
     }
 
-    public function testInitializerAddNoPriority()
+    public function testInitializerAddNoPriority(): void
     {
         $initializer = new Definition();
         $initializer->addTag('doctrine_phpcr.initializer');
@@ -38,7 +38,7 @@ class InitializerPassTest extends AbstractCompilerPassTestCase
         );
     }
 
-    public function testInitializerAddWithPriority()
+    public function testInitializerAddWithPriority(): void
     {
         $initializer = new Definition();
         $initializer->addTag('doctrine_phpcr.initializer', ['priority' => 40]);

@@ -8,11 +8,28 @@ use Jackalope\Node;
 use Jackalope\NodeType\NodeTypeManager;
 use PHPCR\SessionInterface;
 use PHPCR\WorkspaceInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class GenericInitializerTest extends TestCase
 {
-    protected $registry;
+    protected ManagerRegistryInterface $registry;
+    /**
+     * @var SessionInterface&MockObject
+     */
+    private SessionInterface $session;
+    /**
+     * @var WorkspaceInterface&MockObject
+     */
+    private WorkspaceInterface $workspace;
+    /**
+     * @var NodeTypeManager&MockObject
+     */
+    private NodeTypeManager $nodeTypeManager;
+    /**
+     * @var Node&MockObject
+     */
+    private Node $node;
 
     public function setUp(): void
     {
@@ -24,7 +41,7 @@ class GenericInitializerTest extends TestCase
         $this->node = $this->createMock(Node::class);
     }
 
-    public function provideInitializer()
+    public function provideInitializer(): array
     {
         return [
             [
@@ -38,19 +55,19 @@ class GenericInitializerTest extends TestCase
     /**
      * @dataProvider provideInitializer
      */
-    public function testInitializer($name, $basePaths, $cnd)
+    public function testInitializer(string $name, array $basePaths, string $cnd): void
     {
         $this->registry->expects($this->once())
             ->method('getConnection')
-            ->will($this->returnValue($this->session));
+            ->willReturn($this->session);
 
         if ($cnd) {
             $this->session->expects($this->once())
                 ->method('getWorkspace')
-                ->will($this->returnValue($this->workspace));
+                ->willReturn($this->workspace);
             $this->workspace->expects($this->once())
                 ->method('getNodeTypeManager')
-                ->will($this->returnValue($this->nodeTypeManager));
+                ->willReturn($this->nodeTypeManager);
             $this->nodeTypeManager->expects($this->once())
                 ->method('registerNodeTypesCnd')
                 ->with($cnd);
@@ -59,10 +76,10 @@ class GenericInitializerTest extends TestCase
         if ($basePaths) {
             $this->node->expects($this->any())
                 ->method('addNode')
-                ->will($this->returnValue($this->node));
+                ->willReturn($this->node);
             $this->session->expects($this->exactly(\count($basePaths)))
                 ->method('getRootNode')
-                ->will($this->returnValue($this->node));
+                ->willReturn($this->node);
         }
 
         $initializer = new GenericInitializer($name, $basePaths, $cnd);

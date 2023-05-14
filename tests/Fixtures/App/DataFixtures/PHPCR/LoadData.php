@@ -23,7 +23,7 @@ class LoadData implements FixtureInterface
     /**
      * @param DocumentManager $manager
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $base = new Generic();
         $base->setNodename('test');

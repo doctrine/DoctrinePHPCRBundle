@@ -26,7 +26,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
     /**
      * @dataProvider configurations
      */
-    public function testSupports($expectedConfiguration, array $files)
+    public function testSupports(array $expectedConfiguration, array $files): void
     {
         $formats = array_map(function ($path) {
             return __DIR__.'/../../Fixtures/fixtures/'.$path;
@@ -37,7 +37,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
         }
     }
 
-    public function configurations()
+    public function configurations(): array
     {
         $singleConfiguration = [
             'session' => [

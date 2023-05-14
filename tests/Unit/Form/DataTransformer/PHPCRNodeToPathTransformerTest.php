@@ -63,7 +63,7 @@ class PHPCRNodeToPathTransformerTest extends Testcase
         $this->assertSame($this->node, $res);
     }
 
-    public function testReverseTransformEmpty()
+    public function testReverseTransformEmpty(): void
     {
         $this->session->expects($this->never())
             ->method('getNode');
@@ -76,7 +76,7 @@ class PHPCRNodeToPathTransformerTest extends Testcase
     /**
      * Check the transformer does not hide the exception thrown by PHPCR.
      */
-    public function testReverseTransformNotFound()
+    public function testReverseTransformNotFound(): void
     {
         $this->session->expects($this->once())
             ->method('getNode')
