@@ -3,6 +3,7 @@
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCR;
 
 /**
@@ -13,7 +14,7 @@ class TestDocument
     /**
      * @PHPCR\Id()
      */
-    public $id;
+    public string $id;
 
     /**
      * @PHPCR\ParentDocument()
@@ -23,12 +24,12 @@ class TestDocument
     /**
      * @PHPCR\Nodename()
      */
-    public $nodename;
+    public string $nodename;
 
     /**
      * @PHPCR\Uuid
      */
-    public $uuid;
+    public string $uuid;
 
     /**
      * @PHPCR\Child()
@@ -38,7 +39,7 @@ class TestDocument
     /**
      * @PHPCR\Children()
      */
-    protected $children;
+    protected Collection $children;
 
     /**
      * @PHPCR\Referrers(
@@ -46,72 +47,72 @@ class TestDocument
      *     referencedBy="documents"
      * )
      */
-    protected $referrers;
+    protected Collection $referrers;
 
     /**
      * @PHPCR\MixedReferrers()
      */
-    protected $mixedReferrers;
+    protected Collection $mixedReferrers;
 
     /**
      * @PHPCR\Field(type="boolean")
      */
-    public $bool;
+    public bool $bool;
 
     /**
      * @PHPCR\Field(type="date")
      */
-    public $date;
+    public \DateTimeInterface $date;
 
     /**
      * @PHPCR\Field(type="string")
      */
-    public $text;
+    public string $text;
 
     /**
      * @PHPCR\Field(type="double")
      */
-    public $number;
+    public float $number;
 
     /**
      * @PHPCR\Field(type="long")
      */
-    public $long;
+    public int $long;
 
     /**
      * @PHPCR\Field(type="int")
      */
-    public $integer;
+    public int $integer;
 
     /**
      * @PHPCR\Field(type="boolean", multivalue=true, nullable=true)
      */
-    public $mbool;
+    public array $mbool;
 
     /**
      * @PHPCR\Field(type="date", multivalue=true, nullable=true)
      */
-    public $mdate;
+    public array $mdate;
 
     /**
      * @PHPCR\Field(type="string", multivalue=true, nullable=true)
      */
-    public $mtext;
+    public array $mtext;
 
     /**
      * @PHPCR\Field(type="double", multivalue=true, nullable=true)
      */
-    public $mnumber;
+    public array $mnumber;
 
     /**
      * @PHPCR\Field(type="long", multivalue=true, nullable=true)
      */
-    public $mlong;
+    public array $mlong;
 
     /**
      * @PHPCR\Field(type="int", multivalue=true, nullable=true)
      */
-    public $minteger;
+    public array $minteger;
 
     public function __construct()
     {
@@ -120,37 +121,37 @@ class TestDocument
         $this->children = new ArrayCollection();
     }
 
-    public function getReferrers()
+    public function getReferrers(): Collection
     {
         return $this->referrers;
     }
 
-    public function addReferrer($referrer)
+    public function addReferrer($referrer): void
     {
         $this->referrers->add($referrer);
     }
 
-    public function removeReferrer($referrer)
+    public function removeReferrer($referrer): void
     {
         $this->referrers->remove($referrer);
     }
 
-    public function getMixedReferrers()
+    public function getMixedReferrers(): Collection
     {
         return $this->mixedReferrers;
     }
 
-    public function getChildren()
+    public function getChildren(): Collection
     {
         return $this->children;
     }
 
-    public function addChild($referrer)
+    public function addChild($referrer): void
     {
         $this->children->add($referrer);
     }
 
-    public function removeChild($referrer)
+    public function removeChild($referrer): void
     {
         $this->children->remove($referrer);
     }
@@ -158,7 +159,7 @@ class TestDocument
     /**
      * Either define __toString or set property attribute on form mapping.
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->id;
     }

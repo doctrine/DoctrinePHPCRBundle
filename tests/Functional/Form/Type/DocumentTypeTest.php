@@ -30,18 +30,15 @@ class DocumentTypeTest extends BaseTestCase
         $this->assertNotNull($this->referrer, 'fixture loading not working');
     }
 
-    /**
-     * @return FormBuilderInterface
-     */
-    private function createFormBuilder($data, $options = [])
+    private function createFormBuilder(ReferrerDocument $data): FormBuilderInterface
     {
-        return self::getTestContainer()->get('form.factory')->createBuilder(FormType::class, $data, $options);
+        return self::getTestContainer()->get('form.factory')->createBuilder(FormType::class, $data, []);
     }
 
     /**
      * Render a form and return the HTML.
      */
-    private function renderForm(FormBuilderInterface $formBuilder)
+    private function renderForm(FormBuilderInterface $formBuilder): string
     {
         $formView = $formBuilder->getForm()->createView();
         /** @var Environment $twig */
@@ -50,7 +47,7 @@ class DocumentTypeTest extends BaseTestCase
         return $twig->render('form.html.twig', ['form' => $formView]);
     }
 
-    public function testUnfiltered()
+    public function testUnfiltered(): void
     {
         $formBuilder = $this->createFormBuilder($this->referrer);
 
@@ -65,7 +62,7 @@ class DocumentTypeTest extends BaseTestCase
         $this->assertStringContainsString('<option value="/test/doc"', $html);
     }
 
-    public function testFiltered()
+    public function testFiltered(): void
     {
         $qb = $this->dm
             ->getRepository(TestDocument::class)

@@ -12,6 +12,7 @@
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCR;
 
 /**
@@ -22,7 +23,7 @@ class ReferrerDocument
     /**
      * @PHPCR\Id(strategy="assigned")
      */
-    public $id;
+    public string $id;
 
     /**
      * @PHPCR\ReferenceOne()
@@ -32,7 +33,7 @@ class ReferrerDocument
     /**
      * @PHPCR\ReferenceMany()
      */
-    protected $documents;
+    protected Collection $documents;
 
     /**
      * @PHPCR\ReferenceOne(targetDocument="Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument")
@@ -42,7 +43,7 @@ class ReferrerDocument
     /**
      * @PHPCR\ReferenceMany(targetDocument="Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument")
      */
-    protected $testDocuments;
+    protected Collection $testDocuments;
 
     public function __construct()
     {
@@ -50,7 +51,7 @@ class ReferrerDocument
         $this->testDocuments = new ArrayCollection();
     }
 
-    public function addDocument($doc)
+    public function addDocument($doc): void
     {
         $this->documents->add($doc);
     }
@@ -72,9 +73,9 @@ class ReferrerDocument
     }
 
     /**
-     * @return mixed
+     * @return Collection<object>
      */
-    public function getTestDocuments()
+    public function getTestDocuments(): Collection
     {
         return $this->testDocuments;
     }
@@ -90,7 +91,7 @@ class ReferrerDocument
     /**
      * Either define __toString or set property attribute on form mapping.
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->id;
     }

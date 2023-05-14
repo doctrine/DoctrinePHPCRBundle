@@ -35,9 +35,9 @@ class PHPCRTypeGuesserTest extends BaseTestCase
         $this->assertNotNull($this->referrer, 'fixture loading not working');
     }
 
-    private function createFormBuilder(object $data, array $options = []): FormBuilderInterface
+    private function createFormBuilder(object $data): FormBuilderInterface
     {
-        return self::getTestContainer()->get('form.factory')->createBuilder(FormType::class, $data, $options);
+        return self::getTestContainer()->get('form.factory')->createBuilder(FormType::class, $data, []);
     }
 
     public function testFields(): void
@@ -175,7 +175,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
         $this->renderForm($formBuilder);
     }
 
-    public function testHierarchy()
+    public function testHierarchy(): void
     {
         $formBuilder = $this->createFormBuilder($this->document);
 
@@ -244,7 +244,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
         $this->renderForm($formBuilder);
     }
 
-    public function testReference()
+    public function testReference(): void
     {
         $formBuilder = $this->createFormBuilder($this->referrer);
 
@@ -296,7 +296,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
         $this->renderForm($formBuilder);
     }
 
-    public function testReferrers()
+    public function testReferrers(): void
     {
         $formBuilder = $this->createFormBuilder($this->document);
 
@@ -334,7 +334,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
      * We do not further test the generated html, that would be testing the
      * form component itself, which is done elsewhere.
      */
-    private function renderForm(FormBuilderInterface $formBuilder)
+    private function renderForm(FormBuilderInterface $formBuilder): void
     {
         $formView = $formBuilder->getForm()->createView();
         /** @var Environment $twig */
@@ -346,11 +346,9 @@ class PHPCRTypeGuesserTest extends BaseTestCase
      * Assert that the form element has an inner type of type $typeClass and
      * the specified options with their values.
      *
-     * @param string $typeClass FQN class
-     * @param array  $options   keys are option names, values the
-     *                          expected option values
+     * @param array $options keys are option names, values the expected option values
      */
-    private function assertFormType(FormBuilderInterface $element, $typeClass, array $options)
+    private function assertFormType(FormBuilderInterface $element, string $typeClass, array $options): void
     {
         $type = $element->getType()->getInnerType();
         $this->assertInstanceOf($typeClass, $type);

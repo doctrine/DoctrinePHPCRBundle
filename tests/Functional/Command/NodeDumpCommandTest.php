@@ -17,21 +17,9 @@ class NodeDumpCommandTest extends BaseTestCase
         $repositoryManager->loadFixtures([LoadData::class]);
     }
 
-    protected function getKernel()
+    public function testMaxLineLengthOptionIsAppliedSuccessfully(): void
     {
-        if (!self::$kernel) {
-            self::bootKernel();
-        }
-        if (!self::$kernel->getContainer()) {
-            self::$kernel->boot();
-        }
-
-        return self::$kernel;
-    }
-
-    public function testMaxLineLengthOptionIsAppliedSuccessfully()
-    {
-        $application = new Application($this->getKernel());
+        $application = new Application(self::$kernel);
 
         $command = $application->find('doctrine:phpcr:node:dump');
         $commandTester = new CommandTester($command);

@@ -94,13 +94,13 @@ class InitializerManagerTest extends TestCase
     public function testInitialize(array $initializers, array $expectedOrder): void
     {
         foreach ($initializers as $initializerConfig) {
-            list($initializerVar, $priority) = $initializerConfig;
+            [$initializerVar, $priority] = $initializerConfig;
 
             $initializer = $this->$initializerVar;
 
             $initializer->expects($this->once())
                 ->method('getName')
-                ->will($this->returnValue($initializerVar));
+                ->willReturn($initializerVar);
 
             $initializer->expects($this->once())
                 ->method('init')

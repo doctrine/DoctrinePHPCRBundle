@@ -28,7 +28,7 @@ class PHPCRReferenceTypeTest extends Testcase
         $this->type = new PHPCRReferenceType($session);
     }
 
-    public function provideTypes()
+    public function provideTypes(): array
     {
         return [
             ['uuid', PHPCRNodeToUuidTransformer::class],
@@ -39,16 +39,16 @@ class PHPCRReferenceTypeTest extends Testcase
     /**
      * @dataProvider provideTypes
      */
-    public function testBuildForm($transformerType, $transformerFqn): void
+    public function testBuildForm(string $transformerType, string $transformerFqn): void
     {
         $type = null;
         $this->builder->expects($this->once())
             ->method('addModelTransformer')
-            ->will($this->returnCallback(function ($transformer) use (&$type) {
+            ->willReturnCallback(function ($transformer) use (&$type) {
                 $type = \get_class($transformer);
 
                 return $this->builder;
-            }));
+            });
         $this->type->buildForm($this->builder, ['transformer_type' => $transformerType]);
 
         $this->assertEquals($transformerFqn, $type);

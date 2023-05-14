@@ -37,11 +37,11 @@ class DocumentToPathTransformerTest extends Testcase
     {
         $this->dm->expects($this->once())
             ->method('getUnitOfWork')
-            ->will($this->returnValue($this->uow));
+            ->willReturn($this->uow);
         $this->uow->expects($this->once())
             ->method('getDocumentId')
             ->with($this->document)
-            ->will($this->returnValue('/asd'));
+            ->willReturn('/asd');
 
         $res = $this->transformer->transform($this->document);
         $this->assertEquals('/asd', $res);
@@ -52,7 +52,7 @@ class DocumentToPathTransformerTest extends Testcase
         $this->dm->expects($this->once())
             ->method('find')
             ->with(null, '/asd')
-            ->will($this->returnValue($this->document));
+            ->willReturn($this->document);
 
         $res = $this->transformer->reverseTransform('/asd');
         $this->assertSame($this->document, $res);
@@ -63,7 +63,7 @@ class DocumentToPathTransformerTest extends Testcase
         $this->dm->expects($this->once())
             ->method('find')
             ->with(null, '/asd')
-            ->will($this->returnValue(null));
+            ->willReturn(null);
 
         $this->expectException(TransformationFailedException::class);
 

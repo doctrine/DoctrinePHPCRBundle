@@ -4,21 +4,31 @@ namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\EventListener;
 
 use Doctrine\Bundle\PHPCRBundle\EventListener\LocaleListener;
 use Doctrine\ODM\PHPCR\Translation\LocaleChooser\LocaleChooserInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 class LocaleListenerTest extends TestCase
 {
-    private $chooser;
+    /**
+     * @var LocaleChooserInterface&MockObject
+     */
+    private LocaleChooserInterface $chooser;
 
-    private $responseEvent;
+    /**
+     * @var RequestEvent&MockObject
+     */
+    private RequestEvent $responseEvent;
 
-    private $request;
+    /**
+     * @var Request&MockObject
+     */
+    private Request $request;
 
-    private $allowedLocales;
+    private array $allowedLocales;
 
-    private function setUpTestOnKernelRequest()
+    protected function setUp(): void
     {
         $this->chooser = $this->createMock(LocaleChooserInterface::class);
         $this->responseEvent = $this->createMock(RequestEvent::class);
@@ -26,10 +36,8 @@ class LocaleListenerTest extends TestCase
         $this->allowedLocales = ['fr', 'en', 'de'];
     }
 
-    public function testOnKernelRequestWithFallbackHardcoded()
+    public function testOnKernelRequestWithFallbackHardcoded(): void
     {
-        $this->setUpTestOnKernelRequest();
-
         $localeListener = new LocaleListener(
             $this->chooser,
             $this->allowedLocales,
@@ -38,7 +46,7 @@ class LocaleListenerTest extends TestCase
 
         $this->responseEvent->expects($this->exactly(4))
             ->method('getRequest')
-            ->will($this->returnValue($this->request));
+            ->willReturn($this->request);
 
         $this->request->expects($this->exactly(2))
             ->method('getLocale')
@@ -52,10 +60,8 @@ class LocaleListenerTest extends TestCase
         $localeListener->onKernelRequest($this->responseEvent);
     }
 
-    public function testOnKernelRequestWithDefaultFallback()
+    public function testOnKernelRequestWithDefaultFallback(): void
     {
-        $this->setUpTestOnKernelRequest();
-
         $localeListener = new LocaleListener(
             $this->chooser,
             $this->allowedLocales
@@ -63,7 +69,7 @@ class LocaleListenerTest extends TestCase
 
         $this->responseEvent->expects($this->exactly(2))
             ->method('getRequest')
-            ->will($this->returnValue($this->request));
+            ->willReturn($this->request);
 
         $this->request->expects($this->once())
             ->method('getLocale')
@@ -75,7 +81,7 @@ class LocaleListenerTest extends TestCase
 
         $this->request->expects($this->once())
             ->method('getLanguages')
-            ->will($this->returnValue(['it', 'fr_FR', 'fr_CA', 'en_GB']));
+            ->willReturn(['it', 'fr_FR', 'fr_CA', 'en_GB']);
 
         $this->chooser->expects($this->once())
             ->method('setFallbackLocales')
@@ -84,10 +90,8 @@ class LocaleListenerTest extends TestCase
         $localeListener->onKernelRequest($this->responseEvent);
     }
 
-    public function testOnKernelRequestWithFallbackReplace()
+    public function testOnKernelRequestWithFallbackReplace(): void
     {
-        $this->setUpTestOnKernelRequest();
-
         $localeListener = new LocaleListener(
             $this->chooser,
             $this->allowedLocales,
@@ -96,7 +100,7 @@ class LocaleListenerTest extends TestCase
 
         $this->responseEvent->expects($this->exactly(2))
             ->method('getRequest')
-            ->will($this->returnValue($this->request));
+            ->willReturn($this->request);
 
         $this->request->expects($this->once())
             ->method('getLocale')
@@ -108,7 +112,7 @@ class LocaleListenerTest extends TestCase
 
         $this->request->expects($this->once())
             ->method('getLanguages')
-            ->will($this->returnValue(['it', 'fr_FR', 'fr_CA', 'en_GB']));
+            ->willReturn(['it', 'fr_FR', 'fr_CA', 'en_GB']);
 
         $this->chooser->expects($this->once())
             ->method('setFallbackLocales')

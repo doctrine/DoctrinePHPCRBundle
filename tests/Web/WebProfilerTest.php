@@ -1,22 +1,18 @@
 <?php
 
-namespace Doctrine\Bundle\PHPCRBundle\Tests\Web\DataCollector;
+namespace Doctrine\Bundle\PHPCRBundle\Tests\Web;
 
 use Doctrine\Bundle\PHPCRBundle\Tests\Functional\BaseTestCase;
 
 /**
  * Tests the Data Collector by running the Web Profiler.
- *
- * @testdox The web profiler
  */
 class WebProfilerTest extends BaseTestCase
 {
     /**
-     * @testdox should run
-     *
      * @dataProvider provideWebProfilerUris
      */
-    public function testRun(string $uri)
+    public function testRun(string $uri): void
     {
         $client = self::createClient();
         $client->enableProfiler();
@@ -31,7 +27,7 @@ class WebProfilerTest extends BaseTestCase
         $this->assertResponseSuccess($client->getResponse());
     }
 
-    public function provideWebProfilerUris()
+    public function provideWebProfilerUris(): array
     {
         return [
             'the default panel' => ['/_profiler/{token}'],

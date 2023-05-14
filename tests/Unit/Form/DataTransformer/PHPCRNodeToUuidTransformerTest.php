@@ -32,27 +32,27 @@ class PHPCRNodeToUuidTransformerTest extends Testcase
         $this->node = $this->createMock(Node::class);
     }
 
-    public function testTransform()
+    public function testTransform(): void
     {
         $this->node->expects($this->once())
             ->method('getIdentifier')
-            ->will($this->returnValue('/asd'));
+            ->willReturn('/asd');
         $res = $this->transformer->transform($this->node);
         $this->assertEquals('/asd', $res);
     }
 
-    public function testReverseTransform()
+    public function testReverseTransform(): void
     {
         $this->session->expects($this->once())
             ->method('getNodeByIdentifier')
             ->with('/asd')
-            ->will($this->returnValue($this->node));
+            ->willReturn($this->node);
 
         $res = $this->transformer->reverseTransform('/asd');
         $this->assertSame($this->node, $res);
     }
 
-    public function testReverseTransformEmpty()
+    public function testReverseTransformEmpty(): void
     {
         $this->session->expects($this->never())
             ->method('getNodeByIdentifier');
