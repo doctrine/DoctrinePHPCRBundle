@@ -14,15 +14,8 @@ use Twig\Environment;
 
 class DocumentTypeTest extends BaseTestCase
 {
-    /**
-     * @var DocumentManagerInterface
-     */
-    private $dm;
-
-    /**
-     * @var ReferrerDocument
-     */
-    private $referrer;
+    private DocumentManagerInterface $dm;
+    private ReferrerDocument $referrer;
 
     public function setUp(): void
     {

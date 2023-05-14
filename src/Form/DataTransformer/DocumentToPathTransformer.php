@@ -2,18 +2,15 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Form\DataTransformer;
 
-use Doctrine\ODM\PHPCR\DocumentManager;
+use Doctrine\ODM\PHPCR\DocumentManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class DocumentToPathTransformer implements DataTransformerInterface
 {
-    /**
-     * @var DocumentManager
-     */
-    private $dm;
+    private DocumentManagerInterface $dm;
 
-    public function __construct(DocumentManager $dm)
+    public function __construct(DocumentManagerInterface $dm)
     {
         $this->dm = $dm;
     }
@@ -21,14 +18,12 @@ class DocumentToPathTransformer implements DataTransformerInterface
     /**
      * Transform a document into a path.
      *
-     * @param object|null $document
-     *
-     * @return string|null the path to the document or null if $document is null
+     * @param object $document
      */
-    public function transform($document)
+    public function transform($document): ?string
     {
         if (null === $document) {
-            return;
+            return null;
         }
 
         return $this->dm->getUnitOfWork()->getDocumentId($document);
@@ -41,10 +36,10 @@ class DocumentToPathTransformer implements DataTransformerInterface
      *
      * @return object|null returns the document or null if $path is empty
      */
-    public function reverseTransform($path)
+    public function reverseTransform($path): ?object
     {
         if (!$path) {
-            return;
+            return null;
         }
 
         $document = $this->dm->find(null, $path);

@@ -26,15 +26,10 @@ class DoctrinePHPCRBundle extends Bundle
 {
     /**
      * Autoloader for proxies.
-     *
-     * @var \Closure
      */
-    private $autoloader;
+    private ?\Closure $autoloader;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
@@ -45,10 +40,7 @@ class DoctrinePHPCRBundle extends Bundle
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function registerCommands(Application $application)
+    public function registerCommands(Application $application): void
     {
         parent::registerCommands($application);
 
@@ -67,10 +59,7 @@ class DoctrinePHPCRBundle extends Bundle
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function boot()
+    public function boot(): void
     {
         // Register an autoloader for proxies to avoid issues when unserializing them when the ODM is used.
         if ($this->container->hasParameter('doctrine_phpcr.odm.proxy_namespace')) {
@@ -113,14 +102,11 @@ class DoctrinePHPCRBundle extends Bundle
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function shutdown()
+    public function shutdown(): void
     {
-        if (null !== $this->autoloader) {
+        if (isset($this->autoloader)) {
             spl_autoload_unregister($this->autoloader);
-            $this->autoloader = null;
+            unset($this->autoloader);
         }
 
         $this->clearDocumentManagers();
@@ -130,7 +116,7 @@ class DoctrinePHPCRBundle extends Bundle
     /**
      * Clear all document managers to clear references to entities for GC.
      */
-    private function clearDocumentManagers()
+    private function clearDocumentManagers(): void
     {
         if (!$this->container->hasParameter('doctrine_phpcr.odm.document_managers')) {
             return;
@@ -148,7 +134,7 @@ class DoctrinePHPCRBundle extends Bundle
     /**
      * Close all connections to avoid reaching too many connections in the process when booting again later (tests).
      */
-    private function closeConnections()
+    private function closeConnections(): void
     {
         if (!$this->container->hasParameter('doctrine_phpcr.sessions')) {
             return;

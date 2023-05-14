@@ -2,7 +2,7 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\DependencyInjection;
 
-use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
+use Doctrine\Bundle\PHPCRBundle\ManagerRegistryInterface;
 use Doctrine\ODM\PHPCR\Document\Generic;
 use Doctrine\ODM\PHPCR\DocumentManagerInterface;
 use PHPCR\SessionInterface;
@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\Reference;
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
-class DoctrinePHPCRExtension extends AbstractDoctrineExtension
+final class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 {
     /**
      * @var string
@@ -52,9 +52,6 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
      */
     private $dbalSchemaListenerLoaded = false;
 
-    /**
-     * {@inheritdoc}
-     */
     public function load(array $configs, ContainerBuilder $container)
     {
         $processor = new Processor();
@@ -70,7 +67,7 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             $managerRegistryServiceId = $config['manager_registry_service_id'];
             $container->setAlias('doctrine_phpcr', new Alias($config['manager_registry_service_id'], true));
         }
-        $container->setAlias(ManagerRegistry::class, new Alias($managerRegistryServiceId, true));
+        $container->setAlias(ManagerRegistryInterface::class, new Alias($managerRegistryServiceId, true));
 
         $parameters = [
             'workspace_dir',
@@ -561,33 +558,21 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         return $id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getMappingObjectDefaultName(): string
     {
         return 'Document';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getMappingResourceConfigDirectory(string $bundleDir = null): string
     {
         return 'Resources/config/doctrine';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getMappingResourceExtension(): string
     {
         return 'phpcr';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNamespace()
     {
         return 'http://doctrine-project.org/schema/symfony-dic/odm/phpcr';
@@ -598,9 +583,6 @@ class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         return '%'.$this->getObjectManagerElementName('metadata.'.$driverType.'.class%');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getObjectManagerElementName(string $name): string
     {
         return 'doctrine_phpcr.odm.'.$name;

@@ -24,7 +24,7 @@ class JackalopeDoctrineDbalSchemaListener
         $this->schema = $schema;
     }
 
-    public function postGenerateSchema(GenerateSchemaEventArgs $args)
+    public function postGenerateSchema(GenerateSchemaEventArgs $args): void
     {
         $schema = $args->getSchema();
         $this->schema->addToSchema($schema);

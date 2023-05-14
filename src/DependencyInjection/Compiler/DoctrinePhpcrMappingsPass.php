@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\Reference;
  *
  * @author David Buchmann <mail@davidbu.ch>
  */
-class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
+final class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
 {
     /**
      * You should not directly instantiate this class but use one of the factory methods.

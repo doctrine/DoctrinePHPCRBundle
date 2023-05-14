@@ -3,7 +3,7 @@
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Functional\Initializer;
 
 use Doctrine\Bundle\PHPCRBundle\Initializer\GenericInitializer;
-use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
+use Doctrine\Bundle\PHPCRBundle\ManagerRegistryInterface;
 use Doctrine\Bundle\PHPCRBundle\Tests\Functional\BaseTestCase;
 
 /**
@@ -17,8 +17,8 @@ class GenericInitializerTest extends BaseTestCase
     public function testIdempotency()
     {
         $initializer = new GenericInitializer('test', ['/test/path']);
-        /** @var ManagerRegistry $managerRegistry */
         $managerRegistry = self::createClient()->getContainer()->get('doctrine_phpcr');
+        \assert($managerRegistry instanceof ManagerRegistryInterface);
         $dm = $managerRegistry->getManager();
 
         // The first run should create a node.

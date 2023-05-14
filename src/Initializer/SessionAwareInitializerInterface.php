@@ -9,10 +9,5 @@ namespace Doctrine\Bundle\PHPCRBundle\Initializer;
  */
 interface SessionAwareInitializerInterface
 {
-    /**
-     * Set session name for this initilizer.
-     *
-     * @param string $sessionName
-     */
-    public function setSessionName($sessionName);
+    public function setSessionName(string $sessionName): void;
 }

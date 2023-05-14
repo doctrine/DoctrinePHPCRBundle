@@ -10,7 +10,8 @@ Changelog
   The configuration of metadata_cache_driver changed. By default, it creates an `array` cache.
   To configure a service, specify `type: service` and specify your service in the `id` property.
   To use a cache pool, specify the service id of that pool.
-* The following container parameters are no longer taken into account (memcache and apc seems to never have been used anyways).
+* Introduced the ManagerRegistryInterface for the ManagerRegistry and adjusted the service alias for autowiring to the interface.  
+* The following container parameters are no longer taken into account (memcache and apc seem to have never been used anyways).
   If you have customised the array cache class, please check if this is still needed - and note that starting from this version,
   PSR-16 simple cache is used:
 

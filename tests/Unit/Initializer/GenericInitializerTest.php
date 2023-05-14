@@ -3,7 +3,7 @@
 namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\Initializer;
 
 use Doctrine\Bundle\PHPCRBundle\Initializer\GenericInitializer;
-use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
+use Doctrine\Bundle\PHPCRBundle\ManagerRegistryInterface;
 use Jackalope\Node;
 use Jackalope\NodeType\NodeTypeManager;
 use PHPCR\SessionInterface;
@@ -16,7 +16,7 @@ class GenericInitializerTest extends TestCase
 
     public function setUp(): void
     {
-        $this->registry = $this->createMock(ManagerRegistry::class);
+        $this->registry = $this->createMock(ManagerRegistryInterface::class);
 
         $this->session = $this->createMock(SessionInterface::class);
         $this->workspace = $this->createMock(WorkspaceInterface::class);

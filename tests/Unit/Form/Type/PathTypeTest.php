@@ -4,52 +4,43 @@ namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\Form\Type;
 
 use Doctrine\Bundle\PHPCRBundle\Form\DataTransformer\DocumentToPathTransformer;
 use Doctrine\Bundle\PHPCRBundle\Form\Type\PathType;
-use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
+use Doctrine\Bundle\PHPCRBundle\ManagerRegistryInterface;
 use Doctrine\ODM\PHPCR\DocumentManager;
+use Doctrine\ODM\PHPCR\DocumentManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PathTypeTest extends Testcase
 {
     /**
-     * @var ManagerRegistry|MockObject
+     * @var ManagerRegistryInterface&MockObject
      */
-    private $reg;
+    private ManagerRegistryInterface $reg;
 
     /**
-     * @var DocumentManager|MockObject
+     * @var DocumentManagerInterface&MockObject
      */
-    private $dm;
+    private DocumentManagerInterface $dm;
 
     /**
-     * @var FormBuilder|MockObject
+     * @var FormBuilder&MockObject
      */
-    private $builder;
+    private FormBuilder $builder;
 
-    /**
-     * @var OptionsResolver|MockObject
-     */
-    private $optionsResolver;
-
-    /**
-     * @var PathType
-     */
-    private $type;
+    private PathType $type;
 
     public function setUp(): void
     {
-        $this->reg = $this->createMock(ManagerRegistry::class);
+        $this->reg = $this->createMock(ManagerRegistryInterface::class);
 
         $this->dm = $this->createMock(DocumentManager::class);
 
         $this->builder = $this->createMock(FormBuilder::class);
-        $this->optionsResolver = $this->createMock(OptionsResolver::class);
         $this->type = new PathType($this->reg);
     }
 
-    public function testBuildForm()
+    public function testBuildForm(): void
     {
         $test = $this;
         $this->reg->expects($this->once())

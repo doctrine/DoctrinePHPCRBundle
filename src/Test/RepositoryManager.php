@@ -3,12 +3,12 @@
 namespace Doctrine\Bundle\PHPCRBundle\Test;
 
 use Doctrine\Bundle\PHPCRBundle\DataFixtures\PHPCRExecutor;
+use Doctrine\Bundle\PHPCRBundle\ManagerRegistryInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\ProxyReferenceRepository;
 use Doctrine\Common\DataFixtures\Purger\PHPCRPurger;
 use Doctrine\ODM\PHPCR\DocumentManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -17,27 +17,15 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class RepositoryManager
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
-     * @var DocumentManagerInterface
-     */
-    private $dm;
-
-    /**
-     * @var PHPCRExecutor
-     */
-    private $executor;
+    private ContainerInterface $container;
+    private PHPCRExecutor $executor;
 
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
 
-    public function getRegistry(): ManagerRegistry
+    public function getRegistry(): ManagerRegistryInterface
     {
         return $this->container->get('doctrine_phpcr');
     }
@@ -50,7 +38,7 @@ class RepositoryManager
     /**
      * @param bool $initialize whether the PHPCR repository should also be initialized
      */
-    public function purgeRepository(bool $initialize = false)
+    public function purgeRepository(bool $initialize = false): void
     {
         $this->getExecutor($initialize)->purge();
     }
@@ -63,7 +51,7 @@ class RepositoryManager
      *
      * @throws \InvalidArgumentException if any of the $classNames do not exist
      */
-    public function loadFixtures(array $classNames, bool $initialize = false)
+    public function loadFixtures(array $classNames, bool $initialize = false): void
     {
         $loader = new ContainerAwareLoader($this->container);
 
@@ -79,7 +67,7 @@ class RepositoryManager
      *
      * @throws \InvalidArgumentException if $className does not exist
      */
-    private function loadFixture(Loader $loader, string $className)
+    private function loadFixture(Loader $loader, string $className): void
     {
         if (!class_exists($className)) {
             throw new \InvalidArgumentException(sprintf(
@@ -109,7 +97,7 @@ class RepositoryManager
     {
         static $lastInitialize = null;
 
-        if ($this->executor && $initialize === $lastInitialize) {
+        if (isset($this->executor) && $initialize === $lastInitialize) {
             return $this->executor;
         }
 

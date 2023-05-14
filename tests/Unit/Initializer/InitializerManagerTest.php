@@ -4,40 +4,53 @@ namespace Doctrine\Bundle\PHPCRBundle\Tests\Unit\Initializer;
 
 use Doctrine\Bundle\PHPCRBundle\Initializer\InitializerInterface;
 use Doctrine\Bundle\PHPCRBundle\Initializer\InitializerManager;
-use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
+use Doctrine\Bundle\PHPCRBundle\ManagerRegistryInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class InitializerManagerTest extends TestCase
 {
     /**
-     * @var ManagerRegistry|MockObject
+     * @var ManagerRegistryInterface&MockObject
      */
-    private $registry;
+    private ManagerRegistryInterface $registry;
+
+    /**
+     * @var InitializerInterface&MockObject
+     */
+    private InitializerInterface $initializer1;
+    /**
+     * @var InitializerInterface&MockObject
+     */
+    private InitializerInterface $initializer2;
+    /**
+     * @var InitializerInterface&MockObject
+     */
+    private InitializerInterface $initializer3;
+
+    private InitializerManager $initializerManager;
 
     public function setUp(): void
     {
-        $this->registry = $this->createMock(ManagerRegistry::class);
-
-        $this->initializerManager = new InitializerManager($this->registry);
+        $this->registry = $this->createMock(ManagerRegistryInterface::class);
 
         $this->initializer1 = $this
             ->getMockBuilder(InitializerInterface::class)
             ->setMockClassName('TestInitializerOne')
             ->getMock();
-
         $this->initializer2 = $this
             ->getMockBuilder(InitializerInterface::class)
             ->setMockClassName('TestInitializerTwo')
             ->getMock();
-
         $this->initializer3 = $this
             ->getMockBuilder(InitializerInterface::class)
             ->setMockClassName('TestInitializerTwo')
             ->getMock();
+
+        $this->initializerManager = new InitializerManager($this->registry);
     }
 
-    public function provideInitialize()
+    public function provideInitialize(): array
     {
         return [
             [
@@ -78,7 +91,7 @@ class InitializerManagerTest extends TestCase
     /**
      * @dataProvider provideInitialize
      */
-    public function testInitialize($initializers, $expectedOrder)
+    public function testInitialize(array $initializers, array $expectedOrder): void
     {
         foreach ($initializers as $initializerConfig) {
             list($initializerVar, $priority) = $initializerConfig;
@@ -115,7 +128,7 @@ class InitializerManagerTest extends TestCase
         }
     }
 
-    public function testNoLogging()
+    public function testNoLogging(): void
     {
         $this->initializer1->expects($this->never())
             ->method('getName');

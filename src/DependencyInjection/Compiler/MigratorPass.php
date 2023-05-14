@@ -8,9 +8,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * A CompilerPass which registers available migrators.
  */
-class MigratorPass implements CompilerPassInterface
+final class MigratorPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $migrators = [];
         foreach ($container->findTaggedServiceIds('doctrine_phpcr.migrator') as $id => $attributes) {

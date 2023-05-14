@@ -10,7 +10,7 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 class PHPCRNodeToPathTransformer implements DataTransformerInterface
 {
-    private $session;
+    private SessionInterface $session;
 
     public function __construct(SessionInterface $session)
     {
@@ -26,10 +26,10 @@ class PHPCRNodeToPathTransformer implements DataTransformerInterface
      *
      * @throws UnexpectedTypeException if given value is not a NodeInterface
      */
-    public function transform($node)
+    public function transform($node): ?string
     {
         if (null === $node) {
-            return;
+            return null;
         }
 
         if (!$node instanceof NodeInterface) {
@@ -48,10 +48,10 @@ class PHPCRNodeToPathTransformer implements DataTransformerInterface
      *
      * @throws ItemNotFoundException if node for a non-empty $path is not found
      */
-    public function reverseTransform($path)
+    public function reverseTransform($path): ?NodeInterface
     {
         if (!$path) {
-            return;
+            return null;
         }
 
         return $this->session->getNode($path);

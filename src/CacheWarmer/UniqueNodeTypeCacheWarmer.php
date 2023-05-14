@@ -2,8 +2,8 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\CacheWarmer;
 
+use Doctrine\Bundle\PHPCRBundle\ManagerRegistryInterface;
 use Doctrine\ODM\PHPCR\Tools\Helper\UniqueNodeTypeHelper;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
 
 /**
@@ -11,14 +11,11 @@ use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
  * warming process, thereby providing a useful indication to the
  * developer that something is wrong.
  */
-class UniqueNodeTypeCacheWarmer implements CacheWarmerInterface
+final class UniqueNodeTypeCacheWarmer implements CacheWarmerInterface
 {
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
+    private ManagerRegistryInterface $registry;
 
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistryInterface $registry)
     {
         $this->registry = $registry;
     }
@@ -26,18 +23,13 @@ class UniqueNodeTypeCacheWarmer implements CacheWarmerInterface
     /**
      * This cache warmer is optional as it is just for error
      * checking and reporting back to the user.
-     *
-     * @return true
      */
-    public function isOptional()
+    public function isOptional(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function warmUp($cacheDir)
+    public function warmUp($cacheDir): void
     {
         $helper = new UniqueNodeTypeHelper();
 

@@ -8,7 +8,6 @@ use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\DataFixtures\PHPCR\LoadData;
 use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\ReferrerDocument;
 use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument;
 use Doctrine\Bundle\PHPCRBundle\Tests\Functional\BaseTestCase;
-use Doctrine\ODM\PHPCR\DocumentManager;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -21,42 +20,27 @@ use Twig\Environment;
 
 class PHPCRTypeGuesserTest extends BaseTestCase
 {
-    /**
-     * @var DocumentManager
-     */
-    private $dm;
-
-    /**
-     * @var TestDocument
-     */
-    private $document;
-
-    /**
-     * @var ReferrerDocument
-     */
-    private $referrer;
+    private TestDocument $document;
+    private ReferrerDocument $referrer;
 
     public function setUp(): void
     {
         self::createClient();
         $repositoryManager = $this->getRepositoryManager();
         $repositoryManager->loadFixtures([LoadData::class]);
-        $this->dm = $repositoryManager->getDocumentManager();
-        $this->document = $this->dm->find(null, '/test/doc');
+        $dm = $repositoryManager->getDocumentManager();
+        $this->document = $dm->find(null, '/test/doc');
         $this->assertNotNull($this->document, 'fixture loading not working');
-        $this->referrer = $this->dm->find(null, '/test/ref');
+        $this->referrer = $dm->find(null, '/test/ref');
         $this->assertNotNull($this->referrer, 'fixture loading not working');
     }
 
-    /**
-     * @return FormBuilderInterface
-     */
-    private function createFormBuilder($data, $options = [])
+    private function createFormBuilder(object $data, array $options = []): FormBuilderInterface
     {
         return self::getTestContainer()->get('form.factory')->createBuilder(FormType::class, $data, $options);
     }
 
-    public function testFields()
+    public function testFields(): void
     {
         $formBuilder = $this->createFormBuilder($this->document);
 
@@ -121,7 +105,7 @@ class PHPCRTypeGuesserTest extends BaseTestCase
         $this->renderForm($formBuilder);
     }
 
-    public function testMultivalueFields()
+    public function testMultivalueFields(): void
     {
         $formBuilder = $this->createFormBuilder($this->document);
 
