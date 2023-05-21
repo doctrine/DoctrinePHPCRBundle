@@ -143,6 +143,8 @@ final class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
         // no sessions configured
         if (empty($config['default_session'])) {
+            $container->setParameter('doctrine_phpcr.default_session', null);
+
             return;
         }
 

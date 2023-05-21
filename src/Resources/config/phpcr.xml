@@ -4,13 +4,6 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="doctrine_phpcr.sessions" type="collection" />
-        <parameter key="doctrine_phpcr.odm.document_managers" type="collection" />
-        <parameter key="doctrine_phpcr.default_session" />
-        <parameter key="doctrine_phpcr.odm.default_document_manager" />
-    </parameters>
-
     <services>
 
         <service id="doctrine_phpcr.session.event_manager"
