@@ -109,8 +109,6 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
                             'url' => 'http://bar',
                         ],
                         'workspace' => 'default',
-                        'username' => 'admin',
-                        'password' => 'admin',
                     ],
                 ],
             ],
@@ -122,6 +120,11 @@ class DoctrinePHPCRExtensionTest extends AbstractExtensionTestCase
 
         foreach ($sessions as $id) {
             $this->assertContainerBuilderHasService($id);
+            if ('doctrine_phpcr.foo_session' === $id) {
+                $this->assertContainerBuilderHasService(str_replace('_session', '_credentials', $id));
+            } else {
+                $this->assertContainerBuilderNotHasService($id.'_credentials');
+            }
         }
     }
 

@@ -26,6 +26,9 @@ Changelog
     doctrine_phpcr.odm.cache.memcached_port
     doctrine_phpcr.odm.cache.memcached_instance.class
     doctrine_phpcr.odm.cache.xcache.class
+* If no username is defined for a session, and if you use Jackalope >= 2.0, the
+  credentials service for this session is no longer created and `null` is
+  passed as credentials.
 
 2.4.2
 -----
