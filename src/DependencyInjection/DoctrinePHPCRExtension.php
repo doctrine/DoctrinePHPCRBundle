@@ -5,6 +5,7 @@ namespace Doctrine\Bundle\PHPCRBundle\DependencyInjection;
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistryInterface;
 use Doctrine\ODM\PHPCR\Document\Generic;
 use Doctrine\ODM\PHPCR\DocumentManagerInterface;
+use Jackalope\Session;
 use PHPCR\SessionInterface;
 use Symfony\Bridge\Doctrine\DependencyInjection\AbstractDoctrineExtension;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
@@ -299,13 +300,7 @@ final class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
         $username = $admin && $session['admin_username'] ? $session['admin_username'] : $session['username'];
         $password = $admin && $session['admin_password'] ? $session['admin_password'] : $session['password'];
-        $credentials = new ChildDefinition('doctrine_phpcr.credentials');
-        $credentialsServiceId = sprintf('doctrine_phpcr%s.%s_credentials', $serviceNamePrefix, $session['name']);
-        $container
-            ->setDefinition($credentialsServiceId, $credentials)
-            ->replaceArgument(0, $username)
-            ->replaceArgument(1, $password)
-        ;
+        $credentialsService = $this->buildCredentials($container, $serviceNamePrefix, $session['name'], $username, $password);
 
         $definition = new ChildDefinition('doctrine_phpcr.jackalope.session');
         $factoryServiceId = sprintf('doctrine_phpcr%s.jackalope.repository.%s', $serviceNamePrefix, $session['name']);
@@ -316,7 +311,7 @@ final class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
         $workspace = $admin ? null : $session['workspace'];
         $definition
-            ->replaceArgument(0, new Reference($credentialsServiceId))
+            ->replaceArgument(0, $credentialsService)
             ->replaceArgument(1, $workspace)
         ;
 
@@ -330,6 +325,27 @@ final class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         $eventManagerServiceId = sprintf('doctrine_phpcr%s.%s_session.event_manager', $serviceNamePrefix, $session['name']);
         $eventManagerDefinition = new ChildDefinition('doctrine_phpcr.session.event_manager');
         $container->setDefinition($eventManagerServiceId, $eventManagerDefinition);
+    }
+
+    private function buildCredentials(ContainerBuilder $container, string $serviceNamePrefix, string $name, ?string $username, ?string $password): ?Reference
+    {
+        if (null === $username && class_exists(Session::class)) {
+            $reflection = new \ReflectionClass(Session::class);
+            $constructorParameters = $reflection->getConstructor()->getParameters();
+            if (\array_key_exists(3, $constructorParameters)) {
+                if ($constructorParameters[3]->allowsNull()) {
+                    return null;
+                }
+            }
+        }
+        $credentials = new ChildDefinition('doctrine_phpcr.credentials');
+        $credentialsServiceId = sprintf('doctrine_phpcr%s.%s_credentials', $serviceNamePrefix, $name);
+        $container
+            ->setDefinition($credentialsServiceId, $credentials)
+            ->replaceArgument(0, $username)
+            ->replaceArgument(1, $password);
+
+        return new Reference($credentialsServiceId);
     }
 
     private function loadOdm(array $config, ContainerBuilder $container): void
