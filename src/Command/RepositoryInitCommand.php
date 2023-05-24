@@ -18,10 +18,7 @@ class RepositoryInitCommand extends Command
 {
     use ContainerAwareTrait;
 
-    /**
-     * @return void
-     */
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
 
@@ -37,10 +34,7 @@ EOT
             );
     }
 
-    /**
-     * @return int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (class_exists(RegisterSystemNodeTypesCommand::class)) {
             DoctrineCommandHelper::setApplicationPHPCRSession(

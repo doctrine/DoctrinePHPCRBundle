@@ -15,10 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class InfoDoctrineCommand extends BaseInfoDoctrineCommand
 {
-    /**
-     * @return void
-     */
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
 
@@ -34,10 +31,7 @@ EOT
             );
     }
 
-    /**
-     * @return int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         DoctrineCommandHelper::setApplicationDocumentManager(
             $this->getApplication(),

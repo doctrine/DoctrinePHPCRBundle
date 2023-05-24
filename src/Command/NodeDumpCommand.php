@@ -45,10 +45,7 @@ class NodeDumpCommand extends BaseDumpCommand implements ContainerAwareInterface
         $this->consoleDumper = $consoleDumper;
     }
 
-    /**
-     * @return void
-     */
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
 
@@ -58,10 +55,7 @@ class NodeDumpCommand extends BaseDumpCommand implements ContainerAwareInterface
         ;
     }
 
-    /**
-     * @return int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $application = $this->getApplication();
         DoctrineCommandHelper::setApplicationPHPCRSession(

@@ -14,10 +14,7 @@ class NodeTypeRegisterCommand extends BaseRegisterNodeTypesCommand
 {
     private const BUNDLE_NT_PATH = 'Resources/config/phpcr-node-types';
 
-    /**
-     * @return void
-     */
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
         $newHelp = <<<'EOT'
@@ -35,10 +32,7 @@ EOT;
         ;
     }
 
-    /**
-     * @return int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         DoctrineCommandHelper::setApplicationPHPCRSession(
             $this->getApplication(),

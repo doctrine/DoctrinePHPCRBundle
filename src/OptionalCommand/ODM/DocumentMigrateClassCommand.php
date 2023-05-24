@@ -13,20 +13,14 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class DocumentMigrateClassCommand extends BaseDocumentMigrateClassCommand
 {
-    /**
-     * @return void
-     */
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
 
         $this->addOption('dm', null, InputOption::VALUE_REQUIRED, 'The document manager to use for this command');
     }
 
-    /**
-     * @return int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $dmName = $input->getOption('dm'); // defaults to null
         DoctrineCommandHelper::setApplicationDocumentManager(
