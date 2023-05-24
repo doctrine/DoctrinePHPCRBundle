@@ -30,6 +30,11 @@ Changelog
   credentials service for this session is no longer created and `null` is
   passed as credentials.
 
+2.4.3
+-----
+
+* Revert BC break with command return types. If you extend the commands, you should add return type declarations anyways to be ready for 3.x.
+
 2.4.2
 -----
 

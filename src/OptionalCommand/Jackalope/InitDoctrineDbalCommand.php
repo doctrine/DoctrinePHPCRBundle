@@ -13,7 +13,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class InitDoctrineDbalCommand extends BaseInitDoctrineDbalCommand
 {
-    protected function configure(): void
+    /**
+     * @return void
+     */
+    protected function configure()
     {
         parent::configure();
 
@@ -23,7 +26,10 @@ class InitDoctrineDbalCommand extends BaseInitDoctrineDbalCommand
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    /**
+     * @return int
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $application = $this->getApplication();
         $sessionName = $input->getOption('session');

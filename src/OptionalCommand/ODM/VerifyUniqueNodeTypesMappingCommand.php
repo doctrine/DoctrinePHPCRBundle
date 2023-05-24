@@ -13,7 +13,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class VerifyUniqueNodeTypesMappingCommand extends BaseVerifyUniqueNodeTypesMappingCommand
 {
-    protected function configure(): void
+    /**
+     * @return void
+     */
+    protected function configure()
     {
         parent::configure();
 
@@ -28,7 +31,10 @@ EOT
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    /**
+     * @return int
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         DoctrineCommandHelper::setApplicationDocumentManager(
             $this->getApplication(),

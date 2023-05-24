@@ -13,7 +13,10 @@ class MigratorMigrateCommand extends Command
 {
     use ContainerAwareTrait;
 
-    protected function configure(): void
+    /**
+     * @return void
+     */
+    protected function configure()
     {
         $this
             ->setName('doctrine:phpcr:migrator:migrate')
@@ -29,7 +32,10 @@ EOT
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    /**
+     * @return int
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         DoctrineCommandHelper::setApplicationPHPCRSession(
             $this->getApplication(),
