@@ -14,7 +14,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class NodeRemoveCommand extends BaseNodeRemoveCommand
 {
-    protected function configure(): void
+    /**
+     * @return void
+     */
+    protected function configure()
     {
         parent::configure();
 
@@ -24,7 +27,11 @@ class NodeRemoveCommand extends BaseNodeRemoveCommand
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+
+    /**
+     * @return int
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         DoctrineCommandHelper::setApplicationPHPCRSession(
             $this->getApplication(),

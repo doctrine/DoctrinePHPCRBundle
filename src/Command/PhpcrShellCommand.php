@@ -15,7 +15,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class PhpcrShellCommand extends Command
 {
-    protected function configure(): void
+    /**
+     * @return void
+     */
+    protected function configure()
     {
         $this->setName('doctrine:phpcr:shell');
         $this->addArgument('cmd', InputArgument::IS_ARRAY);
@@ -51,7 +54,11 @@ EOT
         );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+
+    /**
+     * @return int
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         if (!class_exists(SessionApplication::class)) {
             throw new \InvalidArgumentException(

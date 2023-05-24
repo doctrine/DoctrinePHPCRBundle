@@ -12,7 +12,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class WorkspaceListCommand extends BaseWorkspaceListCommand
 {
-    protected function configure(): void
+    /**
+     * @return void
+     */
+    protected function configure()
     {
         parent::configure();
 
@@ -22,7 +25,11 @@ class WorkspaceListCommand extends BaseWorkspaceListCommand
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+
+    /**
+     * @return int
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         DoctrineCommandHelper::setApplicationPHPCRSession(
             $this->getApplication(),
