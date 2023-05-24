@@ -27,7 +27,6 @@ class NodeTypeListCommand extends BaseTypeListCommand
         ;
     }
 
-
     /**
      * @return int
      */

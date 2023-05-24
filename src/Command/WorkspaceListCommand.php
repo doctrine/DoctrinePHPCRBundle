@@ -25,7 +25,6 @@ class WorkspaceListCommand extends BaseWorkspaceListCommand
         ;
     }
 
-
     /**
      * @return int
      */

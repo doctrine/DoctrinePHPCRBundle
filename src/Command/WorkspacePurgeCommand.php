@@ -27,7 +27,6 @@ class WorkspacePurgeCommand extends BaseWorkspacePurgeCommand
         ;
     }
 
-
     /**
      * @return int
      */

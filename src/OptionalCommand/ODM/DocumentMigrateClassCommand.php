@@ -23,7 +23,6 @@ class DocumentMigrateClassCommand extends BaseDocumentMigrateClassCommand
         $this->addOption('dm', null, InputOption::VALUE_REQUIRED, 'The document manager to use for this command');
     }
 
-
     /**
      * @return int
      */

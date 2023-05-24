@@ -26,7 +26,6 @@ class InitDoctrineDbalCommand extends BaseInitDoctrineDbalCommand
         ;
     }
 
-
     /**
      * @return int
      */

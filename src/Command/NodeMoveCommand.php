@@ -27,7 +27,6 @@ class NodeMoveCommand extends BaseNodeMoveCommand
         ;
     }
 
-
     /**
      * @return int
      */

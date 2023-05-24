@@ -27,7 +27,6 @@ class WorkspaceQueryCommand extends BaseWorkspaceQueryCommand
         ;
     }
 
-
     /**
      * @return int
      */

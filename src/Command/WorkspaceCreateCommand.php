@@ -25,7 +25,6 @@ class WorkspaceCreateCommand extends BaseWorkspaceCreateCommand
         ;
     }
 
-
     /**
      * @return int
      */

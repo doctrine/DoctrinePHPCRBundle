@@ -27,7 +27,6 @@ class WorkspaceExportCommand extends BaseWorkspaceExportCommand
         ;
     }
 
-
     /**
      * @return int
      */

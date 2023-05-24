@@ -32,7 +32,6 @@ EOT
         ;
     }
 
-
     /**
      * @return int
      */

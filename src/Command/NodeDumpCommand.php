@@ -59,7 +59,6 @@ class NodeDumpCommand extends BaseDumpCommand implements ContainerAwareInterface
         ;
     }
 
-
     /**
      * @return int
      */

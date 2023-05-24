@@ -27,7 +27,6 @@ class WorkspaceDeleteCommand extends BaseWorkspaceDeleteCommand
         ;
     }
 
-
     /**
      * @return int
      */

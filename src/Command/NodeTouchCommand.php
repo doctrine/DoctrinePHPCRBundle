@@ -27,7 +27,6 @@ class NodeTouchCommand extends BaseNodeTouchCommand
         ;
     }
 
-
     /**
      * @return int
      */

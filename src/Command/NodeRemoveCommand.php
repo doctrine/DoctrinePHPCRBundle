@@ -27,7 +27,6 @@ class NodeRemoveCommand extends BaseNodeRemoveCommand
         ;
     }
 
-
     /**
      * @return int
      */
