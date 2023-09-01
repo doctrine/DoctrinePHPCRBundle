@@ -13,13 +13,17 @@ use Symfony\Bridge\Doctrine\ManagerRegistry as BaseManagerRegistry;
  */
 final class ManagerRegistry extends BaseManagerRegistry implements ManagerRegistryInterface
 {
+    /**
+     * @param string[] $connections
+     * @param string[] $entityManagers
+     */
     public function __construct(
         ContainerInterface $container,
         array $connections,
         array $entityManagers,
-        $defaultConnectionName,
-        $defaultEntityManagerName,
-        $proxyInterfaceName
+        string $defaultConnectionName,
+        string $defaultEntityManagerName,
+        string $proxyInterfaceName
     ) {
         $this->container = $container;
 

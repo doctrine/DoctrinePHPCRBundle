@@ -63,6 +63,11 @@ final class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         $this->loader->load('phpcr.xml');
         $this->loader->load('commands.xml');
 
+        // default values in case no odm is configured. the manager registry needs these variables to be defined.
+        // if odm is enabled, the parameters are overwritten later in the `loadOdm` section.
+        $container->setParameter('doctrine_phpcr.odm.document_managers', []);
+        $container->setParameter('doctrine_phpcr.odm.default_document_manager', '');
+
         $managerRegistryServiceId = 'doctrine_phpcr';
         if (!empty($config['manager_registry_service_id'])) {
             $managerRegistryServiceId = $config['manager_registry_service_id'];
