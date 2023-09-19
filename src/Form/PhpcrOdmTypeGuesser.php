@@ -5,7 +5,7 @@ namespace Doctrine\Bundle\PHPCRBundle\Form;
 use Doctrine\Bundle\PHPCRBundle\Form\Type\DocumentType;
 use Doctrine\Bundle\PHPCRBundle\Form\Type\PathType;
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistryInterface;
-use Doctrine\ODM\PHPCR\DocumentManager;
+use Doctrine\ODM\PHPCR\DocumentManagerInterface;
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -208,15 +208,16 @@ final class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
             return new ValueGuess(false, Guess::MEDIUM_CONFIDENCE);
         }
 
-        if ($metadata->hasAssociation($property)) {
-            if ($property === $metadata->parentMapping
-                && ClassMetadata::GENERATOR_TYPE_ASSIGNED !== $metadata->idGenerator
-            ) {
-                return new ValueGuess(true, Guess::HIGH_CONFIDENCE);
-            }
-
-            return new ValueGuess(false, Guess::LOW_CONFIDENCE);
+        if (!$metadata->hasAssociation($property)) {
+            return null;
         }
+        if ($property === $metadata->parentMapping
+            && ClassMetadata::GENERATOR_TYPE_ASSIGNED !== $metadata->idGenerator
+        ) {
+            return new ValueGuess(true, Guess::HIGH_CONFIDENCE);
+        }
+
+        return new ValueGuess(false, Guess::LOW_CONFIDENCE);
     }
 
     public function guessPattern(string $class, string $property): ?ValueGuess
@@ -225,7 +226,7 @@ final class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
     }
 
     /**
-     * @return array{0: ClassMetadata, 1: DocumentManager}|null
+     * @return array{0: ClassMetadata, 1: DocumentManagerInterface}|null
      */
     private function getMetadata(string $class): ?array
     {

@@ -17,14 +17,10 @@ jobs:
             fail-fast: false
             matrix:
                 include:
-                    - php-version: "7.4"
-                      phpunit-version: "8.5"
-                      dependencies: "lowest"
-
-                    - php-version: "7.4"
-                      phpunit-version: "8.5"
+                    - php-version: "8.0"
+                      phpunit-version: "9.5"
                       phpunit-flags: "-v --coverage-text"
-                      symfony-version: "^5.4"
+                      symfony-version: "6.0.*"
 
                     - php-version: "8.0"
                       phpunit-version: "9.5"
@@ -36,9 +32,13 @@ jobs:
                     - php-version: "8.2"
                       phpunit-version: "9.5"
 
+                    - php-version: "8.3"
+                      phpunit-version: "9.5"
+                      symfony-version: "7.*"
+
         steps:
             - name: "Checkout project"
-              uses: "actions/checkout@v3"
+              uses: "actions/checkout@v4"
 
             - name: "Install and configure PHP"
               uses: "shivammathur/setup-php@v2"

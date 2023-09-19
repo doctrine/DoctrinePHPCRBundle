@@ -2,14 +2,16 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
-use Symfony\Component\Console\Command\Command;
+use Doctrine\Bundle\PHPCRBundle\Migrator\MigratorInterface;
+use PHPCR\Util\Console\Command\BaseCommand;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class MigratorMigrateCommand extends Command
+class MigratorMigrateCommand extends BaseCommand
 {
     use ContainerAwareTrait;
 
@@ -31,11 +33,16 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $application = $this->getApplication();
+        if (!$application instanceof Application) {
+            throw new \InvalidArgumentException('Expected to find '.Application::class.' but got '.
+                ($application ? \get_class($application) : null));
+        }
         DoctrineCommandHelper::setApplicationPHPCRSession(
-            $this->getApplication(),
+            $application,
             $input->getOption('session')
         );
-        $session = $this->getHelperSet()->get('phpcr')->getSession();
+        $session = $this->getPhpcrSession();
 
         $migrators = $this->container->getParameter('doctrine_phpcr.migrate.migrators');
 
@@ -53,7 +60,9 @@ EOT
         }
 
         $migrator = $this->container->get($id);
-
+        if (!$migrator instanceof MigratorInterface) {
+            throw new \InvalidArgumentException('Looked for a '.MigratorInterface::class.' but found '.($migrator ? \get_class($migrator) : $migrator));
+        }
         $migrator->init($session, $output);
 
         $identifier = $input->getOption('identifier');

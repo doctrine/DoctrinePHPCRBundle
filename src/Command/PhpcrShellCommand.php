@@ -4,6 +4,8 @@ namespace Doctrine\Bundle\PHPCRBundle\Command;
 
 use PHPCR\Shell\Console\Application\SessionApplication;
 use PHPCR\Shell\PhpcrShell;
+use PHPCR\Util\Console\Command\BaseCommand;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Wrapper to use this command in the symfony console with multiple sessions.
  */
-class PhpcrShellCommand extends Command
+class PhpcrShellCommand extends BaseCommand
 {
     protected function configure(): void
     {
@@ -59,15 +61,19 @@ EOT
                 'composer.json file to use this command'
             );
         }
-
+        $application = $this->getApplication();
+        if (!$application instanceof Application) {
+            throw new \InvalidArgumentException('Expected to find '.Application::class.' but got '.
+                ($application ? \get_class($application) : null));
+        }
         DoctrineCommandHelper::setApplicationPHPCRSession(
-            $this->getApplication(),
+            $application,
             $input->getOption('session')
         );
 
         $args = $input->getArgument('cmd');
         $launchShell = empty($args);
-        $session = $this->getHelper('phpcr')->getSession();
+        $session = $this->getPhpcrSession();
 
         // If no arguments supplied, launch the shell uwith the embedded application
         if ($launchShell) {
@@ -78,8 +84,8 @@ EOT
         }
 
         // else try and run the command using the given input
-        $application = PhpcrShell::createEmbeddedApplication($session);
-        $exitCode = $application->runWithStringInput(implode(' ', $args), $output);
+        $phpcrApplication = PhpcrShell::createEmbeddedApplication($session);
+        $exitCode = $phpcrApplication->runWithStringInput(implode(' ', $args), $output);
 
         // always save the session after running a single command
         $session->save();

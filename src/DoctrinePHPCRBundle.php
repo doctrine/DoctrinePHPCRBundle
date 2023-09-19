@@ -19,7 +19,6 @@ use Symfony\Bridge\Doctrine\DependencyInjection\CompilerPass\RegisterEventListen
 use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\IntrospectableContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class DoctrinePHPCRBundle extends Bundle
@@ -123,10 +122,6 @@ class DoctrinePHPCRBundle extends Bundle
         }
 
         foreach ($this->container->getParameter('doctrine_phpcr.odm.document_managers') as $id) {
-            if ($this->container instanceof IntrospectableContainerInterface && !$this->container->initialized($id)) {
-                continue;
-            }
-
             $this->container->get($id)->clear();
         }
     }
@@ -141,10 +136,6 @@ class DoctrinePHPCRBundle extends Bundle
         }
 
         foreach ($this->container->getParameter('doctrine_phpcr.sessions') as $id) {
-            if ($this->container instanceof IntrospectableContainerInterface && !$this->container->initialized($id)) {
-                continue;
-            }
-
             $session = $this->container->get($id);
             if (!$session instanceof Session) {
                 return;

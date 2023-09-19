@@ -58,22 +58,34 @@ final class ManagerRegistry extends BaseManagerRegistry implements ManagerRegist
 
     public function getManager($name = null): DocumentManagerInterface
     {
-        return parent::getManager($name);
+        $dm = parent::getManager($name);
+        \assert($dm instanceof DocumentManagerInterface);
+
+        return $dm;
     }
 
     public function resetManager($name = null): DocumentManagerInterface
     {
-        return parent::resetManager($name);
+        $dm = parent::resetManager($name);
+        \assert($dm instanceof DocumentManagerInterface);
+
+        return $dm;
     }
 
     public function getManagerForClass($class = null): ?DocumentManagerInterface
     {
-        return parent::getManagerForClass($class);
+        $dm = parent::getManagerForClass($class);
+        \assert(null === $dm || $dm instanceof DocumentManagerInterface);
+
+        return $dm;
     }
 
     public function getConnection($name = null): SessionInterface
     {
-        return parent::getConnection($name);
+        $conn = parent::getConnection($name);
+        \assert($conn instanceof SessionInterface);
+
+        return $conn;
     }
 
     /**
@@ -92,6 +104,9 @@ final class ManagerRegistry extends BaseManagerRegistry implements ManagerRegist
             throw new \InvalidArgumentException(sprintf('Doctrine %s Connection named "%s" does not exist.', $this->getName(), $name));
         }
 
-        return $this->getService($serviceName);
+        $connection = $this->getService($serviceName);
+        \assert($connection instanceof SessionInterface);
+
+        return $connection;
     }
 }

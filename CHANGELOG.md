@@ -6,6 +6,7 @@ Changelog
 
 * Upgrade to phpcr-odm 2.0
 * Support jackalope 2.0
+* Drop support for PHP 7
 * Replace doctrine cache with PSR-6 cache with the symfony/cache implementation.
   The configuration of metadata_cache_driver changed. By default, it creates an `array` cache.
   To configure a service, specify `type: service` and specify your service in the `id` property.

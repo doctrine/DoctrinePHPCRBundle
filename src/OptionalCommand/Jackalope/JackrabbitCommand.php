@@ -3,6 +3,7 @@
 namespace Doctrine\Bundle\PHPCRBundle\OptionalCommand\Jackalope;
 
 use Jackalope\Tools\Console\Command\JackrabbitCommand as BaseJackrabbitCommand;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -15,15 +16,18 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class JackrabbitCommand extends BaseJackrabbitCommand implements ContainerAwareInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private ?ContainerInterface $container = null;
 
     protected function getContainer(): ContainerInterface
     {
         if (null === $this->container) {
-            $this->container = $this->getApplication()->getKernel()->getContainer();
+            $application = $this->getApplication();
+            if (!$application instanceof Application) {
+                throw new \InvalidArgumentException('Expected to find '.Application::class.' but got '.
+                    ($application ? \get_class($application) : null));
+            }
+
+            $this->container = $application->getKernel()->getContainer();
         }
 
         return $this->container;
