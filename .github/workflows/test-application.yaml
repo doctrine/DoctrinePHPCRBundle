@@ -36,9 +36,13 @@ jobs:
                     - php-version: "8.2"
                       phpunit-version: "9.5"
 
+                    - php-version: "8.3"
+                      phpunit-version: "9.5"
+                      symfony-version: "^7"
+
         steps:
             - name: "Checkout project"
-              uses: "actions/checkout@v3"
+              uses: "actions/checkout@v4"
 
             - name: "Install and configure PHP"
               uses: "shivammathur/setup-php@v2"

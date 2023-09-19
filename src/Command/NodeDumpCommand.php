@@ -4,6 +4,7 @@ namespace Doctrine\Bundle\PHPCRBundle\Command;
 
 use PHPCR\Util\Console\Command\NodeDumpCommand as BaseDumpCommand;
 use PHPCR\Util\Console\Helper\PhpcrConsoleDumperHelper;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -17,7 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class NodeDumpCommand extends BaseDumpCommand implements ContainerAwareInterface
 {
-    private ContainerInterface $container;
+    private ?ContainerInterface $container = null;
     private PhpcrConsoleDumperHelper $consoleDumper;
 
     protected function getContainer(): ContainerInterface
@@ -72,5 +73,16 @@ class NodeDumpCommand extends BaseDumpCommand implements ContainerAwareInterface
         }
 
         return parent::execute($input, $output);
+    }
+
+    public function getApplication(): Application
+    {
+        $application = parent::getApplication();
+        if (!$application instanceof Application) {
+            throw new \InvalidArgumentException('Expected to find '.Application::class.' but got '.
+                ($application ? get_class($application) : null ));
+        }
+
+        return $application;
     }
 }

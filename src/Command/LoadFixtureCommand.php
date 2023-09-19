@@ -4,8 +4,12 @@ namespace Doctrine\Bundle\PHPCRBundle\Command;
 
 use Doctrine\Bundle\PHPCRBundle\DataFixtures\PHPCRExecutor;
 use Doctrine\Common\DataFixtures\Purger\PHPCRPurger;
+use Doctrine\ODM\PHPCR\Tools\Console\Helper\DocumentManagerHelper;
 use InvalidArgumentException;
+use PHPCR\Util\Console\Command\BaseCommand;
+use PHPCR\Util\Console\Helper\PhpcrHelper;
 use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -24,7 +28,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
  * @author Jonathan H. Wage <jonwage@gmail.com>
  * @author Daniel Leech <daniel@dantleech.com>
  */
-class LoadFixtureCommand extends Command
+class LoadFixtureCommand extends BaseCommand
 {
     use ContainerAwareTrait;
 
@@ -65,28 +69,24 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $dmName = $input->getOption('dm'); // defaults to null
+        $application = $this->getApplication();
+        if (!$application instanceof Application) {
+            throw new \InvalidArgumentException('Expected to find '.Application::class.' but got '.
+                ($application ? get_class($application) : null ));
+        }
         DoctrineCommandHelper::setApplicationDocumentManager(
-            $this->getApplication(),
+            $application,
             $dmName
         );
 
-        $dm = $this->getHelperSet()->get('phpcr')->getDocumentManager();
+        $dm = $this->getPhpcrHelper()->getDocumentManager();
         $noInitialize = $input->getOption('no-initialize');
 
         if ($input->isInteractive() && !$input->getOption('append')) {
             $question = '<question>Careful, database will be purged. Do you want to continue Y/N ?</question>';
-            $default = false;
-            if ($this->getHelperSet()->has('question')) {
-                /** @var $questionHelper QuestionHelper */
-                $questionHelper = $this->getHelperSet()->get('question');
-                $question = new ConfirmationQuestion($question, $default);
-                $result = $questionHelper->ask($input, $output, $question);
-            } else {
-                /** @var $dialog DialogHelper */
-                $dialog = $this->getHelperSet()->get('dialog');
-                $result = $dialog->askConfirmation($output, $question, $default);
-            }
-
+            $questionHelper = $this->getQuestionHelper();
+            $question = new ConfirmationQuestion($question, false);
+            $result = $questionHelper->ask($input, $output, $question);
             if (!$result) {
                 return 0;
             }
@@ -96,8 +96,7 @@ EOT
         if ($dirOrFile) {
             $paths = \is_array($dirOrFile) ? $dirOrFile : [$dirOrFile];
         } else {
-            /** @var $kernel KernelInterface */
-            $kernel = $this->getApplication()->getKernel();
+            $kernel = $application->getKernel();
             $projectDir = method_exists($kernel, 'getRootDir') ? $kernel->getRootDir() : $kernel->getProjectDir().'/src';
             $paths = [$projectDir.'/DataFixtures/PHPCR'];
             foreach ($kernel->getBundles() as $bundle) {
@@ -136,5 +135,13 @@ EOT
         $executor->execute($fixtures, $input->getOption('append'));
 
         return 0;
+    }
+
+    protected function getPhpcrHelper(): DocumentManagerHelper
+    {
+        $helper = parent::getPhpcrHelper();
+        \assert($helper instanceof DocumentManagerHelper);
+
+        return $helper;
     }
 }

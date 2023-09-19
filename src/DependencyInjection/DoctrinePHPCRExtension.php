@@ -503,7 +503,6 @@ final class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         // reset state of drivers and alias map. They are only used by this methods and children.
         $this->drivers = [];
         $this->aliasMap = [];
-        $this->bundleDirs = [];
 
         if (!class_exists(Generic::class)) {
             throw new \RuntimeException('PHPCR ODM is activated in the config but does not seem loadable.');

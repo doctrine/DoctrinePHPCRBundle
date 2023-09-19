@@ -123,10 +123,6 @@ class DoctrinePHPCRBundle extends Bundle
         }
 
         foreach ($this->container->getParameter('doctrine_phpcr.odm.document_managers') as $id) {
-            if ($this->container instanceof IntrospectableContainerInterface && !$this->container->initialized($id)) {
-                continue;
-            }
-
             $this->container->get($id)->clear();
         }
     }
@@ -141,10 +137,6 @@ class DoctrinePHPCRBundle extends Bundle
         }
 
         foreach ($this->container->getParameter('doctrine_phpcr.sessions') as $id) {
-            if ($this->container instanceof IntrospectableContainerInterface && !$this->container->initialized($id)) {
-                continue;
-            }
-
             $session = $this->container->get($id);
             if (!$session instanceof Session) {
                 return;
