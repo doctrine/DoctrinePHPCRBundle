@@ -5,7 +5,6 @@ namespace Doctrine\Bundle\PHPCRBundle\Command;
 use Doctrine\Bundle\PHPCRBundle\Migrator\MigratorInterface;
 use PHPCR\Util\Console\Command\BaseCommand;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -37,7 +36,7 @@ EOT
         $application = $this->getApplication();
         if (!$application instanceof Application) {
             throw new \InvalidArgumentException('Expected to find '.Application::class.' but got '.
-                ($application ? get_class($application) : null ));
+                ($application ? \get_class($application) : null));
         }
         DoctrineCommandHelper::setApplicationPHPCRSession(
             $application,
@@ -62,7 +61,7 @@ EOT
 
         $migrator = $this->container->get($id);
         if (!$migrator instanceof MigratorInterface) {
-            throw new \InvalidArgumentException('Looked for a '.MigratorInterface::class.' but found '.($migrator ? get_class($migrator) : $migrator));
+            throw new \InvalidArgumentException('Looked for a '.MigratorInterface::class.' but found '.($migrator ? \get_class($migrator) : $migrator));
         }
         $migrator->init($session, $output);
 

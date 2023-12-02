@@ -80,7 +80,7 @@ class NodeDumpCommand extends BaseDumpCommand implements ContainerAwareInterface
         $application = parent::getApplication();
         if (!$application instanceof Application) {
             throw new \InvalidArgumentException('Expected to find '.Application::class.' but got '.
-                ($application ? get_class($application) : null ));
+                ($application ? \get_class($application) : null));
         }
 
         return $application;

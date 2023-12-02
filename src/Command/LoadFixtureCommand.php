@@ -7,18 +7,14 @@ use Doctrine\Common\DataFixtures\Purger\PHPCRPurger;
 use Doctrine\ODM\PHPCR\Tools\Console\Helper\DocumentManagerHelper;
 use InvalidArgumentException;
 use PHPCR\Util\Console\Command\BaseCommand;
-use PHPCR\Util\Console\Helper\PhpcrHelper;
 use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\DialogHelper;
-use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Command to load PHPCR-ODM fixtures.
@@ -72,7 +68,7 @@ EOT
         $application = $this->getApplication();
         if (!$application instanceof Application) {
             throw new \InvalidArgumentException('Expected to find '.Application::class.' but got '.
-                ($application ? get_class($application) : null ));
+                ($application ? \get_class($application) : null));
         }
         DoctrineCommandHelper::setApplicationDocumentManager(
             $application,

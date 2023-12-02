@@ -24,7 +24,7 @@ class JackrabbitCommand extends BaseJackrabbitCommand implements ContainerAwareI
             $application = $this->getApplication();
             if (!$application instanceof Application) {
                 throw new \InvalidArgumentException('Expected to find '.Application::class.' but got '.
-                    ($application ? get_class($application) : null ));
+                    ($application ? \get_class($application) : null));
             }
 
             $this->container = $application->getKernel()->getContainer();
