@@ -331,7 +331,6 @@ final class Configuration implements ConfigurationInterface
                                 ->scalarNode('mapping')->defaultValue(true)->end()
                                 ->scalarNode('type')->end()
                                 ->scalarNode('dir')->end()
-                                ->scalarNode('alias')->end()
                                 ->scalarNode('prefix')->end()
                                 ->booleanNode('is_bundle')->end()
                             ->end()

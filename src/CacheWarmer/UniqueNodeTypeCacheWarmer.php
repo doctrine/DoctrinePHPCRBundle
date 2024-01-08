@@ -29,7 +29,7 @@ final class UniqueNodeTypeCacheWarmer implements CacheWarmerInterface
         return true;
     }
 
-    public function warmUp($cacheDir): array
+    public function warmUp(string $cacheDir, ?string $buildDir = null): array
     {
         $helper = new UniqueNodeTypeHelper();
 

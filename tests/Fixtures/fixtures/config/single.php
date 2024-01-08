@@ -38,7 +38,6 @@ $container->loadFromExtension('doctrine_phpcr', [
                 'mapping' => true,
                 'type' => null,
                 'dir' => null,
-                'alias' => null,
                 'prefix' => null,
                 'is-bundle' => null,
             ],

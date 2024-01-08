@@ -20,9 +20,6 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadData implements FixtureInterface
 {
-    /**
-     * @param DocumentManager $manager
-     */
     public function load(ObjectManager $manager): void
     {
         $base = new Generic();

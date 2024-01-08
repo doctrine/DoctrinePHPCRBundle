@@ -8,7 +8,6 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -16,34 +15,15 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @author Daniel Barsotti <daniel.barsotti@liip.ch>
  */
-class NodeDumpCommand extends BaseDumpCommand implements ContainerAwareInterface
+class NodeDumpCommand extends BaseDumpCommand
 {
-    private ?ContainerInterface $container = null;
-    private PhpcrConsoleDumperHelper $consoleDumper;
+    private const NAME = 'doctrine:phpcr:node:dump';
 
-    protected function getContainer(): ContainerInterface
-    {
-        if (null === $this->container) {
-            $this->container = $this->getApplication()->getKernel()->getContainer();
-        }
-
-        return $this->container;
-    }
-
-    public function setContainer(ContainerInterface $container = null): void
-    {
-        if (!$container) {
-            unset($this->container);
-
-            return;
-        }
-
-        $this->container = $container;
-    }
-
-    public function setConsoleDumper(PhpcrConsoleDumperHelper $consoleDumper): void
-    {
-        $this->consoleDumper = $consoleDumper;
+    public function __construct(
+        private PhpcrConsoleDumperHelper $consoleDumper,
+        private int $dumpMaxLineLength
+    ) {
+        parent::__construct(self::NAME);
     }
 
     protected function configure(): void
@@ -51,7 +31,7 @@ class NodeDumpCommand extends BaseDumpCommand implements ContainerAwareInterface
         parent::configure();
 
         $this
-            ->setName('doctrine:phpcr:node:dump')
+            ->setName(self::NAME)
             ->addOption('session', null, InputOption::VALUE_REQUIRED, 'The session to use for this command')
         ;
     }
@@ -66,10 +46,8 @@ class NodeDumpCommand extends BaseDumpCommand implements ContainerAwareInterface
         $helperSet = $application->getHelperSet();
         $helperSet->set($this->consoleDumper);
 
-        if (!$input->hasOption('max_line_length')
-            && $this->getContainer()->hasParameter('doctrine_phpcr.dump_max_line_length')
-        ) {
-            $input->setOption('max_line_length', $this->getContainer()->getParameter('doctrine_phpcr.dump_max_line_length'));
+        if (!$input->hasOption('max_line_length')) {
+            $input->setOption('max_line_length', $this->dumpMaxLineLength);
         }
 
         return parent::execute($input, $output);

@@ -11,6 +11,7 @@ Changelog
   The configuration of metadata_cache_driver changed. By default, it creates an `array` cache.
   To configure a service, specify `type: service` and specify your service in the `id` property.
   To use a cache pool, specify the service id of that pool.
+* Removed support for namespace alias, use the FQN names.
 * Introduced the ManagerRegistryInterface for the ManagerRegistry and adjusted the service alias for autowiring to the interface.  
 * The following container parameters are no longer taken into account (memcache and apc seem to have never been used anyways).
   If you have customised the array cache class, please check if this is still needed - and note that starting from this version,
@@ -27,6 +28,7 @@ Changelog
     doctrine_phpcr.odm.cache.memcached_port
     doctrine_phpcr.odm.cache.memcached_instance.class
     doctrine_phpcr.odm.cache.xcache.class
+
 * If no username is defined for a session, and if you use Jackalope >= 2.0, the
   credentials service for this session is no longer created and `null` is
   passed as credentials.

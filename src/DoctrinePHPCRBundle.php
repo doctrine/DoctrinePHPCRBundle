@@ -5,7 +5,6 @@ namespace Doctrine\Bundle\PHPCRBundle;
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\InitializerPass;
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\MigratorPass;
 use Doctrine\Bundle\PHPCRBundle\OptionalCommand\Jackalope\InitDoctrineDbalCommand;
-use Doctrine\Bundle\PHPCRBundle\OptionalCommand\Jackalope\JackrabbitCommand;
 use Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\DocumentConvertTranslationCommand;
 use Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\DocumentMigrateClassCommand;
 use Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\InfoDoctrineCommand;
@@ -14,7 +13,6 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ODM\PHPCR\Version;
 use Jackalope\Session;
 use Jackalope\Tools\Console\Command\InitDoctrineDbalCommand as BaseInitDoctrineDbalCommand;
-use Jackalope\Tools\Console\Command\JackrabbitCommand as BaseJackrabbitCommand;
 use Symfony\Bridge\Doctrine\DependencyInjection\CompilerPass\RegisterEventListenersAndSubscribersPass;
 use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -50,9 +48,6 @@ class DoctrinePHPCRBundle extends Bundle
             $application->add(new DocumentConvertTranslationCommand());
         }
 
-        if (class_exists(BaseJackrabbitCommand::class)) {
-            $application->add(new JackrabbitCommand());
-        }
         if (class_exists(BaseInitDoctrineDbalCommand::class)) {
             $application->add(new InitDoctrineDbalCommand());
         }
@@ -68,7 +63,7 @@ class DoctrinePHPCRBundle extends Bundle
             $container = &$this->container;
 
             $this->autoloader = function ($class) use ($namespace, $dir, &$container) {
-                if (0 === strpos($class, $namespace)) {
+                if (str_starts_with($class, $namespace)) {
                     $fileName = str_replace('\\', '', substr($class, \strlen($namespace) + 1));
                     $file = $dir.\DIRECTORY_SEPARATOR.$fileName.'.php';
 

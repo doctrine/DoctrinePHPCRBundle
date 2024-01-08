@@ -3,53 +3,36 @@
 namespace Doctrine\Bundle\PHPCRBundle\OptionalCommand\Jackalope;
 
 use Jackalope\Tools\Console\Command\JackrabbitCommand as BaseJackrabbitCommand;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Wrapper to use this command in the symfony console with multiple sessions.
  *
  * @author Daniel Barsotti <daniel.barsotti@liip.ch>
  */
-class JackrabbitCommand extends BaseJackrabbitCommand implements ContainerAwareInterface
+class JackrabbitCommand extends BaseJackrabbitCommand
 {
-    private ?ContainerInterface $container = null;
+    private const NAME = 'doctrine:phpcr:jackrabbit';
 
-    protected function getContainer(): ContainerInterface
-    {
-        if (null === $this->container) {
-            $application = $this->getApplication();
-            if (!$application instanceof Application) {
-                throw new \InvalidArgumentException('Expected to find '.Application::class.' but got '.
-                    ($application ? \get_class($application) : null));
-            }
-
-            $this->container = $application->getKernel()->getContainer();
-        }
-
-        return $this->container;
+    public function __construct(
+        private string $jackrabbitJar,
+        private string $workspaceDir,
+    ) {
+        parent::__construct(self::NAME);
     }
-
-    public function setContainer(ContainerInterface $container = null): void
-    {
-        $this->container = $container;
-    }
-
     protected function configure(): void
     {
         parent::configure();
 
         $this
-            ->setName('doctrine:phpcr:jackrabbit')
+            ->setName(self::NAME)
             ->setHelp(<<<'EOF'
 The <info>doctrine:phpcr:jackrabbit</info> command allows to have a minimal control on the Jackrabbit server from within a
 Symfony 2 command.
 
 If the <info>jackrabbit_jar</info> option is set, it will be used as the Jackrabbit server jar file.
-Otherwise you will have to set the doctrine_phpcr.jackrabbit_jar config parameter to a valid Jackrabbit
+Otherwise, you will have to set the doctrine_phpcr.jackrabbit_jar config parameter to a valid Jackrabbit
 server jar file.
 EOF
             )
@@ -58,13 +41,8 @@ EOF
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        if ($this->getContainer()->hasParameter('doctrine_phpcr.jackrabbit_jar')) {
-            $this->setJackrabbitPath($this->getContainer()->getParameter('doctrine_phpcr.jackrabbit_jar'));
-        }
-
-        if ($this->getContainer()->hasParameter('doctrine_phpcr.workspace_dir')) {
-            $this->setWorkspaceDir($this->getContainer()->getParameter('doctrine_phpcr.workspace_dir'));
-        }
+        $this->setJackrabbitPath($this->jackrabbitJar);
+        $this->setWorkspaceDir($this->workspaceDir);
 
         return parent::execute($input, $output);
     }

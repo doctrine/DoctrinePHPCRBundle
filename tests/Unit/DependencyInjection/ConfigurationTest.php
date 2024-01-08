@@ -93,7 +93,6 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                                 'mapping' => true,
                                 'type' => null,
                                 'dir' => null,
-                                'alias' => null,
                                 'prefix' => null,
                                 'is_bundle' => true,
                             ],

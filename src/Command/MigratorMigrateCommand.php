@@ -9,16 +9,22 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class MigratorMigrateCommand extends BaseCommand
 {
-    use ContainerAwareTrait;
+    private const NAME = 'doctrine:phpcr:migrator:migrate';
+
+    public function __construct(
+        private ContainerInterface $container
+    ) {
+        parent::__construct(self::NAME);
+    }
 
     protected function configure(): void
     {
         $this
-            ->setName('doctrine:phpcr:migrator:migrate')
+            ->setName(self::NAME)
             ->setDescription('Migrates PHPCR data.')
             ->addArgument('migrator_name', InputArgument::OPTIONAL, 'The name of the alias/service to be used to migrate the data.')
             ->addOption('identifier', null, InputOption::VALUE_REQUIRED, 'Path or UUID of the node to migrate', '/')

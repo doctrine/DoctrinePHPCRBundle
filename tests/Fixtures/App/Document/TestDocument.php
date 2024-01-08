@@ -6,9 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\PHPCR\Mapping\Attributes as PHPCR;
 
-/**
- * @PHPCR\Document(referenceable=true)
- */
 #[PHPCR\Document(referenceable: true)]
 class TestDocument
 {

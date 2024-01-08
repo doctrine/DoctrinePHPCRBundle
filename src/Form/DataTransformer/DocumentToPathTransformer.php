@@ -20,7 +20,7 @@ class DocumentToPathTransformer implements DataTransformerInterface
      *
      * @param object $document
      */
-    public function transform($document): ?string
+    public function transform(mixed $document): ?string
     {
         if (null === $document) {
             return null;
@@ -36,7 +36,7 @@ class DocumentToPathTransformer implements DataTransformerInterface
      *
      * @return object|null returns the document or null if $path is empty
      */
-    public function reverseTransform($path): ?object
+    public function reverseTransform(mixed $path): ?object
     {
         if (!$path) {
             return null;

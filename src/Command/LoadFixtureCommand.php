@@ -3,18 +3,17 @@
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
 use Doctrine\Bundle\PHPCRBundle\DataFixtures\PHPCRExecutor;
+use Doctrine\Bundle\PHPCRBundle\Initializer\InitializerManager;
+use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\PHPCRPurger;
 use Doctrine\ODM\PHPCR\Tools\Console\Helper\DocumentManagerHelper;
 use InvalidArgumentException;
 use PHPCR\Util\Console\Command\BaseCommand;
-use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
  * Command to load PHPCR-ODM fixtures.
@@ -26,12 +25,18 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
  */
 class LoadFixtureCommand extends BaseCommand
 {
-    use ContainerAwareTrait;
+    private const NAME = 'doctrine:phpcr:fixtures:load';
+
+    public function __construct(
+        private InitializerManager $initializerManager
+    ) {
+        parent::__construct(self::NAME);
+    }
 
     protected function configure(): void
     {
         $this
-            ->setName('doctrine:phpcr:fixtures:load')
+            ->setName(self::NAME)
             ->setDescription('Load data fixtures to your PHPCR database.')
             ->addOption('fixtures', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'The directory or file to load data fixtures from.')
             ->addOption('append', null, InputOption::VALUE_NONE, 'Append the data fixtures to the existing data - will not purge the workspace.')
@@ -100,7 +105,7 @@ EOT
             }
         }
 
-        $loader = new ContainerAwareLoader($this->container);
+        $loader = new Loader();
         foreach ($paths as $path) {
             if (is_dir($path)) {
                 $loader->loadFromDirectory($path);
@@ -118,13 +123,7 @@ EOT
 
         $purger = new PHPCRPurger($dm);
 
-        if ($noInitialize) {
-            $initializerManager = null;
-        } else {
-            $initializerManager = $this->container->get('doctrine_phpcr.initializer_manager');
-        }
-
-        $executor = new PHPCRExecutor($dm, $purger, $initializerManager);
+        $executor = new PHPCRExecutor($dm, $purger, $noInitialize ? null : $this->initializerManager);
         $executor->setLogger(function ($message) use ($output) {
             $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', $message));
         });
