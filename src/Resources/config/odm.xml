@@ -23,7 +23,6 @@
         <parameter key="doctrine_phpcr.odm.metadata.yml.class">Doctrine\Bundle\PHPCRBundle\Mapping\Driver\YamlDriver</parameter>
         <parameter key="doctrine_phpcr.odm.metadata.php.class">Doctrine\Persistence\Mapping\Driver\StaticPHPDriver</parameter>
         <parameter key="doctrine_phpcr.odm.metadata.driver_chain.class">Doctrine\Persistence\Mapping\Driver\MappingDriverChain</parameter>
-        <parameter key="doctrine_phpcr.odm.metadata.annotation.class">Doctrine\ODM\PHPCR\Mapping\Driver\AnnotationDriver</parameter>
         <parameter key="doctrine_phpcr.odm.metadata.attribute.class">Doctrine\ODM\PHPCR\Mapping\Driver\AttributeDriver</parameter>
     </parameters>
     <services>
@@ -42,7 +41,6 @@
             <argument type="service" id="doctrine_phpcr"/>
         </service>
 
-        <service id="doctrine_phpcr.odm.metadata.annotation_reader" alias="annotation_reader" public="false" />
         <service id="doctrine_phpcr.odm.metadata.attribute_reader" alias="attribute_reader" public="false" />
 
         <service

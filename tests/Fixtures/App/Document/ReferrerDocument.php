@@ -13,36 +13,24 @@ namespace Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCR;
+use Doctrine\ODM\PHPCR\Mapping\Attributes as PHPCR;
 
-/**
- * @PHPCR\Document()
- */
+#[PHPCR\Document]
 class ReferrerDocument
 {
-    /**
-     * @PHPCR\Id(strategy="assigned")
-     */
+    #[PHPCR\Id(strategy: 'assigned')]
     public string $id;
 
-    /**
-     * @PHPCR\ReferenceOne()
-     */
+    #[PHPCR\ReferenceOne]
     protected $single;
 
-    /**
-     * @PHPCR\ReferenceMany()
-     */
+    #[PHPCR\ReferenceMany]
     protected Collection $documents;
 
-    /**
-     * @PHPCR\ReferenceOne(targetDocument="Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument")
-     */
+    #[PHPCR\ReferenceOne(targetDocument: TestDocument::class)]
     protected $testDocument;
 
-    /**
-     * @PHPCR\ReferenceMany(targetDocument="Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument")
-     */
+    #[PHPCR\ReferenceMany(targetDocument: TestDocument::class)]
     protected Collection $testDocuments;
 
     public function __construct()

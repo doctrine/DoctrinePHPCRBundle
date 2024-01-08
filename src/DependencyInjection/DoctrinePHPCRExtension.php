@@ -512,7 +512,7 @@ final class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
         $documentManager['mappings']['__PHPCRODM__'] = [
             'dir' => \dirname($class->getFileName()),
-            'type' => 'annotation',
+            'type' => 'attribute',
             'prefix' => 'Doctrine\ODM\PHPCR\Document',
             'is_bundle' => false,
             'mapping' => true,
