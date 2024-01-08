@@ -3,6 +3,7 @@
 namespace Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler;
 
 use Doctrine\ODM\PHPCR\Mapping\Driver\AnnotationDriver;
+use Doctrine\ODM\PHPCR\Mapping\Driver\AttributeDriver;
 use Doctrine\ODM\PHPCR\Mapping\Driver\XmlDriver;
 use Doctrine\ODM\PHPCR\Mapping\Driver\YamlDriver;
 use Doctrine\Persistence\Mapping\Driver\PHPDriver;
@@ -142,6 +143,28 @@ class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
     ): self {
         $reader = new Reference('doctrine_phpcr.odm.metadata.annotation_reader');
         $driver = new Definition(AnnotationDriver::class, [$reader, $directories]);
+
+        return new self($driver, $namespaces, $managerParameters, $enabledParameter, $aliasMap);
+    }
+
+    /**
+     * @param string[]     $namespaces                List of namespaces that are handled with annotation mapping
+     * @param string[]     $directories               List of directories to look for annotated classes
+     * @param string[]     $managerParameters         List of parameters that could which object manager name
+     *                                                your bundle uses. This compiler pass will automatically
+     *                                                append the parameter name for the default entity manager
+     *                                                to this list.
+     * @param string|false $enabledParameter          Service container parameter that must be present to
+     *                                                enable the mapping. Set to false to not do any check,
+     *                                                optional.
+     * @param string[]     $aliasMap                  map of alias to namespace
+     * @param bool         $reportFieldsWhereDeclared Will report fields for the classes where they are declared
+     *
+     * @return self
+     */
+    public static function createAttributeMappingDriver(array $namespaces, array $directories, array $managerParameters = [], $enabledParameter = false, array $aliasMap = [], bool $reportFieldsWhereDeclared = false)
+    {
+        $driver = new Definition(AttributeDriver::class, [$directories, $reportFieldsWhereDeclared]);
 
         return new self($driver, $namespaces, $managerParameters, $enabledParameter, $aliasMap);
     }
