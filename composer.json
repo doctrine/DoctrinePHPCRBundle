@@ -45,7 +45,7 @@
         "symfony/form": "^5.4 || ^6.0",
         "symfony/monolog-bridge": "^5.4 || ^6.0",
         "symfony/monolog-bundle": "^3.4",
-        "symfony/phpunit-bridge": "^5.4 || ^6.0",
+        "symfony/phpunit-bridge": "^v6.4.2 || ^v7.0.2",
         "symfony/templating": "^5.4 || ^6.0",
         "symfony/translation": "^5.4 || ^6.0",
         "symfony/twig-bundle": "^5.4 || ^6.0",
