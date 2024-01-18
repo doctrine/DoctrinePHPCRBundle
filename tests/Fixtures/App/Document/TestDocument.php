@@ -4,115 +4,70 @@ namespace Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCR;
+use Doctrine\ODM\PHPCR\Mapping\Attributes as PHPCR;
 
-/**
- * @PHPCR\Document(referenceable=true)
- */
+#[PHPCR\Document(referenceable: true)]
 class TestDocument
 {
-    /**
-     * @PHPCR\Id()
-     */
+    #[PHPCR\Id]
     public string $id;
 
-    /**
-     * @PHPCR\ParentDocument()
-     */
+    #[PHPCR\ParentDocument]
     public $parent;
 
-    /**
-     * @PHPCR\Nodename()
-     */
+    #[PHPCR\Nodename]
     public string $nodename;
 
-    /**
-     * @PHPCR\Uuid
-     */
+    #[PHPCR\Uuid]
     public string $uuid;
 
-    /**
-     * @PHPCR\Child()
-     */
+    #[PHPCR\Child]
     public $child;
 
-    /**
-     * @PHPCR\Children()
-     */
+    #[PHPCR\Children]
     protected Collection $children;
 
-    /**
-     * @PHPCR\Referrers(
-     *     referringDocument="Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\ReferrerDocument",
-     *     referencedBy="documents"
-     * )
-     */
+    #[PHPCR\Referrers(referencedBy: 'documents', referringDocument: ReferrerDocument::class)]
     protected Collection $referrers;
 
-    /**
-     * @PHPCR\MixedReferrers()
-     */
+    #[PHPCR\MixedReferrers]
     protected Collection $mixedReferrers;
 
-    /**
-     * @PHPCR\Field(type="boolean")
-     */
+    #[PHPCR\Field(type: 'boolean')]
     public bool $bool;
 
-    /**
-     * @PHPCR\Field(type="date")
-     */
+    #[PHPCR\Field(type: 'date')]
     public \DateTimeInterface $date;
 
-    /**
-     * @PHPCR\Field(type="string")
-     */
+    #[PHPCR\Field(type: 'string')]
     public string $text;
 
-    /**
-     * @PHPCR\Field(type="double")
-     */
+    #[PHPCR\Field(type: 'double')]
     public float $number;
 
-    /**
-     * @PHPCR\Field(type="long")
-     */
+    #[PHPCR\Field(type: 'long')]
     public int $long;
 
-    /**
-     * @PHPCR\Field(type="int")
-     */
+    #[PHPCR\Field(type: 'int')]
     public int $integer;
 
-    /**
-     * @PHPCR\Field(type="boolean", multivalue=true, nullable=true)
-     */
-    public array $mbool;
+    #[PHPCR\Field(type: 'boolean', multivalue: true, nullable: true)]
+    public ?array $mbool;
 
-    /**
-     * @PHPCR\Field(type="date", multivalue=true, nullable=true)
-     */
-    public array $mdate;
+    #[PHPCR\Field(type: 'date', multivalue: true, nullable: true)]
+    public ?array $mdate;
 
-    /**
-     * @PHPCR\Field(type="string", multivalue=true, nullable=true)
-     */
-    public array $mtext;
+    #[PHPCR\Field(type: 'string', multivalue: true, nullable: true)]
+    public ?array $mtext;
 
-    /**
-     * @PHPCR\Field(type="double", multivalue=true, nullable=true)
-     */
-    public array $mnumber;
+    #[PHPCR\Field(type: 'double', multivalue: true, nullable: true)]
+    public ?array $mnumber;
 
-    /**
-     * @PHPCR\Field(type="long", multivalue=true, nullable=true)
-     */
-    public array $mlong;
+    #[PHPCR\Field(type: 'long', multivalue: true, nullable: true)]
+    public ?array $mlong;
 
-    /**
-     * @PHPCR\Field(type="int", multivalue=true, nullable=true)
-     */
-    public array $minteger;
+    #[PHPCR\Field(type: 'int', multivalue: true, nullable: true)]
+    public ?array $minteger;
 
     public function __construct()
     {

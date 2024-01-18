@@ -23,7 +23,7 @@ doctrine_phpcr:
             fr: [en, de]
         mappings:
             test_additional:
-                type: annotation
+                type: attribute
                 prefix: Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document
                 dir: "%kernel.project_dir%/Document"
                 is_bundle: false

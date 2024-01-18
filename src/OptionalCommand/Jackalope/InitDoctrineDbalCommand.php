@@ -4,6 +4,7 @@ namespace Doctrine\Bundle\PHPCRBundle\OptionalCommand\Jackalope;
 
 use Doctrine\Bundle\PHPCRBundle\Command\DoctrineCommandHelper;
 use Jackalope\Tools\Console\Command\InitDoctrineDbalCommand as BaseInitDoctrineDbalCommand;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -26,6 +27,11 @@ class InitDoctrineDbalCommand extends BaseInitDoctrineDbalCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $application = $this->getApplication();
+        if (!$application instanceof Application) {
+            throw new \InvalidArgumentException('Expected to find '.Application::class.' but got '.
+                ($application ? \get_class($application) : null));
+        }
+
         $sessionName = $input->getOption('session');
         if (empty($sessionName)) {
             $container = $application->getKernel()->getContainer();

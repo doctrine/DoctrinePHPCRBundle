@@ -3,31 +3,30 @@
 namespace Doctrine\Bundle\PHPCRBundle\Test;
 
 use Doctrine\Bundle\PHPCRBundle\DataFixtures\PHPCRExecutor;
+use Doctrine\Bundle\PHPCRBundle\Initializer\InitializerManager;
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistryInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\ProxyReferenceRepository;
 use Doctrine\Common\DataFixtures\Purger\PHPCRPurger;
 use Doctrine\ODM\PHPCR\DocumentManagerInterface;
-use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * A helper class for tests to reset the repository and load fixtures.
  */
 class RepositoryManager
 {
-    private ContainerInterface $container;
     private PHPCRExecutor $executor;
 
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
+    public function __construct(
+        private ManagerRegistryInterface $managerRegistry,
+        private InitializerManager $initializerManager,
+    ) {
     }
 
     public function getRegistry(): ManagerRegistryInterface
     {
-        return $this->container->get('doctrine_phpcr');
+        return $this->managerRegistry;
     }
 
     public function getDocumentManager(string $managerName = null): DocumentManagerInterface
@@ -53,7 +52,7 @@ class RepositoryManager
      */
     public function loadFixtures(array $classNames, bool $initialize = false): void
     {
-        $loader = new ContainerAwareLoader($this->container);
+        $loader = new Loader();
 
         foreach ($classNames as $className) {
             $this->loadFixture($loader, $className);
@@ -101,7 +100,7 @@ class RepositoryManager
             return $this->executor;
         }
 
-        $initializerManager = $initialize ? $this->container->get('doctrine_phpcr.initializer_manager') : null;
+        $initializerManager = $initialize ? $this->initializerManager : null;
         $purger = new PHPCRPurger();
         $executor = new PHPCRExecutor($this->getDocumentManager(), $purger, $initializerManager);
         $referenceRepository = new ProxyReferenceRepository($this->getDocumentManager());

@@ -26,7 +26,6 @@ doctrine_phpcr:
                 mapping:              true
                 type:                 ~
                 dir:                  ~
-                alias:                ~
                 prefix:               ~
                 is_bundle:            ~
         auto_generate_proxy_classes: true

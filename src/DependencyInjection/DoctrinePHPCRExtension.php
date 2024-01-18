@@ -2,6 +2,8 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\DependencyInjection;
 
+use Jackalope\Tools\Console\Command\InitDoctrineDbalCommand as BaseInitDoctrineDbalCommand;
+use Jackalope\Tools\Console\Command\JackrabbitCommand as BaseJackrabbitCommand;
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistryInterface;
 use Doctrine\ODM\PHPCR\Document\Generic;
 use Doctrine\ODM\PHPCR\DocumentManagerInterface;
@@ -62,8 +64,14 @@ final class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
         $this->loader->load('phpcr.xml');
         $this->loader->load('commands.xml');
+        if (class_exists(BaseJackrabbitCommand::class)) {
+            $this->loader->load('jackrabbit-commands.xml');
+        }
+        if (class_exists(BaseInitDoctrineDbalCommand::class)) {
+            $this->loader->load('jackalope_doctrine_dbal-commands.xml');
+        }
 
-        // default values in case no odm is configured. the manager registry needs these variables to be defined.
+            // default values in case no odm is configured. the manager registry needs these variables to be defined.
         // if odm is enabled, the parameters are overwritten later in the `loadOdm` section.
         $container->setParameter('doctrine_phpcr.odm.document_managers', []);
         $container->setParameter('doctrine_phpcr.odm.default_document_manager', '');
@@ -500,10 +508,8 @@ final class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
     private function loadOdmDocumentManagerMappingInformation(array $documentManager, Definition $odmConfig, ContainerBuilder $container): void
     {
-        // reset state of drivers and alias map. They are only used by this methods and children.
+        // reset state of drivers map. It is only used by this methods and children.
         $this->drivers = [];
-        $this->aliasMap = [];
-        $this->bundleDirs = [];
 
         if (!class_exists(Generic::class)) {
             throw new \RuntimeException('PHPCR ODM is activated in the config but does not seem loadable.');
@@ -513,15 +519,13 @@ final class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
         $documentManager['mappings']['__PHPCRODM__'] = [
             'dir' => \dirname($class->getFileName()),
-            'type' => 'annotation',
+            'type' => 'attribute',
             'prefix' => 'Doctrine\ODM\PHPCR\Document',
             'is_bundle' => false,
             'mapping' => true,
         ];
         $this->loadMappingInformation($documentManager, $container);
         $this->registerMappingDrivers($documentManager, $container);
-
-        $odmConfig->addMethodCall('setDocumentNamespaces', [$this->aliasMap]);
     }
 
     /**

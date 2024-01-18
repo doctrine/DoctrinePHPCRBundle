@@ -29,12 +29,14 @@ final class UniqueNodeTypeCacheWarmer implements CacheWarmerInterface
         return true;
     }
 
-    public function warmUp($cacheDir): void
+    public function warmUp(string $cacheDir, ?string $buildDir = null): array
     {
         $helper = new UniqueNodeTypeHelper();
 
         foreach ($this->registry->getManagers() as $documentManager) {
             $helper->checkNodeTypeMappings($documentManager);
         }
+
+        return [];
     }
 }

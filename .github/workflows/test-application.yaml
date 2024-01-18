@@ -12,22 +12,16 @@ jobs:
     test:
         name: "PHP ${{ matrix.php-version }}, Symfony ${{ matrix.symfony-version }}"
         runs-on: "ubuntu-20.04"
+        env:
+          SYMFONY_REQUIRE: ${{matrix.symfony-require}}
 
         strategy:
             fail-fast: false
             matrix:
                 include:
-                    - php-version: "7.4"
-                      phpunit-version: "8.5"
-                      dependencies: "lowest"
-
-                    - php-version: "7.4"
-                      phpunit-version: "8.5"
-                      phpunit-flags: "-v --coverage-text"
-                      symfony-version: "^5.4"
-
-                    - php-version: "8.0"
+                    - php-version: "8.1"
                       phpunit-version: "9.5"
+                      phpunit-flags: "-v --coverage-text"
                       symfony-version: "6.0.*"
 
                     - php-version: "8.1"
@@ -36,9 +30,13 @@ jobs:
                     - php-version: "8.2"
                       phpunit-version: "9.5"
 
+                    - php-version: "8.3"
+                      phpunit-version: "9.5"
+                      symfony-version: "7.*"
+
         steps:
             - name: "Checkout project"
-              uses: "actions/checkout@v3"
+              uses: "actions/checkout@v4"
 
             - name: "Install and configure PHP"
               uses: "shivammathur/setup-php@v2"
@@ -47,11 +45,13 @@ jobs:
                   extensions: "pdo, pdo_sqlite"
                   tools: "composer:v2"
 
-            - name: "Require Specific Symfony Version"
+            - name: "Require specific symfony version"
               if: "${{ matrix.symfony-version }}"
-              run: "composer require --no-update symfony/symfony:${{ matrix.symfony-version }}"
+              run: |
+                composer require --no-update symfony/flex
+                composer config --no-plugins allow-plugins.symfony/flex true
 
-            - name: "Require Additional dependencies"
+            - name: "Require additional dependencies"
               if: "${{ matrix.composer-require }}"
               run: "composer require --no-update ${{ matrix.composer-require }}"
 

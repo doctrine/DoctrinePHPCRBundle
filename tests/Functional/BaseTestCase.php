@@ -17,8 +17,9 @@ abstract class BaseTestCase extends WebTestCase
         if (!self::$kernel->getContainer()) {
             self::$kernel->boot();
         }
+        $container = self::getTestContainer();
 
-        return new RepositoryManager(self::getTestContainer());
+        return new RepositoryManager($container->get('doctrine_phpcr'), $container->get('doctrine_phpcr.initializer_manager'));
     }
 
     protected function assertResponseSuccess(Response $response): void

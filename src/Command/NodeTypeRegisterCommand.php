@@ -3,6 +3,7 @@
 namespace Doctrine\Bundle\PHPCRBundle\Command;
 
 use PHPCR\Util\Console\Command\NodeTypeRegisterCommand as BaseRegisterNodeTypesCommand;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -34,14 +35,19 @@ EOT;
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $application = $this->getApplication();
+        if (!$application instanceof Application) {
+            throw new \InvalidArgumentException('Expected to find '.Application::class.' but got '.
+                ($application ? \get_class($application) : null));
+        }
+
         DoctrineCommandHelper::setApplicationPHPCRSession(
-            $this->getApplication(),
+            $application,
             $input->getOption('session'),
             true
         );
 
         $definitions = $input->getArgument('cnd-file');
-        $application = $this->getApplication();
 
         // if no cnd-files, automatically load from bundles
         if (0 === \count($definitions)) {
