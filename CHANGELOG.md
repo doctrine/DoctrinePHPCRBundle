@@ -4,11 +4,11 @@ Changelog
 Version 2
 =========
 
-2.5.0 (unreleased)
+2.5.0
 -----
 
-Support PHP 8 attributes in addition to annotations.
-Annotations will not be supported in 3.0 anymore.
+* Support PHP 8 attributes in addition to annotations.
+* Annotations will not be supported in 3.0 anymore.
 
 2.4.3
 -----
