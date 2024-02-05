@@ -17,17 +17,17 @@ Changelog
   If you have customised the array cache class, please check if this is still needed - and note that starting from this version,
   PSR-16 simple cache is used:
 
-  doctrine_phpcr.odm.cache.array.class
-  doctrine_phpcr.odm.cache.apc.class
-  doctrine_phpcr.odm.cache.memcache.class
-  doctrine_phpcr.odm.cache.memcache_host
-  doctrine_phpcr.odm.cache.memcache_port
-  doctrine_phpcr.odm.cache.memcache_instance.class
-  doctrine_phpcr.odm.cache.memcached.class
-  doctrine_phpcr.odm.cache.memcached_host
-  doctrine_phpcr.odm.cache.memcached_port
-  doctrine_phpcr.odm.cache.memcached_instance.class
-  doctrine_phpcr.odm.cache.xcache.class
+      doctrine_phpcr.odm.cache.array.class
+      doctrine_phpcr.odm.cache.apc.class
+      doctrine_phpcr.odm.cache.memcache.class
+      doctrine_phpcr.odm.cache.memcache_host
+      doctrine_phpcr.odm.cache.memcache_port
+      doctrine_phpcr.odm.cache.memcache_instance.class
+      doctrine_phpcr.odm.cache.memcached.class
+      doctrine_phpcr.odm.cache.memcached_host
+      doctrine_phpcr.odm.cache.memcached_port
+      doctrine_phpcr.odm.cache.memcached_instance.class
+      doctrine_phpcr.odm.cache.xcache.class
 
 * If no username is defined for a session, and if you use Jackalope >= 2.0, the
   credentials service for this session is no longer created and `null` is
@@ -50,7 +50,7 @@ Version 2
 2.4.2
 -----
 
-* Drop support for Symfony 4.3 and 5.0 - 5.3. This release supports the LTS versions Symfony 4.4, 5.4 and Symfony 6. 
+* Drop support for Symfony 4.3 and 5.0 - 5.3. This release supports the LTS versions Symfony 4.4, 5.4 and Symfony 6.
 
 2.4.1
 -----
