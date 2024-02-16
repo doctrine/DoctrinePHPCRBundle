@@ -97,5 +97,10 @@
             <argument />
         </service>
 
+        <service id="Doctrine\Bundle\PHPCRBundle\Command\LoadFixtureCommand" class="Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\LoadFixtureCommand">
+            <argument type="service" id="doctrine_phpcr.initializer_manager"/>
+            <tag name="console.command"/>
+        </service>
+
     </services>
 </container>

@@ -1,7 +1,8 @@
 <?php
 
-namespace Doctrine\Bundle\PHPCRBundle\Command;
+namespace Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM;
 
+use Doctrine\Bundle\PHPCRBundle\Command\DoctrineCommandHelper;
 use Doctrine\Bundle\PHPCRBundle\DataFixtures\PHPCRExecutor;
 use Doctrine\Bundle\PHPCRBundle\Initializer\InitializerManager;
 use Doctrine\Common\DataFixtures\Loader;
