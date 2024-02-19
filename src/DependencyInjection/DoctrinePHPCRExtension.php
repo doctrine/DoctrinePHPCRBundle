@@ -90,9 +90,7 @@ final class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         ];
 
         foreach ($parameters as $param) {
-            if (isset($config[$param])) {
-                $container->setParameter('doctrine_phpcr.'.$param, $config[$param]);
-            }
+            $container->setParameter('doctrine_phpcr.'.$param, $config[$param]);
         }
 
         if (!empty($config['session'])) {
