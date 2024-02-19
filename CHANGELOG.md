@@ -32,6 +32,8 @@ Changelog
 * If no username is defined for a session, and if you use Jackalope >= 2.0, the
   credentials service for this session is no longer created and `null` is
   passed as credentials.
+* `doctrine:phpcr:fixtures:load` is now only visible if PHPCR-ODM is available. In version 2, you would get an error when
+  running the command without PHPCR-ODM.
 
 Version 2
 =========
