@@ -16,8 +16,8 @@ class JackrabbitCommand extends BaseJackrabbitCommand
     private const NAME = 'doctrine:phpcr:jackrabbit';
 
     public function __construct(
-        private string $jackrabbitJar,
-        private string $workspaceDir,
+        private ?string $jackrabbitJar,
+        private ?string $workspaceDir,
     ) {
         parent::__construct(self::NAME);
     }
