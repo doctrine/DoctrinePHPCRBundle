@@ -28,7 +28,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
      */
     public function testSupports(array $expectedConfiguration, array $files): void
     {
-        $formats = array_map(function ($path) {
+        $formats = array_map(static function ($path) {
             return __DIR__.'/../../Fixtures/fixtures/'.$path;
         }, $files);
 

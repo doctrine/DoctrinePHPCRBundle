@@ -17,13 +17,20 @@
 namespace Doctrine\Bundle\PHPCRBundle\Form\Type;
 
 use Doctrine\Bundle\PHPCRBundle\Form\ChoiceList\PhpcrOdmQueryBuilderLoader;
+use Doctrine\ODM\PHPCR\DocumentManagerInterface;
+use Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityLoaderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\DoctrineType;
 
 class DocumentType extends DoctrineType
 {
-    public function getLoader($manager, $queryBuilder, $class): EntityLoaderInterface
+    public function getLoader(ObjectManager $manager, object $queryBuilder, string $class): EntityLoaderInterface
     {
+        if (!$manager instanceof DocumentManagerInterface || !($queryBuilder instanceof QueryBuilder || $queryBuilder instanceof \Closure)) {
+            throw new \InvalidArgumentException('Expected a '.DocumentManagerInterface::class.' and a closure or '.QueryBuilder::class.', got '.get_class($manager).' and '.get_class($queryBuilder));
+        }
+
         return new PhpcrOdmQueryBuilderLoader(
             $queryBuilder,
             $manager,

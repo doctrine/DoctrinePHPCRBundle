@@ -38,6 +38,7 @@
         "symfony/console": "< 4"
     },
     "require-dev": {
+        "ext-libxml": "*",
         "doctrine/doctrine-bundle": "^2.0.3",
         "doctrine/phpcr-odm": "2.x-dev",
         "doctrine/orm": "^2.0 || ^3.0",

@@ -14,16 +14,12 @@ use Doctrine\ODM\PHPCR\DocumentManagerInterface;
  */
 final class PHPCRExecutor extends BasePHPCRExecutor
 {
-    private ?InitializerManager $initializerManager;
-
     public function __construct(
         DocumentManagerInterface $dm,
         ?PHPCRPurger $purger = null,
-        ?InitializerManager $initializerManager = null
+        private ?InitializerManager $initializerManager = null
     ) {
         parent::__construct($dm, $purger);
-
-        $this->initializerManager = $initializerManager;
     }
 
     public function purge(): void
