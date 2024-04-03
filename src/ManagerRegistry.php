@@ -37,25 +37,6 @@ final class ManagerRegistry extends BaseManagerRegistry implements ManagerRegist
         );
     }
 
-    /**
-     * Resolves a registered namespace alias to the full namespace.
-     *
-     * @param string $alias
-     *
-     * @throws PHPCRException
-     */
-    public function getAliasNamespace($alias): string
-    {
-        foreach (array_keys($this->getManagers()) as $name) {
-            try {
-                return $this->getManager($name)->getConfiguration()->getDocumentNamespace($alias);
-            } catch (PHPCRException $e) {
-            }
-        }
-
-        throw PHPCRException::unknownDocumentNamespace($alias);
-    }
-
     public function getManager($name = null): DocumentManagerInterface
     {
         $dm = parent::getManager($name);
