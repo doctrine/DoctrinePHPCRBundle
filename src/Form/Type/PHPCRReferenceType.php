@@ -22,7 +22,7 @@ class PHPCRReferenceType extends AbstractType
 {
     private ?SessionInterface $session;
 
-    public function __construct(SessionInterface $session = null)
+    public function __construct(?SessionInterface $session = null)
     {
         $this->session = $session;
     }

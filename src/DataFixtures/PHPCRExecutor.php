@@ -18,8 +18,8 @@ final class PHPCRExecutor extends BasePHPCRExecutor
 
     public function __construct(
         DocumentManagerInterface $dm,
-        PHPCRPurger $purger = null,
-        InitializerManager $initializerManager = null
+        ?PHPCRPurger $purger = null,
+        ?InitializerManager $initializerManager = null
     ) {
         parent::__construct($dm, $purger);
 

@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\FormBuilder;
 
-class PHPCRReferenceTypeTest extends Testcase
+class PHPCRReferenceTypeTest extends TestCase
 {
     /**
      * @var FormBuilder&MockObject

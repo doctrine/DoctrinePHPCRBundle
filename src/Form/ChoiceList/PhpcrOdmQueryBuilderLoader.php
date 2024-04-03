@@ -24,7 +24,7 @@ final class PhpcrOdmQueryBuilderLoader implements EntityLoaderInterface
     /**
      * @param QueryBuilder|\Closure $queryBuilder
      */
-    public function __construct($queryBuilder, DocumentManagerInterface $manager = null, string $class = null)
+    public function __construct($queryBuilder, ?DocumentManagerInterface $manager = null, ?string $class = null)
     {
         // If a query builder was passed, it must be a closure or QueryBuilder
         // instance

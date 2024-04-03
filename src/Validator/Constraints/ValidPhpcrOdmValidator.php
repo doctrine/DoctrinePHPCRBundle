@@ -27,6 +27,9 @@ class ValidPhpcrOdmValidator extends ConstraintValidator
      */
     public function validate($document, Constraint $constraint): void
     {
+        if (!$constraint instanceof ValidPhpcrOdm) {
+            throw new \InvalidArgumentException('Expected a constraint of class '.ValidPhpcrOdm::class);
+        }
         $className = \get_class($document);
         $dm = $this->registry->getManagerForClass($className);
 

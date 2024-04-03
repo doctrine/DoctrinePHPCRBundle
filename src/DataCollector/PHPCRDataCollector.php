@@ -38,7 +38,7 @@ final class PHPCRDataCollector extends DataCollector
         $this->managers = $registry->getManagerNames();
     }
 
-    public function collect(Request $request, Response $response, \Throwable $exception = null): void
+    public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
     {
         $this->collectInternal($request, $response);
     }
@@ -114,8 +114,6 @@ final class PHPCRDataCollector extends DataCollector
      * The return value is an array with the sanitized value and a boolean
      * indicating if the original value was kept (allowing to use the sanitized
      * value to explain the call).
-     *
-     * @param mixed $var
      */
     private function sanitizeParam($var): array
     {
@@ -155,7 +153,7 @@ final class PHPCRDataCollector extends DataCollector
         return [$var, true];
     }
 
-    protected function collectInternal(Request $request, Response $response, \Throwable $exception = null): void
+    protected function collectInternal(Request $request, Response $response, ?\Throwable $exception = null): void
     {
         $calls = [];
         foreach ($this->loggers as $name => $logger) {

@@ -27,7 +27,7 @@ class NodeDumpCommandTest extends BaseTestCase
             'command' => $command->getName(),
             '--props' => true,
             '--max_line_length' => 120,
-             'identifier' => '/test/doc-very-long',
+            'identifier' => '/test/doc-very-long',
         ]);
 
         $output = $commandTester->getDisplay();

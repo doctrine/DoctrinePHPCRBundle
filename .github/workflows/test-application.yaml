@@ -20,18 +20,14 @@ jobs:
             matrix:
                 include:
                     - php-version: "8.1"
-                      phpunit-version: "9.5"
                       phpunit-flags: "-v --coverage-text"
                       symfony-version: "6.0.*"
 
                     - php-version: "8.1"
-                      phpunit-version: "9.5"
 
                     - php-version: "8.2"
-                      phpunit-version: "9.5"
 
                     - php-version: "8.3"
-                      phpunit-version: "9.5"
                       symfony-version: "7.*"
 
         steps:
@@ -65,8 +61,4 @@ jobs:
               run: "tests/phpcr_odm_doctrine_dbal.sh"
 
             - name: "Execute test cases"
-              run: |
-                if [[ $SYMFONY_PHPUNIT_VERSION == '' ]]; then unset SYMFONY_PHPUNIT_VERSION; fi;
-                vendor/bin/simple-phpunit ${{ matrix.phpunit-flags }}
-              env:
-                  SYMFONY_PHPUNIT_VERSION: "${{ matrix.phpunit-version }}"
+              run: vendor/bin/phpunit ${{ matrix.phpunit-flags }}

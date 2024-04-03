@@ -10,7 +10,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
-class DocumentToPathTransformerTest extends Testcase
+class DocumentToPathTransformerTest extends TestCase
 {
     /**
      * @var DocumentManager&MockObject

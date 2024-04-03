@@ -7,6 +7,7 @@ use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\DataFixtures\PHPCR\LoadData;
 use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument;
 use Doctrine\Bundle\PHPCRBundle\Tests\Functional\BaseTestCase;
 use Doctrine\ODM\PHPCR\DocumentManagerInterface;
+use Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder;
 
 class PhpcrOdmQueryBuilderLoaderTest extends BaseTestCase
 {
@@ -46,6 +47,7 @@ class PhpcrOdmQueryBuilderLoaderTest extends BaseTestCase
     public function testGetByIdsFilter(): void
     {
         $qb = $this->dm->getRepository(TestDocument::class)->createQueryBuilder('e');
+        $this->assertInstanceOf(QueryBuilder::class, $qb);
         $qb->where()->eq()->field('e.text')->literal('thiswillnotmatch');
         $loader = new PhpcrOdmQueryBuilderLoader($qb, $this->dm);
         $documents = $loader->getEntitiesByIds('id', ['/test/doc']);

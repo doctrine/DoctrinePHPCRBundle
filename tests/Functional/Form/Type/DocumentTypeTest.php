@@ -8,6 +8,7 @@ use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\ReferrerDocument;
 use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument;
 use Doctrine\Bundle\PHPCRBundle\Tests\Functional\BaseTestCase;
 use Doctrine\ODM\PHPCR\DocumentManagerInterface;
+use Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Twig\Environment;
@@ -68,6 +69,7 @@ class DocumentTypeTest extends BaseTestCase
             ->getRepository(TestDocument::class)
             ->createQueryBuilder('e')
         ;
+        $this->assertInstanceOf(QueryBuilder::class, $qb);
         $qb->where()->eq()->field('e.text')->literal('thiswillnotmatch');
         $formBuilder = $this->createFormBuilder($this->referrer);
 

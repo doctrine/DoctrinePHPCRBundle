@@ -67,9 +67,9 @@ final class PhpcrOdmTypeGuesser implements FormTypeGuesserInterface
 
                 case 'referrers':
                     return new TypeGuess(DocumentType::class, [
-                            'class' => $mapping['referringDocument'],
-                            'multiple' => true,
-                        ],
+                        'class' => $mapping['referringDocument'],
+                        'multiple' => true,
+                    ],
                         Guess::HIGH_CONFIDENCE
                     );
 
