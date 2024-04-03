@@ -7,10 +7,9 @@ use Symfony\Component\Validator\Constraint;
 /**
  * Constraint for the Valid PHPCR ODM validator.
  *
- * @Annotation
- *
  * @author Emmanuel Vella <vella.emmanuel@gmail.com>
  */
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class ValidPhpcrOdm extends Constraint
 {
     public string $message = 'This value should not be blank.';
