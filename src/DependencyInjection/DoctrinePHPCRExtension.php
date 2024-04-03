@@ -28,34 +28,25 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 final class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 {
-    /**
-     * @var string
-     */
-    private $defaultSession;
+    private string $defaultSession;
 
     /**
      * @var string[]
      */
-    private $sessions = [];
+    private array $sessions = [];
 
-    /**
-     * @var XmlFileLoader
-     */
-    private $loader;
+    private XmlFileLoader $loader;
 
-    /**
-     * @var bool
-     */
-    private $disableProxyWarmer = false;
+    private bool $disableProxyWarmer = false;
 
     /**
      * Whether the schema listener service has been loaded already.
      *
      * This is done the first time a session with jackalope-doctrine-dbal is encountered.
      */
-    private $dbalSchemaListenerLoaded = false;
+    private bool $dbalSchemaListenerLoaded = false;
 
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $processor = new Processor();
         $configuration = new Configuration();
@@ -107,10 +98,10 @@ final class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                 $container->removeDefinition('doctrine_phpcr.odm.proxy_cache_warmer');
             }
         }
-        $this->loadTypeGuess($config, $container);
+        $this->loadTypeGuess($container);
     }
 
-    private function loadTypeGuess($config, ContainerBuilder $container): void
+    private function loadTypeGuess(ContainerBuilder $container): void
     {
         $types = [];
 
@@ -122,7 +113,7 @@ final class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         $container->setParameter('doctrine_phpcr.form.type_guess', $types);
     }
 
-    private function sessionLoad($config, ContainerBuilder $container): void
+    private function sessionLoad(array $config, ContainerBuilder $container): void
     {
         $sessions = $loaded = [];
         foreach ($config['sessions'] as $name => $session) {
@@ -170,7 +161,7 @@ final class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         $container->setAlias(SessionInterface::class, new Alias($sessions[$config['default_session']], true));
     }
 
-    private function loadJackalopeSession(array $session, ContainerBuilder $container, $type, $admin = false): void
+    private function loadJackalopeSession(array $session, ContainerBuilder $container, string $type, bool|string $admin = false): void
     {
         $serviceNamePrefix = $admin ? '.admin' : '';
         $backendParameters = [];
@@ -598,7 +589,7 @@ final class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         return 'phpcr';
     }
 
-    public function getNamespace()
+    public function getNamespace(): string
     {
         return 'http://doctrine-project.org/schema/symfony-dic/odm/phpcr';
     }

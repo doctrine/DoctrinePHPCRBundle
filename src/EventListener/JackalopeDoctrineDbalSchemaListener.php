@@ -17,14 +17,9 @@ use Jackalope\Transport\DoctrineDBAL\RepositorySchema;
  */
 class JackalopeDoctrineDbalSchemaListener
 {
-    /**
-     * @var RepositorySchema
-     */
-    private $schema;
-
-    public function __construct(RepositorySchema $schema)
-    {
-        $this->schema = $schema;
+    public function __construct(
+        private RepositorySchema $schema
+    ) {
     }
 
     public function postGenerateSchema(GenerateSchemaEventArgs $args): void

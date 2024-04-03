@@ -343,7 +343,7 @@ final class Configuration implements ConfigurationInterface
         return $root;
     }
 
-    private function getOdmCacheDriverNode($name): NodeDefinition
+    private function getOdmCacheDriverNode(string $name): NodeDefinition
     {
         $root = (new TreeBuilder($name))->getRootNode();
 

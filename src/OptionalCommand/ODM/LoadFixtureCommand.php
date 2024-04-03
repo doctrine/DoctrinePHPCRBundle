@@ -98,8 +98,7 @@ EOT
             $paths = \is_array($dirOrFile) ? $dirOrFile : [$dirOrFile];
         } else {
             $kernel = $application->getKernel();
-            $projectDir = method_exists($kernel, 'getRootDir') ? $kernel->getRootDir() : $kernel->getProjectDir().'/src';
-            $paths = [$projectDir.'/DataFixtures/PHPCR'];
+            $paths = [$kernel->getProjectDir().'/src/DataFixtures/PHPCR'];
             foreach ($kernel->getBundles() as $bundle) {
                 $paths[] = $bundle->getPath().'/DataFixtures/PHPCR';
             }

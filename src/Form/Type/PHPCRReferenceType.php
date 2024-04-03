@@ -29,21 +29,14 @@ class PHPCRReferenceType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        switch (strtolower($options['transformer_type'])) {
-            case 'uuid':
-                $transformer = new PHPCRNodeToUuidTransformer($this->session);
-
-                break;
-            case 'path':
-                $transformer = new PHPCRNodeToPathTransformer($this->session);
-
-                break;
-            default:
-                throw new InvalidConfigurationException(sprintf('
+        $transformer = match (strtolower($options['transformer_type'])) {
+            'uuid' => new PHPCRNodeToUuidTransformer($this->session),
+            'path' => new PHPCRNodeToPathTransformer($this->session),
+            default => throw new InvalidConfigurationException(sprintf('
                     The option "transformer_type" must be either "uuid" or "path", "%s" given',
-                    $options['transformer_type']
-                ));
-        }
+                $options['transformer_type']
+            )),
+        };
 
         $builder->addModelTransformer($transformer);
     }

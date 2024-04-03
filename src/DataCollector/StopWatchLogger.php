@@ -11,11 +11,8 @@ use Symfony\Component\Stopwatch\Stopwatch;
  */
 final class StopWatchLogger implements LoggerInterface
 {
-    private ?Stopwatch $stopwatch;
-
-    public function __construct(?Stopwatch $stopwatch = null)
+    public function __construct(private ?Stopwatch $stopwatch = null)
     {
-        $this->stopwatch = $stopwatch;
     }
 
     public function startCall($method, ?array $params = null, ?array $env = null): void

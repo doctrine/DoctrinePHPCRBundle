@@ -77,10 +77,9 @@ EOT
 
         // If no arguments supplied, launch the shell with the embedded application
         if ($launchShell) {
-            $shell = PhpcrShell::createEmbeddedShell($session);
-            $exitCode = $shell->run();
+            PhpcrShell::createEmbeddedShell($session)->run();
 
-            return $exitCode;
+            return 0;
         }
 
         // else try and run the command using the given input
