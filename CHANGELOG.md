@@ -1,13 +1,16 @@
 Changelog
 =========
 
-3.0.0 (unreleased)
-------------------
+Version 3
+=========
+
+3.0.0
+-----
 
 * Upgrade to PHPCR-ODM 2.0
 * Support Jackalope 2.0
 * Drop support for PHP 7
-* Replace doctrine cache with PSR-6 cache with the `symfony/cache` implementation.
+* Replace Doctrine cache with PSR-6 cache with the `symfony/cache` implementation.
   The configuration of metadata_cache_driver changed. By default, it creates an `array` cache.
   To configure a service, specify `type: service` and specify your service in the `id` property.
   To use a cache pool, specify the service id of that pool.
