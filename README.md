@@ -19,8 +19,7 @@ adds features of its own like multilanguage.
 
 ## Documentation
 
-For information, see [Symfony CMF Documentation](http://symfony.com/doc/master/cmf/index.html),
-specifically [The Database Layer: PHPCR-ODM](http://symfony.com/doc/master/cmf/book/database_layer.html)
-and [DoctrinePHPCRBundle](http://symfony.com/doc/master/cmf/bundles/phpcr_odm/introduction.html).
+For information on PHPCR-ODM, see [Doctrine Documentation](https://www.doctrine-project.org/projects/phpcr-odm.html),
+and [DoctrinePHPCRBundle](https://www.doctrine-project.org/projects/doctrine-phpcr-bundle.html).
 
-PHPCR-ODM in general is documented in the [Doctrine PHPCR-ODM documentation](http://docs.doctrine-project.org/projects/doctrine-phpcr-odm/en/latest/).
+Read more about PHPCR, the storage layer behind PHPCR-ODM: [PHPCR documentation](https://phpcr.readthedocs.io/en/latest/).

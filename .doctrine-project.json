@@ -1,0 +1,14 @@
+{
+    "active": true,
+    "name": "PHPCR Bundle",
+    "slug": "phpcr-bundle",
+    "docsSlug": "doctrine-phpcr-bundle",
+    "versions": [
+        {
+            "name": "3.x",
+            "branchName": "3.x",
+            "slug": "latest",
+            "current": true
+        }
+    ]
+}
