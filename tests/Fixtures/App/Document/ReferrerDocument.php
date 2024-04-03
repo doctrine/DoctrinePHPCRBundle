@@ -44,17 +44,11 @@ class ReferrerDocument
         $this->documents->add($doc);
     }
 
-    /**
-     * @return mixed
-     */
     public function getSingle()
     {
         return $this->single;
     }
 
-    /**
-     * @return mixed
-     */
     public function getTestDocument()
     {
         return $this->testDocument;
@@ -68,9 +62,6 @@ class ReferrerDocument
         return $this->testDocuments;
     }
 
-    /**
-     * @return mixed
-     */
     public function getDocuments()
     {
         return $this->documents;

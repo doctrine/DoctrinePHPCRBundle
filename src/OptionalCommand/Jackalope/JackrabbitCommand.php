@@ -21,6 +21,7 @@ class JackrabbitCommand extends BaseJackrabbitCommand
     ) {
         parent::__construct(self::NAME);
     }
+
     protected function configure(): void
     {
         parent::configure();

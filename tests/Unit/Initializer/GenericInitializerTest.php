@@ -13,7 +13,10 @@ use PHPUnit\Framework\TestCase;
 
 class GenericInitializerTest extends TestCase
 {
-    protected ManagerRegistryInterface $registry;
+    /**
+     * @var ManagerRegistryInterface&MockObject
+     */
+    private ManagerRegistryInterface $registry;
     /**
      * @var SessionInterface&MockObject
      */

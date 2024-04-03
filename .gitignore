@@ -1,5 +1,7 @@
 composer.lock
-vendor
+phpunit.xml
 !tests/Fixtures/App/var/.gitempty
 tests/Fixtures/App/var
-/.php_cs.cache
+vendor
+.phpunit.result.cache
+.php-cs-fixer.cache

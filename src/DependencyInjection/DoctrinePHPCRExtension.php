@@ -2,12 +2,12 @@
 
 namespace Doctrine\Bundle\PHPCRBundle\DependencyInjection;
 
-use Jackalope\Tools\Console\Command\InitDoctrineDbalCommand as BaseInitDoctrineDbalCommand;
-use Jackalope\Tools\Console\Command\JackrabbitCommand as BaseJackrabbitCommand;
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistryInterface;
 use Doctrine\ODM\PHPCR\Document\Generic;
 use Doctrine\ODM\PHPCR\DocumentManagerInterface;
 use Jackalope\Session;
+use Jackalope\Tools\Console\Command\InitDoctrineDbalCommand as BaseInitDoctrineDbalCommand;
+use Jackalope\Tools\Console\Command\JackrabbitCommand as BaseJackrabbitCommand;
 use PHPCR\SessionInterface;
 use Symfony\Bridge\Doctrine\DependencyInjection\AbstractDoctrineExtension;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
@@ -71,7 +71,7 @@ final class DoctrinePHPCRExtension extends AbstractDoctrineExtension
             $this->loader->load('jackalope_doctrine_dbal-commands.xml');
         }
 
-            // default values in case no odm is configured. the manager registry needs these variables to be defined.
+        // default values in case no odm is configured. the manager registry needs these variables to be defined.
         // if odm is enabled, the parameters are overwritten later in the `loadOdm` section.
         $container->setParameter('doctrine_phpcr.odm.document_managers', []);
         $container->setParameter('doctrine_phpcr.odm.default_document_manager', '');
@@ -588,7 +588,7 @@ final class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         return 'Document';
     }
 
-    protected function getMappingResourceConfigDirectory(string $bundleDir = null): string
+    protected function getMappingResourceConfigDirectory(?string $bundleDir = null): string
     {
         return 'Resources/config/doctrine';
     }

@@ -75,7 +75,7 @@ EOT
         $launchShell = empty($args);
         $session = $this->getPhpcrSession();
 
-        // If no arguments supplied, launch the shell uwith the embedded application
+        // If no arguments supplied, launch the shell with the embedded application
         if ($launchShell) {
             $shell = PhpcrShell::createEmbeddedShell($session);
             $exitCode = $shell->run();

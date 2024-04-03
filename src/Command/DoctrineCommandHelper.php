@@ -29,13 +29,13 @@ abstract class DoctrineCommandHelper
     {
         $connectionService = sprintf('doctrine_phpcr.jackalope_doctrine_dbal.%s_connection', $sessionName);
         $helperSet = $application->getHelperSet();
-        $helperSet->set(new DoctrineDBALHelper($application->getKernel()->getContainer()->get($connectionService)));
+        $helperSet->set(new DoctrineDbalHelper($application->getKernel()->getContainer()->get($connectionService)));
     }
 
     /**
      * Prepare the DBAL connection and the PHPCR session.
      */
-    public static function setApplicationPHPCRSession(Application $application, string $sessionName = null, bool $admin = false): void
+    public static function setApplicationPHPCRSession(Application $application, ?string $sessionName = null, bool $admin = false): void
     {
         $registry = self::getRegistry($application);
         $session = $admin ? $registry->getAdminConnection($sessionName) : $registry->getConnection($sessionName);
@@ -52,7 +52,7 @@ abstract class DoctrineCommandHelper
                 || $session->getTransport() instanceof DbalLoggingClient
             )
         ) {
-            $helperSet->set(new DoctrineDBALHelper($session->getTransport()->getConnection()));
+            $helperSet->set(new DoctrineDbalHelper($session->getTransport()->getConnection()));
         }
     }
 

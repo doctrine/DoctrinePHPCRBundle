@@ -29,7 +29,7 @@ class InitializerManager
         $this->registry = $registry;
     }
 
-    public function setLoggingClosure(\Closure $closure = null): void
+    public function setLoggingClosure(?\Closure $closure = null): void
     {
         $this->loggingClosure = $closure;
     }
@@ -52,7 +52,7 @@ class InitializerManager
     /**
      * Iterate over the registered initializers and execute each of them.
      */
-    public function initialize(string $sessionName = null): void
+    public function initialize(?string $sessionName = null): void
     {
         $loggingClosure = $this->loggingClosure;
 

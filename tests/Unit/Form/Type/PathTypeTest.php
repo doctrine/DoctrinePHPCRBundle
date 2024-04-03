@@ -11,7 +11,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormBuilder;
 
-class PathTypeTest extends Testcase
+class PathTypeTest extends TestCase
 {
     /**
      * @var ManagerRegistryInterface&MockObject

@@ -8,7 +8,6 @@ use Doctrine\Bundle\PHPCRBundle\Initializer\InitializerManager;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\PHPCRPurger;
 use Doctrine\ODM\PHPCR\Tools\Console\Helper\DocumentManagerHelper;
-use InvalidArgumentException;
 use PHPCR\Util\Console\Command\BaseCommand;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
@@ -117,7 +116,7 @@ EOT
 
         $fixtures = $loader->getFixtures();
         if (!$fixtures) {
-            throw new InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 sprintf('Could not find any fixtures to load in: %s', "\n\n- ".implode("\n- ", $paths))
             );
         }

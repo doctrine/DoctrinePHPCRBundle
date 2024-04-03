@@ -29,7 +29,7 @@ class RepositoryManager
         return $this->managerRegistry;
     }
 
-    public function getDocumentManager(string $managerName = null): DocumentManagerInterface
+    public function getDocumentManager(?string $managerName = null): DocumentManagerInterface
     {
         return $this->getRegistry()->getManager($managerName);
     }

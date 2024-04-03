@@ -8,7 +8,7 @@ use PHPCR\SessionInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class PHPCRNodeToUuidTransformerTest extends Testcase
+class PHPCRNodeToUuidTransformerTest extends TestCase
 {
     /**
      * @var SessionInterface&MockObject

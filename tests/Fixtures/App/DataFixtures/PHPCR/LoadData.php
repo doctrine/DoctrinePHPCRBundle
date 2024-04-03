@@ -15,13 +15,16 @@ use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\ReferrerDocument;
 use Doctrine\Bundle\PHPCRBundle\Tests\Fixtures\App\Document\TestDocument;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\ODM\PHPCR\Document\Generic;
-use Doctrine\ODM\PHPCR\DocumentManager;
+use Doctrine\ODM\PHPCR\DocumentManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 
 class LoadData implements FixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
+        if (!$manager instanceof DocumentManagerInterface) {
+            throw new \InvalidArgumentException('Expected a '.DocumentManagerInterface::class);
+        }
         $base = new Generic();
         $base->setNodename('test');
         $base->setParentDocument($manager->find(null, '/'));

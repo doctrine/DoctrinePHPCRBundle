@@ -3,10 +3,9 @@
 namespace Doctrine\Bundle\PHPCRBundle;
 
 use Doctrine\ODM\PHPCR\DocumentManagerInterface;
-use Doctrine\ODM\PHPCR\PHPCRException;
 use PHPCR\SessionInterface;
-use Psr\Container\ContainerInterface;
 use Symfony\Bridge\Doctrine\ManagerRegistry as BaseManagerRegistry;
+use Symfony\Component\DependencyInjection\Container;
 
 /**
  * Symfony aware manager registry.
@@ -18,7 +17,7 @@ final class ManagerRegistry extends BaseManagerRegistry implements ManagerRegist
      * @param string[] $entityManagers
      */
     public function __construct(
-        ContainerInterface $container,
+        Container $container,
         array $connections,
         array $entityManagers,
         string $defaultConnectionName,
