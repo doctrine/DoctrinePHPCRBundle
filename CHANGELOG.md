@@ -34,6 +34,8 @@ Changelog
   passed as credentials.
 * `doctrine:phpcr:fixtures:load` is now only visible if PHPCR-ODM is available. In version 2, you would get an error when
   running the command without PHPCR-ODM.
+* Converted the `ValidPhpcrOdm` annotation to a PHP attribute. Change comments with `@ValidPhpcrOdm` into attribute
+  declarations with `#[ValidPhpcrOdm]`.
 
 Version 2
 =========
