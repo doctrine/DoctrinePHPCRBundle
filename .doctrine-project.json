@@ -1,6 +1,6 @@
 {
     "active": true,
-    "name": "PHPCR Bundle",
+    "name": "Doctrine PHPCR Bundle",
     "slug": "phpcr-bundle",
     "docsSlug": "doctrine-phpcr-bundle",
     "versions": [
