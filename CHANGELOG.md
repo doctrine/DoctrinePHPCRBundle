@@ -4,6 +4,13 @@ Changelog
 Version 3
 =========
 
+3.0.1
+-----
+
+* Declare conflict with `doctrine/persistence: < 3.0.0`. Bundle 3.0.0 will install with old persistence, but the
+  ManagerRegistry does no longer implement the obsolete method `getAliasNamespace` that is still required by
+  persistence 2.*.
+
 3.0.0
 -----
 
