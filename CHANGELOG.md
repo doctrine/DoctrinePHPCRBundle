@@ -7,6 +7,7 @@ Version 2
 2.5.1
 -----
 
+ * Add supported range of jackalope packages to composer.json
 * Fix dependencies: phpcr-odm 2.0 has BC breaks not supported by this legacy version of the bundle.
   To use phpcr-odm `2.*`, please use version 3 of this bundle.
 
