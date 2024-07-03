@@ -4,6 +4,12 @@ Changelog
 Version 2
 =========
 
+2.5.1
+-----
+
+* Fix dependencies: phpcr-odm 2.0 has BC breaks not supported by this legacy version of the bundle.
+  To use phpcr-odm `2.*`, please use version 3 of this bundle.
+
 2.5.0
 -----
 

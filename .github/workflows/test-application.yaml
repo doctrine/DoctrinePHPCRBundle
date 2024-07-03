@@ -25,6 +25,7 @@ jobs:
                       phpunit-version: "8.5"
                       phpunit-flags: "-v --coverage-text"
                       symfony-version: "^4.4"
+                      composer-require: "'doctrine/annotations: 1.*'"
 
                     - php-version: "7.4"
                       phpunit-version: "8.5"
