@@ -4,6 +4,13 @@ Changelog
 Version 3
 =========
 
+3.0.2
+-----
+
+* Fixed `DoctrinePhpcrMappingPass` to not configure the `addDocumentNamespace` method which has been removed in PHPCR-ODM 2.0.
+* [BC Break] Removed the `$aliasMap` parameter from `DoctrinePhpcrMappingPass` because this functionality has been removed in PHPCR-ODM 2.0
+  (This is considered a 3.0 BC break - the mapping pass was broken in 3.0.0 and 3.0.1 because it tried to call `addDocumentNamespace`) 
+
 3.0.1
 -----
 
