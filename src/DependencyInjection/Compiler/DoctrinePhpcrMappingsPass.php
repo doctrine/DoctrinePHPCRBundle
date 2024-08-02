@@ -32,9 +32,8 @@ final class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      * @param string|bool          $enabledParameter  Service container parameter that must be
      *                                                present to enable the mapping. Set to false
      *                                                to not do any check, optional.
-     * @param array                $aliasMap          map of alias to namespace
      */
-    public function __construct($driver, array $namespaces, array $managerParameters, $enabledParameter = false, array $aliasMap = [])
+    public function __construct($driver, array $namespaces, array $managerParameters, $enabledParameter = false)
     {
         $managerParameters[] = 'doctrine_phpcr.odm.default_document_manager';
         parent::__construct(
@@ -44,8 +43,6 @@ final class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
             'doctrine_phpcr.odm.%s_metadata_driver',
             $enabledParameter,
             'doctrine_phpcr.odm.%s_configuration',
-            'addDocumentNamespace',
-            $aliasMap
         );
     }
 
@@ -58,19 +55,17 @@ final class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      * @param string|bool $enabledParameter  Service container parameter that must be present to
      *                                       enable the mapping. Set to false to not do any check,
      *                                       optional.
-     * @param string[]    $aliasMap          map of alias to namespace
      */
     public static function createXmlMappingDriver(
         array $namespaces,
         array $managerParameters = [],
         $enabledParameter = false,
-        array $aliasMap = []
     ): self {
         $arguments = [$namespaces, '.phpcr.xml'];
         $locator = new Definition(SymfonyFileLocator::class, $arguments);
         $driver = new Definition(XmlDriver::class, [$locator]);
 
-        return new self($driver, $namespaces, $managerParameters, $enabledParameter, $aliasMap);
+        return new self($driver, $namespaces, $managerParameters, $enabledParameter);
     }
 
     /**
@@ -82,19 +77,17 @@ final class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      * @param string|bool $enabledParameter  Service container parameter that must be present to
      *                                       enable the mapping. Set to false to not do any check,
      *                                       optional.
-     * @param string[]    $aliasMap          map of alias to namespace
      */
     public static function createYamlMappingDriver(
         array $namespaces,
         array $managerParameters = [],
         $enabledParameter = false,
-        array $aliasMap = []
     ): self {
         $arguments = [$namespaces, '.phpcr.yml'];
         $locator = new Definition(SymfonyFileLocator::class, $arguments);
         $driver = new Definition(YamlDriver::class, [$locator]);
 
-        return new self($driver, $namespaces, $managerParameters, $enabledParameter, $aliasMap);
+        return new self($driver, $namespaces, $managerParameters, $enabledParameter);
     }
 
     /**
@@ -106,19 +99,17 @@ final class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      * @param string|bool $enabledParameter  Service container parameter that must be present to
      *                                       enable the mapping. Set to false to not do any check,
      *                                       optional.
-     * @param string[]    $aliasMap          map of alias to namespace
      */
     public static function createPhpMappingDriver(
         array $mappings,
         array $managerParameters = [],
         $enabledParameter = false,
-        array $aliasMap = []
     ): self {
         $arguments = [$mappings, '.php'];
         $locator = new Definition(SymfonyFileLocator::class, $arguments);
         $driver = new Definition(PHPDriver::class, [$locator]);
 
-        return new self($driver, $mappings, $managerParameters, $enabledParameter, $aliasMap);
+        return new self($driver, $mappings, $managerParameters, $enabledParameter);
     }
 
     /**
@@ -131,16 +122,15 @@ final class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      * @param string|false $enabledParameter          Service container parameter that must be present to
      *                                                enable the mapping. Set to false to not do any check,
      *                                                optional.
-     * @param string[]     $aliasMap                  map of alias to namespace
      * @param bool         $reportFieldsWhereDeclared Will report fields for the classes where they are declared
      *
      * @return self
      */
-    public static function createAttributeMappingDriver(array $namespaces, array $directories, array $managerParameters = [], $enabledParameter = false, array $aliasMap = [], bool $reportFieldsWhereDeclared = false)
+    public static function createAttributeMappingDriver(array $namespaces, array $directories, array $managerParameters = [], $enabledParameter = false, bool $reportFieldsWhereDeclared = false)
     {
         $driver = new Definition(AttributeDriver::class, [$directories, $reportFieldsWhereDeclared]);
 
-        return new self($driver, $namespaces, $managerParameters, $enabledParameter, $aliasMap);
+        return new self($driver, $namespaces, $managerParameters, $enabledParameter);
     }
 
     /**
@@ -153,17 +143,15 @@ final class DoctrinePhpcrMappingsPass extends RegisterMappingsPass
      * @param string|bool $enabledParameter  Service container parameter that must be present to
      *                                       enable the mapping. Set to false to not do any check,
      *                                       optional.
-     * @param string[]    $aliasMap          map of alias to namespace
      */
     public static function createStaticPhpMappingDriver(
         array $namespaces,
         array $directories,
         array $managerParameters = [],
         $enabledParameter = false,
-        array $aliasMap = []
     ): self {
         $driver = new Definition(StaticPHPDriver::class, [$directories]);
 
-        return new self($driver, $namespaces, $managerParameters, $enabledParameter, $aliasMap);
+        return new self($driver, $namespaces, $managerParameters, $enabledParameter);
     }
 }
