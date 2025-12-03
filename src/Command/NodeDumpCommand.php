@@ -20,7 +20,7 @@ class NodeDumpCommand extends BaseDumpCommand
 
     public function __construct(
         private PhpcrConsoleDumperHelper $consoleDumper,
-        private int $dumpMaxLineLength
+        private int $dumpMaxLineLength,
     ) {
         parent::__construct(self::NAME);
     }

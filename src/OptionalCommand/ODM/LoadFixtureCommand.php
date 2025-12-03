@@ -28,7 +28,7 @@ class LoadFixtureCommand extends BaseCommand
     private const NAME = 'doctrine:phpcr:fixtures:load';
 
     public function __construct(
-        private InitializerManager $initializerManager
+        private InitializerManager $initializerManager,
     ) {
         parent::__construct(self::NAME);
     }

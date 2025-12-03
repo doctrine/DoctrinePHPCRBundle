@@ -16,7 +16,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\PHPCR\Mapping\Attributes as PHPCR;
 
 #[PHPCR\Document]
-class ReferrerDocument
+class ReferrerDocument implements \Stringable
 {
     #[PHPCR\Id(strategy: 'assigned')]
     public string $id;

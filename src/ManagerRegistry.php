@@ -22,7 +22,7 @@ final class ManagerRegistry extends BaseManagerRegistry implements ManagerRegist
         array $entityManagers,
         string $defaultConnectionName,
         string $defaultEntityManagerName,
-        string $proxyInterfaceName
+        string $proxyInterfaceName,
     ) {
         $this->container = $container;
 

@@ -19,7 +19,7 @@ class RepositoryInitCommand extends Command
     private const NAME = 'doctrine:phpcr:repository:init';
 
     public function __construct(
-        private InitializerManager $initializerManager
+        private InitializerManager $initializerManager,
     ) {
         parent::__construct(self::NAME);
     }
