@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\PHPCR\Mapping\Attributes as PHPCR;
 
 #[PHPCR\Document(referenceable: true)]
-class TestDocument
+class TestDocument implements \Stringable
 {
     #[PHPCR\Id]
     public string $id;

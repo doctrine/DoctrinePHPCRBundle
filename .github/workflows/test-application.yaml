@@ -11,7 +11,7 @@ on:
 jobs:
     test:
         name: "PHP ${{ matrix.php-version }}, Symfony ${{ matrix.symfony-version }}"
-        runs-on: "ubuntu-20.04"
+        runs-on: "ubuntu-latest"
         env:
           SYMFONY_REQUIRE: ${{matrix.symfony-require}}
 

@@ -16,7 +16,7 @@ class MigratorMigrateCommand extends BaseCommand
     private const NAME = 'doctrine:phpcr:migrator:migrate';
 
     public function __construct(
-        private ContainerInterface $container
+        private ContainerInterface $container,
     ) {
         parent::__construct(self::NAME);
     }

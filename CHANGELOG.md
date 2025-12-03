@@ -4,6 +4,11 @@ Changelog
 Version 3
 =========
 
+3.0.3
+-----
+
+* PHPCRExecutor no longer extends Doctrine\Common\DataFixtures\Executor\PHPCRExecutor because that class is final since `doctrine/data-fixtures` version 2.
+
 3.0.2
 -----
 
