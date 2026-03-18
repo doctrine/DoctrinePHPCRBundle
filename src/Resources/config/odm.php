@@ -5,17 +5,21 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 return static function (ContainerConfigurator $container) {
     $services = $container->services();
     $parameters = $container->parameters();
-    $parameters->set('doctrine_phpcr.odm.cache.array.class', \Doctrine\Common\Cache\ArrayCache::class);
-    $parameters->set('doctrine_phpcr.odm.cache.apc.class', \Doctrine\Common\Cache\ApcCache::class);
-    $parameters->set('doctrine_phpcr.odm.cache.memcache.class', \Doctrine\Common\Cache\MemcacheCache::class);
+
+    // cache (keep classes as strings to avoid legacy class resolution issues)
+    $parameters->set('doctrine_phpcr.odm.cache.array.class', 'Doctrine\Common\Cache\ArrayCache');
+    $parameters->set('doctrine_phpcr.odm.cache.apc.class', 'Doctrine\Common\Cache\ApcCache');
+    $parameters->set('doctrine_phpcr.odm.cache.memcache.class', 'Doctrine\Common\Cache\MemcacheCache');
     $parameters->set('doctrine_phpcr.odm.cache.memcache_host', 'localhost');
     $parameters->set('doctrine_phpcr.odm.cache.memcache_port', 11211);
     $parameters->set('doctrine_phpcr.odm.cache.memcache_instance.class', 'Memcache');
-    $parameters->set('doctrine_phpcr.odm.cache.memcached.class', \Doctrine\Common\Cache\MemcachedCache::class);
+    $parameters->set('doctrine_phpcr.odm.cache.memcached.class', 'Doctrine\Common\Cache\MemcachedCache');
     $parameters->set('doctrine_phpcr.odm.cache.memcached_host', 'localhost');
     $parameters->set('doctrine_phpcr.odm.cache.memcached_port', 11211);
     $parameters->set('doctrine_phpcr.odm.cache.memcached_instance.class', 'Memcached');
-    $parameters->set('doctrine_phpcr.odm.cache.xcache.class', \Doctrine\Common\Cache\XcacheCache::class);
+    $parameters->set('doctrine_phpcr.odm.cache.xcache.class', 'Doctrine\Common\Cache\XcacheCache');
+
+    // drivers (unused, keep classes to avoid legacy issues)
     $parameters->set('doctrine_phpcr.odm.metadata.xml.class', \Doctrine\Bundle\PHPCRBundle\Mapping\Driver\XmlDriver::class);
     $parameters->set('doctrine_phpcr.odm.metadata.yml.class', \Doctrine\Bundle\PHPCRBundle\Mapping\Driver\YamlDriver::class);
     $parameters->set('doctrine_phpcr.odm.metadata.php.class', \Doctrine\Persistence\Mapping\Driver\StaticPHPDriver::class);
@@ -69,7 +73,9 @@ return static function (ContainerConfigurator $container) {
     $services->set('doctrine_phpcr.odm.translation.strategy.child', \Doctrine\ODM\PHPCR\Translation\TranslationStrategy\ChildTranslationStrategy::class)
         ->args(['']);
 
-    $services->set(\Doctrine\Bundle\PHPCRBundle\Command\LoadFixtureCommand::class, \Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\LoadFixtureCommand::class)
+    $services->set(\Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\LoadFixtureCommand::class, \Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\LoadFixtureCommand::class)
         ->args([service('doctrine_phpcr.initializer_manager')])
         ->tag('console.command');
+    $services->alias('Doctrine\Bundle\PHPCRBundle\Command\LoadFixtureCommand', \Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\LoadFixtureCommand::class)
+        ->deprecate('doctrine/phpcr-bundle', '3.1.0', 'Service %alias_id% was misnamed, use the correct class name instead '.\Doctrine\Bundle\PHPCRBundle\OptionalCommand\ODM\LoadFixtureCommand::class);
 };

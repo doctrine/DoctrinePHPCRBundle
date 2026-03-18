@@ -4,6 +4,16 @@ Changelog
 Version 3
 =========
 
+3.1.0
+-----
+
+* Support for Symfony 8
+  * Rewrote service definitions from XML to PHP
+  * Removed traces of prismic - which could not be installed with DoctrinePHPCRBundle 3 anyway.
+  * Renamed InitDoctrineDbalCommand and JackrabbitCommand services because they did not match the class name.
+    (Added an alias with deprecation for BC.)
+  * Deprecated XmlDriver and YamlDriver in the bundle, as the ones from phpcr-odm are used directly.
+
 3.0.3
 -----
 

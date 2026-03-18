@@ -4,7 +4,6 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 return static function (ContainerConfigurator $container) {
     $services = $container->services();
-    $parameters = $container->parameters();
 
     $services->set(\Doctrine\Bundle\PHPCRBundle\Command\WorkspaceQueryCommand::class, \Doctrine\Bundle\PHPCRBundle\Command\WorkspaceQueryCommand::class)
         ->tag('console.command');

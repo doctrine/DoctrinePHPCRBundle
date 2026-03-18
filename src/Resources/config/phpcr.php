@@ -4,7 +4,6 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 return static function (ContainerConfigurator $container) {
     $services = $container->services();
-    $parameters = $container->parameters();
 
     $services->set('doctrine_phpcr.session.event_manager', \Symfony\Bridge\Doctrine\ContainerAwareEventManager::class)
         ->private()

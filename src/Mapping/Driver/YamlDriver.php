@@ -10,6 +10,8 @@ use Doctrine\Persistence\Mapping\Driver\SymfonyFileLocator;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Benjamin Eberlei <kontakt@beberlei.de>
+ *
+ * @deprecated The mapping pass uses the base class in doctrine/phpcr-odm directly
  */
 class YamlDriver extends BaseYamlDriver
 {
