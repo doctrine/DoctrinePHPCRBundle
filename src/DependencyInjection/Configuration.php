@@ -123,12 +123,6 @@ final class Configuration implements ConfigurationInterface
                             ->always()
                             ->then(function ($v) {
                                 switch ($v['type']) {
-                                    case 'prismic':
-                                        if (!isset($v['url'])) {
-                                            throw new InvalidConfigurationException('prismic backend requires the url argument.');
-                                        }
-
-                                        break;
                                     case 'jackrabbit':
                                         if (!isset($v['url'])) {
                                             throw new InvalidConfigurationException('jackrabbit backend requires the url argument.');
@@ -145,7 +139,7 @@ final class Configuration implements ConfigurationInterface
                         ->fixXmlConfig('parameter')
                         ->children()
                             ->enumNode('type')
-                                ->values(['jackrabbit', 'doctrinedbal', 'prismic'])
+                                ->values(['jackrabbit', 'doctrinedbal'])
                                 ->defaultValue('jackrabbit')
                             ->end()
                             // all jackalope

@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -35,7 +35,7 @@ final class DoctrinePHPCRExtension extends AbstractDoctrineExtension
      */
     private array $sessions = [];
 
-    private XmlFileLoader $loader;
+    private PhpFileLoader $loader;
 
     private bool $disableProxyWarmer = false;
 
@@ -51,15 +51,15 @@ final class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         $processor = new Processor();
         $configuration = new Configuration();
         $config = $processor->processConfiguration($configuration, $configs);
-        $this->loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $this->loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
-        $this->loader->load('phpcr.xml');
-        $this->loader->load('commands.xml');
+        $this->loader->load('phpcr.php');
+        $this->loader->load('commands.php');
         if (class_exists(BaseJackrabbitCommand::class)) {
-            $this->loader->load('jackrabbit-commands.xml');
+            $this->loader->load('jackrabbit-commands.php');
         }
         if (class_exists(BaseInitDoctrineDbalCommand::class)) {
-            $this->loader->load('jackalope_doctrine_dbal-commands.xml');
+            $this->loader->load('jackalope_doctrine_dbal-commands.php');
         }
 
         // default values in case no odm is configured. the manager registry needs these variables to be defined.
@@ -126,11 +126,10 @@ final class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
             $type = $session['backend']['type'];
             switch ($type) {
-                case 'prismic':
                 case 'doctrinedbal':
                 case 'jackrabbit':
                     if (empty($loaded['jackalope'])) {
-                        $this->loader->load('jackalope.xml');
+                        $this->loader->load('jackalope.php');
                         $loaded['jackalope'] = true;
                     }
                     $this->loadJackalopeSession($session, $container, $type);
@@ -173,7 +172,7 @@ final class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                 ;
 
                 if (!$this->dbalSchemaListenerLoaded) {
-                    $this->loader->load('jackalope_doctrine_dbal.xml');
+                    $this->loader->load('jackalope_doctrine_dbal.php');
                     $this->dbalSchemaListenerLoaded = true;
                 }
 
@@ -209,10 +208,6 @@ final class DoctrinePHPCRExtension extends AbstractDoctrineExtension
                         $backendParameters['jackalope.data_caches'][$key] = new Reference($cache);
                     }
                 }
-
-                break;
-            case 'prismic':
-                $backendParameters['jackalope.prismic_uri'] = $session['backend']['url'];
 
                 break;
             case 'jackrabbit':
@@ -352,7 +347,7 @@ final class DoctrinePHPCRExtension extends AbstractDoctrineExtension
 
     private function loadOdm(array $config, ContainerBuilder $container): void
     {
-        $this->loader->load('odm.xml');
+        $this->loader->load('odm.php');
         $this->loadOdmLocales($config, $container);
         $config['document_managers'] = $this->fixManagersAutoMappings($config['document_managers'], $container->getParameter('kernel.bundles'));
 
@@ -401,7 +396,7 @@ final class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         }
 
         if (!empty($config['locales'])) {
-            $this->loader->load('odm_multilang.xml');
+            $this->loader->load('odm_multilang.php');
 
             foreach ($config['locales'] as $locale => $fallbacks) {
                 if (\in_array($locale, $fallbacks)) {
