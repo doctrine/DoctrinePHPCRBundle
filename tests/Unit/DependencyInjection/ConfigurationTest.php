@@ -220,7 +220,6 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                 $singleConfiguration,
                 [
                     'config/single.yml',
-                    'config/single.xml',
                     'config/single.php',
                 ],
             ],
@@ -228,7 +227,6 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                 $multipleConfiguration,
                 [
                     'config/multiple.yml',
-                    'config/multiple.xml',
                     'config/multiple.php',
                 ],
             ],

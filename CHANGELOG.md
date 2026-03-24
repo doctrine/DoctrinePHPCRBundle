@@ -4,6 +4,11 @@ Changelog
 Version 3
 =========
 
+3.1.1
+-----
+
+* Proper support for Symfony 8: Allow installation with Doctrine Persistence 4 and Doctrine Bridge 8.
+
 3.1.0
 -----
 
