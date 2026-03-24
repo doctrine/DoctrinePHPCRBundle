@@ -34,18 +34,9 @@ class InitializerManagerTest extends TestCase
     {
         $this->registry = $this->createMock(ManagerRegistryInterface::class);
 
-        $this->initializer1 = $this
-            ->getMockBuilder(InitializerInterface::class)
-            ->setMockClassName('TestInitializerOne')
-            ->getMock();
-        $this->initializer2 = $this
-            ->getMockBuilder(InitializerInterface::class)
-            ->setMockClassName('TestInitializerTwo')
-            ->getMock();
-        $this->initializer3 = $this
-            ->getMockBuilder(InitializerInterface::class)
-            ->setMockClassName('TestInitializerTwo')
-            ->getMock();
+        $this->initializer1 = $this->createMock(InitializerInterface::class);
+        $this->initializer2 = $this->createMock(InitializerInterface::class);
+        $this->initializer3 = $this->createMock(InitializerInterface::class);
 
         $this->initializerManager = new InitializerManager($this->registry);
     }

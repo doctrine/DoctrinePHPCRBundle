@@ -13,15 +13,16 @@ jobs:
         name: "PHP ${{ matrix.php-version }}, Symfony ${{ matrix.symfony-version }}"
         runs-on: "ubuntu-latest"
         env:
-          SYMFONY_REQUIRE: ${{matrix.symfony-require}}
+          SYMFONY_REQUIRE: ${{ matrix.symfony-version }}
 
         strategy:
             fail-fast: false
             matrix:
                 include:
                     - php-version: "8.1"
-                      phpunit-flags: "-v --coverage-text"
-                      symfony-version: "6.0.*"
+                      phpunit-flags: "--coverage-text"
+                      symfony-version: "6.4.*"
+                      insecure: true
 
                     - php-version: "8.1"
 
@@ -44,17 +45,15 @@ jobs:
               with:
                   php-version: "${{ matrix.php-version }}"
                   extensions: "pdo, pdo_sqlite"
-                  tools: "composer:v2"
-
-            - name: "Require specific symfony version"
-              if: "${{ matrix.symfony-version }}"
-              run: |
-                composer require --no-update symfony/flex
-                composer config --no-plugins allow-plugins.symfony/flex true
+                  tools: "composer:v2, flex"
 
             - name: "Require additional dependencies"
               if: "${{ matrix.composer-require }}"
               run: "composer require --no-update ${{ matrix.composer-require }}"
+
+            - name: "Disable composer security for legacy builds"
+              if: "${{ matrix.insecure }}"
+              run: "composer config audit.block-insecure false"
 
             - name: "Install dependencies with Composer"
               uses: "ramsey/composer-install@v2"
