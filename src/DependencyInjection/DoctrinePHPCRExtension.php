@@ -3,13 +3,13 @@
 namespace Doctrine\Bundle\PHPCRBundle\DependencyInjection;
 
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistryInterface;
+use Doctrine\Bundle\PHPCRBundle\Mapping\Driver\SimplifiedXmlDriver;
 use Doctrine\ODM\PHPCR\Document\Generic;
 use Doctrine\ODM\PHPCR\DocumentManagerInterface;
 use Jackalope\Session;
 use Jackalope\Tools\Console\Command\InitDoctrineDbalCommand as BaseInitDoctrineDbalCommand;
 use Jackalope\Tools\Console\Command\JackrabbitCommand as BaseJackrabbitCommand;
 use PHPCR\SessionInterface;
-use Symfony\Bridge\Doctrine\DependencyInjection\AbstractDoctrineExtension;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
@@ -19,6 +19,7 @@ use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -26,8 +27,15 @@ use Symfony\Component\DependencyInjection\Reference;
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
-final class DoctrinePHPCRExtension extends AbstractDoctrineExtension
+final class DoctrinePHPCRExtension extends Extension
 {
+    /**
+     * Used inside metadata driver method to simplify aggregation of data.
+     *
+     * @var array<string, array<string, string>> List of driver type => prefix => path
+     */
+    private array $drivers = [];
+
     private string $defaultSession;
 
     /**
@@ -45,6 +53,147 @@ final class DoctrinePHPCRExtension extends AbstractDoctrineExtension
      * This is done the first time a session with jackalope-doctrine-dbal is encountered.
      */
     private bool $dbalSchemaListenerLoaded = false;
+
+    /**
+     * @param array<string, mixed> $objectManager A configured object manager
+     *
+     * @throws InvalidArgumentException
+     */
+    private function loadMappingInformation(array $objectManager, ContainerBuilder $container): void
+    {
+        if ($objectManager['auto_mapping']) {
+            // automatically register bundle mappings
+            $bundles = $container->getParameter('kernel.bundles');
+            foreach (array_keys($bundles) as $bundle) {
+                if (isset($objectManager['mappings'][$bundle])) {
+                    continue;
+                }
+
+                $objectManager['mappings'][$bundle] = [
+                    'mapping' => true,
+                    'is_bundle' => true,
+                ];
+            }
+        }
+
+        foreach ($objectManager['mappings'] as $mappingName => $mappingConfig) {
+            if (null !== $mappingConfig && false === $mappingConfig['mapping']) {
+                continue;
+            }
+
+            $mappingConfig = array_replace([
+                'dir' => false,
+                'type' => false,
+                'prefix' => false,
+            ], (array) $mappingConfig);
+
+            $mappingConfig['dir'] = $container->getParameterBag()->resolveValue($mappingConfig['dir']);
+            // a bundle configuration is detected by realizing that the specified dir is not absolute and existing
+            if (!isset($mappingConfig['is_bundle'])) {
+                $mappingConfig['is_bundle'] = !is_dir((string) $mappingConfig['dir']);
+            }
+
+            if ($mappingConfig['is_bundle']) {
+                $bundle = null;
+                $bundleMetadata = null;
+                /** @var array<string, class-string> $kernelBundles */
+                $kernelBundles = $container->getParameter('kernel.bundles');
+                $kernelBundlesMetadata = $container->getParameter('kernel.bundles_metadata');
+                foreach ($kernelBundles as $name => $class) {
+                    if ($mappingName === $name) {
+                        $bundle = new \ReflectionClass($class);
+                        $bundleMetadata = $kernelBundlesMetadata[$name];
+
+                        break;
+                    }
+                }
+
+                if (null === $bundle) {
+                    throw new InvalidArgumentException(sprintf('Bundle "%s" does not exist or it is not enabled.', $mappingName));
+                }
+
+                if (null !== $bundleMetadata) {
+                    $mappingConfig = $this->getMappingDriverBundleConfigDefaults($mappingConfig, $bundle, $container, $bundleMetadata['path']);
+                    if (!$mappingConfig) {
+                        continue;
+                    }
+                }
+            } elseif (!$mappingConfig['type']) {
+                $mappingConfig['type'] = 'attribute';
+            }
+
+            $this->assertValidMappingConfiguration($mappingConfig, $objectManager['name']);
+            $this->setMappingDriverConfig($mappingConfig, $mappingName);
+        }
+    }
+
+    /**
+     * Register the mapping driver configuration for later use with the object managers metadata driver chain.
+     *
+     * @param array<string, mixed> $mappingConfig
+     *
+     * @throws InvalidArgumentException
+     */
+    private function setMappingDriverConfig(array $mappingConfig, string $mappingName): void
+    {
+        $mappingDirectory = $mappingConfig['dir'];
+        if (!is_dir($mappingDirectory)) {
+            throw new InvalidArgumentException(sprintf('Invalid Doctrine mapping path given. Cannot load Doctrine mapping/bundle named "%s".', $mappingName));
+        }
+
+        $this->drivers[$mappingConfig['type']][$mappingConfig['prefix']] = realpath($mappingDirectory) ?: $mappingDirectory;
+    }
+
+    /**
+     * If this is a bundle controlled mapping all the missing information can be autodetected by this method.
+     *
+     * Returns false when autodetection failed, an array of the completed information otherwise.
+     *
+     * @param array<string, mixed>     $bundleConfig
+     * @param \ReflectionClass<object> $bundle
+     *
+     * @return array<string, mixed>|false
+     */
+    private function getMappingDriverBundleConfigDefaults(
+        array $bundleConfig,
+        \ReflectionClass $bundle,
+        ContainerBuilder $container,
+        ?string $bundleDir = null,
+    ): array|false {
+        $fileName = $bundle->getFileName();
+        assert(is_string($fileName));
+        $bundleClassDir = dirname($fileName);
+        $bundleDir ??= $bundleClassDir;
+
+        if (!$bundleConfig['type']) {
+            $bundleConfig['type'] = $this->detectMetadataDriver($bundleDir, $container);
+
+            if (!$bundleConfig['type'] && $bundleDir !== $bundleClassDir) {
+                $bundleConfig['type'] = $this->detectMetadataDriver($bundleClassDir, $container);
+            }
+        }
+
+        if (!$bundleConfig['type']) {
+            // skip this bundle, no mapping information was found.
+            return false;
+        }
+
+        if (!$bundleConfig['dir']) {
+            if (in_array($bundleConfig['type'], ['staticphp', 'attribute'])) {
+                $bundleConfig['dir'] = $bundleClassDir.'/'.$this->getMappingObjectDefaultName();
+            } else {
+                $bundleConfig['dir'] = $bundleDir.'/'.$this->getMappingResourceConfigDirectory($bundleDir);
+            }
+        } else {
+            $bundleConfig['dir'] = $bundleDir.'/'.$bundleConfig['dir'];
+        }
+
+        if (!$bundleConfig['prefix']) {
+            $bundleConfig['prefix'] = $bundle->getNamespaceName().'\\'.$this->getMappingObjectDefaultName();
+        }
+
+        return $bundleConfig;
+    }
 
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -385,6 +534,157 @@ final class DoctrinePHPCRExtension extends AbstractDoctrineExtension
         }
 
         $container->setParameter('doctrine_phpcr.odm.namespaces.translation.alias', $config['namespaces']['translation']['alias']);
+    }
+
+    /**
+     * Register all the collected mapping information with the object manager by registering the appropriate mapping drivers.
+     *
+     * @param array<string, mixed> $objectManager
+     */
+    private function registerMappingDrivers(array $objectManager, ContainerBuilder $container): void
+    {
+        // configure metadata driver for each bundle based on the type of mapping files found
+        if ($container->hasDefinition($this->getObjectManagerElementName($objectManager['name'].'_metadata_driver'))) {
+            $chainDriverDef = $container->getDefinition($this->getObjectManagerElementName($objectManager['name'].'_metadata_driver'));
+        } else {
+            $chainDriverDef = new Definition($this->getMetadataDriverClass('driver_chain'));
+        }
+
+        foreach ($this->drivers as $driverType => $driverPaths) {
+            $mappingService = $this->getObjectManagerElementName($objectManager['name'].'_'.$driverType.'_metadata_driver');
+            $mappingDriverDef = new Definition($this->getMetadataDriverClass($driverType), [
+                array_values($driverPaths),
+            ]);
+
+            if (SimplifiedXmlDriver::class === $mappingDriverDef->getClass()) {
+                $mappingDriverDef->setArguments([array_flip($driverPaths)]);
+                $mappingDriverDef->addMethodCall('setGlobalBasename', ['mapping']);
+            }
+
+            $container->setDefinition($mappingService, $mappingDriverDef);
+
+            foreach ($driverPaths as $prefix => $driverPath) {
+                $chainDriverDef->addMethodCall('addDriver', [new Reference($mappingService), $prefix]);
+            }
+        }
+
+        $container->setDefinition($this->getObjectManagerElementName($objectManager['name'].'_metadata_driver'), $chainDriverDef);
+    }
+
+    /**
+     * Assertion if the specified mapping information is valid.
+     *
+     * @param array<string, mixed> $mappingConfig
+     *
+     * @throws InvalidArgumentException
+     */
+    private function assertValidMappingConfiguration(array $mappingConfig, string $objectManagerName): void
+    {
+        if (!$mappingConfig['type'] || !$mappingConfig['dir'] || !$mappingConfig['prefix']) {
+            throw new InvalidArgumentException(sprintf('Mapping definitions for Doctrine manager "%s" require at least the "type", "dir" and "prefix" options.', $objectManagerName));
+        }
+
+        if (!is_dir($mappingConfig['dir'])) {
+            throw new InvalidArgumentException(sprintf('Specified non-existing directory "%s" as Doctrine mapping source.', $mappingConfig['dir']));
+        }
+
+        if (!in_array($mappingConfig['type'], ['xml', 'php', 'staticphp', 'attribute'])) {
+            throw new InvalidArgumentException(sprintf('Can only configure "xml", "php", "staticphp" or "attribute" through the DoctrineBundle. Use your own bundle to configure other metadata drivers. You can register them by adding a new driver to the "%s" service definition.', $this->getObjectManagerElementName($objectManagerName.'_metadata_driver')));
+        }
+    }
+
+    /**
+     * Detects what metadata driver to use for the supplied directory.
+     */
+    private function detectMetadataDriver(string $dir, ContainerBuilder $container): ?string
+    {
+        $configPath = $this->getMappingResourceConfigDirectory($dir);
+        $extension = $this->getMappingResourceExtension();
+
+        if (glob($dir.'/'.$configPath.'/*.'.$extension.'.xml', GLOB_NOSORT)) {
+            $driver = 'xml';
+        } elseif (glob($dir.'/'.$configPath.'/*.'.$extension.'.yml', GLOB_NOSORT)) {
+            $driver = 'yml';
+        } elseif (glob($dir.'/'.$configPath.'/*.'.$extension.'.php', GLOB_NOSORT)) {
+            $driver = 'php';
+        } else {
+            // add the closest existing directory as a resource
+            $resource = $dir.'/'.$configPath;
+            while (!is_dir($resource)) {
+                $resource = dirname($resource);
+            }
+
+            $container->fileExists($resource, false);
+
+            if ($container->fileExists($dir.'/'.$this->getMappingObjectDefaultName(), false)) {
+                return 'attribute';
+            }
+
+            return null;
+        }
+
+        $container->fileExists($dir.'/'.$configPath, false);
+
+        return $driver;
+    }
+
+    /**
+     * Returns a modified version of $managerConfigs.
+     *
+     * The manager called $autoMappedManager will map all bundles that are not mapped by other managers.
+     *
+     * @param array<string, array<string, mixed>> $managerConfigs
+     * @param array<string, string>               $bundles
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    private function fixManagersAutoMappings(array $managerConfigs, array $bundles): array
+    {
+        $autoMappedManager = $this->validateAutoMapping($managerConfigs);
+
+        if (null !== $autoMappedManager) {
+            foreach (array_keys($bundles) as $bundle) {
+                foreach ($managerConfigs as $manager) {
+                    if (isset($manager['mappings'][$bundle])) {
+                        continue 2;
+                    }
+                }
+
+                $managerConfigs[$autoMappedManager]['mappings'][$bundle] = [
+                    'mapping' => true,
+                    'is_bundle' => true,
+                ];
+            }
+
+            $managerConfigs[$autoMappedManager]['auto_mapping'] = false;
+        }
+
+        return $managerConfigs;
+    }
+
+    /**
+     * Search for a manager that is declared as 'auto_mapping' = true.
+     *
+     * @param array<string, array<string, mixed>> $managerConfigs
+     *
+     * @throws \LogicException
+     */
+    private function validateAutoMapping(array $managerConfigs): ?string
+    {
+        $autoMappedManager = null;
+        foreach ($managerConfigs as $name => $manager) {
+            if (!$manager['auto_mapping']) {
+                continue;
+            }
+
+            if (null !== $autoMappedManager) {
+                throw new \LogicException(sprintf('You cannot enable "auto_mapping" on more than one manager at the same time (found in "%s" and "%s"").', $autoMappedManager, $name));
+            }
+
+            $autoMappedManager = $name;
+        }
+
+        return $autoMappedManager;
     }
 
     private function loadOdmLocales(array $config, ContainerBuilder $container): void

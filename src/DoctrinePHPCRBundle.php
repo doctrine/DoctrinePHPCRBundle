@@ -42,14 +42,16 @@ class DoctrinePHPCRBundle extends Bundle
         parent::registerCommands($application);
 
         if (class_exists(Version::class)) {
-            $application->add(new DocumentMigrateClassCommand());
-            $application->add(new InfoDoctrineCommand());
-            $application->add(new VerifyUniqueNodeTypesMappingCommand());
-            $application->add(new DocumentConvertTranslationCommand());
+            $application->addCommands([
+                new DocumentMigrateClassCommand(),
+                new InfoDoctrineCommand(),
+                new VerifyUniqueNodeTypesMappingCommand(),
+                new DocumentConvertTranslationCommand(),
+            ]);
         }
 
         if (class_exists(BaseInitDoctrineDbalCommand::class)) {
-            $application->add(new InitDoctrineDbalCommand());
+            $application->addCommands([new InitDoctrineDbalCommand()]);
         }
     }
 
